@@ -49,8 +49,8 @@
 
   // Nơi gia công in / thêu (gia công ngoài)
   var SUBCONTRACTORS = [
-    { id: 'hanhdang', key: 'gcHD', label: 'Hành Đang', note: 'Gia công 2–3 ngày + vận chuyển' },
-    { id: 'binhphat', key: 'gcBP', label: 'Bình Phát', note: 'Gia công 4–5 ngày + vận chuyển' }
+    { id: 'hanhdan', key: 'gcHD', label: 'Hạnh Đan', note: 'Gia công 2–3 ngày + vận chuyển (chiều gửi, trưa hôm sau tới; chiều về tương tự)' },
+    { id: 'vinhphat', key: 'gcVP', label: 'Vĩnh Phát', note: 'Gia công 4–5 ngày + vận chuyển (chiều gửi, trưa hôm sau tới; chiều về tương tự)' }
   ];
 
   // Công đoạn lớn. Quy tắc lấy từ file "Thời gian tiêu chuẩn..." và họp rà soát lead time.
@@ -68,8 +68,8 @@
       rule: 'Đi sơ đồ + in rập 1 ngày. Mã từ 8.000 giây cần tối thiểu 3 ngày cho chỉnh rập + sơ đồ.',
       ruleJa: 'マーカー作成・型紙出力1日。難易度の高い品番は型紙調整＋マーカーで最低3日。' },
     { id: 'p4', label: 'Cắt, in, thêu', labelJa: '裁断・プリント・刺繍',
-      rule: 'Cắt, đánh số, bó 2 ngày. Có in/thêu: cắt xong và gửi gia công trước ライン投入 4 ngày (Hành Đang 2–3 ngày, Bình Phát 4–5 ngày).',
-      ruleJa: '裁断・ナンバリング・束ね2日。プリント・刺繍ありはライン投入4日前に裁断完了・外注発送（Hành Đang 2〜3日、Bình Phát 4〜5日）。' },
+      rule: 'Cắt, đánh số, bó 2 ngày. Có in: cắt xong và gửi gia công trước ライン投入 4 ngày (Hạnh Đan 2–3 ngày, Vĩnh Phát 4–5 ngày, cộng vận chuyển). Thêu làm trong nhà máy; chỉ gửi ngoài khi cao điểm quá tải.',
+      ruleJa: '裁断・ナンバリング・束ね2日。プリントありはライン投入4日前に裁断完了・外注発送（Hạnh Đan 2〜3日、Vĩnh Phát 4〜5日＋輸送）。刺繍は社内で実施（繁忙期の能力超過時のみ外注）。' },
     { id: 'p5', label: 'Chuyền', labelJa: '縫製ライン',
       rule: 'Đọc tài liệu kỹ thuật, rập triển khai, họp triển khai xong trước ライン投入. Sau START: triển khai 5 ngày (8.000s), 7–8 ngày (12.000–15.000s); 1 kỹ thuật ≈ 1.000–1.200 giây/ngày.',
       ruleJa: '技術資料の読み込み・展開準備はライン投入前に完了。START後のライン展開：8,000秒で約5日、12,000〜15,000秒で7〜8日（技術者1人 1,000〜1,200秒/日）。' }
@@ -87,8 +87,9 @@
     sodo: [1, 2, 2],
     caitien: [3, 3, 3],
     cat: [2, 2, 2],
-    gcHD: [4, 4, 4],        // Hành Đang 2–3 ngày + vận chuyển = cắt xong trước ライン投入 4 ngày
-    gcBP: [6, 6, 6],        // Bình Phát 4–5 ngày + vận chuyển
+    gcHD: [4, 4, 4],        // Hạnh Đan 2–3 ngày + vận chuyển = cắt xong trước ライン投入 4 ngày
+    gcVP: [6, 6, 6],        // Vĩnh Phát 4–5 ngày + vận chuyển
+    theuNM: [1, 1, 1],      // thêu trong nhà máy (không qua vận chuyển)
     hop: [2, 2, 2],
     tkMoi: [5, 7, 8],
     tkLap: [3, 5, 7]
@@ -127,15 +128,18 @@
       deps: [{ id: 'sodo', type: 'FS' }, { id: 'xa', type: 'FS' }, { id: 'khui', type: 'SS', lagKey: 'nlTruocCat' }] },
     { id: 'caitien', nameJa: '改良パターン作成', key: 'caitien', dept: 'kythuat', phase: 'p4', people: '1',
       name: 'Rập cải tiến', detail: 'Làm rập cải tiến song song với cắt', deps: [{ id: 'cat', type: 'SS' }] },
-    { id: 'gc', nameJa: 'プリント・刺繍（外注）', key: null, dept: 'giacong', phase: 'p4', people: '?', when: 'gc',
-      name: 'In / thêu (gia công ngoài)', detail: 'Gửi bán thành phẩm đi in, thêu và nhận về (gồm vận chuyển)',
+    { id: 'gc', nameJa: 'プリント（外注）', key: null, dept: 'giacong', phase: 'p4', people: '?', when: 'gc',
+      name: 'In (gia công ngoài)', detail: 'Gửi bán thành phẩm đi in và nhận về (gồm vận chuyển)',
+      deps: [{ id: 'cat', type: 'FS' }] },
+    { id: 'theu', nameJa: '刺繍（社内）', key: 'theuNM', dept: 'cat', phase: 'p4', people: '?', when: 'theuIn',
+      name: 'Thêu (trong nhà máy)', detail: 'Thêu bán thành phẩm tại nhà máy, không qua vận chuyển',
       deps: [{ id: 'cat', type: 'FS' }] },
     { id: 'hop', nameJa: '技術資料読込・展開用型紙・展開会議', key: 'hop', dept: 'chuyen', phase: 'p5', people: '?',
       name: 'Chuẩn bị triển khai', detail: 'Đọc tài liệu kỹ thuật, làm rập triển khai các size, họp triển khai',
       note: 'Phải xong trước ライン投入', deps: [{ id: 'cat', type: 'FS' }] },
     { id: 'trienkhai', nameJa: 'ライン展開指導（先頭5枚まで）', key: null, dept: 'chuyen', phase: 'p5', people: '1', afterStart: true,
       name: 'Kỹ thuật triển khai', detail: 'Hướng dẫn trên chuyền tới khi công nhân ra được 5 pcs đầu',
-      note: 'Diễn ra sau START', deps: [{ id: 'hop', type: 'FS' }, { id: 'gc', type: 'FS' }] }
+      note: 'Diễn ra sau START', deps: [{ id: 'hop', type: 'FS' }, { id: 'gc', type: 'FS' }, { id: 'theu', type: 'FS' }] }
   ];
 
   // ---------- Ngày tháng ----------
@@ -193,7 +197,8 @@
    *   base: 'port' (ETA hàng về cảng, có bước XNK) | 'factory' (vải đã về nhà máy),
    *   seconds: SAH giây, (hoặc band: 0|1|2)
    *   isNew: true = mã mới, false = hàng lặp lại,
-   *   inan: có in, theu: có thêu, sub: 'hanhdang' | 'binhphat' (nơi gia công in/thêu),
+   *   inan: có in, theu: có thêu, theuOut: thêu gửi gia công ngoài (chỉ khi cao điểm quá tải),
+   *   sub: 'hanhdan' | 'vinhphat' (nơi gia công ngoài),
    *   skipSunday: true, holidays: ['YYYY-MM-DD', ...],
    *   standards: ghi đè DEFAULT_STANDARDS
    * }
@@ -203,7 +208,8 @@
     var std = Object.assign({}, DEFAULT_STANDARDS, input.standards || {});
     var cal = makeCalendar({ skipSunday: input.skipSunday, holidays: input.holidays });
     var base = input.base === 'factory' ? 'factory' : 'port';
-    var flags = { gc: !!(input.inan || input.theu) };
+    var theuOut = !!(input.theu && input.theuOut);
+    var flags = { gc: !!(input.inan || theuOut), theuIn: !!(input.theu && !input.theuOut) };
     var sub = SUBCONTRACTORS.filter(function (x) { return x.id === input.sub; })[0] || SUBCONTRACTORS[0];
     var done = {};
     var rows = [];
@@ -242,8 +248,8 @@
       }
       var name = st.name, nameJa = st.nameJa, detail = st.detail;
       if (st.id === 'gc') {
-        var what = input.inan && input.theu ? 'In + thêu' : (input.inan ? 'In' : 'Thêu');
-        var whatJa = input.inan && input.theu ? 'プリント・刺繍' : (input.inan ? 'プリント' : '刺繍');
+        var what = input.inan && theuOut ? 'In + thêu' : (input.inan ? 'In' : 'Thêu');
+        var whatJa = input.inan && theuOut ? 'プリント・刺繍' : (input.inan ? 'プリント' : '刺繍');
         name = what + ' – ' + sub.label;
         nameJa = whatJa + '（外注：' + sub.label + '）';
         detail = sub.note;
@@ -259,7 +265,7 @@
     });
 
     var cut = done.cat;
-    var btp = done.gc ? done.gc.finish : cut.finish;
+    var btp = maxDate([cut, done.gc, done.theu].filter(Boolean).map(function (r) { return r.finish; }));
     var fabricAtFactory = done.khui ? done.khui.start : cal.nextWork(input.eta);
     var lineInput = done.trienkhai.start;      // START = ライン投入
     var firstPieces = done.trienkhai.finish;   // ra 5 pcs đầu chuyền

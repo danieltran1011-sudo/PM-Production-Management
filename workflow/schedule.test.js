@@ -10,7 +10,7 @@ const N = (date) => S.diffDays(ETA, date) + 1;
 
 function plan(band, extra) {
   return S.computeSchedule(Object.assign({
-    eta: ETA, base: 'port', band, isNew: true, inan: false, theu: false, sub: 'hanhdang', skipSunday: false
+    eta: ETA, base: 'port', band, isNew: true, inan: false, theu: false, sub: 'hanhdan', skipSunday: false
   }, extra));
 }
 function spans(s) {
@@ -56,12 +56,12 @@ test('Không in/thêu: cắt xong trước START 2 ngày', () => {
   assert.ok(!s.rows.some((r) => r.id === 'gc'));
 });
 
-test('Có in/thêu: Hành Đang cắt xong trước START 4 ngày, Bình Phát 6 ngày', () => {
-  const hd = plan(0, { inan: true, sub: 'hanhdang' });
+test('Có in: Hạnh Đan cắt xong trước START 4 ngày, Vĩnh Phát 6 ngày', () => {
+  const hd = plan(0, { inan: true, sub: 'hanhdan' });
   assert.strictEqual(S.diffDays(hd.milestones.cutDone, hd.milestones.lineInput), 4);
-  const bp = plan(0, { theu: true, sub: 'binhphat' });
+  const bp = plan(0, { inan: true, sub: 'vinhphat' });
   assert.strictEqual(S.diffDays(bp.milestones.cutDone, bp.milestones.lineInput), 6);
-  assert.match(bp.rows.find((r) => r.id === 'gc').name, /Bình Phát/);
+  assert.match(bp.rows.find((r) => r.id === 'gc').name, /Vĩnh Phát/);
 });
 
 test('Triển khai chuyền sau START: mã mới 5 / 7 / 8 ngày, lặp lại 3 / 5 / 7', () => {
@@ -97,7 +97,7 @@ test('Bỏ Chủ nhật: bước tại nhà máy không rơi vào Chủ nhật h
 });
 
 test('ETA muộn nhất: tính ngược từ ngày START', () => {
-  const input = { base: 'port', seconds: 7500, isNew: true, inan: true, sub: 'binhphat', skipSunday: true };
+  const input = { base: 'port', seconds: 7500, isNew: true, inan: true, sub: 'vinhphat', skipSunday: true };
   const target = '2026-12-15';
   const eta = S.latestEta(input, target);
   assert.ok(S.computeSchedule(Object.assign({}, input, { eta })).milestones.lineInput <= target);
@@ -105,7 +105,7 @@ test('ETA muộn nhất: tính ngược từ ngày START', () => {
   assert.ok(later.milestones.lineInput > target);
 });
 
-test('工場着 → START: 9–16 ngày; mốc 14 ngày chỉ thiếu với gia công Bình Phát (khớp kết luận họp)', () => {
+test('工場着 → START: 9–16 ngày; mốc 14 ngày chỉ thiếu với gia công Vĩnh Phát (khớp kết luận họp)', () => {
   const need = (band, gc, sub) => {
     let mx = 0;
     for (let w = 0; w < 7; w++) {
@@ -116,10 +116,27 @@ test('工場着 → START: 9–16 ngày; mốc 14 ngày chỉ thiếu với gia 
     return mx;
   };
   for (const band of [0, 1, 2]) {
-    assert.ok(need(band, false, 'hanhdang') <= 14);
-    assert.ok(need(band, true, 'hanhdang') <= 14);
-    assert.ok(need(band, true, 'binhphat') <= 21);
+    assert.ok(need(band, false, 'hanhdan') <= 14);
+    assert.ok(need(band, true, 'hanhdan') <= 14);
+    assert.ok(need(band, true, 'vinhphat') <= 21);
   }
-  assert.ok(need(2, true, 'binhphat') > 14);
-  assert.strictEqual(need(2, true, 'binhphat'), 16);
+  assert.ok(need(2, true, 'vinhphat') > 14);
+  assert.strictEqual(need(2, true, 'vinhphat'), 16);
+});
+
+test('Thêu làm trong nhà máy: 1 ngày sau cắt, song song với chuẩn bị triển khai, không làm chậm START', () => {
+  const base = plan(0);
+  const t = plan(0, { theu: true });
+  const r = t.rows.find((x) => x.id === 'theu');
+  assert.ok(r && r.dept === 'cat' && r.days === 1);
+  assert.ok(!t.rows.some((x) => x.id === 'gc'));
+  assert.strictEqual(t.milestones.lineInput, base.milestones.lineInput);
+});
+
+test('Thêu gửi ngoài khi cao điểm: tính như gia công ngoài', () => {
+  const t = plan(0, { theu: true, theuOut: true, sub: 'vinhphat' });
+  assert.ok(!t.rows.some((x) => x.id === 'theu'));
+  const gc = t.rows.find((x) => x.id === 'gc');
+  assert.match(gc.name, /^Thêu – Vĩnh Phát/);
+  assert.strictEqual(S.diffDays(t.milestones.cutDone, t.milestones.lineInput), 6);
 });

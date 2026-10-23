@@ -26,9 +26,11 @@ flowchart TD
     XA --> CAT["裁断・ナンバリング・束ね<br/>Cắt, đánh số, bó · 2"]
     SODO --> CAT
     CAT -.-> CT["改良パターン<br/>Rập cải tiến · 3"]
-    CAT --> GC["プリント・刺繍（外注）<br/>In, thêu gia công ngoài<br/>Hành Đang 4 · Bình Phát 6 (gồm vận chuyển)"]
+    CAT --> GC["プリント（外注）<br/>In gia công ngoài<br/>Hạnh Đan 4 · Vĩnh Phát 6 (gồm vận chuyển)"]
+    CAT --> THEU["刺繍（社内）<br/>Thêu trong nhà máy · 1"]
     CAT --> HOP["技術資料読込・展開準備<br/>Đọc tài liệu, rập triển khai, họp · 2"]
     GC --> START(["START = ライン投入 · D"])
+    THEU --> START
     HOP --> START
     START --> TK["ライン展開指導（先頭5枚まで）<br/>Triển khai chuyền · mới 5/7/8 · lặp lại 3/5/7"]
     TK --> FP(["先頭5枚完成・量産開始"])
@@ -52,49 +54,51 @@ Nguồn: file `data/nguon/Ra-soat-thoi-gian-can-de-vao-chuyen-20260722.xlsx`, c�
 | Kỹ thuật | Đi sơ đồ + in rập (bắt đầu ngày thứ 2 của chỉnh rập) | 1 | 2 | **2** | Họp |
 | Kỹ thuật | Rập cải tiến (song song với cắt) | 3 | 3 | 3 | File rà soát |
 | Phòng cắt | Cắt, đánh số, bó | 2 | 2 | 2 | Họp |
-| Gia công | In/thêu tại Hành Đang (2–3 ngày + vận chuyển) | 4 | 4 | 4 | Họp: cắt xong trước ライン投入 4 ngày |
-| Gia công | In/thêu tại Bình Phát (4–5 ngày + vận chuyển) | 6 | 6 | 6 | Họp |
-| Chuyền | Đọc tài liệu kỹ thuật, rập triển khai, họp (song song với gia công) | 2 | 2 | 2 | File rà soát, họp |
+| Gia công ngoài | In tại Hạnh Đan (2–3 ngày + vận chuyển) | 4 | 4 | 4 | Họp: cắt xong trước ライン投入 4 ngày |
+| Gia công ngoài | In tại Vĩnh Phát (4–5 ngày + vận chuyển) | 6 | 6 | 6 | Họp |
+| Phòng cắt | Thêu trong nhà máy | 1 | 1 | 1 | File rà soát; thêu không gửi ngoài, trừ khi cao điểm quá tải |
+| Chuyền | Đọc tài liệu kỹ thuật, rập triển khai, họp (song song với in, thêu) | 2 | 2 | 2 | File rà soát, họp |
+
+Vận chuyển đi/về nơi gia công: chiều nhà máy gửi thì trưa hôm sau tới nơi gia công, chiều về tương tự, tính chung 1 ngày.
+Thêu làm trong nhà máy 1 ngày, song song với chuẩn bị triển khai (2 ngày) nên không làm chậm START. Khi cao điểm quá tải mới gửi thêu ra ngoài; lúc đó tính như in gia công ngoài.
 | Chuyền | Triển khai sau START – mã mới | 5 | 7 | 8 | File rà soát, họp |
 | Chuyền | Triển khai sau START – hàng lặp lại | 3 | 5 | 7 | File rà soát |
 
-Thay đổi so với file Excel: in/thêu chuyển sang làm **sau** khi cắt xong (gửi gia công ngoài), mức trên 12.000s tăng rập + sơ đồ từ 1+1 lên 2+2 (tổng 3 ngày), mốc cuối đổi từ "ra 5 pcs đầu" sang ライン投入.
+Thay đổi so với file Excel: in chuyển sang làm **sau** khi cắt xong (gửi gia công ngoài), thêu làm trong nhà máy sau khi cắt, mức trên 12.000s tăng rập + sơ đồ từ 1+1 lên 2+2 (tổng 3 ngày), mốc cuối đổi từ "ra 5 pcs đầu" sang ライン投入.
 
 ## Số ngày cần từ 工場着 đến START (ライン投入)
 
-Ngày lịch, nghỉ Chủ nhật, lấy trường hợp lâu nhất trong tuần. Cột dư/thiếu: so với chuẩn cũ 14 / chuẩn mới 21.
+Ngày lịch, nghỉ Chủ nhật, lấy trường hợp lâu nhất trong tuần. Cột dư/thiếu: so với chuẩn cũ 14 / chuẩn mới 21. Có thêu trong nhà máy hay không thì số ngày không đổi.
 
-| SAH | Không in/thêu | In/thêu Hành Đang | In/thêu Bình Phát |
+| SAH | Không in | In tại Hạnh Đan | In tại Vĩnh Phát |
 |---|---|---|---|
 | < 8.000s | 10 (+4 / +11) | 12 (+2 / +9) | 15 (**−1** / +6) |
 | 8.000–12.000s | 11 (+3 / +10) | 13 (+1 / +8) | 16 (**−2** / +5) |
 | > 12.000s | 11 (+3 / +10) | 13 (+1 / +8) | 16 (**−2** / +5) |
 
 Kết luận:
-- Cần 10–16 ngày cho 1 mã khi đủ người.
-- Chuẩn cũ 14 ngày đáp ứng 6/9 trường hợp, dự phòng ít nhất 1 ngày; mã gia công Bình Phát thiếu tới 2 ngày. Điều này khớp với nhận định trong họp: mã dưới 8.000 giây làm được 14 ngày nếu chuẩn bị kỹ, mã phức tạp cần điều chỉnh riêng.
-- Chuẩn mới 21 ngày cho mọi trường hợp dự phòng ít nhất 5 ngày, đủ để hấp thụ ETA trễ, vải lỗi, thiếu hàng và thời gian chờ khi nhiều mã chạy song song với số kỹ thuật hiện có.
-- Yêu cầu triển khai trong 10–12 ngày chỉ làm được ở 4/9 trường hợp (không in/thêu hoặc Hành Đang, độ khó thấp), không còn dự phòng.
+- Cần 10–16 ngày khi chỉ chuẩn bị 1 mã.
+- Chuẩn cũ 14 ngày đáp ứng 6/9 trường hợp, dự phòng ít nhất 1 ngày; mã in tại Vĩnh Phát thiếu tới 2 ngày. Điều này khớp với nhận định trong họp: mã dưới 8.000 giây làm được 14 ngày nếu chuẩn bị kỹ, mã phức tạp cần điều chỉnh riêng.
+- Chuẩn mới 21 ngày cho mọi trường hợp dự phòng ít nhất 5 ngày, đủ để hấp thụ ETA trễ, vải lỗi, thiếu hàng và thời gian chờ khi nhiều mã chạy song song.
+- Yêu cầu triển khai trong 10–12 ngày chỉ làm được ở 4/9 trường hợp (không in hoặc in tại Hạnh Đan, độ khó thấp), không còn dự phòng.
 
 ## Lý do thay đổi chuẩn / 基準変更の理由
 
-1. **Số chuyền tăng, thiếu kỹ thuật / ライン数の増加・人員不足**: nhiều mã chuẩn bị cùng lúc; kỹ thuật rập và kỹ thuật triển khai thiếu người, tải dồn vào một số người.
+1. **Số chuyền tăng / ライン数の増加**: nhiều mã chuẩn bị cùng lúc; việc của kỹ thuật và phòng cắt chồng lên nhau, mỗi mã dễ phát sinh thời gian chờ.
 2. **Độ khó tăng / 難易度の上昇**: mã trên 12.000 giây cần tối thiểu 3 ngày cho rập + sơ đồ; mỗi kỹ thuật triển khai được 1.000–1.200 giây/ngày, mã 12.000–15.000 giây mất 7–8 ngày.
-3. **Hàng lô nhỏ, gia công ngoài / 小ロット化・外注加工**: nhiều mã hơn trên cùng sản lượng; in/thêu tại Bình Phát làm khoảng cách từ cắt đến vào chuyền lên 6 ngày.
+3. **Hàng lô nhỏ, gia công ngoài / 小ロット化・外注加工**: nhiều mã hơn trên cùng sản lượng; in tại Vĩnh Phát làm khoảng cách từ cắt xong đến vào chuyền lên 6 ngày.
 4. **Chuyển đổi mã nhiều / 品番切替の増加**: mỗi lần chuyển đổi phải đọc tài liệu, làm rập triển khai, họp; vào chuyền khi chưa chuẩn bị đủ thì thời gian tìm hiểu tại chuyền kéo dài, hiệu suất giảm.
 
-## Việc cần làm sau cuộc họp
+## Việc cần làm sau cuộc họp (nội bộ, không đưa vào tài liệu gửi TIJ)
 
 | Phụ trách | Nội dung |
 |---|---|
-| Quyền | Kiểm tra lại số ngày triển khai chuyền tại nhà máy Quảng Ngãi cho mã tương đương (khoảng 8.000 giây) và báo cáo. |
 | Kỹ thuật (Speaker 1) | Xây dựng cách làm để đọc tài liệu kỹ thuật, chuẩn bị xong trước ngày vào chuyền 2 ngày. |
-| Chưa ghi rõ (Kỹ thuật) | Tổng hợp số người và vị trí cần tăng (kỹ thuật rập, kỹ thuật triển khai), đề nghị ban giám đốc tăng người; nhờ nhân sự xem xét tuyển mới hoặc điều chuyển từ bộ phận khác. |
+| Chưa ghi rõ (Kỹ thuật) | Tổng hợp số người và vị trí cần tăng (kỹ thuật rập, kỹ thuật triển khai), đề nghị ban giám đốc tăng người. |
 | Kho, logistics | Quản lý chính xác ETA nguyên liệu và chia sẻ với bộ phận kế hoạch. |
+
+Trang flowchart gửi TIJ không nhắc việc tăng người hay thiếu kỹ thuật; mục "Cải tiến phía nhà máy" chỉ giữ chuẩn bị tài liệu trước 2 ngày và quản lý ETA.
 
 ## Điểm còn mở
 
-- Thời gian vận chuyển đi/về nơi gia công đang giả định 1 ngày (Hành Đang 3 + 1, Bình Phát 5 + 1). Cần xác nhận.
-- Khi một mã vừa in vừa thêu, đang giả định làm cùng một nơi trong cùng khoảng thời gian.
 - Số người cần ở các ô "?" trong file gốc chưa có câu trả lời rõ ràng.
-- Kết quả đối chiếu số ngày triển khai tại Quảng Ngãi (việc của Quyền) có thể làm thay đổi số ngày triển khai sau START.
