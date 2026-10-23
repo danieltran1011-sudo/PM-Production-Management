@@ -1,0 +1,780 @@
+<!doctype html>
+<html lang="vi">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Lịch chuẩn bị mã hàng</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Be+Vietnam+Pro:wght@400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: giấy sơ đồ kẻ ô làm nền; trên cùng là dải mốc ETA → Ra chuyền, rồi Gantt, quy trình, danh sách mã, bảng chuẩn. */
+:root {
+  --paper: #F2F4F8;
+  --grid: rgba(43, 63, 158, 0.055);
+  --surface: #FFFFFF;
+  --surface-2: #F7F8FB;
+  --ink: #17203B;
+  --muted: #5B6482;
+  --line: #D8DDE8;
+  --accent: #2B3F9E;
+  --accent-soft: #E6EAFA;
+  --accent-ink: #FFFFFF;
+  --off: #E9ECF3;
+  --good: #1D7A4B;
+  --good-soft: #E1F3E9;
+  --bad: #B3261E;
+  --bad-soft: #FBE6E4;
+  --today: #D9480F;
+  --d-xnk: #5B6B8C;
+  --d-bocvac: #8C6A3F;
+  --d-qckho: #13827C;
+  --d-cat: #3949AB;
+  --d-kythuat: #A8436F;
+  --d-giacong: #B87A0B;
+  --d-chuyen: #2D8653;
+  --f-display: "Barlow Condensed", "Arial Narrow", "Roboto Condensed", sans-serif;
+  --f-body: "Be Vietnam Pro", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --f-mono: "Roboto Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --day-w: 36px;
+  --label-w: 230px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0E1220; --grid: rgba(150, 170, 235, 0.05); --surface: #161B2B; --surface-2: #1B2134;
+    --ink: #E5E8F2; --muted: #9AA3BE; --line: #2A3249; --accent: #93A5FF; --accent-soft: #232C4E;
+    --accent-ink: #0E1220; --off: #1F2639; --good: #5DCB8F; --good-soft: #17301F; --bad: #FF8178;
+    --bad-soft: #3A1C1B; --today: #FF8A4C;
+    --d-xnk: #8D9BBA; --d-bocvac: #C29A68; --d-qckho: #4CC2BA; --d-cat: #7F8EEA; --d-kythuat: #E07AA6;
+    --d-giacong: #E3AA3E; --d-chuyen: #5FC48A;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0E1220; --grid: rgba(150, 170, 235, 0.05); --surface: #161B2B; --surface-2: #1B2134;
+  --ink: #E5E8F2; --muted: #9AA3BE; --line: #2A3249; --accent: #93A5FF; --accent-soft: #232C4E;
+  --accent-ink: #0E1220; --off: #1F2639; --good: #5DCB8F; --good-soft: #17301F; --bad: #FF8178;
+  --bad-soft: #3A1C1B; --today: #FF8A4C;
+  --d-xnk: #8D9BBA; --d-bocvac: #C29A68; --d-qckho: #4CC2BA; --d-cat: #7F8EEA; --d-kythuat: #E07AA6;
+  --d-giacong: #E3AA3E; --d-chuyen: #5FC48A;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; }
+[hidden] { display: none !important; }
+body {
+  background-color: var(--paper);
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 24px 24px;
+  color: var(--ink);
+  font-family: var(--f-body);
+  font-size: 14px;
+  line-height: 1.5;
+}
+.wrap {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding-block: 28px 64px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: grid;
+  gap: 28px;
+}
+h1, h2, h3 { font-family: var(--f-display); font-weight: 700; letter-spacing: 0.01em; text-wrap: balance; margin: 0; }
+h1 { font-size: clamp(30px, 5vw, 44px); line-height: 1.05; }
+h2 { font-size: 26px; line-height: 1.1; }
+h3 { font-size: 19px; }
+p { margin: 0; }
+.eyebrow { font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); }
+.muted { color: var(--muted); }
+.mono { font-family: var(--f-mono); font-variant-numeric: tabular-nums; }
+a { color: var(--accent); }
+
+header.top { display: grid; gap: 10px; }
+header.top p { max-width: 70ch; color: var(--muted); }
+nav.jump { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+nav.jump a {
+  font-size: 13px; text-decoration: none; color: var(--ink); padding: 4px 10px; border-radius: 999px;
+  border: 1px solid var(--line); background: var(--surface);
+}
+nav.jump a:hover { border-color: var(--accent); color: var(--accent); }
+
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 20px; min-width: 0; }
+.section-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 16px; margin-bottom: 14px; }
+.section-head p { color: var(--muted); max-width: 70ch; }
+
+/* ---- Nhập liệu ---- */
+.planner { display: grid; grid-template-columns: minmax(0, 340px) minmax(0, 1fr); gap: 20px; align-items: start; }
+@media (max-width: 860px) { .planner { grid-template-columns: minmax(0, 1fr); } }
+form.inputs { display: grid; gap: 14px; }
+.field { display: grid; gap: 5px; min-width: 0; }
+.field > label, .field > .lbl { font-size: 12px; font-weight: 600; color: var(--muted); letter-spacing: 0.02em; }
+.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+input[type="text"], input[type="date"], input[type="number"], textarea, select {
+  font: inherit; color: var(--ink); background: var(--surface-2); border: 1px solid var(--line);
+  border-radius: 6px; padding: 7px 9px; width: 100%; min-width: 0;
+}
+input:focus-visible, textarea:focus-visible, select:focus-visible, button:focus-visible, a:focus-visible, .seg label:has(input:focus-visible) {
+  outline: 2px solid var(--accent); outline-offset: 2px;
+}
+.seg { display: flex; border: 1px solid var(--line); border-radius: 7px; overflow: hidden; background: var(--surface-2); }
+.seg label { flex: 1; text-align: center; padding: 7px 6px; cursor: pointer; font-size: 13px; font-weight: 500; border-left: 1px solid var(--line); }
+.seg label:first-child { border-left: 0; }
+.seg input { position: absolute; opacity: 0; pointer-events: none; }
+.seg label:has(input:checked) { background: var(--accent); color: var(--accent-ink); }
+.checks { display: flex; flex-wrap: wrap; gap: 8px 18px; }
+.checks label { display: inline-flex; align-items: center; gap: 7px; cursor: pointer; }
+input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--accent); }
+.band-hint { font-size: 12px; color: var(--muted); }
+.band-hint b { color: var(--accent); font-weight: 600; }
+
+button {
+  font: inherit; font-weight: 600; font-size: 13px; cursor: pointer; border-radius: 6px; padding: 7px 12px;
+  border: 1px solid var(--line); background: var(--surface); color: var(--ink);
+}
+button:hover { border-color: var(--accent); color: var(--accent); }
+button.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+button.primary:hover { filter: brightness(1.08); color: var(--accent-ink); }
+button.ghost { border-color: transparent; background: transparent; padding: 4px 8px; }
+
+/* ---- Dải mốc ---- */
+.result { display: grid; gap: 18px; min-width: 0; }
+.milestones { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: var(--surface); }
+.ms { padding: 14px 14px 12px; border-left: 1px solid var(--line); display: grid; gap: 2px; align-content: start; position: relative; }
+.ms:first-child { border-left: 0; }
+.ms .k { font-size: 12px; font-weight: 600; color: var(--muted); }
+.ms .v { font-family: var(--f-display); font-size: 34px; line-height: 1; font-weight: 700; font-variant-numeric: tabular-nums; }
+.ms .s { font-size: 12px; color: var(--muted); font-family: var(--f-mono); }
+.ms.final { background: var(--accent); color: var(--accent-ink); }
+.ms.final .k, .ms.final .s { color: inherit; opacity: 0.85; }
+@media (max-width: 720px) {
+  .milestones { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .ms { border-left: 0; border-top: 1px solid var(--line); }
+  .ms:nth-child(even) { border-left: 1px solid var(--line); }
+  .ms:nth-child(-n+2) { border-top: 0; }
+  .ms.final { grid-column: 1 / -1; border-left: 0; }
+}
+.facts { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 500; padding: 3px 10px; border-radius: 999px; background: var(--accent-soft); color: var(--ink); }
+.chip.good { background: var(--good-soft); color: var(--good); }
+.chip.bad { background: var(--bad-soft); color: var(--bad); }
+.target { display: grid; grid-template-columns: minmax(0, 220px) minmax(0, 1fr); gap: 14px; align-items: end; padding: 14px; border: 1px dashed var(--line); border-radius: 10px; }
+@media (max-width: 560px) { .target { grid-template-columns: minmax(0, 1fr); } }
+.verdict { display: grid; gap: 4px; }
+.verdict strong { font-size: 15px; }
+
+/* ---- Gantt ---- */
+.gantt-scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
+.gantt { display: grid; grid-template-columns: var(--label-w) repeat(var(--n), var(--day-w)); width: max-content; min-width: 100%; position: relative; }
+.g-cell { height: 34px; border-bottom: 1px solid var(--line); }
+.g-cell.off { background: var(--off); }
+.g-head { height: auto; padding: 6px 0 5px; text-align: center; font-size: 11px; line-height: 1.2; color: var(--muted); border-bottom: 1px solid var(--line); background: var(--surface); }
+.g-head b { display: block; font-family: var(--f-mono); font-weight: 500; color: var(--ink); font-size: 10.5px; letter-spacing: -0.02em; }
+.g-head.off { background: var(--off); }
+.g-head.n { font-family: var(--f-mono); font-size: 10px; padding: 3px 0; }
+.g-label {
+  position: sticky; left: 0; z-index: 2; background: var(--surface); border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line); padding: 4px 10px; display: flex; align-items: center; gap: 8px; min-width: 0; height: 34px;
+}
+.g-label .nm { font-size: 12.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.g-label.head { height: auto; font-size: 11px; font-weight: 600; color: var(--muted); }
+.dot { width: 9px; height: 9px; border-radius: 2px; flex: none; }
+.bar {
+  align-self: center; height: 22px; border-radius: 4px; margin: 0 2px; z-index: 1; display: flex; align-items: center;
+  padding: 0 6px; font-size: 11px; font-weight: 600; color: #fff; white-space: nowrap; overflow: hidden;
+}
+.bar.cal { background-image: repeating-linear-gradient(135deg, rgba(255,255,255,.18) 0 6px, transparent 6px 12px); }
+.mile { align-self: center; justify-self: center; width: 14px; height: 14px; transform: rotate(45deg); z-index: 1; border-radius: 2px; }
+.today-line { position: absolute; top: 0; bottom: 0; width: 2px; background: var(--today); z-index: 3; pointer-events: none; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 16px; margin-top: 12px; font-size: 12px; color: var(--muted); }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+
+/* ---- Quy trình ---- */
+.flow { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 22px; }
+@media (max-width: 1100px) { .flow { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 640px) { .flow { grid-template-columns: minmax(0, 1fr); } }
+.phase { position: relative; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px; display: grid; gap: 10px; align-content: start; min-width: 0; }
+.phase::after {
+  content: ""; position: absolute; right: -17px; top: 26px; width: 12px; height: 12px;
+  border-top: 2px solid var(--muted); border-right: 2px solid var(--muted); transform: rotate(45deg);
+}
+.phase:last-child::after { display: none; }
+@media (max-width: 1100px) { .phase:nth-child(3n)::after { display: none; } }
+@media (max-width: 640px) {
+  .phase::after { right: auto; left: 22px; top: auto; bottom: -17px; transform: rotate(135deg); display: block; }
+  .phase:nth-child(3n)::after { display: block; }
+  .phase:last-child::after { display: none; }
+}
+.phase .num { font-family: var(--f-display); font-size: 15px; font-weight: 700; color: var(--accent); }
+.phase .when { font-family: var(--f-mono); font-size: 12px; color: var(--muted); }
+.phase ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.phase li { display: grid; gap: 2px; padding-left: 10px; border-left: 3px solid var(--line); }
+.phase li .t { font-weight: 600; font-size: 13px; }
+.phase li .m { font-size: 12px; color: var(--muted); }
+.phase .rule { font-size: 12px; color: var(--muted); border-top: 1px dashed var(--line); padding-top: 8px; }
+.phase.empty li { opacity: 0.55; }
+
+/* ---- Bảng ---- */
+.table-scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; font-size: 13px; }
+th, td { padding: 7px 9px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: middle; }
+th { font-size: 11.5px; font-weight: 600; color: var(--muted); background: var(--surface-2); white-space: nowrap; }
+tbody tr:last-child td { border-bottom: 0; }
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+td.date { font-family: var(--f-mono); font-size: 12.5px; white-space: nowrap; }
+table.edit input, table.edit select { padding: 5px 7px; font-size: 13px; }
+table.edit input[type="number"] { width: 84px; }
+table.edit input[type="text"] { width: 110px; }
+table.edit input[type="date"] { width: 138px; }
+table.std input[type="number"] { width: 64px; text-align: right; }
+tr.sel td { background: var(--accent-soft); }
+.toolbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 12px; }
+.copybox { margin-top: 10px; width: 100%; min-height: 110px; font-family: var(--f-mono); font-size: 12px; }
+.opts { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px; margin-top: 16px; }
+@media (max-width: 720px) { .opts { grid-template-columns: minmax(0, 1fr); } }
+.notes { display: grid; gap: 6px; color: var(--muted); font-size: 13px; max-width: 90ch; }
+.notes ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; }
+footer { color: var(--muted); font-size: 12.5px; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .bar, .mile { transition: opacity .2s; }
+}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <span class="eyebrow">Quản lý sản xuất · Chuẩn bị mã hàng</span>
+    <h1>Workflow mã hàng: từ ETA đến ra chuyền</h1>
+    <p>Nhập ngày ETA và thông tin mã hàng, lịch từng bước được tính theo thời gian chuẩn đã rà soát ngày 22/07/2026: nhận hàng, khui thùng, kiểm vải, test vải, chỉnh rập, đi sơ đồ, cắt, in thêu, họp triển khai và triển khai chuyền.</p>
+    <nav class="jump" aria-label="Mục lục">
+      <a href="#lap-lich">Lập lịch</a>
+      <a href="#gantt">Sơ đồ Gantt</a>
+      <a href="#quy-trinh">Quy trình</a>
+      <a href="#danh-sach">Danh sách mã hàng</a>
+      <a href="#thoi-gian-chuan">Thời gian chuẩn</a>
+      <a href="flowchart.html">Flowchart lead time (日本語) →</a>
+    </nav>
+  </header>
+
+  <section id="lap-lich" class="panel planner">
+    <form class="inputs" id="planForm" autocomplete="off">
+      <div class="section-head" style="margin:0"><h2>Lập lịch 1 mã hàng</h2></div>
+      <div class="field">
+        <label for="pCode">Mã hàng</label>
+        <input type="text" id="pCode">
+      </div>
+      <div class="field">
+        <span class="lbl" id="baseLbl">Ngày ETA là ngày</span>
+        <div class="seg" role="radiogroup" aria-labelledby="baseLbl">
+          <label><input type="radio" name="pBase" id="pBasePort" value="port">Hàng về cảng</label>
+          <label><input type="radio" name="pBase" id="pBaseFactory" value="factory">Vải về nhà máy</label>
+        </div>
+      </div>
+      <div class="row2">
+        <div class="field">
+          <label for="pEta">Ngày ETA</label>
+          <input type="date" id="pEta" required>
+        </div>
+        <div class="field">
+          <label for="pSec">SAH (giây/sp)</label>
+          <input type="number" id="pSec" min="0" step="100">
+        </div>
+      </div>
+      <p class="band-hint" id="bandHint"></p>
+      <div class="field">
+        <span class="lbl" id="typeLbl">Loại mã</span>
+        <div class="seg" role="radiogroup" aria-labelledby="typeLbl">
+          <label><input type="radio" name="pType" id="pTypeNew" value="new">Mã mới</label>
+          <label><input type="radio" name="pType" id="pTypeRepeat" value="repeat">Hàng lặp lại</label>
+        </div>
+      </div>
+      <div class="field">
+        <span class="lbl">Gia công</span>
+        <div class="checks">
+          <label><input type="checkbox" id="pIn">Có in</label>
+          <label><input type="checkbox" id="pTheu">Có thêu</label>
+        </div>
+      </div>
+      <div class="toolbar" style="margin:0">
+        <button type="button" class="primary" id="addToList">Thêm vào danh sách</button>
+      </div>
+    </form>
+
+    <div class="result">
+      <div class="milestones" id="milestones"></div>
+      <div class="facts" id="facts"></div>
+      <div class="target">
+        <div class="field">
+          <label for="pTarget">Ngày START (ra chuyền)</label>
+          <input type="date" id="pTarget">
+          <button type="button" class="ghost" id="target28" style="justify-self:start;padding-left:0">Đặt theo chuẩn mới: ETA + 28 ngày</button>
+        </div>
+        <div class="verdict" id="verdict"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="gantt" class="panel">
+    <div class="section-head">
+      <h2>Sơ đồ Gantt</h2>
+      <p id="ganttSub"></p>
+    </div>
+    <div class="gantt-scroll"><div class="gantt" id="ganttGrid"></div></div>
+    <div class="legend" id="legend"></div>
+    <div class="table-scroll" style="margin-top:16px">
+      <table>
+        <thead><tr><th>Bước</th><th>Bộ phận</th><th class="num">Người</th><th class="num">Số ngày</th><th>Bắt đầu</th><th>Kết thúc</th><th>Ghi chú</th></tr></thead>
+        <tbody id="stepRows"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="quy-trinh">
+    <div class="section-head">
+      <h2>Quy trình 6 công đoạn</h2>
+      <p>Các bước trong cùng công đoạn có thể chạy song song. Số ngày hiển thị theo mức SAH và loại mã đang chọn ở trên.</p>
+    </div>
+    <div class="flow" id="flow"></div>
+  </section>
+
+  <section id="danh-sach" class="panel">
+    <div class="section-head">
+      <h2>Danh sách mã hàng</h2>
+      <p>Theo dõi nhiều mã cùng lúc. Sửa trực tiếp trong bảng, ngày được tính lại ngay. Bấm “Xem” để mở lịch chi tiết của mã đó. Dữ liệu lưu trên trình duyệt này.</p>
+    </div>
+    <div class="table-scroll">
+      <table class="edit">
+        <thead>
+          <tr>
+            <th>Mã hàng</th><th>ETA là</th><th>Ngày ETA</th><th>SAH (giây)</th><th>Loại</th><th>In</th><th>Thêu</th>
+            <th>START</th><th>Vải về NM</th><th>Bắt đầu cắt</th><th>BTP sẵn sàng</th><th>Ra chuyền</th><th>Trạng thái</th><th></th>
+          </tr>
+        </thead>
+        <tbody id="listRows"></tbody>
+      </table>
+    </div>
+    <div class="toolbar">
+      <button type="button" id="addRow">Thêm dòng</button>
+      <button type="button" id="copyCsv">Sao chép CSV (dán vào Excel)</button>
+      <span class="muted" id="copyMsg" role="status"></span>
+    </div>
+    <textarea class="copybox" id="copyBox" hidden aria-label="Dữ liệu CSV"></textarea>
+  </section>
+
+  <section id="thoi-gian-chuan" class="panel">
+    <div class="section-head">
+      <h2>Thời gian chuẩn (ngày)</h2>
+      <p>Lấy từ file rà soát 20260722. Sửa số ngày tại đây khi chuẩn thay đổi, mọi lịch sẽ tính lại.</p>
+    </div>
+    <div class="table-scroll">
+      <table class="std">
+        <thead><tr><th>Bước</th><th>Bộ phận</th><th class="num">Dưới 8.000s</th><th class="num">8.000–12.000s</th><th class="num">Trên 12.000s</th></tr></thead>
+        <tbody id="stdRows"></tbody>
+      </table>
+    </div>
+    <div class="opts">
+      <div class="field">
+        <span class="lbl">Ngày nghỉ</span>
+        <div class="checks"><label><input type="checkbox" id="optSunday">Không làm Chủ nhật (bước tại nhà máy)</label></div>
+        <p class="band-hint">Bước nhận hàng (XNK) luôn tính theo ngày lịch.</p>
+      </div>
+      <div class="field">
+        <label for="optHolidays">Ngày lễ, ngày nghỉ khác (dd/mm/yyyy, cách nhau dấu phẩy hoặc xuống dòng)</label>
+        <textarea id="optHolidays" rows="3" placeholder="01/01/2027, 05/02/2027"></textarea>
+      </div>
+    </div>
+    <div class="toolbar">
+      <button type="button" id="resetStd">Khôi phục số ngày chuẩn</button>
+      <span class="muted" id="resetMsg" role="status"></span>
+    </div>
+  </section>
+
+  <section class="notes">
+    <h3 style="color:var(--ink)">Giả định khi tính lịch</h3>
+    <ul>
+      <li>Chuẩn mới: ETA (về cảng) trước START 28 ngày, tương đương 工場着 trước START 21 ngày. Chuẩn cũ: ETA trước 21 ngày, 工場着 trước 14 ngày.</li>
+      <li>Ngày ETA (hàng về cảng) là N1. Khui thùng bắt đầu ngày làm việc kế tiếp sau 7 ngày nhận hàng.</li>
+      <li>Kiểm chất lượng kho và test vải chạy song song sau khui thùng. Xả vải sau khi kiểm chất lượng.</li>
+      <li>Đi sơ đồ bắt đầu từ ngày thứ 2 của bước điều chỉnh rập. Cắt bắt đầu khi đã xong sơ đồ và xả vải.</li>
+      <li>Rập cải tiến, in, thêu bắt đầu cùng ngày cắt. Bán thành phẩm có tại nhà máy khi cắt, in, thêu đều xong.</li>
+      <li>Hàng lặp lại nhưng không trùng chuyền với mùa trước thì tính như mã mới.</li>
+      <li>Số người cần ở các ô “?” trong file gốc chưa có câu trả lời rõ ràng.</li>
+    </ul>
+  </section>
+
+  <footer>Nguồn: “Thời gian tiêu chuẩn chuẩn bị 1 mã hàng từ ngày ETA” và “Rà soát lại thời gian cần để vào chuyền – 20260722”.</footer>
+</div>
+
+<script src="schedule.js"></script>
+<script>
+(function () {
+  'use strict';
+  var S = window.PMSchedule;
+  var STORE = 'pm-workflow-v1';
+  var WD = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'];
+  var DEPT_VAR = { xnk: '--d-xnk', bocvac: '--d-bocvac', qckho: '--d-qckho', cat: '--d-cat', kythuat: '--d-kythuat', giacong: '--d-giacong', chuyen: '--d-chuyen' };
+  var STD_ROWS = [
+    ['xnk', 'Nhận hàng đến ETA nhà máy', 'xnk'],
+    ['khui', 'Xuống hàng, khui thùng kiểm đếm', 'bocvac'],
+    ['qc', 'Kiểm xác suất chất lượng, báo khổ', 'qckho'],
+    ['test', 'Test vải', 'kythuat'],
+    ['xa', 'Xả vải', 'cat'],
+    ['rap', 'Điều chỉnh rập theo kết quả test vải', 'kythuat'],
+    ['sodo', 'Đi sơ đồ + in rập cứng', 'kythuat'],
+    ['caitien', 'Rập cải tiến', 'kythuat'],
+    ['cat', 'Cắt, đánh số, thay thân', 'cat'],
+    ['theu', 'Thêu', 'giacong'],
+    ['inan', 'In', 'giacong'],
+    ['hop', 'Làm rập + họp triển khai', 'chuyen'],
+    ['tkMoi', 'Kỹ thuật triển khai – mã mới', 'chuyen'],
+    ['tkLap', 'Kỹ thuật triển khai – hàng lặp lại', 'chuyen']
+  ];
+
+  function todayStr() {
+    var d = new Date();
+    return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+  }
+  function nextMonday(s) {
+    var w = S.weekday(s);
+    return S.addDays(s, ((8 - w) % 7) || 7);
+  }
+  var TODAY = todayStr();
+  var ETA0 = nextMonday(TODAY);
+
+  function clone(o) { return JSON.parse(JSON.stringify(o)); }
+  function defaults() {
+    return {
+      plan: { code: 'VD-001 (ví dụ)', base: 'port', eta: ETA0, seconds: 7500, isNew: true, inan: true, theu: false, target: S.addDays(ETA0, 28) },
+      list: [
+        { code: 'VD-001 (ví dụ)', base: 'port', eta: ETA0, seconds: 7500, isNew: true, inan: true, theu: false, target: S.addDays(ETA0, 28) },
+        { code: 'VD-002 (ví dụ)', base: 'port', eta: S.addDays(ETA0, 3), seconds: 10500, isNew: false, inan: false, theu: true, target: S.addDays(ETA0, 26) },
+        { code: 'VD-003 (ví dụ)', base: 'factory', eta: S.addDays(ETA0, 8), seconds: 13200, isNew: true, inan: true, theu: true, target: S.addDays(ETA0, 24) }
+      ],
+      standards: clone(S.DEFAULT_STANDARDS),
+      skipSunday: true,
+      holidays: ''
+    };
+  }
+  var state = defaults();
+  try {
+    var saved = JSON.parse(localStorage.getItem(STORE) || 'null');
+    if (saved && saved.plan) {
+      state = Object.assign(state, saved);
+      state.standards = Object.assign(clone(S.DEFAULT_STANDARDS), saved.standards || {});
+    }
+  } catch (e) { /* bỏ qua */ }
+  function save() { try { localStorage.setItem(STORE, JSON.stringify(state)); } catch (e) { /* bỏ qua */ } }
+
+  function parseHolidays(txt) {
+    return String(txt || '').split(/[\s,;]+/).map(function (t) {
+      var m = t.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+      if (m) return m[3] + '-' + m[2].padStart(2, '0') + '-' + m[1].padStart(2, '0');
+      return /^\d{4}-\d{2}-\d{2}$/.test(t) ? t : null;
+    }).filter(Boolean);
+  }
+  function opts(p) {
+    return Object.assign({}, p, { standards: state.standards, skipSunday: state.skipSunday, holidays: parseHolidays(state.holidays) });
+  }
+  function dm(s) { return s ? s.slice(8, 10) + '/' + s.slice(5, 7) : '—'; }
+  function full(s) { return s ? WD[S.weekday(s)] + ' ' + s.slice(8, 10) + '/' + s.slice(5, 7) + '/' + s.slice(0, 4) : '—'; }
+  function esc(t) { return String(t == null ? '' : t).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function color(dept) { return 'var(' + DEPT_VAR[dept] + ')'; }
+  function el(id) { return document.getElementById(id); }
+
+  function verdictOf(p, s) {
+    if (!p.target) return null;
+    var gap = S.diffDays(s.milestones.lineStart, p.target);
+    var latest = S.latestEta(opts(p), p.target);
+    return { ok: gap >= 0, gap: gap, latest: latest };
+  }
+
+  // ---------- Lập lịch 1 mã ----------
+  function bindPlanForm() {
+    var p = state.plan;
+    el('pCode').value = p.code;
+    el(p.base === 'factory' ? 'pBaseFactory' : 'pBasePort').checked = true;
+    el('pEta').value = p.eta;
+    el('pSec').value = p.seconds;
+    el(p.isNew ? 'pTypeNew' : 'pTypeRepeat').checked = true;
+    el('pIn').checked = p.inan;
+    el('pTheu').checked = p.theu;
+    el('pTarget').value = p.target || '';
+  }
+  function readPlanForm() {
+    var p = state.plan;
+    p.code = el('pCode').value;
+    p.base = el('pBaseFactory').checked ? 'factory' : 'port';
+    p.eta = el('pEta').value || p.eta;
+    p.seconds = Number(el('pSec').value) || 0;
+    p.isNew = el('pTypeNew').checked;
+    p.inan = el('pIn').checked;
+    p.theu = el('pTheu').checked;
+    p.target = el('pTarget').value;
+  }
+
+  function renderPlan() {
+    var p = state.plan;
+    var s = S.computeSchedule(opts(p));
+    var m = s.milestones;
+    var b = S.BANDS[s.band];
+    el('bandHint').innerHTML = 'Mức thời gian chế tạo: <b>' + esc(b.label) + '</b>';
+
+    var tiles = [
+      ['ETA', m.eta, p.base === 'port' ? 'Hàng về cảng' : 'Vải về nhà máy'],
+      ['Vải về nhà máy', m.fabricAtFactory, 'Khui thùng, kiểm đếm'],
+      ['Bắt đầu cắt', m.cutStart, 'Sau test vải, rập, sơ đồ'],
+      ['BTP có tại nhà máy', m.btpReady, (p.inan || p.theu) ? 'Đã gồm in/thêu' : 'Không in, thêu'],
+      ['Ra chuyền', m.lineStart, '5 pcs đầu chuyền']
+    ];
+    el('milestones').innerHTML = tiles.map(function (t, i) {
+      var n = S.diffDays(m.eta, t[1]) + 1;
+      return '<div class="ms' + (i === 4 ? ' final' : '') + '"><span class="k">' + t[0] + '</span>' +
+        '<span class="v">' + dm(t[1]) + '</span><span class="s">' + WD[S.weekday(t[1])] + ' · N' + n + '</span>' +
+        '<span class="s" style="font-family:var(--f-body)">' + t[2] + '</span></div>';
+    }).join('');
+
+    el('facts').innerHTML = [
+      '<span class="chip">' + esc(p.code || 'Mã hàng') + '</span>',
+      '<span class="chip">' + b.short + '</span>',
+      '<span class="chip">' + (p.isNew ? 'Mã mới' : 'Hàng lặp lại') + '</span>',
+      (p.target ? '<span class="chip ' + (S.diffDays(p.eta, p.target) >= (p.base === 'port' ? 28 : 21) ? 'good' : 'bad') + '">' + (p.base === 'port' ? 'ETA' : '工場着') + ' trước START ' + S.diffDays(p.eta, p.target) + ' ngày (chuẩn mới ' + (p.base === 'port' ? 28 : 21) + ')</span>' : ''),
+      '<span class="chip">Tổng ' + s.totalDays + ' ngày lịch · ' + s.workDays + ' ngày làm việc</span>'
+    ].join('');
+
+    var v = verdictOf(p, s);
+    if (!v) {
+      el('verdict').innerHTML = '<span class="muted">Nhập ngày START (ra chuyền) để kiểm tra kịp tiến độ và tính ngày ETA muộn nhất.</span>';
+    } else {
+      el('verdict').innerHTML =
+        '<span><span class="chip ' + (v.ok ? 'good' : 'bad') + '">' + (v.ok ? (v.gap === 0 ? 'Kịp, vừa đúng ngày' : 'Kịp, dư ' + v.gap + ' ngày') : 'Trễ ' + (-v.gap) + ' ngày') + '</span></span>' +
+        '<strong>ETA muộn nhất: ' + (v.latest ? full(v.latest) : '—') + '</strong>' +
+        '<span class="muted">Để ra chuyền trước hoặc đúng ' + full(p.target) + ' thì hàng phải ' + (p.base === 'port' ? 'về cảng' : 'về nhà máy') + ' chậm nhất ngày này.</span>';
+    }
+    renderGantt(s);
+    renderFlow(s);
+  }
+
+  // ---------- Gantt ----------
+  function renderGantt(s) {
+    var cal = s.calendar;
+    var start = s.milestones.eta;
+    var last = s.milestones.lineStart;
+    var n = S.diffDays(start, last) + 2;
+    var days = [];
+    for (var i = 0; i < n; i++) days.push(S.addDays(start, i));
+    var grid = el('ganttGrid');
+    grid.style.setProperty('--n', n);
+    var h = [];
+    var row = 1;
+    // Hàng tiêu đề: ngày
+    h.push('<div class="g-label head" style="grid-row:' + row + ';grid-column:1">Bước công việc</div>');
+    days.forEach(function (d, i) {
+      var off = !cal.isWork(d);
+      h.push('<div class="g-head' + (off ? ' off' : '') + '" style="grid-row:' + row + ';grid-column:' + (i + 2) + '">' + WD[S.weekday(d)] + '<b>' + dm(d) + '</b></div>');
+    });
+    row++;
+    h.push('<div class="g-label head" style="grid-row:' + row + ';grid-column:1">Ngày thứ (như file Excel)</div>');
+    days.forEach(function (d, i) {
+      h.push('<div class="g-head n' + (!cal.isWork(d) ? ' off' : '') + '" style="grid-row:' + row + ';grid-column:' + (i + 2) + '">N' + (i + 1) + '</div>');
+    });
+    row++;
+
+    function bgCells(r) {
+      days.forEach(function (d, i) {
+        h.push('<div class="g-cell' + (!cal.isWork(d) ? ' off' : '') + '" style="grid-row:' + r + ';grid-column:' + (i + 2) + '"></div>');
+      });
+    }
+    s.rows.forEach(function (r) {
+      var a = S.diffDays(start, r.start), b = S.diffDays(start, r.end);
+      h.push('<div class="g-label" style="grid-row:' + row + ';grid-column:1" title="' + esc(r.deptLabel + ' · ' + r.detail) + '"><span class="dot" style="background:' + color(r.dept) + '"></span><span class="nm">' + esc(r.name) + '</span></div>');
+      bgCells(row);
+      h.push('<div class="bar' + (r.calendar ? ' cal' : '') + '" style="grid-row:' + row + ';grid-column:' + (a + 2) + '/' + (b + 3) + ';background-color:' + color(r.dept) + '" title="' + esc(r.name + ': ' + full(r.start) + ' → ' + full(r.end)) + '">' + r.days + 'n</div>');
+      row++;
+    });
+    [['BTP có tại nhà máy', s.milestones.btpReady, '--d-giacong'], ['Ra chuyền', s.milestones.lineStart, '--accent']].forEach(function (ms) {
+      var a = S.diffDays(start, ms[1]);
+      h.push('<div class="g-label" style="grid-row:' + row + ';grid-column:1"><span class="dot" style="background:var(' + ms[2] + ');transform:rotate(45deg)"></span><span class="nm"><b>' + ms[0] + '</b></span></div>');
+      bgCells(row);
+      h.push('<div class="mile" style="grid-row:' + row + ';grid-column:' + (a + 2) + ';background:var(' + ms[2] + ')" title="' + ms[0] + ': ' + full(ms[1]) + '"></div>');
+      row++;
+    });
+    var ti = S.diffDays(start, TODAY);
+    if (ti >= 0 && ti < n) {
+      h.push('<div class="today-line" title="Hôm nay" style="left:calc(var(--label-w) + ' + ti + ' * var(--day-w) + var(--day-w) / 2 - 1px)"></div>');
+    }
+    grid.innerHTML = h.join('');
+
+    el('ganttSub').textContent = full(start) + ' → ' + full(last) + '. Ô màu xám là ngày nghỉ.';
+    var depts = {};
+    s.rows.forEach(function (r) { depts[r.dept] = r.deptLabel; });
+    el('legend').innerHTML = Object.keys(depts).map(function (k) {
+      return '<span><span class="dot" style="background:' + color(k) + '"></span>' + esc(depts[k]) + '</span>';
+    }).join('') + '<span><span class="dot" style="background:var(--off);outline:1px solid var(--line)"></span>Ngày nghỉ</span>' +
+      (ti >= 0 && ti < n ? '<span><span class="dot" style="background:var(--today);width:3px"></span>Hôm nay</span>' : '');
+
+    el('stepRows').innerHTML = s.rows.map(function (r) {
+      return '<tr><td><span class="dot" style="display:inline-block;margin-right:7px;background:' + color(r.dept) + '"></span>' + esc(r.name) +
+        '<div class="muted" style="font-size:12px">' + esc(r.detail) + '</div></td><td>' + esc(r.deptLabel) + '</td><td class="num">' + esc(r.people) +
+        '</td><td class="num">' + r.days + '</td><td class="date">' + full(r.start) + '</td><td class="date">' + full(r.end) +
+        '</td><td class="muted" style="font-size:12px">' + esc(r.note) + '</td></tr>';
+    }).join('');
+  }
+
+  // ---------- Quy trình ----------
+  function renderFlow(s) {
+    var byPhase = {};
+    s.rows.forEach(function (r) { (byPhase[r.phase] = byPhase[r.phase] || []).push(r); });
+    el('flow').innerHTML = S.PHASES.map(function (ph, i) {
+      var rows = byPhase[ph.id] || [];
+      var steps = rows.length ? rows : S.STEPS.filter(function (st) { return st.phase === ph.id; }).map(function (st) {
+        return { name: st.name, dept: st.dept, deptLabel: S.DEPTS[st.dept], people: st.people, days: 0, skipped: true };
+      });
+      var when = rows.length
+        ? dm(rows.reduce(function (a, r) { return r.start < a ? r.start : a; }, rows[0].start)) + ' → ' + dm(rows.reduce(function (a, r) { return r.end > a ? r.end : a; }, rows[0].end))
+        : 'Không áp dụng';
+      return '<article class="phase' + (rows.length ? '' : ' empty') + '"><span class="num">' + (i === 0 ? '0' : String.fromCharCode(0x2460 + i - 1)) + ' · Công đoạn</span>' +
+        '<h3>' + esc(ph.label) + '</h3><span class="when">' + when + '</span><ul>' +
+        steps.map(function (r) {
+          return '<li style="border-left-color:' + color(r.dept) + '"><span class="t">' + esc(r.name) + '</span><span class="m">' +
+            esc(r.deptLabel) + ' · ' + (r.skipped ? 'không áp dụng' : r.days + ' ngày · ' + (r.people === '?' ? 'số người chưa rõ' : r.people + ' người')) + '</span></li>';
+        }).join('') + '</ul><p class="rule">' + esc(ph.rule) + '</p></article>';
+    }).join('');
+  }
+
+  // ---------- Danh sách ----------
+  function renderList() {
+    el('listRows').innerHTML = state.list.map(function (p, i) {
+      var s = S.computeSchedule(opts(p));
+      var m = s.milestones;
+      var v = verdictOf(p, s);
+      var st = !v ? '<span class="muted">—</span>' : (v.ok
+        ? '<span class="chip good">Kịp' + (v.gap ? ', dư ' + v.gap + ' ngày' : '') + '</span>'
+        : '<span class="chip bad">Trễ ' + (-v.gap) + ' ngày</span><div class="muted" style="font-size:11.5px;margin-top:3px">ETA muộn nhất ' + dm(v.latest) + '</div>');
+      return '<tr data-i="' + i + '">' +
+        '<td><input type="text" data-f="code" id="l' + i + 'code" value="' + esc(p.code) + '" aria-label="Mã hàng"></td>' +
+        '<td><select data-f="base" id="l' + i + 'base" aria-label="ETA là"><option value="port"' + (p.base !== 'factory' ? ' selected' : '') + '>Về cảng</option><option value="factory"' + (p.base === 'factory' ? ' selected' : '') + '>Về NM</option></select></td>' +
+        '<td><input type="date" data-f="eta" id="l' + i + 'eta" value="' + esc(p.eta) + '" aria-label="Ngày ETA"></td>' +
+        '<td><input type="number" data-f="seconds" id="l' + i + 'sec" value="' + esc(p.seconds) + '" step="100" min="0" aria-label="SAH giây"></td>' +
+        '<td><select data-f="isNew" id="l' + i + 'type" aria-label="Loại mã"><option value="1"' + (p.isNew ? ' selected' : '') + '>Mới</option><option value="0"' + (!p.isNew ? ' selected' : '') + '>Lặp lại</option></select></td>' +
+        '<td><input type="checkbox" data-f="inan" id="l' + i + 'in"' + (p.inan ? ' checked' : '') + ' aria-label="Có in"></td>' +
+        '<td><input type="checkbox" data-f="theu" id="l' + i + 'theu"' + (p.theu ? ' checked' : '') + ' aria-label="Có thêu"></td>' +
+        '<td><input type="date" data-f="target" id="l' + i + 'target" value="' + esc(p.target || '') + '" aria-label="Cần ra chuyền"></td>' +
+        '<td class="date">' + dm(m.fabricAtFactory) + '</td><td class="date">' + dm(m.cutStart) + '</td><td class="date">' + dm(m.btpReady) + '</td>' +
+        '<td class="date"><b>' + full(m.lineStart) + '</b></td><td>' + st + '</td>' +
+        '<td style="white-space:nowrap"><button type="button" class="ghost" data-act="view">Xem</button><button type="button" class="ghost" data-act="del" aria-label="Xóa dòng">Xóa</button></td></tr>';
+    }).join('') || '<tr><td colspan="14" class="muted">Chưa có mã hàng. Bấm “Thêm dòng” hoặc “Thêm vào danh sách” ở phần lập lịch.</td></tr>';
+  }
+
+  function listCsv() {
+    var head = ['Mã hàng', 'ETA là', 'Ngày ETA', 'SAH (giây)', 'Loại', 'In', 'Thêu', 'Cần ra chuyền', 'Vải về NM', 'Bắt đầu cắt', 'BTP sẵn sàng', 'Ra chuyền', 'Trạng thái', 'ETA muộn nhất'];
+    function q(v) { v = String(v == null ? '' : v); return /[",\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; }
+    function d(s) { return s ? s.slice(8, 10) + '/' + s.slice(5, 7) + '/' + s.slice(0, 4) : ''; }
+    var lines = [head.join(',')];
+    state.list.forEach(function (p) {
+      var s = S.computeSchedule(opts(p)), m = s.milestones, v = verdictOf(p, s);
+      lines.push([p.code, p.base === 'factory' ? 'Về nhà máy' : 'Về cảng', d(p.eta), p.seconds, p.isNew ? 'Mới' : 'Lặp lại', p.inan ? 'Có' : '', p.theu ? 'Có' : '',
+        d(p.target), d(m.fabricAtFactory), d(m.cutStart), d(m.btpReady), d(m.lineStart),
+        v ? (v.ok ? 'Kịp' : 'Trễ ' + (-v.gap) + ' ngày') : '', v ? d(v.latest) : ''].map(q).join(','));
+    });
+    return lines.join('\n');
+  }
+
+  // ---------- Thời gian chuẩn ----------
+  function renderStd() {
+    el('stdRows').innerHTML = STD_ROWS.map(function (r) {
+      var vals = state.standards[r[0]] || [0, 0, 0];
+      return '<tr><td><span class="dot" style="display:inline-block;margin-right:7px;background:' + color(r[2]) + '"></span>' + esc(r[1]) + '</td><td>' + esc(S.DEPTS[r[2]]) + '</td>' +
+        [0, 1, 2].map(function (b) {
+          var changed = Number(vals[b]) !== S.DEFAULT_STANDARDS[r[0]][b];
+          return '<td class="num"><input type="number" min="0" step="1" id="std-' + r[0] + '-' + b + '" data-k="' + r[0] + '" data-b="' + b + '" value="' + vals[b] + '"' +
+            (changed ? ' style="border-color:var(--accent);font-weight:600"' : '') + ' aria-label="' + esc(r[1] + ' – ' + S.BANDS[b].short) + '"></td>';
+        }).join('') + '</tr>';
+    }).join('');
+    el('optSunday').checked = state.skipSunday;
+    el('optHolidays').value = state.holidays;
+  }
+
+  function renderAll() { renderPlan(); renderList(); save(); }
+
+  // ---------- Sự kiện ----------
+  el('planForm').addEventListener('input', function () { readPlanForm(); renderPlan(); save(); });
+  el('planForm').addEventListener('change', function () { readPlanForm(); renderPlan(); save(); });
+  el('planForm').addEventListener('submit', function (e) { e.preventDefault(); });
+  el('pTarget').addEventListener('input', function () { readPlanForm(); renderPlan(); save(); });
+  el('target28').addEventListener('click', function () {
+    readPlanForm();
+    state.plan.target = S.addDays(state.plan.eta, state.plan.base === 'port' ? 28 : 21);
+    el('pTarget').value = state.plan.target;
+    renderPlan(); save();
+  });
+  el('addToList').addEventListener('click', function () {
+    readPlanForm();
+    state.list.push(clone(state.plan));
+    renderAll();
+    document.getElementById('danh-sach').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+
+  el('listRows').addEventListener('change', function (e) {
+    var t = e.target, tr = t.closest('tr'), f = t.dataset.f;
+    if (!tr || !f) return;
+    var p = state.list[+tr.dataset.i];
+    if (f === 'inan' || f === 'theu') p[f] = t.checked;
+    else if (f === 'isNew') p.isNew = t.value === '1';
+    else if (f === 'seconds') p.seconds = Number(t.value) || 0;
+    else if (f === 'eta') { if (t.value) p.eta = t.value; }
+    else p[f] = t.value;
+    var focusId = document.activeElement && document.activeElement.id;
+    renderList(); save();
+    if (focusId && el(focusId)) el(focusId).focus();
+  });
+  el('listRows').addEventListener('click', function (e) {
+    var b = e.target.closest('button[data-act]');
+    if (!b) return;
+    var i = +b.closest('tr').dataset.i;
+    if (b.dataset.act === 'del') { state.list.splice(i, 1); renderList(); save(); }
+    else {
+      state.plan = clone(state.list[i]);
+      bindPlanForm(); renderPlan(); save();
+      document.getElementById('lap-lich').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+  el('addRow').addEventListener('click', function () {
+    state.list.push({ code: 'Mã mới', base: 'port', eta: ETA0, seconds: 8000, isNew: true, inan: false, theu: false, target: '' });
+    renderList(); save();
+  });
+  el('copyCsv').addEventListener('click', function () {
+    var csv = listCsv(), box = el('copyBox');
+    function fallback() {
+      box.hidden = false; box.value = csv; box.focus(); box.select();
+      el('copyMsg').textContent = 'Không sao chép tự động được. Văn bản đã được chọn sẵn, bấm Ctrl+C.';
+    }
+    try {
+      navigator.clipboard.writeText(csv).then(function () {
+        el('copyMsg').textContent = 'Đã sao chép ' + state.list.length + ' dòng. Dán vào Excel.';
+      }, fallback);
+    } catch (err) { fallback(); }
+  });
+
+  el('stdRows').addEventListener('change', function (e) {
+    var t = e.target;
+    if (!t.dataset.k) return;
+    var arr = (state.standards[t.dataset.k] = (state.standards[t.dataset.k] || [0, 0, 0]).slice());
+    arr[+t.dataset.b] = Math.max(0, Math.round(Number(t.value) || 0));
+    renderStd(); renderAll();
+  });
+  el('optSunday').addEventListener('change', function (e) { state.skipSunday = e.target.checked; renderAll(); });
+  el('optHolidays').addEventListener('change', function (e) { state.holidays = e.target.value; renderAll(); });
+  el('resetStd').addEventListener('click', function () {
+    state.standards = clone(S.DEFAULT_STANDARDS);
+    renderStd(); renderAll();
+    el('resetMsg').textContent = 'Đã khôi phục số ngày theo file rà soát 20260722.';
+  });
+
+  bindPlanForm();
+  renderStd();
+  renderAll();
+})();
+</script>

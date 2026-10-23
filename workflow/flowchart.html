@@ -1,0 +1,639 @@
+<!doctype html>
+<html lang="vi">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>生産工程リードタイム</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Be+Vietnam+Pro:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&family=Roboto+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: luận điểm 28 ngày (thanh tỉ lệ) ở trên, flowchart 業務フロー cột theo bộ phận ở giữa, bảng trường hợp và đề nghị gửi TIJ ở dưới. */
+:root {
+  --paper: #F2F4F8;
+  --grid: rgba(43, 63, 158, 0.055);
+  --surface: #FFFFFF;
+  --surface-2: #F7F8FB;
+  --ink: #17203B;
+  --muted: #5B6482;
+  --line: #D8DDE8;
+  --accent: #2B3F9E;
+  --accent-soft: #E6EAFA;
+  --accent-ink: #FFFFFF;
+  --buffer: #1D7A4B;
+  --buffer-soft: #E1F3E9;
+  --bad: #B3261E;
+  --bad-soft: #FBE6E4;
+  --arrow: #6B7392;
+  --d-xnk: #5B6B8C;
+  --d-bocvac: #8C6A3F;
+  --d-qckho: #13827C;
+  --d-cat: #3949AB;
+  --d-kythuat: #A8436F;
+  --d-giacong: #B87A0B;
+  --d-chuyen: #2D8653;
+  --f-display: "Barlow Condensed", "Noto Sans JP", "Arial Narrow", sans-serif;
+  --f-body: "Be Vietnam Pro", "Noto Sans JP", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --f-ja: "Noto Sans JP", "Hiragino Sans", "Yu Gothic", "Be Vietnam Pro", sans-serif;
+  --f-mono: "Roboto Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0E1220; --grid: rgba(150, 170, 235, 0.05); --surface: #161B2B; --surface-2: #1B2134;
+    --ink: #E5E8F2; --muted: #9AA3BE; --line: #2A3249; --accent: #93A5FF; --accent-soft: #232C4E; --accent-ink: #0E1220;
+    --buffer: #5DCB8F; --buffer-soft: #17301F; --bad: #FF8178; --bad-soft: #3A1C1B; --arrow: #8790AE;
+    --d-xnk: #8D9BBA; --d-bocvac: #C29A68; --d-qckho: #4CC2BA; --d-cat: #7F8EEA; --d-kythuat: #E07AA6; --d-giacong: #E3AA3E; --d-chuyen: #5FC48A;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0E1220; --grid: rgba(150, 170, 235, 0.05); --surface: #161B2B; --surface-2: #1B2134;
+  --ink: #E5E8F2; --muted: #9AA3BE; --line: #2A3249; --accent: #93A5FF; --accent-soft: #232C4E; --accent-ink: #0E1220;
+  --buffer: #5DCB8F; --buffer-soft: #17301F; --bad: #FF8178; --bad-soft: #3A1C1B; --arrow: #8790AE;
+  --d-xnk: #8D9BBA; --d-bocvac: #C29A68; --d-qckho: #4CC2BA; --d-cat: #7F8EEA; --d-kythuat: #E07AA6; --d-giacong: #E3AA3E; --d-chuyen: #5FC48A;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { margin: 0; }
+[hidden] { display: none !important; }
+body {
+  background-color: var(--paper);
+  background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 24px 24px;
+  color: var(--ink); font-family: var(--f-body); font-size: 14px; line-height: 1.5;
+}
+.wrap {
+  max-width: 1240px; margin: 0 auto; padding-block: 28px 64px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: grid; gap: 26px;
+}
+h1, h2, h3 { font-family: var(--f-display); font-weight: 700; margin: 0; text-wrap: balance; line-height: 1.1; }
+h1 { font-size: clamp(30px, 5vw, 46px); }
+h2 { font-size: 25px; }
+p { margin: 0; }
+.ja { font-family: var(--f-ja); }
+[data-lang="ja"] .vi, [data-lang="vi"] .ja, [data-lang="both"] .vio, [data-lang="ja"] .vio, .sep { display: none !important; }
+[data-lang="both"] .sep { display: inline !important; color: var(--muted); }
+.wrap > *, .thesis > *, .panel > * { min-width: 0; }
+.eyebrow { font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); }
+.muted { color: var(--muted); }
+.mono { font-family: var(--f-mono); font-variant-numeric: tabular-nums; }
+a { color: var(--accent); }
+header.top { display: grid; gap: 8px; }
+header.top h1 .vi { display: block; font-size: 0.55em; color: var(--muted); margin-top: 6px; }
+.lead { max-width: 75ch; display: grid; gap: 4px; }
+.lead .ja { font-weight: 500; }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 20px; min-width: 0; }
+.section-head { display: grid; gap: 4px; margin-bottom: 14px; }
+.section-head p { color: var(--muted); max-width: 80ch; }
+
+/* Điều khiển */
+.controls { display: flex; flex-wrap: wrap; gap: 14px 20px; align-items: end; }
+.field { display: grid; gap: 5px; min-width: 0; }
+.lbl { font-size: 12px; font-weight: 600; color: var(--muted); }
+input[type="date"] { font: inherit; color: var(--ink); background: var(--surface-2); border: 1px solid var(--line); border-radius: 6px; padding: 6px 9px; }
+.seg { display: flex; flex-wrap: wrap; border: 1px solid var(--line); border-radius: 7px; overflow: hidden; background: var(--surface-2); }
+.seg label { padding: 6px 11px; cursor: pointer; font-size: 13px; font-weight: 500; border-left: 1px solid var(--line); }
+.seg label:first-child { border-left: 0; }
+.seg input { position: absolute; opacity: 0; pointer-events: none; }
+.seg label:has(input:checked) { background: var(--accent); color: var(--accent-ink); }
+.checks { display: flex; flex-wrap: wrap; gap: 6px 16px; padding-block: 6px; }
+.checks label { display: inline-flex; gap: 6px; align-items: center; cursor: pointer; }
+input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--accent); }
+input:focus-visible, .seg label:has(input:focus-visible), a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* Thanh 28 ngày */
+.thesis { display: grid; gap: 14px; }
+.verdict-line { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: baseline; }
+.big { font-family: var(--f-display); font-size: 52px; line-height: 0.95; font-weight: 700; font-variant-numeric: tabular-nums; }
+.big small { font-size: 22px; margin-left: 4px; }
+.kpis { display: flex; flex-wrap: wrap; gap: 10px 34px; }
+.kpi { display: grid; gap: 2px; }
+.kpi .k { font-size: 12px; color: var(--muted); font-weight: 600; }
+.kpi.buffer .big { color: var(--buffer); }
+.kpi.neg .big { color: var(--bad); }
+.bar-scroll { overflow-x: auto; padding-bottom: 4px; }
+.bar28 { display: grid; min-width: 640px; gap: 6px; }
+.bar-track { display: flex; height: 54px; border-radius: 8px; overflow: hidden; border: 1px solid var(--line); }
+.seg28 { display: grid; align-content: center; padding: 0 8px; color: #fff; font-size: 12px; line-height: 1.25; min-width: 0; overflow: hidden; white-space: nowrap; border-left: 2px solid var(--surface); }
+.seg28:first-child { border-left: 0; }
+.seg28 b { font-family: var(--f-mono); font-size: 13px; }
+.seg28.port { background: var(--surface-2); color: var(--muted); border-right: 2px dashed var(--line); }
+.seg28.buffer { background: var(--buffer-soft); color: var(--buffer); background-image: repeating-linear-gradient(135deg, transparent 0 7px, rgba(29,122,75,.12) 7px 14px); }
+.bar-axis { position: relative; height: 34px; font-family: var(--f-mono); font-size: 11px; color: var(--muted); }
+.bar-axis span { position: absolute; transform: translateX(-50%); text-align: center; white-space: nowrap; line-height: 1.3; }
+.bar-axis span b { color: var(--ink); font-weight: 600; font-family: var(--f-body); }
+.bar-axis span.first { transform: none; text-align: left; }
+.bar-axis span.last { transform: translateX(-100%); text-align: right; }
+
+/* Flowchart */
+.flow-scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); }
+.flow { position: relative; display: grid; grid-template-columns: repeat(7, minmax(146px, 1fr)); column-gap: 0; row-gap: 26px; padding: 0 0 18px; min-width: 1022px; }
+.lane-bg { border-left: 1px dashed var(--line); }
+.lane-bg:first-child { border-left: 0; }
+.lane-bg.alt { background: var(--surface-2); }
+.lane-head { position: sticky; top: 0; padding: 10px 8px; text-align: center; border-bottom: 2px solid var(--c); background: var(--surface); z-index: 1; display: grid; gap: 1px; align-content: center; }
+.lane-head .ja { font-weight: 700; font-size: 13px; }
+.lane-head .vi { font-size: 12px; color: var(--muted); }
+.cell { display: grid; gap: 10px; padding: 0 10px; align-content: start; z-index: 1; }
+.node { background: var(--surface); border: 1.5px solid var(--c); border-radius: 7px; padding: 7px 9px 7px 11px; display: grid; gap: 1px; position: relative; box-shadow: 0 1px 0 var(--line); }
+.node::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--c); border-radius: 5px 0 0 5px; }
+.node .ja { font-weight: 700; font-size: 12.5px; line-height: 1.35; }
+.node .vi { font-size: 12px; line-height: 1.35; }
+[data-lang="both"] .node .vi { color: var(--muted); }
+.node .meta { display: flex; flex-wrap: wrap; gap: 2px 8px; margin-top: 4px; font-size: 11px; color: var(--muted); font-family: var(--f-mono); }
+.node .meta .d { color: var(--c); font-weight: 600; font-family: var(--f-body); }
+.node.cal { border-style: dashed; }
+.band { grid-column: 1 / -1; margin: 0 10px; border-radius: 8px; padding: 8px 14px; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; z-index: 1; }
+.band .t { font-weight: 700; font-size: 14px; }
+.band .ja.t { font-family: var(--f-ja); }
+.band .r { font-family: var(--f-mono); font-size: 12px; }
+.band.port { border: 1.5px dashed var(--line); background: var(--surface); color: var(--muted); }
+.band.factory { background: var(--accent-soft); border: 1.5px solid var(--accent); }
+.band.btp { background: var(--surface); border: 1.5px solid var(--d-giacong); }
+.band.buffer { background: var(--buffer-soft); border: 1.5px dashed var(--buffer); color: var(--buffer); background-image: repeating-linear-gradient(135deg, transparent 0 7px, rgba(29,122,75,.10) 7px 14px); }
+.band.buffer.neg { background: var(--bad-soft); border-color: var(--bad); color: var(--bad); background-image: none; }
+.band.start { background: var(--accent); color: var(--accent-ink); }
+.band.start .r { opacity: 0.9; }
+svg.edges { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; color: var(--arrow); z-index: 0; overflow: visible; }
+svg.edges path.e { fill: none; stroke: currentColor; stroke-width: 1.6; }
+svg.edges path.ss { stroke-dasharray: 5 4; }
+.flow-legend { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 10px; font-size: 12px; color: var(--muted); }
+.flow-legend span { display: inline-flex; align-items: center; gap: 6px; }
+.flow-legend i { display: inline-block; width: 26px; border-top: 2px solid var(--arrow); }
+.flow-legend i.ss { border-top-style: dashed; }
+
+/* Bảng */
+.table-scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: 8px; }
+table { border-collapse: collapse; width: 100%; font-size: 13px; }
+th, td { padding: 8px 10px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: middle; }
+th { font-size: 12px; font-weight: 600; color: var(--muted); background: var(--surface-2); }
+th .ja, th .vi { display: block; }
+[data-lang="both"] th .vi { font-weight: 500; }
+tbody tr:last-child td { border-bottom: 0; }
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+tr.cur td { background: var(--accent-soft); }
+.pill { display: inline-block; font-size: 12px; font-weight: 600; padding: 2px 9px; border-radius: 999px; background: var(--buffer-soft); color: var(--buffer); font-variant-numeric: tabular-nums; }
+.pill.neg { background: var(--bad-soft); color: var(--bad); }
+
+/* Đề nghị */
+ol.asks { margin: 0; padding-left: 22px; display: grid; gap: 12px; max-width: 95ch; }
+ol.asks li { padding-left: 4px; }
+ol.asks .ja { display: block; font-weight: 500; }
+ol.asks .vi { display: block; }
+[data-lang="both"] ol.asks .vi { color: var(--muted); }
+.draft { display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: 0.06em; padding: 2px 8px; border-radius: 4px; border: 1px solid var(--line); color: var(--muted); }
+.two { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 20px; }
+@media (max-width: 900px) { .two { grid-template-columns: minmax(0, 1fr); } }
+.notes { font-size: 13px; color: var(--muted); display: grid; gap: 6px; }
+.notes ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; }
+footer { font-size: 12.5px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 6px 16px; }
+</style>
+
+<div class="wrap" id="root" data-lang="both">
+  <header class="top">
+    <span class="eyebrow"><span class="ja">TIJ協議資料</span><span class="sep"> · </span><span class="vi">Tài liệu thảo luận với TIJ</span></span>
+    <h1><span class="ja">生産工程リードタイム</span><span class="vi">Lead time sản xuất: từ 工場着 đến START</span></h1>
+    <div class="lead">
+      <p class="ja">原副資材の納期基準を「ETA：START 3週間前（工場着 2週間前）」から「ETA：START 4週間前・28日（工場着 3週間前・21日）」へ変更したい。下図は工場着からSTARTまでの社内工程と所要日数です。</p>
+      <p class="vi">Đề nghị đổi mốc giao nguyên phụ liệu từ “ETA trước START 3 tuần (工場着 trước 2 tuần)” sang “ETA trước START 4 tuần = 28 ngày (工場着 trước 3 tuần = 21 ngày)”. Sơ đồ dưới đây là các bước nội bộ từ lúc hàng về nhà máy đến START và số ngày cần cho mỗi bước.</p>
+    </div>
+  </header>
+
+  <section class="panel" aria-label="Điều kiện">
+    <div class="controls">
+      <div class="field">
+        <span class="lbl" id="langLbl">表示 / Hiển thị</span>
+        <div class="seg" role="radiogroup" aria-labelledby="langLbl">
+          <label><input type="radio" name="lang" id="langBoth" value="both" checked>日本語 + Tiếng Việt</label>
+          <label><input type="radio" name="lang" id="langJa" value="ja">日本語</label>
+          <label><input type="radio" name="lang" id="langVi" value="vi">Tiếng Việt</label>
+        </div>
+      </div>
+      <div class="field">
+        <label class="lbl" for="startDate"><span class="ja">START日</span><span class="sep"> / </span><span class="vi">Ngày START</span></label>
+        <input type="date" id="startDate">
+      </div>
+      <div class="field">
+        <span class="lbl" id="bandLbl"><span class="ja">標準作業時間</span><span class="sep"> / </span><span class="vi">SAH</span></span>
+        <div class="seg" role="radiogroup" aria-labelledby="bandLbl">
+          <label><input type="radio" name="band" id="band0" value="0">&lt; 8,000<span class="ja">秒</span><span class="vi">s</span></label>
+          <label><input type="radio" name="band" id="band1" value="1">8,000–12,000<span class="ja">秒</span><span class="vi">s</span></label>
+          <label><input type="radio" name="band" id="band2" value="2" checked>&gt; 12,000<span class="ja">秒</span><span class="vi">s</span></label>
+        </div>
+      </div>
+      <div class="field">
+        <span class="lbl" id="typeLbl"><span class="ja">品番区分</span><span class="sep"> / </span><span class="vi">Loại mã</span></span>
+        <div class="seg" role="radiogroup" aria-labelledby="typeLbl">
+          <label><input type="radio" name="type" id="typeNew" value="new" checked><span class="ja">新規</span><span class="sep"> </span><span class="vi">Mới</span></label>
+          <label><input type="radio" name="type" id="typeRep" value="rep"><span class="ja">リピート</span><span class="sep"> </span><span class="vi">Lặp lại</span></label>
+        </div>
+      </div>
+      <div class="field">
+        <span class="lbl"><span class="ja">加工</span><span class="sep"> / </span><span class="vi">Gia công</span></span>
+        <div class="checks">
+          <label><input type="checkbox" id="optIn" checked><span class="ja">プリント</span><span class="sep"> </span><span class="vi">In</span></label>
+          <label><input type="checkbox" id="optTheu" checked><span class="ja">刺繍</span><span class="sep"> </span><span class="vi">Thêu</span></label>
+          <label><input type="checkbox" id="optSun" checked><span class="ja">日曜休み</span><span class="sep"> </span><span class="vi">Nghỉ CN</span></label>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="panel thesis" aria-label="So sánh chuẩn cũ và chuẩn mới">
+    <div class="section-head" style="margin:0">
+      <h2><span class="ja">旧基準と新基準の比較</span><span class="sep"> </span><span class="vi">So sánh chuẩn cũ và chuẩn mới</span></h2>
+    </div>
+    <div class="kpis" id="kpis"></div>
+    <div class="bar-scroll"><div class="cmp" id="cmp"></div></div>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <h2><span class="ja">業務フロー（新基準：工場着 D−21 → START）</span><span class="sep"> </span><span class="vi">Flowchart theo chuẩn mới: 工場着 D−21 → START</span></h2>
+      <p><span class="ja">列＝担当部署、上から下へ時間順。D＝START日（先頭5枚完成・量産開始）。</span><span class="sep"> </span><span class="vi">Mỗi cột là một bộ phận, đọc từ trên xuống theo thứ tự thời gian. D = ngày START (chuyền ra 5 pcs đầu, bắt đầu sản xuất).</span></p>
+    </div>
+    <div class="flow-scroll"><div class="flow" id="flow"></div></div>
+    <div class="flow-legend">
+      <span><i></i><span class="ja">前工程完了後に開始</span><span class="sep"> </span><span class="vi">Bắt đầu sau khi bước trước xong</span></span>
+      <span><i class="ss"></i><span class="ja">同時開始（並行作業）</span><span class="sep"> </span><span class="vi">Bắt đầu cùng lúc, làm song song</span></span>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="section-head">
+      <h2><span class="ja">基準変更の理由</span><span class="sep"> </span><span class="vi">Lý do thay đổi chuẩn</span></h2>
+      <p><span class="ja">10年前と比べて生産の前提条件が変わり、START前の準備作業が増えている。</span><span class="sep"> </span><span class="vi">So với 10 năm trước, điều kiện sản xuất đã thay đổi và khối lượng công tác chuẩn bị trước START tăng lên.</span></p>
+    </div>
+    <div class="reasons" id="reasons"></div>
+  </section>
+
+  <section class="two">
+    <div class="panel">
+      <div class="section-head">
+        <h2><span class="ja">ケース別 所要日数</span><span class="sep"> </span><span class="vi">Số ngày cần theo từng trường hợp</span></h2>
+        <p><span class="ja">工場着からSTARTまでの暦日数（START日の曜日により±1日）。過不足は最も日数がかかるケースで表示。</span><span class="sep"> </span><span class="vi">Số ngày lịch từ 工場着 đến START (chênh ±1 ngày tùy thứ trong tuần). Cột dư/thiếu tính theo trường hợp lâu nhất.</span></p>
+      </div>
+      <div class="table-scroll">
+        <table>
+          <thead><tr>
+            <th><span class="ja">標準作業時間</span><span class="vi">SAH</span></th>
+            <th><span class="ja">区分</span><span class="vi">Loại</span></th>
+            <th class="num"><span class="ja">加工なし</span><span class="vi">Không in/thêu</span></th>
+            <th class="num"><span class="ja">プリント・刺繍</span><span class="vi">Có in + thêu</span></th>
+            <th class="num"><span class="ja">旧 14日</span><span class="vi">Chuẩn cũ 14</span></th>
+            <th class="num"><span class="ja">新 21日</span><span class="vi">Chuẩn mới 21</span></th>
+          </tr></thead>
+          <tbody id="cases"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="section-head">
+        <h2><span class="ja">TIJへの依頼事項</span><span class="sep"> </span><span class="vi">Đề nghị đối với TIJ</span></h2>
+        <p><span class="draft"><span class="ja">案</span><span class="sep"> </span><span class="vi">BẢN NHÁP ĐỂ THẢO LUẬN</span></span></p>
+      </div>
+      <ol class="asks" id="asks"></ol>
+    </div>
+  </section>
+
+  <section class="notes">
+    <ul>
+      <li><span class="ja">所要日数は「Rà soát lại thời gian cần để vào chuyền – 20260722」の標準日数で計算。START＝ライン展開後、先頭5枚が完成し量産を開始する日。</span><span class="vi">Số ngày tính theo thời gian chuẩn trong file “Rà soát lại thời gian cần để vào chuyền – 20260722”. START = ngày chuyền ra 5 pcs đầu sau khi triển khai, bắt đầu sản xuất hàng loạt.</span></li>
+      <li><span class="ja">工場内の工程は稼働日で計算（日曜休みの設定可）。祝日・テト休暇が期間内に入る場合はその日数を加算。</span><span class="vi">Các bước tại nhà máy tính theo ngày làm việc (có thể chọn nghỉ Chủ nhật). Nếu có ngày lễ, nghỉ Tết trong khoảng này thì phải cộng thêm.</span></li>
+      <li><span class="ja">港着（ETA）から工場着まで（通関・輸送）は最大7日（赤線含む）。</span><span class="vi">Từ ETA (về cảng) đến 工場着 (thông quan, vận chuyển) tối đa 7 ngày, kể cả luồng đỏ.</span></li>
+    </ul>
+  </section>
+
+  <footer>
+    <a href="planner.html"><span class="ja">品番別スケジュール作成ツール</span><span class="sep"> </span><span class="vi">Công cụ lập lịch từng mã hàng →</span></a>
+  </footer>
+</div>
+
+<style>
+.cmp { display: grid; grid-template-columns: 150px minmax(560px, 1fr); gap: 10px 12px; align-items: center; }
+.cmp .who { display: grid; gap: 1px; }
+.cmp .who b { font-size: 14px; }
+.cmp .who span { font-size: 12px; color: var(--muted); font-family: var(--f-mono); }
+.track { position: relative; height: 46px; border-radius: 7px; background: var(--surface-2); border: 1px solid var(--line); }
+.track .sg { position: absolute; top: 0; bottom: 0; display: grid; align-content: center; padding: 0 6px; color: #fff; font-size: 11.5px; line-height: 1.2; overflow: hidden; white-space: nowrap; border-right: 2px solid var(--surface); }
+.track .sg b { font-family: var(--f-mono); font-size: 12.5px; }
+.track .sg.port { background: var(--surface); color: var(--muted); border: 1.5px dashed var(--line); }
+.track .sg.buffer { background: var(--buffer-soft); color: var(--buffer); background-image: repeating-linear-gradient(135deg, transparent 0 7px, rgba(29,122,75,.12) 7px 14px); }
+.track .sg.over { background: var(--bad); color: #fff; background-image: repeating-linear-gradient(135deg, transparent 0 6px, rgba(255,255,255,.18) 6px 12px); }
+.startline { position: absolute; top: -6px; bottom: -6px; width: 0; border-left: 2px solid var(--accent); z-index: 2; }
+.cmp .axis { grid-column: 2; position: relative; height: 30px; font-family: var(--f-mono); font-size: 11px; color: var(--muted); }
+.cmp .axis span { position: absolute; transform: translateX(-50%); white-space: nowrap; }
+.cmp .axis span b { color: var(--accent); font-family: var(--f-body); }
+.verdict-cell { grid-column: 2; font-size: 13px; margin-top: -4px; }
+.reasons { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+@media (max-width: 960px) { .reasons { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .reasons { grid-template-columns: minmax(0, 1fr); } }
+.reason { border: 1px solid var(--line); border-radius: 8px; padding: 14px; display: grid; gap: 6px; align-content: start; background: var(--surface-2); }
+.reason .n { font-family: var(--f-display); font-size: 15px; font-weight: 700; color: var(--accent); }
+.reason .h { font-weight: 700; font-size: 14px; }
+.reason .h .vi { display: block; }
+[data-lang="both"] .reason .h .vi { font-weight: 500; color: var(--muted); font-size: 13px; }
+.reason p { font-size: 12.5px; }
+.reason p .ja, .reason p .vi { display: block; }
+[data-lang="both"] .reason p .vi { color: var(--muted); margin-top: 3px; }
+.conclusion { grid-column: 1 / -1; border-radius: 8px; padding: 12px 14px; background: var(--accent-soft); border: 1.5px solid var(--accent); font-size: 13.5px; display: grid; gap: 3px; }
+.conclusion .ja { font-weight: 700; }
+@media (max-width: 640px) { .cmp { grid-template-columns: minmax(0, 1fr); } .cmp .axis, .verdict-cell { grid-column: 1; } .track { min-width: 560px; } .cmp .axis { min-width: 560px; } }
+</style>
+
+<script src="schedule.js"></script>
+<script>
+(function () {
+  'use strict';
+  var S = window.PMSchedule;
+  var NEW = { eta: 28, factory: 21 };   // chuẩn mới: ETA D−28, 工場着 D−21
+  var OLD = { eta: 21, factory: 14 };   // chuẩn cũ: ETA D−21, 工場着 D−14
+  var WD_JA = ['日', '月', '火', '水', '木', '金', '土'];
+  var WD_VI = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'];
+  var LANES = ['xnk', 'bocvac', 'qckho', 'cat', 'giacong', 'kythuat', 'chuyen'];
+  function el(id) { return document.getElementById(id); }
+  function esc(t) { return String(t == null ? '' : t).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function color(d) { return 'var(--d-' + d + ')'; }
+  // bi: cặp song ngữ nội dòng (có dấu “ / ” khi hiển thị cả hai). blk: cặp song ngữ dạng khối.
+  function bi(ja, vi) { return '<span class="ja">' + ja + '</span><span class="sep"> / </span><span class="vi">' + vi + '</span>'; }
+  function blk(ja, vi) { return '<span class="ja">' + ja + '</span><span class="vi">' + vi + '</span>'; }
+  // unit: chế độ song ngữ chỉ hiện bản tiếng Nhật (ngắn gọn), chế độ tiếng Việt hiện bản Việt
+  function unit(ja, vi) { return '<span class="ja">' + ja + '</span><span class="vio">' + vi + '</span>'; }
+  function days(n) { return unit(n + '日', n + ' ngày'); }
+
+  // Dùng chung số ngày chuẩn và ngày nghỉ với trang lập lịch (nếu đã chỉnh ở đó).
+  var shared = {};
+  try { shared = JSON.parse(localStorage.getItem('pm-workflow-v1') || '{}') || {}; } catch (e) { shared = {}; }
+  function parseHolidays(txt) {
+    return String(txt || '').split(/[\s,;]+/).map(function (t) {
+      var m = t.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+      if (m) return m[3] + '-' + m[2].padStart(2, '0') + '-' + m[1].padStart(2, '0');
+      return /^\d{4}-\d{2}-\d{2}$/.test(t) ? t : null;
+    }).filter(Boolean);
+  }
+  var holidays = parseHolidays(shared.holidays);
+  var standards = shared.standards || null;
+
+  function todayStr() {
+    var d = new Date();
+    return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+  }
+  var t0 = S.addDays(todayStr(), 35);
+  el('startDate').value = S.addDays(t0, (8 - S.weekday(t0)) % 7); // thứ Hai sau ~5 tuần
+
+  function opts() {
+    return {
+      start: el('startDate').value,
+      band: +document.querySelector('input[name="band"]:checked').value,
+      isNew: el('typeNew').checked,
+      inan: el('optIn').checked,
+      theu: el('optTheu').checked,
+      skipSunday: el('optSun').checked
+    };
+  }
+  function input(o, extra) {
+    return Object.assign({ base: 'factory', band: o.band, isNew: o.isNew, inan: o.inan, theu: o.theu, skipSunday: o.skipSunday, holidays: holidays, standards: standards }, extra || {});
+  }
+  function dlabel(o, d) {
+    var n = S.diffDays(o.start, d);
+    return 'D' + (n === 0 ? '' : (n > 0 ? '+' : '−') + Math.abs(n));
+  }
+  function dt(d) {
+    return d.slice(8, 10) + '/' + d.slice(5, 7) + ' <span class="ja">(' + WD_JA[S.weekday(d)] + ')</span><span class="vi">(' + WD_VI[S.weekday(d)] + ')</span>';
+  }
+  // Số ngày lịch cần từ 工場着 tới START khi START rơi vào ngày đang chọn.
+  function needed(o, extra) {
+    var eta = S.latestEta(input(o, extra), o.start);
+    return eta ? S.diffDays(eta, o.start) : null;
+  }
+  // Lâu nhất trong 7 thứ của tuần (để bảng không phụ thuộc ngày START cụ thể)
+  function neededMax(o, extra) {
+    var mx = 0;
+    for (var w = 0; w < 7; w++) mx = Math.max(mx, needed(Object.assign({}, o, { start: S.addDays(o.start, w) }), extra));
+    return mx;
+  }
+  function gapText(g) {
+    return g >= 0 ? bi('余裕 ' + g + '日', 'dư ' + g + ' ngày') : bi(Math.abs(g) + '日 不足', 'thiếu ' + Math.abs(g) + ' ngày');
+  }
+
+  function render() {
+    var o = opts();
+    if (!o.start) return;
+    el('root').dataset.lang = document.querySelector('input[name="lang"]:checked').value;
+    var need = needed(o);
+
+    // ---- So sánh chuẩn cũ / mới ----
+    function scenario(std) {
+      var eta = S.addDays(o.start, -std.eta), fac = S.addDays(o.start, -std.factory);
+      var s = S.computeSchedule(input(o, { eta: fac }));
+      return { std: std, eta: eta, fac: fac, s: s, m: s.milestones, gap: S.diffDays(s.milestones.lineStart, o.start) };
+    }
+    var olds = scenario(OLD), news = scenario(NEW);
+    var axisStart = news.eta;
+    var axisEnd = S.addDays(o.start, Math.max(2, -olds.gap + 1, -news.gap + 1));
+    var total = S.diffDays(axisStart, axisEnd);
+    function pct(d) { return S.diffDays(axisStart, d) / total * 100; }
+    function trackHtml(sc) {
+      var m = sc.m;
+      var segs = [
+        { cls: 'port', from: sc.eta, to: sc.fac, ja: '通関・輸送', vi: 'Thông quan, vận chuyển' },
+        { from: sc.fac, to: m.cutStart, c: 'kythuat', ja: '検品・テスト・パターン', vi: 'Kiểm vải, test, rập, sơ đồ' },
+        { from: m.cutStart, to: m.btpReady, c: 'cat', ja: '裁断・プリント・刺繍', vi: 'Cắt, in, thêu' },
+        { from: m.btpReady, to: m.deployStart, c: 'chuyen', ja: '展開準備', vi: 'Họp triển khai' },
+        { from: m.deployStart, to: m.lineStart, c: 'giacong', ja: 'ライン展開', vi: 'Triển khai chuyền' }
+      ];
+      if (sc.gap > 0) segs.push({ cls: 'buffer', from: m.lineStart, to: o.start, ja: '予備', vi: 'Dự phòng' });
+      var h = segs.map(function (g) {
+        var n = S.diffDays(g.from, g.to);
+        if (n <= 0) return '';
+        return '<div class="sg ' + (g.cls || '') + '" style="left:' + pct(g.from) + '%;width:' + (n / total * 100) + '%;' + (g.c ? 'background:' + color(g.c) : '') + '" title="' + esc(g.ja + ' / ' + g.vi + ': ' + n) + '"><b>' + n + '</b><span>' + unit(g.ja, g.vi) + '</span></div>';
+      }).join('');
+      if (sc.gap < 0) {
+        h += '<div class="sg over" style="left:' + pct(o.start) + '%;width:' + (-sc.gap / total * 100) + '%" title="' + (-sc.gap) + '"><b>+' + (-sc.gap) + '</b><span>' + unit('遅れ', 'trễ') + '</span></div>';
+      }
+      return h + '<div class="startline" style="left:' + pct(o.start) + '%"></div>';
+    }
+    var ticks = [];
+    for (var k = 0; k <= total; k += 7) ticks.push(S.addDays(axisStart, k));
+    if (ticks.indexOf(o.start) < 0) ticks.push(o.start);
+    el('cmp').innerHTML =
+      '<div class="who"><b>' + bi('旧基準', 'Chuẩn cũ') + '</b><span>ETA D−21 · 工場着 D−14</span></div><div class="track">' + trackHtml(olds) + '</div>' +
+      '<div class="verdict-cell">' + (olds.gap >= 0 ? '<span class="pill">' + gapText(olds.gap) + '</span>' : '<span class="pill neg">' + bi('STARTに ' + (-olds.gap) + '日 遅れる', 'Trễ START ' + (-olds.gap) + ' ngày') + '</span>') + '</div>' +
+      '<div class="who"><b>' + bi('新基準', 'Chuẩn mới') + '</b><span>ETA D−28 · 工場着 D−21</span></div><div class="track">' + trackHtml(news) + '</div>' +
+      '<div class="verdict-cell">' + (news.gap >= 0 ? '<span class="pill">' + bi('START前に完了、予備 ' + news.gap + '日', 'Xong trước START, dự phòng ' + news.gap + ' ngày') + '</span>' : '<span class="pill neg">' + bi((-news.gap) + '日 不足', 'Thiếu ' + (-news.gap) + ' ngày') + '</span>') + '</div>' +
+      '<div class="axis">' + ticks.map(function (d) {
+        return '<span style="left:' + pct(d) + '%">' + (d === o.start ? '<b>START</b>' : dlabel(o, d)) + '</span>';
+      }).join('') + '</div>';
+
+    el('kpis').innerHTML =
+      '<div class="kpi"><span class="k">' + bi('工場着→START 所要日数', 'Số ngày cần từ 工場着 → START') + '</span><span class="big">' + need + '<small>' + unit('日', 'ngày') + '</small></span><span class="muted">' + bi('暦日・選択中のケース', 'ngày lịch, trường hợp đang chọn') + '</span></div>' +
+      '<div class="kpi ' + (olds.gap >= 0 ? 'buffer' : 'neg') + '"><span class="k">' + bi('旧基準（工場着 14日前）', 'Chuẩn cũ (工場着 D−14)') + '</span><span class="big">' + (olds.gap >= 0 ? '+' : '−') + Math.abs(olds.gap) + '<small>' + unit('日', 'ngày') + '</small></span><span class="muted">' + gapText(olds.gap) + '</span></div>' +
+      '<div class="kpi ' + (news.gap >= 0 ? 'buffer' : 'neg') + '"><span class="k">' + bi('新基準（工場着 21日前）', 'Chuẩn mới (工場着 D−21)') + '</span><span class="big">' + (news.gap >= 0 ? '+' : '−') + Math.abs(news.gap) + '<small>' + unit('日', 'ngày') + '</small></span><span class="muted">' + gapText(news.gap) + '</span></div>';
+
+    // ---- Flowchart (chuẩn mới) ----
+    var eta = news.eta, fac = news.fac, s = news.s, m = news.m, buffer = news.gap;
+    var rows = {};
+    s.rows.forEach(function (r) { rows[r.id] = r; });
+    var plan = [{ band: 'eta' }, { steps: ['xnk'] }, { band: 'factory' }, { steps: ['khui'] }, { steps: ['qc', 'test'] }, { steps: ['xa', 'rap'] },
+      { steps: ['sodo'] }, { steps: ['cat', 'theu', 'inan', 'caitien'] }, { band: 'btp' }, { steps: ['hop'] }, { steps: ['trienkhai'] }, { band: 'buffer' }, { band: 'start' }];
+    plan = plan.filter(function (p) { return p.band ? (p.band !== 'buffer' || buffer !== 0) : p.steps.some(function (id) { return id === 'xnk' || rows[id]; }); });
+    var xnk = { id: 'xnk', dept: 'xnk', nameJa: '通関・工場への輸送', name: 'Thông quan, chuyển hàng về nhà máy', days: NEW.eta - NEW.factory, start: eta, end: S.addDays(fac, -1), calendar: true };
+    var h = [];
+    var R = plan.length + 1;
+    var flow = el('flow');
+    flow.style.gridTemplateRows = 'repeat(' + R + ', auto)';
+    LANES.forEach(function (l, i) {
+      h.push('<div class="lane-bg' + (i % 2 ? ' alt' : '') + '" style="grid-column:' + (i + 1) + ';grid-row:1/' + (R + 1) + '"></div>');
+      h.push('<div class="lane-head" style="grid-column:' + (i + 1) + ';grid-row:1;--c:' + color(l) + '">' + blk(S.DEPTS_JA[l], S.DEPTS[l]) + '</div>');
+    });
+    var bandText = {
+      eta: [bi('ETA（港着）', 'ETA (hàng về cảng HCM)'), 'D−' + NEW.eta + ' · ' + dt(eta) + ' · ' + bi('旧基準 D−21', 'chuẩn cũ D−21')],
+      factory: [bi('工場着', 'Hàng về nhà máy (工場着)'), 'D−' + NEW.factory + ' · ' + dt(fac) + ' · ' + bi('旧基準 D−14', 'chuẩn cũ D−14')],
+      btp: [bi('半製品 工場内準備完了', 'Bán thành phẩm sẵn sàng tại nhà máy'), dlabel(o, m.btpReady) + ' · ' + dt(m.btpReady)],
+      buffer: buffer >= 0
+        ? [bi('予備日 ' + buffer + '日（不良・欠品時の再手配に使用）', 'Dự phòng ' + buffer + ' ngày (xử lý vải lỗi, thiếu hàng, bổ sung)'), dlabel(o, m.lineStart) + ' → D']
+        : [bi(Math.abs(buffer) + '日 不足：STARTに間に合わない', 'Thiếu ' + Math.abs(buffer) + ' ngày: không kịp START'), bi('先頭5枚完成 ', 'Ra 5 pcs đầu ') + dt(m.lineStart)],
+      start: [bi('START（先頭5枚完成・量産開始）', 'START (ra chuyền 5 pcs đầu, bắt đầu sản xuất)'), 'D · ' + dt(o.start)]
+    };
+    plan.forEach(function (p, i) {
+      var row = i + 2;
+      if (p.band) {
+        var bt = bandText[p.band];
+        h.push('<div class="band ' + (p.band === 'eta' ? 'port' : p.band) + (p.band === 'buffer' && buffer < 0 ? ' neg' : '') + '" data-node="' + p.band + '" style="grid-row:' + row + '"><span class="t">' + bt[0] + '</span><span class="r">' + bt[1] + '</span></div>');
+        return;
+      }
+      var byLane = {};
+      p.steps.forEach(function (id) {
+        var r = id === 'xnk' ? xnk : rows[id];
+        if (r) (byLane[r.dept] = byLane[r.dept] || []).push(r);
+      });
+      Object.keys(byLane).forEach(function (l) {
+        h.push('<div class="cell" style="grid-row:' + row + ';grid-column:' + (LANES.indexOf(l) + 1) + '">' + byLane[l].map(function (r) {
+          var range = r.days > 1 ? dlabel(o, r.start) + '→' + dlabel(o, r.end) : dlabel(o, r.start);
+          return '<div class="node' + (r.calendar ? ' cal' : '') + '" data-node="' + r.id + '" style="--c:' + color(r.dept) + '">' +
+            blk(esc(r.nameJa), esc(r.name)) +
+            '<span class="meta"><span class="d">' + (r.calendar ? unit('最大' + r.days + '日', 'tối đa ' + r.days + ' ngày') : days(r.days)) + '</span><span>' + range + '</span><span>' + dt(r.start) + '</span></span></div>';
+        }).join('') + '</div>');
+      });
+    });
+    h.push('<svg class="edges" id="edges" aria-hidden="true"></svg>');
+    flow.innerHTML = h.join('');
+    flow._edges = [['eta', 'xnk'], ['xnk', 'factory'], ['factory', 'khui'], ['khui', 'qc'], ['khui', 'test'], ['qc', 'xa'], ['test', 'rap'],
+      ['rap', 'sodo', 'ss'], ['xa', 'cat'], ['sodo', 'cat'], ['sodo', 'caitien'], ['cat', 'theu', 'ss'], ['cat', 'inan', 'ss'],
+      ['cat', 'btp'], ['theu', 'btp'], ['inan', 'btp'], ['btp', 'hop'], ['hop', 'trienkhai'], ['trienkhai', buffer ? 'buffer' : 'start'], ['buffer', 'start']];
+    drawEdges();
+
+    // ---- Lý do ----
+    var std = Object.assign({}, S.DEFAULT_STANDARDS, standards || {});
+    var reasons = [
+      ['ライン数の増加', 'Số chuyền tăng',
+        '10年前よりライン数が増え、複数品番の準備が同時に進む。技術課・裁断課の作業が重なり、1品番あたりの準備期間が延びる。',
+        'Số chuyền tăng so với 10 năm trước, nhiều mã được chuẩn bị cùng lúc. Kỹ thuật và phòng cắt phải xử lý chồng việc, thời gian chuẩn bị mỗi mã dài hơn.'],
+      ['難易度の上昇', 'Độ khó tăng',
+        '標準作業時間 8,000秒以上の品番では、パターン修正・マーキングが各' + std.rap[1] + '日、ライン展開指導が新規' + std.tkMoi[1] + '〜' + std.tkMoi[2] + '日必要。',
+        'Mã có SAH từ 8.000 giây trở lên cần ' + std.rap[1] + ' ngày chỉnh rập, ' + std.sodo[1] + ' ngày đi sơ đồ, và ' + std.tkMoi[1] + '–' + std.tkMoi[2] + ' ngày triển khai chuyền với mã mới.'],
+      ['小ロット化', 'Hàng lô nhỏ',
+        '同じ生産量でも品番数が増える。ロットが小さくても、生地テスト・パターン・マーキング・展開会議は品番ごとに必要。',
+        'Cùng sản lượng nhưng số mã nhiều hơn. Lô nhỏ vẫn phải làm đủ test vải, rập, sơ đồ, họp triển khai cho từng mã.'],
+      ['品番切替の増加', 'Chuyển đổi mã nhiều',
+        '切替のたびに展開用パターン作成・展開会議（' + std.hop[0] + '日）と、先頭5枚完成までのライン展開指導が発生する。',
+        'Mỗi lần chuyển đổi mã đều phải làm rập triển khai, họp triển khai (' + std.hop[0] + ' ngày) và triển khai chuyền đến khi ra 5 pcs đầu.']
+    ];
+    var all = [];
+    [0, 1, 2].forEach(function (b) { [true, false].forEach(function (n) {
+      all.push(neededMax(Object.assign({}, o, { band: b, isNew: n }), { inan: false, theu: false }));
+      all.push(neededMax(Object.assign({}, o, { band: b, isNew: n }), { inan: true, theu: true }));
+    }); });
+    var lo = Math.min.apply(null, all), hi = Math.max.apply(null, all);
+    var okOld = all.filter(function (x) { return x <= OLD.factory; }).length, okNew = all.filter(function (x) { return x <= NEW.factory; }).length;
+    el('reasons').innerHTML = reasons.map(function (r, i) {
+      return '<div class="reason"><span class="n">' + (i + 1) + '</span><span class="h">' + blk(r[0], r[1]) + '</span><p>' + blk(r[2], r[3]) + '</p></div>';
+    }).join('') +
+      '<div class="conclusion">' + blk(
+        '結論：工場着からSTARTまで品番により' + lo + '〜' + hi + '日必要。旧基準（工場着 14日前）で間に合うのは12ケース中' + okOld + 'ケースのみ。新基準（工場着 21日前）では' + okNew + 'ケースが間に合い、残りも差は' + Math.max(0, hi - NEW.factory) + '日以内。',
+        'Kết luận: từ 工場着 đến START cần ' + lo + '–' + hi + ' ngày tùy mã. Chuẩn cũ (工場着 D−14) chỉ đáp ứng ' + okOld + '/12 trường hợp. Chuẩn mới (工場着 D−21) đáp ứng ' + okNew + '/12, các trường hợp còn lại chỉ thiếu tối đa ' + Math.max(0, hi - NEW.factory) + ' ngày.') + '</div>';
+
+    // ---- Bảng trường hợp ----
+    var cases = [];
+    [0, 1, 2].forEach(function (b) {
+      [true, false].forEach(function (isNew) {
+        var oo = Object.assign({}, o, { band: b, isNew: isNew });
+        var a = neededMax(oo, { inan: false, theu: false });
+        var c = neededMax(oo, { inan: true, theu: true });
+        var cur = b === o.band && isNew === o.isNew;
+        function pill(std) { var g = std - c; return '<span class="pill' + (g < 0 ? ' neg' : '') + '">' + (g >= 0 ? '+' : '−') + Math.abs(g) + '</span>'; }
+        cases.push('<tr' + (cur ? ' class="cur"' : '') + '><td>' + esc(S.BANDS[b].short.replace('s', '')) + unit('秒', 's') + '</td><td>' + (isNew ? blk('新規', 'Mới') : blk('リピート', 'Lặp lại')) + '</td>' +
+          '<td class="num">' + days(a) + '</td><td class="num">' + days(c) + '</td><td class="num">' + pill(OLD.factory) + '</td><td class="num">' + pill(NEW.factory) + '</td></tr>');
+      });
+    });
+    el('cases').innerHTML = cases.join('');
+
+    // ---- Đề nghị TIJ ----
+    var asks = [
+      ['原副資材（生地・副資材すべて）のETA（港着）をSTART日の<b>28日前</b>、工場着を<b>21日前</b>までとする。（旧基準：ETA 21日前・工場着 14日前）',
+        'Toàn bộ nguyên phụ liệu (vải và phụ liệu): ETA về cảng chậm nhất <b>D−28</b>, về nhà máy chậm nhất <b>D−21</b>. (Chuẩn cũ: ETA D−21, 工場着 D−14.)'],
+      ['分納の場合は最終便も同じ期限とする。1点でも欠品があると裁断を開始できない。',
+        'Nếu giao nhiều đợt, đợt cuối cũng phải đúng mốc này. Thiếu một loại phụ liệu là không thể bắt đầu cắt.'],
+      ['出荷前にパッキングリスト・ロット・反数・生地幅を共有。工場着当日に開梱・数量確認、翌日に品質検査と生地テストを同時に行う。',
+        'Gửi trước packing list, số lot, số cây vải, khổ vải trước khi xuất hàng, để nhà máy khui thùng kiểm đếm ngay ngày hàng về, ngày hôm sau kiểm chất lượng và test vải song song.'],
+      ['不良・欠品が判明した場合の再手配は早急に対応。新基準でも難易度の高い新規品番は予備日がほとんどない。',
+        'Khi phát hiện vải lỗi hoặc thiếu hàng, cần bổ sung gấp. Ngay cả với chuẩn mới, mã mới có độ khó cao gần như không còn ngày dự phòng.'],
+      ['テト・祝日が期間内に入る場合は休日日数分を前倒しする。',
+        'Nếu khoảng thời gian này có Tết hoặc ngày lễ thì đẩy ETA sớm hơn đúng bằng số ngày nghỉ.']
+    ];
+    el('asks').innerHTML = asks.map(function (a) { return '<li><span class="ja">' + a[0] + '</span><span class="vi">' + a[1] + '</span></li>'; }).join('');
+  }
+
+  function drawEdges() {
+    var flow = el('flow'), svg = el('edges');
+    if (!flow || !svg || !flow._edges) return;
+    var box = flow.getBoundingClientRect();
+    function rect(id) {
+      var n = flow.querySelector('[data-node="' + id + '"]');
+      if (!n) return null;
+      var r = n.getBoundingClientRect();
+      return { l: r.left - box.left, r: r.right - box.left, t: r.top - box.top, b: r.bottom - box.top, cx: (r.left + r.right) / 2 - box.left, cy: (r.top + r.bottom) / 2 - box.top, band: n.classList.contains('band') };
+    }
+    // Cạnh vào dải ngang: mỗi cột chỉ vẽ từ ô thấp nhất để mũi tên không cắt qua ô khác.
+    var lowest = {};
+    flow._edges.forEach(function (e) {
+      var a = rect(e[0]), b = rect(e[1]);
+      if (!a || !b || !b.band || a.band) return;
+      var key = e[1] + '@' + Math.round(a.cx);
+      if (!lowest[key] || lowest[key] < a.b) lowest[key] = a.b;
+    });
+    var paths = [];
+    flow._edges.forEach(function (e) {
+      var a = rect(e[0]), b = rect(e[1]);
+      if (!a || !b) return;
+      var d;
+      if (e[2] === 'ss' && b.l > a.r) {
+        var mx = (a.r + b.l) / 2;
+        d = 'M' + a.r + ',' + a.cy + ' H' + mx + ' V' + b.cy + ' H' + (b.l - 2);
+      } else if (b.band && !a.band) {
+        if (lowest[e[1] + '@' + Math.round(a.cx)] > a.b) return;
+        d = 'M' + a.cx + ',' + a.b + ' V' + (b.t - 2);
+      } else if (a.band && !b.band) {
+        d = 'M' + b.cx + ',' + a.b + ' V' + (b.t - 2);
+      } else if (a.band && b.band) {
+        d = 'M' + (box.width / 2) + ',' + a.b + ' V' + (b.t - 2);
+      } else if (Math.abs(a.cx - b.cx) < 2) {
+        d = 'M' + a.cx + ',' + a.b + ' V' + (b.t - 2);
+      } else {
+        var my = b.t - 13;
+        d = 'M' + a.cx + ',' + a.b + ' V' + my + ' H' + b.cx + ' V' + (b.t - 2);
+      }
+      paths.push('<path class="e' + (e[2] === 'ss' ? ' ss' : '') + '" d="' + d + '" marker-end="url(#ah)"></path>');
+    });
+    svg.innerHTML = '<defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"></path></marker></defs>' + paths.join('');
+  }
+
+  document.querySelector('.controls').addEventListener('change', render);
+  document.querySelector('.controls').addEventListener('input', function (e) { if (e.target.type === 'date') render(); });
+  if (window.ResizeObserver) new ResizeObserver(function () { drawEdges(); }).observe(el('flow'));
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(drawEdges);
+  render();
+})();
+</script>

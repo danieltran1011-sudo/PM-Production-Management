@@ -1,0 +1,9 @@
+{
+  "name": "pm-production-management",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Workflow chuẩn bị mã hàng từ ETA đến START (ra chuyền)",
+  "scripts": {
+    "test": "node --test workflow/schedule.test.js"
+  }
+}
