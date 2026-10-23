@@ -1,59 +1,76 @@
-// Chạy: node --test workflow/
-// Đối chiếu lịch tính ra với các cột N1..N27 trong file
-// "Rà soát lại thời gian cần để vào chuyền - 20260722.xlsx" (tính liên tục, không bỏ Chủ nhật).
+// Chạy: npm test
+// Đối chiếu lịch với file "Rà soát lại thời gian cần để vào chuyền - 20260722.xlsx"
+// (các cột N1..N27, tính liên tục, không bỏ Chủ nhật) và các quy tắc trong biên bản họp rà soát lead time.
 const test = require('node:test');
 const assert = require('node:assert');
 const S = require('./schedule.js');
 
-const ETA = '2026-11-01'; // = N1
+const ETA = '2026-11-01'; // = N1 (hàng về cảng)
 const N = (date) => S.diffDays(ETA, date) + 1;
 
-function plan(seconds, isNew, extra) {
+function plan(band, extra) {
   return S.computeSchedule(Object.assign({
-    eta: ETA, base: 'port', seconds, isNew, inan: true, theu: true, skipSunday: false
+    eta: ETA, base: 'port', band, isNew: true, inan: false, theu: false, sub: 'hanhdang', skipSunday: false
   }, extra));
 }
-
 function spans(s) {
   const out = {};
   s.rows.forEach((r) => { out[r.id] = [N(r.start), N(r.end)]; });
   return out;
 }
 
-test('Dưới 8000 giây, mã mới: khớp sheet "Dưới 8000"', () => {
-  const s = plan(7500, true);
-  assert.deepStrictEqual(spans(s), {
-    xnk: [1, 7], khui: [8, 8], qc: [9, 9], test: [9, 9], xa: [10, 10], rap: [10, 10],
-    sodo: [11, 11], cat: [12, 13], caitien: [12, 14], theu: [12, 12], inan: [12, 15],
-    hop: [16, 17], trienkhai: [18, 22]
+test('Trước khi cắt: khớp sheet "Dưới 8000" (N1..N13)', () => {
+  const sp = spans(plan(0));
+  assert.deepStrictEqual(sp.xnk, [1, 7]);
+  assert.deepStrictEqual(sp.khui, [8, 8]);
+  assert.deepStrictEqual(sp.qc, [9, 9]);
+  assert.deepStrictEqual(sp.test, [9, 9]);
+  assert.deepStrictEqual(sp.xa, [10, 10]);
+  assert.deepStrictEqual(sp.rap, [10, 10]);
+  assert.deepStrictEqual(sp.sodo, [11, 11]);
+  assert.deepStrictEqual(sp.cat, [12, 13]);
+});
+
+test('8.000–12.000s và > 12.000s: rập + sơ đồ tối thiểu 3 ngày (họp), cắt từ N13', () => {
+  for (const band of [1, 2]) {
+    const sp = spans(plan(band));
+    assert.deepStrictEqual(sp.rap, [10, 11]);
+    assert.deepStrictEqual(sp.sodo, [11, 12]);
+    assert.strictEqual(sp.sodo[1] - sp.rap[0] + 1, 3);
+    assert.deepStrictEqual(sp.cat, [13, 14]);
+  }
+});
+
+test('Nguyên liệu sẵn sàng ít nhất 4 ngày trước khi cắt', () => {
+  for (const band of [0, 1, 2]) {
+    const s = plan(band, { skipSunday: true });
+    const khui = s.rows.find((r) => r.id === 'khui');
+    assert.ok(s.calendar.countWork(khui.start, s.milestones.cutStart) >= 4);
+  }
+});
+
+test('Không in/thêu: cắt xong trước START 2 ngày', () => {
+  const s = plan(0);
+  assert.strictEqual(N(s.milestones.cutDone), 14);
+  assert.strictEqual(N(s.milestones.lineInput), 16);
+  assert.ok(!s.rows.some((r) => r.id === 'gc'));
+});
+
+test('Có in/thêu: Hành Đang cắt xong trước START 4 ngày, Bình Phát 6 ngày', () => {
+  const hd = plan(0, { inan: true, sub: 'hanhdang' });
+  assert.strictEqual(S.diffDays(hd.milestones.cutDone, hd.milestones.lineInput), 4);
+  const bp = plan(0, { theu: true, sub: 'binhphat' });
+  assert.strictEqual(S.diffDays(bp.milestones.cutDone, bp.milestones.lineInput), 6);
+  assert.match(bp.rows.find((r) => r.id === 'gc').name, /Bình Phát/);
+});
+
+test('Triển khai chuyền sau START: mã mới 5 / 7 / 8 ngày, lặp lại 3 / 5 / 7', () => {
+  [[0, 5, 3], [1, 7, 5], [2, 8, 7]].forEach(([band, moi, lap]) => {
+    const a = plan(band);
+    assert.strictEqual(S.diffDays(a.milestones.lineInput, a.milestones.firstPieces), moi);
+    const b = plan(band, { isNew: false });
+    assert.strictEqual(S.diffDays(b.milestones.lineInput, b.milestones.firstPieces), lap);
   });
-  assert.strictEqual(N(s.milestones.btpReady), 16); // "←Có tại nhà máy"
-  assert.strictEqual(N(s.milestones.lineStart), 23); // "←Ra chuyền"
-});
-
-test('Dưới 8000 giây, hàng lặp lại: ra chuyền N21', () => {
-  assert.strictEqual(N(plan(7500, false).milestones.lineStart), 21);
-});
-
-test('8000-12000 giây: khớp sheet "8000-12000"', () => {
-  const s = plan(10000, true);
-  const sp = spans(s);
-  assert.deepStrictEqual(sp.rap, [10, 11]);
-  assert.deepStrictEqual(sp.sodo, [11, 12]);
-  assert.deepStrictEqual(sp.cat, [13, 14]);
-  assert.deepStrictEqual(sp.caitien, [13, 15]);
-  assert.deepStrictEqual(sp.inan, [13, 16]);
-  assert.strictEqual(N(s.milestones.btpReady), 17);
-  assert.deepStrictEqual(sp.hop, [17, 18]);
-  assert.deepStrictEqual(sp.trienkhai, [19, 25]);
-  assert.strictEqual(N(s.milestones.lineStart), 26);
-  assert.strictEqual(N(plan(10000, false).milestones.lineStart), 24);
-});
-
-test('Trên 12000 giây: khớp sheet "Trên 12000"', () => {
-  assert.deepStrictEqual(spans(plan(13000, true)).trienkhai, [18, 25]);
-  assert.strictEqual(N(plan(13000, true).milestones.lineStart), 26);
-  assert.strictEqual(N(plan(13000, false).milestones.lineStart), 25);
 });
 
 test('Ranh giới mức SAH', () => {
@@ -63,50 +80,46 @@ test('Ranh giới mức SAH', () => {
   assert.strictEqual(S.bandIndex(12001), 2);
 });
 
-test('Không in, không thêu: BTP có ngay sau cắt', () => {
-  const s = plan(7500, true, { inan: false, theu: false });
-  assert.strictEqual(N(s.milestones.btpReady), 14);
-  assert.strictEqual(N(s.milestones.lineStart), 21);
-  assert.ok(!s.rows.some((r) => r.id === 'inan' || r.id === 'theu'));
-});
-
 test('Vải đã về nhà máy: bỏ bước XNK, khui thùng ngay ngày ETA', () => {
-  const s = plan(7500, true, { base: 'factory' });
+  const s = plan(0, { base: 'factory' });
   assert.strictEqual(s.rows[0].id, 'khui');
   assert.strictEqual(s.rows[0].start, ETA);
-  assert.strictEqual(N(s.milestones.lineStart), 16);
+  assert.strictEqual(N(s.milestones.lineInput), 9);
 });
 
-test('Bỏ Chủ nhật: bước tại nhà máy không rơi vào Chủ nhật', () => {
-  const s = plan(7500, true, { skipSunday: true, holidays: ['2026-11-10'] });
+test('Bỏ Chủ nhật: bước tại nhà máy không rơi vào Chủ nhật hay ngày lễ', () => {
+  const s = plan(0, { skipSunday: true, inan: true, holidays: ['2026-11-10'] });
   s.rows.filter((r) => !r.calendar).forEach((r) => {
     assert.notStrictEqual(S.weekday(r.start), 0, r.id + ' bắt đầu Chủ nhật');
     assert.notStrictEqual(r.start, '2026-11-10');
   });
-  assert.notStrictEqual(S.weekday(s.milestones.lineStart), 0);
+  assert.notStrictEqual(S.weekday(s.milestones.lineInput), 0);
 });
 
-test('ETA muộn nhất: tính ngược từ ngày ra chuyền mong muốn', () => {
-  const input = { base: 'port', seconds: 7500, isNew: true, inan: true, theu: false, skipSunday: true };
+test('ETA muộn nhất: tính ngược từ ngày START', () => {
+  const input = { base: 'port', seconds: 7500, isNew: true, inan: true, sub: 'binhphat', skipSunday: true };
   const target = '2026-12-15';
   const eta = S.latestEta(input, target);
-  assert.ok(S.computeSchedule(Object.assign({}, input, { eta })).milestones.lineStart <= target);
+  assert.ok(S.computeSchedule(Object.assign({}, input, { eta })).milestones.lineInput <= target);
   const later = S.computeSchedule(Object.assign({}, input, { eta: S.addDays(eta, 1) }));
-  assert.ok(later.milestones.lineStart > target);
+  assert.ok(later.milestones.lineInput > target);
 });
 
-test('Chuẩn cũ 工場着 D−14 thiếu ngày, chuẩn mới D−21 đáp ứng gần hết các trường hợp', () => {
-  const needs = [];
-  for (const band of [0, 1, 2]) for (const isNew of [true, false]) for (const pt of [false, true]) {
+test('工場着 → START: 9–16 ngày; mốc 14 ngày chỉ thiếu với gia công Bình Phát (khớp kết luận họp)', () => {
+  const need = (band, gc, sub) => {
     let mx = 0;
     for (let w = 0; w < 7; w++) {
       const start = S.addDays('2026-11-02', w);
-      const inp = { base: 'factory', band, isNew, inan: pt, theu: pt, skipSunday: true };
+      const inp = { base: 'factory', band, isNew: true, inan: gc, sub, skipSunday: true };
       mx = Math.max(mx, S.diffDays(S.latestEta(inp, start), start));
     }
-    needs.push(mx);
+    return mx;
+  };
+  for (const band of [0, 1, 2]) {
+    assert.ok(need(band, false, 'hanhdang') <= 14);
+    assert.ok(need(band, true, 'hanhdang') <= 14);
+    assert.ok(need(band, true, 'binhphat') <= 21);
   }
-  assert.strictEqual(Math.max(...needs), 22);
-  assert.ok(needs.filter((n) => n <= 14).length <= 1);
-  assert.ok(needs.filter((n) => n <= 21).length >= 10);
+  assert.ok(need(2, true, 'binhphat') > 14);
+  assert.strictEqual(need(2, true, 'binhphat'), 16);
 });

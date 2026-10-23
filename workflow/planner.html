@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Be+Vietnam+Pro:wght@400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap">
 <style>
-/* Layout: giấy sơ đồ kẻ ô làm nền; trên cùng là dải mốc ETA → Ra chuyền, rồi Gantt, quy trình, danh sách mã, bảng chuẩn. */
+/* Layout: giấy sơ đồ kẻ ô làm nền; trên cùng là dải mốc ETA → START, rồi Gantt, quy trình, danh sách mã, bảng chuẩn. */
 :root {
   --paper: #F2F4F8;
   --grid: rgba(43, 63, 158, 0.055);
@@ -142,7 +142,7 @@ button.ghost { border-color: transparent; background: transparent; padding: 4px 
 
 /* ---- Dải mốc ---- */
 .result { display: grid; gap: 18px; min-width: 0; }
-.milestones { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: var(--surface); }
+.milestones { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 0; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: var(--surface); }
 .ms { padding: 14px 14px 12px; border-left: 1px solid var(--line); display: grid; gap: 2px; align-content: start; position: relative; }
 .ms:first-child { border-left: 0; }
 .ms .k { font-size: 12px; font-weight: 600; color: var(--muted); }
@@ -150,12 +150,13 @@ button.ghost { border-color: transparent; background: transparent; padding: 4px 
 .ms .s { font-size: 12px; color: var(--muted); font-family: var(--f-mono); }
 .ms.final { background: var(--accent); color: var(--accent-ink); }
 .ms.final .k, .ms.final .s { color: inherit; opacity: 0.85; }
+.ms.after { background: var(--surface-2); }
+.ms.after .v { color: var(--muted); }
 @media (max-width: 720px) {
   .milestones { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .ms { border-left: 0; border-top: 1px solid var(--line); }
   .ms:nth-child(even) { border-left: 1px solid var(--line); }
   .ms:nth-child(-n+2) { border-top: 0; }
-  .ms.final { grid-column: 1 / -1; border-left: 0; }
 }
 .facts { display: flex; flex-wrap: wrap; gap: 8px; }
 .chip { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 500; padding: 3px 10px; border-radius: 999px; background: var(--accent-soft); color: var(--ink); }
@@ -247,8 +248,8 @@ footer { color: var(--muted); font-size: 12.5px; }
 <div class="wrap">
   <header class="top">
     <span class="eyebrow">Quản lý sản xuất · Chuẩn bị mã hàng</span>
-    <h1>Workflow mã hàng: từ ETA đến ra chuyền</h1>
-    <p>Nhập ngày ETA và thông tin mã hàng, lịch từng bước được tính theo thời gian chuẩn đã rà soát ngày 22/07/2026: nhận hàng, khui thùng, kiểm vải, test vải, chỉnh rập, đi sơ đồ, cắt, in thêu, họp triển khai và triển khai chuyền.</p>
+    <h1>Workflow mã hàng: từ ETA đến START</h1>
+    <p>Nhập ngày ETA và thông tin mã hàng, lịch từng bước được tính theo thời gian chuẩn rà soát ngày 22/07/2026 và biên bản họp rà soát lead time: nhận hàng, khui thùng, kiểm vải, test vải, chỉnh rập, đi sơ đồ, cắt, in thêu gia công ngoài, chuẩn bị triển khai. START là ngày vào chuyền (ライン投入, chuẩn bị xong); triển khai chuyền đến 5 pcs đầu diễn ra sau START.</p>
     <nav class="jump" aria-label="Mục lục">
       <a href="#lap-lich">Lập lịch</a>
       <a href="#gantt">Sơ đồ Gantt</a>
@@ -298,6 +299,13 @@ footer { color: var(--muted); font-size: 12.5px; }
           <label><input type="checkbox" id="pTheu">Có thêu</label>
         </div>
       </div>
+      <div class="field" id="subField">
+        <span class="lbl" id="subLbl">Nơi gia công in / thêu</span>
+        <div class="seg" role="radiogroup" aria-labelledby="subLbl">
+          <label><input type="radio" name="pSub" id="pSubHD" value="hanhdang">Hành Đang (2–3 ngày)</label>
+          <label><input type="radio" name="pSub" id="pSubBP" value="binhphat">Bình Phát (4–5 ngày)</label>
+        </div>
+      </div>
       <div class="toolbar" style="margin:0">
         <button type="button" class="primary" id="addToList">Thêm vào danh sách</button>
       </div>
@@ -308,9 +316,9 @@ footer { color: var(--muted); font-size: 12.5px; }
       <div class="facts" id="facts"></div>
       <div class="target">
         <div class="field">
-          <label for="pTarget">Ngày START (ra chuyền)</label>
+          <label for="pTarget">Ngày START (ライン投入)</label>
           <input type="date" id="pTarget">
-          <button type="button" class="ghost" id="target28" style="justify-self:start;padding-left:0">Đặt theo chuẩn mới: ETA + 28 ngày</button>
+          <button type="button" class="ghost" id="target28" style="justify-self:start;padding-left:0;text-align:left">Đặt theo chuẩn mới: ETA + 28 ngày</button>
         </div>
         <div class="verdict" id="verdict"></div>
       </div>
@@ -349,8 +357,8 @@ footer { color: var(--muted); font-size: 12.5px; }
       <table class="edit">
         <thead>
           <tr>
-            <th>Mã hàng</th><th>ETA là</th><th>Ngày ETA</th><th>SAH (giây)</th><th>Loại</th><th>In</th><th>Thêu</th>
-            <th>START</th><th>Vải về NM</th><th>Bắt đầu cắt</th><th>BTP sẵn sàng</th><th>Ra chuyền</th><th>Trạng thái</th><th></th>
+            <th>Mã hàng</th><th>ETA là</th><th>Ngày ETA</th><th>SAH (giây)</th><th>Loại</th><th>In</th><th>Thêu</th><th>Gia công</th>
+            <th>START cần</th><th>Vải về NM</th><th>Bắt đầu cắt</th><th>BTP sẵn sàng</th><th>Sẵn sàng vào chuyền</th><th>Trạng thái</th><th></th>
           </tr>
         </thead>
         <tbody id="listRows"></tbody>
@@ -367,7 +375,7 @@ footer { color: var(--muted); font-size: 12.5px; }
   <section id="thoi-gian-chuan" class="panel">
     <div class="section-head">
       <h2>Thời gian chuẩn (ngày)</h2>
-      <p>Lấy từ file rà soát 20260722. Sửa số ngày tại đây khi chuẩn thay đổi, mọi lịch sẽ tính lại.</p>
+      <p>Lấy từ file rà soát 20260722, cập nhật theo biên bản họp (rập + sơ đồ trên 12.000s tối thiểu 3 ngày, in/thêu gia công ngoài sau khi cắt). Sửa số ngày tại đây khi chuẩn thay đổi, mọi lịch sẽ tính lại.</p>
     </div>
     <div class="table-scroll">
       <table class="std">
@@ -395,17 +403,18 @@ footer { color: var(--muted); font-size: 12.5px; }
   <section class="notes">
     <h3 style="color:var(--ink)">Giả định khi tính lịch</h3>
     <ul>
-      <li>Chuẩn mới: ETA (về cảng) trước START 28 ngày, tương đương 工場着 trước START 21 ngày. Chuẩn cũ: ETA trước 21 ngày, 工場着 trước 14 ngày.</li>
+      <li>START = ライン投入: chuẩn bị xong, đưa mã vào chuyền. Chuẩn mới: ETA (về cảng) trước START 28 ngày, tương đương 工場着 trước START 21 ngày. Chuẩn cũ: ETA trước 21 ngày, 工場着 trước 14 ngày.</li>
       <li>Ngày ETA (hàng về cảng) là N1. Khui thùng bắt đầu ngày làm việc kế tiếp sau 7 ngày nhận hàng.</li>
-      <li>Kiểm chất lượng kho và test vải chạy song song sau khui thùng. Xả vải sau khi kiểm chất lượng.</li>
+      <li>Kiểm chất lượng kho và test vải chạy song song sau khui thùng. Xả vải sau khi kiểm chất lượng. Nguyên liệu sẵn sàng ít nhất 4 ngày trước khi cắt.</li>
       <li>Đi sơ đồ bắt đầu từ ngày thứ 2 của bước điều chỉnh rập. Cắt bắt đầu khi đã xong sơ đồ và xả vải.</li>
-      <li>Rập cải tiến, in, thêu bắt đầu cùng ngày cắt. Bán thành phẩm có tại nhà máy khi cắt, in, thêu đều xong.</li>
+      <li>In, thêu gia công ngoài sau khi cắt xong (Hành Đang 2–3 ngày, Bình Phát 4–5 ngày, cộng vận chuyển). Chuẩn bị triển khai (đọc tài liệu, rập triển khai, họp) 2 ngày, song song với gia công. START khi cả hai xong.</li>
+      <li>Triển khai chuyền đến 5 pcs đầu diễn ra sau START: mã mới 5 / 7 / 8 ngày, lặp lại 3 / 5 / 7 ngày theo SAH.</li>
       <li>Hàng lặp lại nhưng không trùng chuyền với mùa trước thì tính như mã mới.</li>
       <li>Số người cần ở các ô “?” trong file gốc chưa có câu trả lời rõ ràng.</li>
     </ul>
   </section>
 
-  <footer>Nguồn: “Thời gian tiêu chuẩn chuẩn bị 1 mã hàng từ ngày ETA” và “Rà soát lại thời gian cần để vào chuyền – 20260722”.</footer>
+  <footer>Nguồn: “Thời gian tiêu chuẩn chuẩn bị 1 mã hàng từ ngày ETA”, “Rà soát lại thời gian cần để vào chuyền – 20260722” và biên bản họp rà soát lead time.</footer>
 </div>
 
 <script src="schedule.js"></script>
@@ -413,7 +422,7 @@ footer { color: var(--muted); font-size: 12.5px; }
 (function () {
   'use strict';
   var S = window.PMSchedule;
-  var STORE = 'pm-workflow-v1';
+  var STORE = 'pm-workflow-v2';
   var WD = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'];
   var DEPT_VAR = { xnk: '--d-xnk', bocvac: '--d-bocvac', qckho: '--d-qckho', cat: '--d-cat', kythuat: '--d-kythuat', giacong: '--d-giacong', chuyen: '--d-chuyen' };
   var STD_ROWS = [
@@ -422,15 +431,16 @@ footer { color: var(--muted); font-size: 12.5px; }
     ['qc', 'Kiểm xác suất chất lượng, báo khổ', 'qckho'],
     ['test', 'Test vải', 'kythuat'],
     ['xa', 'Xả vải', 'cat'],
+    ['nlTruocCat', 'Nguyên liệu sẵn sàng trước khi cắt (tối thiểu)', 'cat'],
     ['rap', 'Điều chỉnh rập theo kết quả test vải', 'kythuat'],
     ['sodo', 'Đi sơ đồ + in rập cứng', 'kythuat'],
     ['caitien', 'Rập cải tiến', 'kythuat'],
     ['cat', 'Cắt, đánh số, thay thân', 'cat'],
-    ['theu', 'Thêu', 'giacong'],
-    ['inan', 'In', 'giacong'],
-    ['hop', 'Làm rập + họp triển khai', 'chuyen'],
-    ['tkMoi', 'Kỹ thuật triển khai – mã mới', 'chuyen'],
-    ['tkLap', 'Kỹ thuật triển khai – hàng lặp lại', 'chuyen']
+    ['gcHD', 'In / thêu – Hành Đang (gồm vận chuyển)', 'giacong'],
+    ['gcBP', 'In / thêu – Bình Phát (gồm vận chuyển)', 'giacong'],
+    ['hop', 'Chuẩn bị triển khai: tài liệu, rập, họp', 'chuyen'],
+    ['tkMoi', 'Triển khai chuyền sau START – mã mới', 'chuyen'],
+    ['tkLap', 'Triển khai chuyền sau START – lặp lại', 'chuyen']
   ];
 
   function todayStr() {
@@ -447,11 +457,11 @@ footer { color: var(--muted); font-size: 12.5px; }
   function clone(o) { return JSON.parse(JSON.stringify(o)); }
   function defaults() {
     return {
-      plan: { code: 'VD-001 (ví dụ)', base: 'port', eta: ETA0, seconds: 7500, isNew: true, inan: true, theu: false, target: S.addDays(ETA0, 28) },
+      plan: { code: 'VD-001 (ví dụ)', base: 'port', eta: ETA0, seconds: 7500, isNew: true, inan: true, theu: false, sub: 'hanhdang', target: S.addDays(ETA0, 28) },
       list: [
-        { code: 'VD-001 (ví dụ)', base: 'port', eta: ETA0, seconds: 7500, isNew: true, inan: true, theu: false, target: S.addDays(ETA0, 28) },
-        { code: 'VD-002 (ví dụ)', base: 'port', eta: S.addDays(ETA0, 3), seconds: 10500, isNew: false, inan: false, theu: true, target: S.addDays(ETA0, 26) },
-        { code: 'VD-003 (ví dụ)', base: 'factory', eta: S.addDays(ETA0, 8), seconds: 13200, isNew: true, inan: true, theu: true, target: S.addDays(ETA0, 24) }
+        { code: 'VD-001 (ví dụ)', base: 'port', eta: ETA0, seconds: 7500, isNew: true, inan: true, theu: false, sub: 'hanhdang', target: S.addDays(ETA0, 28) },
+        { code: 'VD-002 (ví dụ)', base: 'port', eta: S.addDays(ETA0, 3), seconds: 10500, isNew: false, inan: false, theu: true, sub: 'binhphat', target: S.addDays(ETA0, 24) },
+        { code: 'VD-003 (ví dụ)', base: 'factory', eta: S.addDays(ETA0, 8), seconds: 13200, isNew: true, inan: true, theu: true, sub: 'binhphat', target: S.addDays(ETA0, 21) }
       ],
       standards: clone(S.DEFAULT_STANDARDS),
       skipSunday: true,
@@ -486,7 +496,7 @@ footer { color: var(--muted); font-size: 12.5px; }
 
   function verdictOf(p, s) {
     if (!p.target) return null;
-    var gap = S.diffDays(s.milestones.lineStart, p.target);
+    var gap = S.diffDays(s.milestones.lineInput, p.target);
     var latest = S.latestEta(opts(p), p.target);
     return { ok: gap >= 0, gap: gap, latest: latest };
   }
@@ -501,6 +511,8 @@ footer { color: var(--muted); font-size: 12.5px; }
     el(p.isNew ? 'pTypeNew' : 'pTypeRepeat').checked = true;
     el('pIn').checked = p.inan;
     el('pTheu').checked = p.theu;
+    el(p.sub === 'binhphat' ? 'pSubBP' : 'pSubHD').checked = true;
+    el('subField').hidden = !(p.inan || p.theu);
     el('pTarget').value = p.target || '';
   }
   function readPlanForm() {
@@ -512,6 +524,8 @@ footer { color: var(--muted); font-size: 12.5px; }
     p.isNew = el('pTypeNew').checked;
     p.inan = el('pIn').checked;
     p.theu = el('pTheu').checked;
+    p.sub = el('pSubBP').checked ? 'binhphat' : 'hanhdang';
+    el('subField').hidden = !(p.inan || p.theu);
     p.target = el('pTarget').value;
   }
 
@@ -526,12 +540,13 @@ footer { color: var(--muted); font-size: 12.5px; }
       ['ETA', m.eta, p.base === 'port' ? 'Hàng về cảng' : 'Vải về nhà máy'],
       ['Vải về nhà máy', m.fabricAtFactory, 'Khui thùng, kiểm đếm'],
       ['Bắt đầu cắt', m.cutStart, 'Sau test vải, rập, sơ đồ'],
-      ['BTP có tại nhà máy', m.btpReady, (p.inan || p.theu) ? 'Đã gồm in/thêu' : 'Không in, thêu'],
-      ['Ra chuyền', m.lineStart, '5 pcs đầu chuyền']
+      ['BTP sẵn sàng', m.btpReady, (p.inan || p.theu) ? 'Sau gia công ' + s.sub.label : 'Không in, thêu'],
+      ['START', m.lineInput, 'ライン投入 · vào chuyền'],
+      ['5 pcs đầu', m.firstPieces, 'Sau triển khai chuyền']
     ];
     el('milestones').innerHTML = tiles.map(function (t, i) {
       var n = S.diffDays(m.eta, t[1]) + 1;
-      return '<div class="ms' + (i === 4 ? ' final' : '') + '"><span class="k">' + t[0] + '</span>' +
+      return '<div class="ms' + (i === 4 ? ' final' : i === 5 ? ' after' : '') + '"><span class="k">' + t[0] + '</span>' +
         '<span class="v">' + dm(t[1]) + '</span><span class="s">' + WD[S.weekday(t[1])] + ' · N' + n + '</span>' +
         '<span class="s" style="font-family:var(--f-body)">' + t[2] + '</span></div>';
     }).join('');
@@ -546,12 +561,12 @@ footer { color: var(--muted); font-size: 12.5px; }
 
     var v = verdictOf(p, s);
     if (!v) {
-      el('verdict').innerHTML = '<span class="muted">Nhập ngày START (ra chuyền) để kiểm tra kịp tiến độ và tính ngày ETA muộn nhất.</span>';
+      el('verdict').innerHTML = '<span class="muted">Nhập ngày START (ライン投入) để kiểm tra kịp tiến độ và tính ngày ETA muộn nhất.</span>';
     } else {
       el('verdict').innerHTML =
         '<span><span class="chip ' + (v.ok ? 'good' : 'bad') + '">' + (v.ok ? (v.gap === 0 ? 'Kịp, vừa đúng ngày' : 'Kịp, dư ' + v.gap + ' ngày') : 'Trễ ' + (-v.gap) + ' ngày') + '</span></span>' +
         '<strong>ETA muộn nhất: ' + (v.latest ? full(v.latest) : '—') + '</strong>' +
-        '<span class="muted">Để ra chuyền trước hoặc đúng ' + full(p.target) + ' thì hàng phải ' + (p.base === 'port' ? 'về cảng' : 'về nhà máy') + ' chậm nhất ngày này.</span>';
+        '<span class="muted">Để sẵn sàng vào chuyền trước hoặc đúng ' + full(p.target) + ' thì hàng phải ' + (p.base === 'port' ? 'về cảng' : 'về nhà máy') + ' chậm nhất ngày này.</span>';
     }
     renderGantt(s);
     renderFlow(s);
@@ -561,7 +576,7 @@ footer { color: var(--muted); font-size: 12.5px; }
   function renderGantt(s) {
     var cal = s.calendar;
     var start = s.milestones.eta;
-    var last = s.milestones.lineStart;
+    var last = s.milestones.firstPieces;
     var n = S.diffDays(start, last) + 2;
     var days = [];
     for (var i = 0; i < n; i++) days.push(S.addDays(start, i));
@@ -594,7 +609,7 @@ footer { color: var(--muted); font-size: 12.5px; }
       h.push('<div class="bar' + (r.calendar ? ' cal' : '') + '" style="grid-row:' + row + ';grid-column:' + (a + 2) + '/' + (b + 3) + ';background-color:' + color(r.dept) + '" title="' + esc(r.name + ': ' + full(r.start) + ' → ' + full(r.end)) + '">' + r.days + 'n</div>');
       row++;
     });
-    [['BTP có tại nhà máy', s.milestones.btpReady, '--d-giacong'], ['Ra chuyền', s.milestones.lineStart, '--accent']].forEach(function (ms) {
+    [['BTP sẵn sàng', s.milestones.btpReady, '--d-giacong'], ['START – ライン投入', s.milestones.lineInput, '--accent'], ['Ra 5 pcs đầu', s.milestones.firstPieces, '--d-chuyen']].forEach(function (ms) {
       var a = S.diffDays(start, ms[1]);
       h.push('<div class="g-label" style="grid-row:' + row + ';grid-column:1"><span class="dot" style="background:var(' + ms[2] + ');transform:rotate(45deg)"></span><span class="nm"><b>' + ms[0] + '</b></span></div>');
       bgCells(row);
@@ -661,22 +676,23 @@ footer { color: var(--muted); font-size: 12.5px; }
         '<td><select data-f="isNew" id="l' + i + 'type" aria-label="Loại mã"><option value="1"' + (p.isNew ? ' selected' : '') + '>Mới</option><option value="0"' + (!p.isNew ? ' selected' : '') + '>Lặp lại</option></select></td>' +
         '<td><input type="checkbox" data-f="inan" id="l' + i + 'in"' + (p.inan ? ' checked' : '') + ' aria-label="Có in"></td>' +
         '<td><input type="checkbox" data-f="theu" id="l' + i + 'theu"' + (p.theu ? ' checked' : '') + ' aria-label="Có thêu"></td>' +
-        '<td><input type="date" data-f="target" id="l' + i + 'target" value="' + esc(p.target || '') + '" aria-label="Cần ra chuyền"></td>' +
+        '<td><select data-f="sub" id="l' + i + 'sub" aria-label="Nơi gia công"' + (p.inan || p.theu ? '' : ' disabled') + '><option value="hanhdang"' + (p.sub !== 'binhphat' ? ' selected' : '') + '>Hành Đang</option><option value="binhphat"' + (p.sub === 'binhphat' ? ' selected' : '') + '>Bình Phát</option></select></td>' +
+        '<td><input type="date" data-f="target" id="l' + i + 'target" value="' + esc(p.target || '') + '" aria-label="START cần"></td>' +
         '<td class="date">' + dm(m.fabricAtFactory) + '</td><td class="date">' + dm(m.cutStart) + '</td><td class="date">' + dm(m.btpReady) + '</td>' +
-        '<td class="date"><b>' + full(m.lineStart) + '</b></td><td>' + st + '</td>' +
+        '<td class="date"><b>' + full(m.lineInput) + '</b></td><td>' + st + '</td>' +
         '<td style="white-space:nowrap"><button type="button" class="ghost" data-act="view">Xem</button><button type="button" class="ghost" data-act="del" aria-label="Xóa dòng">Xóa</button></td></tr>';
-    }).join('') || '<tr><td colspan="14" class="muted">Chưa có mã hàng. Bấm “Thêm dòng” hoặc “Thêm vào danh sách” ở phần lập lịch.</td></tr>';
+    }).join('') || '<tr><td colspan="15" class="muted">Chưa có mã hàng. Bấm “Thêm dòng” hoặc “Thêm vào danh sách” ở phần lập lịch.</td></tr>';
   }
 
   function listCsv() {
-    var head = ['Mã hàng', 'ETA là', 'Ngày ETA', 'SAH (giây)', 'Loại', 'In', 'Thêu', 'Cần ra chuyền', 'Vải về NM', 'Bắt đầu cắt', 'BTP sẵn sàng', 'Ra chuyền', 'Trạng thái', 'ETA muộn nhất'];
+    var head = ['Mã hàng', 'ETA là', 'Ngày ETA', 'SAH (giây)', 'Loại', 'In', 'Thêu', 'Gia công', 'START cần', 'Vải về NM', 'Bắt đầu cắt', 'BTP sẵn sàng', 'Sẵn sàng vào chuyền', 'Trạng thái', 'ETA muộn nhất'];
     function q(v) { v = String(v == null ? '' : v); return /[",\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; }
     function d(s) { return s ? s.slice(8, 10) + '/' + s.slice(5, 7) + '/' + s.slice(0, 4) : ''; }
     var lines = [head.join(',')];
     state.list.forEach(function (p) {
       var s = S.computeSchedule(opts(p)), m = s.milestones, v = verdictOf(p, s);
-      lines.push([p.code, p.base === 'factory' ? 'Về nhà máy' : 'Về cảng', d(p.eta), p.seconds, p.isNew ? 'Mới' : 'Lặp lại', p.inan ? 'Có' : '', p.theu ? 'Có' : '',
-        d(p.target), d(m.fabricAtFactory), d(m.cutStart), d(m.btpReady), d(m.lineStart),
+      lines.push([p.code, p.base === 'factory' ? 'Về nhà máy' : 'Về cảng', d(p.eta), p.seconds, p.isNew ? 'Mới' : 'Lặp lại', p.inan ? 'Có' : '', p.theu ? 'Có' : '', (p.inan || p.theu) ? s.sub.label : '',
+        d(p.target), d(m.fabricAtFactory), d(m.cutStart), d(m.btpReady), d(m.lineInput),
         v ? (v.ok ? 'Kịp' : 'Trễ ' + (-v.gap) + ' ngày') : '', v ? d(v.latest) : ''].map(q).join(','));
     });
     return lines.join('\n');
@@ -742,7 +758,7 @@ footer { color: var(--muted); font-size: 12.5px; }
     }
   });
   el('addRow').addEventListener('click', function () {
-    state.list.push({ code: 'Mã mới', base: 'port', eta: ETA0, seconds: 8000, isNew: true, inan: false, theu: false, target: '' });
+    state.list.push({ code: 'Mã mới', base: 'port', eta: ETA0, seconds: 8000, isNew: true, inan: false, theu: false, sub: 'hanhdang', target: '' });
     renderList(); save();
   });
   el('copyCsv').addEventListener('click', function () {

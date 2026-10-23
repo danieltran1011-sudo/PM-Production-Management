@@ -1,7 +1,8 @@
 /*
- * Lịch chuẩn bị 1 mã hàng: từ ngày ETA đến ngày ra chuyền.
+ * Lịch chuẩn bị 1 mã hàng: từ ngày ETA đến START (ライン投入 = chuẩn bị xong, vào chuyền).
  * Nguồn số liệu: "Rà soát lại thời gian cần để vào chuyền - 20260722.xlsx"
- * (3 sheet: Dưới 8000 / 8000-12000 / Trên 12000 giây).
+ * (3 sheet: Dưới 8000 / 8000-12000 / Trên 12000 giây), cập nhật theo biên bản
+ * họp rà soát lead time (gia công in/thêu sau cắt, rập + sơ đồ > 12.000s tối thiểu 3 ngày).
  *
  * Dùng được cả trong trình duyệt (window.PMSchedule) và Node (require).
  * Ngày luôn ở dạng chuỗi 'YYYY-MM-DD'.
@@ -46,14 +47,32 @@
     chuyen: 'Chuyền'
   };
 
-  // Công đoạn lớn (theo file "Thời gian tiêu chuẩn chuẩn bị 1 mã hàng từ ngày ETA")
+  // Nơi gia công in / thêu (gia công ngoài)
+  var SUBCONTRACTORS = [
+    { id: 'hanhdang', key: 'gcHD', label: 'Hành Đang', note: 'Gia công 2–3 ngày + vận chuyển' },
+    { id: 'binhphat', key: 'gcBP', label: 'Bình Phát', note: 'Gia công 4–5 ngày + vận chuyển' }
+  ];
+
+  // Công đoạn lớn. Quy tắc lấy từ file "Thời gian tiêu chuẩn..." và họp rà soát lead time.
   var PHASES = [
-    { id: 'p0', label: 'Nhận hàng', labelJa: '入荷', rule: 'Khai nhận, vận chuyển về nhà máy. Tối đa 7 ngày kể cả luồng đỏ.' },
-    { id: 'p1', label: 'Vải, phụ liệu', labelJa: '生地・副資材', rule: 'Bảng chuẩn: xong trước ngày cắt 5 ngày.' },
-    { id: 'p2', label: 'Test vải', labelJa: '生地テスト', rule: 'Bảng chuẩn: xong trước ngày cắt 4 ngày.' },
-    { id: 'p3', label: 'Điều chỉnh rập, đi sơ đồ', labelJa: 'パターン修正・マーキング', rule: 'Bảng chuẩn: xong trước ngày cắt 3 ngày.' },
-    { id: 'p4', label: 'Cắt, in, thêu', labelJa: '裁断・プリント・刺繍', rule: 'Bảng chuẩn: trước ngày cấp chuyền 2 ngày, 4–6 ngày nếu có in/thêu.' },
-    { id: 'p5', label: 'Chuyền', labelJa: '縫製ライン展開', rule: 'Bảng chuẩn: triển khai trước ngày ra chuyền 5 / 7 / 8 ngày theo SAH.' }
+    { id: 'p0', label: 'Nhận hàng', labelJa: '入荷',
+      rule: 'Khai nhận, vận chuyển từ cảng về nhà máy. Tối đa 7 ngày kể cả luồng đỏ.',
+      ruleJa: '港着から工場着まで（通関・輸送）最大7日（赤線含む）。' },
+    { id: 'p1', label: 'Vải, phụ liệu', labelJa: '生地・副資材',
+      rule: 'Khui thùng 1 ngày, kiểm chất lượng + báo khổ 1 ngày, xả vải 1 ngày. Nguyên liệu phải sẵn sàng ít nhất 4 ngày trước khi cắt.',
+      ruleJa: '開梱検品1日、品質検査・有効幅確認1日、放反1日。原材料は裁断開始の4日前までに準備完了。' },
+    { id: 'p2', label: 'Test vải', labelJa: '生地テスト',
+      rule: 'Test co rút và chỉnh rập theo kết quả: 1–2 ngày.',
+      ruleJa: '収縮率テストと型紙微調整：1〜2日。' },
+    { id: 'p3', label: 'Điều chỉnh rập, đi sơ đồ', labelJa: 'パターン修正・マーキング',
+      rule: 'Đi sơ đồ + in rập 1 ngày. Mã từ 8.000 giây cần tối thiểu 3 ngày cho chỉnh rập + sơ đồ.',
+      ruleJa: 'マーカー作成・型紙出力1日。難易度の高い品番は型紙調整＋マーカーで最低3日。' },
+    { id: 'p4', label: 'Cắt, in, thêu', labelJa: '裁断・プリント・刺繍',
+      rule: 'Cắt, đánh số, bó 2 ngày. Có in/thêu: cắt xong và gửi gia công trước ライン投入 4 ngày (Hành Đang 2–3 ngày, Bình Phát 4–5 ngày).',
+      ruleJa: '裁断・ナンバリング・束ね2日。プリント・刺繍ありはライン投入4日前に裁断完了・外注発送（Hành Đang 2〜3日、Bình Phát 4〜5日）。' },
+    { id: 'p5', label: 'Chuyền', labelJa: '縫製ライン',
+      rule: 'Đọc tài liệu kỹ thuật, rập triển khai, họp triển khai xong trước ライン投入. Sau START: triển khai 5 ngày (8.000s), 7–8 ngày (12.000–15.000s); 1 kỹ thuật ≈ 1.000–1.200 giây/ngày.',
+      ruleJa: '技術資料の読み込み・展開準備はライン投入前に完了。START後のライン展開：8,000秒で約5日、12,000〜15,000秒で7〜8日（技術者1人 1,000〜1,200秒/日）。' }
   ];
 
   // Số ngày chuẩn. Mảng 3 phần tử = [< 8000, 8000-12000, > 12000].
@@ -63,12 +82,13 @@
     qc: [1, 1, 1],
     test: [1, 1, 1],
     xa: [1, 1, 1],
-    rap: [1, 2, 1],
-    sodo: [1, 2, 1],
+    nlTruocCat: [4, 4, 4],  // nguyên liệu sẵn sàng trước ngày cắt (tính từ ngày khui thùng)
+    rap: [1, 2, 2],         // > 12.000s: họp yêu cầu rập + sơ đồ tối thiểu 3 ngày
+    sodo: [1, 2, 2],
     caitien: [3, 3, 3],
     cat: [2, 2, 2],
-    theu: [1, 1, 1],
-    inan: [4, 4, 4],
+    gcHD: [4, 4, 4],        // Hành Đang 2–3 ngày + vận chuyển = cắt xong trước ライン投入 4 ngày
+    gcBP: [6, 6, 6],        // Bình Phát 4–5 ngày + vận chuyển
     hop: [2, 2, 2],
     tkMoi: [5, 7, 8],
     tkLap: [3, 5, 7]
@@ -78,42 +98,44 @@
    * Các bước công việc và quan hệ phụ thuộc.
    *  FS = bắt đầu sau khi bước trước xong
    *  SS = bắt đầu cùng ngày bước trước bắt đầu (+ lag ngày làm việc)
+   * START = ライン投入 (chuẩn bị xong, vào chuyền) = sau khi 'hop' và 'gc' đều xong.
+   * 'trienkhai' diễn ra sau START.
    */
   var STEPS = [
     { id: 'xnk', nameJa: '通関・工場への輸送', key: 'xnk', dept: 'xnk', phase: 'p0', people: '?', calendar: true,
       name: 'Nhận hàng đến ETA nhà máy', detail: 'Khai nhận, chuyển hàng đến APIC sau khi hàng đến cảng',
       note: 'Cho dù luồng đỏ, tối đa 7 ngày (tính cả ngày nghỉ)', deps: [] },
-    { id: 'khui', nameJa: '荷降ろし・開梱・数量確認', key: 'khui', dept: 'bocvac', phase: 'p1', people: '?',
-      name: 'Xuống hàng, khui thùng kiểm đếm', detail: 'Xuống hàng, khui thùng kiểm đếm',
+    { id: 'khui', nameJa: '荷降ろし・開梱検品', key: 'khui', dept: 'bocvac', phase: 'p1', people: '?',
+      name: 'Xuống hàng, khui thùng kiểm đếm', detail: 'Xuống hàng, khui thùng, kiểm tra nội dung',
       deps: [{ id: 'xnk', type: 'FS' }] },
-    { id: 'qc', nameJa: '抜き取り品質検査・幅確認', key: 'qc', dept: 'qckho', phase: 'p1', people: '1',
-      name: 'Kiểm xác suất chất lượng, báo khổ', detail: 'Kiểm xác suất chất lượng, báo khổ (KC kho)',
+    { id: 'qc', nameJa: '品質検査・有効幅確認', key: 'qc', dept: 'qckho', phase: 'p1', people: '1',
+      name: 'Kiểm chất lượng, báo khổ', detail: 'Kiểm xác suất chất lượng, xác nhận và báo khổ hữu dụng',
       deps: [{ id: 'khui', type: 'FS' }] },
-    { id: 'test', nameJa: '生地テスト（収縮率など）', key: 'test', dept: 'kythuat', phase: 'p2', people: '1',
-      name: 'Test vải', detail: 'Test độ co rút, chất lượng vải', deps: [{ id: 'khui', type: 'FS' }] },
-    { id: 'xa', nameJa: '放反', key: 'xa', dept: 'cat', phase: 'p1', people: '1',
-      name: 'Xả vải', detail: 'Xả vải', deps: [{ id: 'qc', type: 'FS' }] },
-    { id: 'rap', nameJa: 'パターン修正（収縮率・合わせ・ノッチ）', key: 'rap', dept: 'kythuat', phase: 'p3', people: '1',
-      name: 'Điều chỉnh rập theo kết quả test vải', detail: 'Điều chỉnh rập theo độ co rút, khớp rập, thêm dấu bấm',
+    { id: 'test', nameJa: '生地テスト（収縮率）', key: 'test', dept: 'kythuat', phase: 'p2', people: '1',
+      name: 'Test vải', detail: 'Test độ co rút', deps: [{ id: 'khui', type: 'FS' }] },
+    { id: 'xa', nameJa: '放反（リラックス）', key: 'xa', dept: 'cat', phase: 'p1', people: '1',
+      name: 'Xả vải', detail: 'Xả vải, để vải nghỉ trước khi cắt', deps: [{ id: 'qc', type: 'FS' }] },
+    { id: 'rap', nameJa: '型紙調整（収縮率・合わせ・ノッチ）', key: 'rap', dept: 'kythuat', phase: 'p3', people: '1',
+      name: 'Điều chỉnh rập theo kết quả test', detail: 'Điều chỉnh rập theo độ co rút, khớp rập, thêm dấu bấm',
       deps: [{ id: 'test', type: 'FS' }] },
-    { id: 'sodo', nameJa: 'マーキング・硬型紙出力', key: 'sodo', dept: 'kythuat', phase: 'p3', people: '2',
-      name: 'Đi sơ đồ + in rập cứng', detail: 'Làm rập tay & in rập, đi sơ đồ & in rập cứng (2 người)',
+    { id: 'sodo', nameJa: 'マーカー作成・型紙出力', key: 'sodo', dept: 'kythuat', phase: 'p3', people: '2',
+      name: 'Đi sơ đồ + in rập cứng', detail: 'Đi sơ đồ, in rập cứng, làm rập tay (2 người)',
       note: 'Bắt đầu từ ngày thứ 2 của điều chỉnh rập', deps: [{ id: 'rap', type: 'SS', lag: 1 }] },
-    { id: 'cat', nameJa: '裁断・番号付け・パーツ交換', key: 'cat', dept: 'cat', phase: 'p4', people: '1',
-      name: 'Cắt (bao gồm laser)', detail: 'Cắt, đánh số, thay thân',
-      deps: [{ id: 'sodo', type: 'FS' }, { id: 'xa', type: 'FS' }] },
+    { id: 'cat', nameJa: '裁断・ナンバリング・束ね', key: 'cat', dept: 'cat', phase: 'p4', people: '1',
+      name: 'Cắt, đánh số, bó', detail: 'Cắt (gồm laser), đánh số, thay thân, bó bán thành phẩm',
+      note: 'Nguyên liệu phải sẵn sàng ít nhất 4 ngày trước khi cắt',
+      deps: [{ id: 'sodo', type: 'FS' }, { id: 'xa', type: 'FS' }, { id: 'khui', type: 'SS', lagKey: 'nlTruocCat' }] },
     { id: 'caitien', nameJa: '改良パターン作成', key: 'caitien', dept: 'kythuat', phase: 'p4', people: '1',
       name: 'Rập cải tiến', detail: 'Làm rập cải tiến song song với cắt', deps: [{ id: 'cat', type: 'SS' }] },
-    { id: 'theu', nameJa: '刺繍', key: 'theu', dept: 'giacong', phase: 'p4', people: '?', when: 'theu',
-      name: 'Thêu', detail: 'Thêu bán thành phẩm', deps: [{ id: 'cat', type: 'SS' }] },
-    { id: 'inan', nameJa: 'プリント', key: 'inan', dept: 'giacong', phase: 'p4', people: '?', when: 'inan',
-      name: 'In', detail: 'In bán thành phẩm', deps: [{ id: 'cat', type: 'SS' }] },
-    { id: 'hop', nameJa: '展開用パターン作成・展開会議', key: 'hop', dept: 'chuyen', phase: 'p5', people: '?',
-      name: 'Làm rập + họp triển khai', detail: 'Làm rập triển khai các size, họp triển khai',
-      deps: [{ id: 'cat', type: 'FS' }, { id: 'theu', type: 'FS' }, { id: 'inan', type: 'FS' }] },
-    { id: 'trienkhai', nameJa: 'ライン展開指導（先頭5枚まで）', key: null, dept: 'chuyen', phase: 'p5', people: '1',
-      name: 'Kỹ thuật triển khai', detail: 'Hướng dẫn tới khi công nhân ra được 5 pcs đầu chuyền',
-      deps: [{ id: 'hop', type: 'FS' }] }
+    { id: 'gc', nameJa: 'プリント・刺繍（外注）', key: null, dept: 'giacong', phase: 'p4', people: '?', when: 'gc',
+      name: 'In / thêu (gia công ngoài)', detail: 'Gửi bán thành phẩm đi in, thêu và nhận về (gồm vận chuyển)',
+      deps: [{ id: 'cat', type: 'FS' }] },
+    { id: 'hop', nameJa: '技術資料読込・展開用型紙・展開会議', key: 'hop', dept: 'chuyen', phase: 'p5', people: '?',
+      name: 'Chuẩn bị triển khai', detail: 'Đọc tài liệu kỹ thuật, làm rập triển khai các size, họp triển khai',
+      note: 'Phải xong trước ライン投入', deps: [{ id: 'cat', type: 'FS' }] },
+    { id: 'trienkhai', nameJa: 'ライン展開指導（先頭5枚まで）', key: null, dept: 'chuyen', phase: 'p5', people: '1', afterStart: true,
+      name: 'Kỹ thuật triển khai', detail: 'Hướng dẫn trên chuyền tới khi công nhân ra được 5 pcs đầu',
+      note: 'Diễn ra sau START', deps: [{ id: 'hop', type: 'FS' }, { id: 'gc', type: 'FS' }] }
   ];
 
   // ---------- Ngày tháng ----------
@@ -171,7 +193,7 @@
    *   base: 'port' (ETA hàng về cảng, có bước XNK) | 'factory' (vải đã về nhà máy),
    *   seconds: SAH giây, (hoặc band: 0|1|2)
    *   isNew: true = mã mới, false = hàng lặp lại,
-   *   inan: có in, theu: có thêu,
+   *   inan: có in, theu: có thêu, sub: 'hanhdang' | 'binhphat' (nơi gia công in/thêu),
    *   skipSunday: true, holidays: ['YYYY-MM-DD', ...],
    *   standards: ghi đè DEFAULT_STANDARDS
    * }
@@ -181,12 +203,13 @@
     var std = Object.assign({}, DEFAULT_STANDARDS, input.standards || {});
     var cal = makeCalendar({ skipSunday: input.skipSunday, holidays: input.holidays });
     var base = input.base === 'factory' ? 'factory' : 'port';
-    var flags = { inan: !!input.inan, theu: !!input.theu };
+    var flags = { gc: !!(input.inan || input.theu) };
+    var sub = SUBCONTRACTORS.filter(function (x) { return x.id === input.sub; })[0] || SUBCONTRACTORS[0];
     var done = {};
     var rows = [];
 
     STEPS.forEach(function (st) {
-      var key = st.key || (input.isNew === false ? 'tkLap' : 'tkMoi');
+      var key = st.key || (st.id === 'gc' ? sub.key : (input.isNew === false ? 'tkLap' : 'tkMoi'));
       var dur = Math.max(0, Math.ceil(Number((std[key] || [])[band]) || 0));
       var skipped = (st.when && !flags[st.when]) || (st.id === 'xnk' && base === 'factory');
       if (skipped) { done[st.id] = null; return; }
@@ -199,7 +222,8 @@
         st.deps.forEach(function (dp) {
           var p = done[dp.id];
           if (!p) return;
-          if (dp.type === 'SS') cands.push(cal.addWork(p.start, dp.lag || 0));
+          var lag = dp.lagKey ? Math.max(0, Math.ceil(Number((std[dp.lagKey] || [])[band]) || 0)) : (dp.lag || 0);
+          if (dp.type === 'SS') cands.push(cal.addWork(p.start, lag));
           else cands.push(p.finish);
         });
         start = cands.length ? maxDate(cands) : cal.nextWork(input.eta);
@@ -216,9 +240,17 @@
         end = cal.addWork(start, dur - 1);
         finish = cal.nextWork(addDays(end, 1));
       }
+      var name = st.name, nameJa = st.nameJa, detail = st.detail;
+      if (st.id === 'gc') {
+        var what = input.inan && input.theu ? 'In + thêu' : (input.inan ? 'In' : 'Thêu');
+        var whatJa = input.inan && input.theu ? 'プリント・刺繍' : (input.inan ? 'プリント' : '刺繍');
+        name = what + ' – ' + sub.label;
+        nameJa = whatJa + '（外注：' + sub.label + '）';
+        detail = sub.note;
+      }
       var r = {
-        id: st.id, dept: st.dept, deptLabel: DEPTS[st.dept], phase: st.phase,
-        name: st.name, nameJa: st.nameJa, deptLabelJa: DEPTS_JA[st.dept], detail: st.detail, note: st.note || '', people: st.people,
+        id: st.id, afterStart: !!st.afterStart, dept: st.dept, deptLabel: DEPTS[st.dept], phase: st.phase,
+        name: name, nameJa: nameJa, deptLabelJa: DEPTS_JA[st.dept], detail: detail, note: st.note || '', people: st.people,
         days: dur, start: start, end: end || start, finish: finish, calendar: !!st.calendar,
         deps: st.deps.map(function (d) { return d.id; }).filter(function (id) { return done[id]; })
       };
@@ -227,31 +259,34 @@
     });
 
     var cut = done.cat;
-    var btp = maxDate([done.cat, done.theu, done.inan].filter(Boolean).map(function (r) { return r.finish; }));
+    var btp = done.gc ? done.gc.finish : cut.finish;
     var fabricAtFactory = done.khui ? done.khui.start : cal.nextWork(input.eta);
-    var lineStart = done.trienkhai.finish;
+    var lineInput = done.trienkhai.start;      // START = ライン投入
+    var firstPieces = done.trienkhai.finish;   // ra 5 pcs đầu chuyền
     return {
       band: band,
       bandLabel: BANDS[band].label,
+      sub: sub,
       rows: rows,
       milestones: {
         eta: input.eta,
         fabricAtFactory: fabricAtFactory,
         cutStart: cut.start,
+        cutDone: cut.finish,
         btpReady: btp,
-        deployStart: done.trienkhai.start,
-        lineStart: lineStart
+        lineInput: lineInput,
+        firstPieces: firstPieces
       },
-      totalDays: diffDays(input.eta, lineStart) + 1, // đánh số như Excel: ngày ETA = N1
-      workDays: cal.countWork(input.eta, lineStart),
+      totalDays: diffDays(input.eta, lineInput) + 1, // đánh số như Excel: ngày ETA = N1
+      workDays: cal.countWork(input.eta, lineInput),
       calendar: cal
     };
   }
 
-  // Ngày ETA muộn nhất để mốc (mặc định: ra chuyền) rơi đúng hoặc trước ngày target.
-  // milestone: 'lineStart' (ra chuyền) | 'deployStart' (bắt đầu triển khai chuyền)
+  // Ngày ETA muộn nhất để mốc (mặc định: START = ライン投入) rơi đúng hoặc trước ngày target.
+  // milestone: 'lineInput' | 'firstPieces'
   function latestEta(input, target, milestone) {
-    var key = milestone || 'lineStart';
+    var key = milestone || 'lineInput';
     var guess = addDays(target, -120);
     var best = null;
     for (var i = 0; i < 160; i++) {
@@ -264,7 +299,7 @@
   }
 
   return {
-    BANDS: BANDS, DEPTS: DEPTS, DEPTS_JA: DEPTS_JA, PHASES: PHASES, STEPS: STEPS, DEFAULT_STANDARDS: DEFAULT_STANDARDS,
+    BANDS: BANDS, SUBCONTRACTORS: SUBCONTRACTORS, DEPTS: DEPTS, DEPTS_JA: DEPTS_JA, PHASES: PHASES, STEPS: STEPS, DEFAULT_STANDARDS: DEFAULT_STANDARDS,
     bandIndex: bandIndex, computeSchedule: computeSchedule, latestEta: latestEta,
     makeCalendar: makeCalendar, addDays: addDays, diffDays: diffDays, weekday: weekday
   };

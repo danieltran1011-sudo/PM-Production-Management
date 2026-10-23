@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Be+Vietnam+Pro:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&family=Roboto+Mono:wght@400;500&display=swap">
 <style>
-/* Layout: luận điểm 28 ngày (thanh tỉ lệ) ở trên, flowchart 業務フロー cột theo bộ phận ở giữa, bảng trường hợp và đề nghị gửi TIJ ở dưới. */
+/* Layout: so sánh chuẩn cũ/mới (thanh tỉ lệ) ở trên, flowchart 業務フロー cột theo bộ phận ở giữa, bảng trường hợp và đề nghị gửi TIJ ở dưới. */
 :root {
   --paper: #F2F4F8;
   --grid: rgba(43, 63, 158, 0.055);
@@ -193,10 +193,10 @@ footer { font-size: 12.5px; color: var(--muted); display: flex; flex-wrap: wrap;
 <div class="wrap" id="root" data-lang="both">
   <header class="top">
     <span class="eyebrow"><span class="ja">TIJ協議資料</span><span class="sep"> · </span><span class="vi">Tài liệu thảo luận với TIJ</span></span>
-    <h1><span class="ja">生産工程リードタイム</span><span class="vi">Lead time sản xuất: từ 工場着 đến START</span></h1>
+    <h1><span class="ja">生産工程リードタイム</span><span class="vi">Lead time sản xuất: từ 工場着 đến START (ライン投入)</span></h1>
     <div class="lead">
-      <p class="ja">原副資材の納期基準を「ETA：START 3週間前（工場着 2週間前）」から「ETA：START 4週間前・28日（工場着 3週間前・21日）」へ変更したい。下図は工場着からSTARTまでの社内工程と所要日数です。</p>
-      <p class="vi">Đề nghị đổi mốc giao nguyên phụ liệu từ “ETA trước START 3 tuần (工場着 trước 2 tuần)” sang “ETA trước START 4 tuần = 28 ngày (工場着 trước 3 tuần = 21 ngày)”. Sơ đồ dưới đây là các bước nội bộ từ lúc hàng về nhà máy đến START và số ngày cần cho mỗi bước.</p>
+      <p class="ja">原副資材の納期基準を「ETA：START 3週間前（工場着 2週間前）」から「ETA：START 4週間前・28日（工場着 3週間前・21日）」へ変更したい。START＝ライン投入（準備完了）日。下図は工場着からライン投入までの社内工程と所要日数です。</p>
+      <p class="vi">Đề nghị đổi mốc giao nguyên phụ liệu từ “ETA trước START 3 tuần (工場着 trước 2 tuần)” sang “ETA trước START 4 tuần = 28 ngày (工場着 trước 3 tuần = 21 ngày)”. START = ngày vào chuyền (ライン投入, chuẩn bị xong). Sơ đồ dưới đây là các bước nội bộ từ lúc hàng về nhà máy đến ngày vào chuyền.</p>
     </div>
   </header>
 
@@ -211,39 +211,45 @@ footer { font-size: 12.5px; color: var(--muted); display: flex; flex-wrap: wrap;
         </div>
       </div>
       <div class="field">
-        <label class="lbl" for="startDate"><span class="ja">START日</span><span class="sep"> / </span><span class="vi">Ngày START</span></label>
+        <label class="lbl" for="startDate"><span class="ja">START日（ライン投入）</span><span class="sep"> / </span><span class="vi">Ngày START</span></label>
         <input type="date" id="startDate">
       </div>
       <div class="field">
         <span class="lbl" id="bandLbl"><span class="ja">標準作業時間</span><span class="sep"> / </span><span class="vi">SAH</span></span>
         <div class="seg" role="radiogroup" aria-labelledby="bandLbl">
-          <label><input type="radio" name="band" id="band0" value="0">&lt; 8,000<span class="ja">秒</span><span class="vi">s</span></label>
-          <label><input type="radio" name="band" id="band1" value="1">8,000–12,000<span class="ja">秒</span><span class="vi">s</span></label>
-          <label><input type="radio" name="band" id="band2" value="2" checked>&gt; 12,000<span class="ja">秒</span><span class="vi">s</span></label>
+          <label><input type="radio" name="band" id="band0" value="0">&lt; 8,000<span class="ja">秒</span><span class="vio">s</span></label>
+          <label><input type="radio" name="band" id="band1" value="1">8,000–12,000<span class="ja">秒</span><span class="vio">s</span></label>
+          <label><input type="radio" name="band" id="band2" value="2" checked>&gt; 12,000<span class="ja">秒</span><span class="vio">s</span></label>
         </div>
       </div>
       <div class="field">
-        <span class="lbl" id="typeLbl"><span class="ja">品番区分</span><span class="sep"> / </span><span class="vi">Loại mã</span></span>
+        <span class="lbl" id="gcLbl"><span class="ja">プリント・刺繍（外注）</span><span class="sep"> / </span><span class="vi">In, thêu (gia công ngoài)</span></span>
+        <div class="seg" role="radiogroup" aria-labelledby="gcLbl">
+          <label><input type="radio" name="gc" id="gcNone" value="none"><span class="ja">なし</span><span class="vio">Không</span></label>
+          <label><input type="radio" name="gc" id="gcHD" value="hanhdang">Hành Đang</label>
+          <label><input type="radio" name="gc" id="gcBP" value="binhphat" checked>Bình Phát</label>
+        </div>
+      </div>
+      <div class="field">
+        <span class="lbl" id="typeLbl"><span class="ja">品番区分（START後の展開）</span><span class="sep"> / </span><span class="vi">Loại mã (triển khai sau START)</span></span>
         <div class="seg" role="radiogroup" aria-labelledby="typeLbl">
           <label><input type="radio" name="type" id="typeNew" value="new" checked><span class="ja">新規</span><span class="sep"> </span><span class="vi">Mới</span></label>
           <label><input type="radio" name="type" id="typeRep" value="rep"><span class="ja">リピート</span><span class="sep"> </span><span class="vi">Lặp lại</span></label>
         </div>
       </div>
       <div class="field">
-        <span class="lbl"><span class="ja">加工</span><span class="sep"> / </span><span class="vi">Gia công</span></span>
+        <span class="lbl"><span class="ja">休日</span><span class="sep"> / </span><span class="vi">Ngày nghỉ</span></span>
         <div class="checks">
-          <label><input type="checkbox" id="optIn" checked><span class="ja">プリント</span><span class="sep"> </span><span class="vi">In</span></label>
-          <label><input type="checkbox" id="optTheu" checked><span class="ja">刺繍</span><span class="sep"> </span><span class="vi">Thêu</span></label>
-          <label><input type="checkbox" id="optSun" checked><span class="ja">日曜休み</span><span class="sep"> </span><span class="vi">Nghỉ CN</span></label>
+          <label><input type="checkbox" id="optSun" checked><span class="ja">日曜休み</span><span class="sep"> </span><span class="vi">Nghỉ Chủ nhật</span></label>
         </div>
       </div>
     </div>
   </section>
 
-
   <section class="panel thesis" aria-label="So sánh chuẩn cũ và chuẩn mới">
     <div class="section-head" style="margin:0">
       <h2><span class="ja">旧基準と新基準の比較</span><span class="sep"> </span><span class="vi">So sánh chuẩn cũ và chuẩn mới</span></h2>
+      <p><span class="ja">1品番・人員が揃った場合の所要日数。実際は複数品番が同時進行し、技術スタッフの負荷が集中する。</span><span class="sep"> </span><span class="vi">Số ngày cần cho 1 mã khi đủ người. Thực tế nhiều mã chạy song song và tải dồn vào một số kỹ thuật.</span></p>
     </div>
     <div class="kpis" id="kpis"></div>
     <div class="bar-scroll"><div class="cmp" id="cmp"></div></div>
@@ -252,12 +258,40 @@ footer { font-size: 12.5px; color: var(--muted); display: flex; flex-wrap: wrap;
   <section>
     <div class="section-head">
       <h2><span class="ja">業務フロー（新基準：工場着 D−21 → START）</span><span class="sep"> </span><span class="vi">Flowchart theo chuẩn mới: 工場着 D−21 → START</span></h2>
-      <p><span class="ja">列＝担当部署、上から下へ時間順。D＝START日（先頭5枚完成・量産開始）。</span><span class="sep"> </span><span class="vi">Mỗi cột là một bộ phận, đọc từ trên xuống theo thứ tự thời gian. D = ngày START (chuyền ra 5 pcs đầu, bắt đầu sản xuất).</span></p>
+      <p><span class="ja">列＝担当部署、上から下へ時間順。D＝START日（ライン投入）。</span><span class="sep"> </span><span class="vi">Mỗi cột là một bộ phận, đọc từ trên xuống theo thứ tự thời gian. D = ngày START (vào chuyền).</span></p>
     </div>
     <div class="flow-scroll"><div class="flow" id="flow"></div></div>
     <div class="flow-legend">
       <span><i></i><span class="ja">前工程完了後に開始</span><span class="sep"> </span><span class="vi">Bắt đầu sau khi bước trước xong</span></span>
       <span><i class="ss"></i><span class="ja">同時開始（並行作業）</span><span class="sep"> </span><span class="vi">Bắt đầu cùng lúc, làm song song</span></span>
+    </div>
+  </section>
+
+  <section class="two">
+    <div class="panel">
+      <div class="section-head">
+        <h2><span class="ja">工程別の所要日数（会議で確認）</span><span class="sep"> </span><span class="vi">Thời gian từng bước (đã xác nhận trong họp)</span></h2>
+      </div>
+      <ul class="findings" id="findings"></ul>
+    </div>
+    <div class="panel">
+      <div class="section-head">
+        <h2><span class="ja">ケース別 所要日数</span><span class="sep"> </span><span class="vi">Số ngày cần theo trường hợp</span></h2>
+        <p><span class="ja">工場着からSTARTまでの暦日数（曜日により±1日、最大値）。</span><span class="sep"> </span><span class="vi">Số ngày lịch từ 工場着 đến START (lấy giá trị lớn nhất trong tuần).</span></p>
+      </div>
+      <div class="table-scroll">
+        <table>
+          <thead><tr>
+            <th><span class="ja">標準作業時間</span><span class="vi">SAH</span></th>
+            <th class="num"><span class="ja">加工なし</span><span class="vi">Không in/thêu</span></th>
+            <th class="num">Hành Đang</th>
+            <th class="num">Bình Phát</th>
+          </tr></thead>
+          <tbody id="cases"></tbody>
+        </table>
+      </div>
+      <p class="legend-mini"><span class="pill">+n</span> <span class="ja">余裕</span><span class="sep"> / </span><span class="vi">dư</span> · <span class="pill neg">−n</span> <span class="ja">不足</span><span class="sep"> / </span><span class="vi">thiếu</span> · <span class="ja">上段：旧14日、下段：新21日</span><span class="sep"> / </span><span class="vi">trên: chuẩn cũ 14, dưới: chuẩn mới 21</span></p>
+      <div class="callout" id="req1012"></div>
     </div>
   </section>
 
@@ -272,42 +306,31 @@ footer { font-size: 12.5px; color: var(--muted); display: flex; flex-wrap: wrap;
   <section class="two">
     <div class="panel">
       <div class="section-head">
-        <h2><span class="ja">ケース別 所要日数</span><span class="sep"> </span><span class="vi">Số ngày cần theo từng trường hợp</span></h2>
-        <p><span class="ja">工場着からSTARTまでの暦日数（START日の曜日により±1日）。過不足は最も日数がかかるケースで表示。</span><span class="sep"> </span><span class="vi">Số ngày lịch từ 工場着 đến START (chênh ±1 ngày tùy thứ trong tuần). Cột dư/thiếu tính theo trường hợp lâu nhất.</span></p>
+        <h2><span class="ja">TIJへの依頼事項</span><span class="sep"> </span><span class="vi">Đề nghị đối với TIJ</span></h2>
+        <p><span class="draft"><span class="ja">案</span><span class="sep"> · </span><span class="vi">BẢN NHÁP ĐỂ THẢO LUẬN</span></span></p>
       </div>
-      <div class="table-scroll">
-        <table>
-          <thead><tr>
-            <th><span class="ja">標準作業時間</span><span class="vi">SAH</span></th>
-            <th><span class="ja">区分</span><span class="vi">Loại</span></th>
-            <th class="num"><span class="ja">加工なし</span><span class="vi">Không in/thêu</span></th>
-            <th class="num"><span class="ja">プリント・刺繍</span><span class="vi">Có in + thêu</span></th>
-            <th class="num"><span class="ja">旧 14日</span><span class="vi">Chuẩn cũ 14</span></th>
-            <th class="num"><span class="ja">新 21日</span><span class="vi">Chuẩn mới 21</span></th>
-          </tr></thead>
-          <tbody id="cases"></tbody>
-        </table>
-      </div>
+      <ol class="asks" id="asks"></ol>
     </div>
     <div class="panel">
       <div class="section-head">
-        <h2><span class="ja">TIJへの依頼事項</span><span class="sep"> </span><span class="vi">Đề nghị đối với TIJ</span></h2>
-        <p><span class="draft"><span class="ja">案</span><span class="sep"> </span><span class="vi">BẢN NHÁP ĐỂ THẢO LUẬN</span></span></p>
+        <h2><span class="ja">工場側の取り組み</span><span class="sep"> </span><span class="vi">Cải tiến phía nhà máy</span></h2>
+        <p><span class="draft"><span class="ja">案</span><span class="sep"> · </span><span class="vi">BẢN NHÁP</span></span></p>
       </div>
-      <ol class="asks" id="asks"></ol>
+      <ol class="asks" id="commits"></ol>
     </div>
   </section>
 
   <section class="notes">
     <ul>
-      <li><span class="ja">所要日数は「Rà soát lại thời gian cần để vào chuyền – 20260722」の標準日数で計算。START＝ライン展開後、先頭5枚が完成し量産を開始する日。</span><span class="vi">Số ngày tính theo thời gian chuẩn trong file “Rà soát lại thời gian cần để vào chuyền – 20260722”. START = ngày chuyền ra 5 pcs đầu sau khi triển khai, bắt đầu sản xuất hàng loạt.</span></li>
-      <li><span class="ja">工場内の工程は稼働日で計算（日曜休みの設定可）。祝日・テト休暇が期間内に入る場合はその日数を加算。</span><span class="vi">Các bước tại nhà máy tính theo ngày làm việc (có thể chọn nghỉ Chủ nhật). Nếu có ngày lễ, nghỉ Tết trong khoảng này thì phải cộng thêm.</span></li>
+      <li><span class="ja">所要日数は「Rà soát lại thời gian cần để vào chuyền – 20260722」の標準日数と、リードタイム再検討会議の確認内容で計算。</span><span class="vi">Số ngày tính theo thời gian chuẩn trong file “Rà soát lại thời gian cần để vào chuyền – 20260722” và nội dung đã xác nhận trong cuộc họp rà soát lead time.</span></li>
+      <li><span class="ja">外注日数には輸送1日を含む（Hành Đang：加工3日＋輸送、Bình Phát：加工5日＋輸送）。</span><span class="vi">Số ngày gia công ngoài đã gồm 1 ngày vận chuyển (Hành Đang: 3 ngày gia công + vận chuyển; Bình Phát: 5 ngày + vận chuyển).</span></li>
+      <li><span class="ja">工場内の工程は稼働日で計算。祝日・テト休暇が期間内に入る場合はその日数を加算。</span><span class="vi">Các bước tại nhà máy tính theo ngày làm việc. Nếu có ngày lễ, nghỉ Tết trong khoảng này thì phải cộng thêm.</span></li>
       <li><span class="ja">港着（ETA）から工場着まで（通関・輸送）は最大7日（赤線含む）。</span><span class="vi">Từ ETA (về cảng) đến 工場着 (thông quan, vận chuyển) tối đa 7 ngày, kể cả luồng đỏ.</span></li>
     </ul>
   </section>
 
   <footer>
-    <a href="planner.html"><span class="ja">品番別スケジュール作成ツール</span><span class="sep"> </span><span class="vi">Công cụ lập lịch từng mã hàng →</span></a>
+    <a href="planner.html"><span class="ja">品番別スケジュール作成ツール</span><span class="sep"> · </span><span class="vi">Công cụ lập lịch từng mã hàng →</span></a>
   </footer>
 </div>
 
@@ -322,6 +345,7 @@ footer { font-size: 12.5px; color: var(--muted); display: flex; flex-wrap: wrap;
 .track .sg.port { background: var(--surface); color: var(--muted); border: 1.5px dashed var(--line); }
 .track .sg.buffer { background: var(--buffer-soft); color: var(--buffer); background-image: repeating-linear-gradient(135deg, transparent 0 7px, rgba(29,122,75,.12) 7px 14px); }
 .track .sg.over { background: var(--bad); color: #fff; background-image: repeating-linear-gradient(135deg, transparent 0 6px, rgba(255,255,255,.18) 6px 12px); }
+.track .sg.post { background: var(--surface); color: var(--muted); border: 1.5px dashed var(--d-chuyen); }
 .startline { position: absolute; top: -6px; bottom: -6px; width: 0; border-left: 2px solid var(--accent); z-index: 2; }
 .cmp .axis { grid-column: 2; position: relative; height: 30px; font-family: var(--f-mono); font-size: 11px; color: var(--muted); }
 .cmp .axis span { position: absolute; transform: translateX(-50%); white-space: nowrap; }
@@ -340,6 +364,26 @@ footer { font-size: 12.5px; color: var(--muted); display: flex; flex-wrap: wrap;
 [data-lang="both"] .reason p .vi { color: var(--muted); margin-top: 3px; }
 .conclusion { grid-column: 1 / -1; border-radius: 8px; padding: 12px 14px; background: var(--accent-soft); border: 1.5px solid var(--accent); font-size: 13.5px; display: grid; gap: 3px; }
 .conclusion .ja { font-weight: 700; }
+ul.findings { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; }
+ul.findings li { display: grid; grid-template-columns: 4px minmax(0, 1fr) auto; gap: 4px 12px; padding: 9px 0; border-bottom: 1px solid var(--line); align-items: start; }
+ul.findings li:last-child { border-bottom: 0; }
+ul.findings .bar { width: 4px; align-self: stretch; border-radius: 2px; background: var(--c); }
+ul.findings .t .ja, ul.findings .t .vi { display: block; }
+ul.findings .t .ja { font-weight: 600; font-size: 13px; }
+ul.findings .t .vi { font-size: 12.5px; }
+[data-lang="both"] ul.findings .t .vi { color: var(--muted); }
+ul.findings .d { font-family: var(--f-mono); font-size: 13px; font-weight: 600; white-space: nowrap; text-align: right; }
+td .stack { display: grid; gap: 3px; justify-items: end; }
+td .stack b { font-family: var(--f-mono); font-size: 14px; }
+.pill.mini { font-size: 11px; padding: 1px 7px; }
+.legend-mini { font-size: 12px; color: var(--muted); margin-top: 8px; }
+.callout { margin-top: 14px; border-radius: 8px; padding: 12px 14px; border: 1.5px solid var(--line); background: var(--surface-2); font-size: 13px; display: grid; gap: 4px; }
+.callout .ja, .callout .vi { display: block; }
+.callout .ja { font-weight: 600; }
+[data-lang="both"] .callout .vi { color: var(--muted); }
+.notes li .ja, .notes li .vi { display: block; }
+.band.after { background: var(--surface); border: 1.5px dashed var(--d-chuyen); color: var(--muted); }
+.node.post { opacity: 0.8; border-style: dashed; }
 @media (max-width: 640px) { .cmp { grid-template-columns: minmax(0, 1fr); } .cmp .axis, .verdict-cell { grid-column: 1; } .track { min-width: 560px; } .cmp .axis { min-width: 560px; } }
 </style>
 
@@ -353,19 +397,20 @@ footer { font-size: 12.5px; color: var(--muted); display: flex; flex-wrap: wrap;
   var WD_JA = ['日', '月', '火', '水', '木', '金', '土'];
   var WD_VI = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'];
   var LANES = ['xnk', 'bocvac', 'qckho', 'cat', 'giacong', 'kythuat', 'chuyen'];
+  var GC = [{ id: 'none', ja: '加工なし', vi: 'Không in/thêu' }, { id: 'hanhdang', ja: 'Hành Đang', vi: 'Hành Đang' }, { id: 'binhphat', ja: 'Bình Phát', vi: 'Bình Phát' }];
   function el(id) { return document.getElementById(id); }
   function esc(t) { return String(t == null ? '' : t).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
   function color(d) { return 'var(--d-' + d + ')'; }
-  // bi: cặp song ngữ nội dòng (có dấu “ / ” khi hiển thị cả hai). blk: cặp song ngữ dạng khối.
+  // bi: cặp song ngữ nội dòng (có “ / ” khi hiện cả hai). blk: cặp dạng khối.
+  // unit: khi song ngữ chỉ hiện bản Nhật (ngắn), khi chọn tiếng Việt hiện bản Việt.
   function bi(ja, vi) { return '<span class="ja">' + ja + '</span><span class="sep"> / </span><span class="vi">' + vi + '</span>'; }
   function blk(ja, vi) { return '<span class="ja">' + ja + '</span><span class="vi">' + vi + '</span>'; }
-  // unit: chế độ song ngữ chỉ hiện bản tiếng Nhật (ngắn gọn), chế độ tiếng Việt hiện bản Việt
   function unit(ja, vi) { return '<span class="ja">' + ja + '</span><span class="vio">' + vi + '</span>'; }
   function days(n) { return unit(n + '日', n + ' ngày'); }
 
   // Dùng chung số ngày chuẩn và ngày nghỉ với trang lập lịch (nếu đã chỉnh ở đó).
   var shared = {};
-  try { shared = JSON.parse(localStorage.getItem('pm-workflow-v1') || '{}') || {}; } catch (e) { shared = {}; }
+  try { shared = JSON.parse(localStorage.getItem('pm-workflow-v2') || '{}') || {}; } catch (e) { shared = {}; }
   function parseHolidays(txt) {
     return String(txt || '').split(/[\s,;]+/).map(function (t) {
       var m = t.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
@@ -375,6 +420,7 @@ footer { font-size: 12.5px; color: var(--muted); display: flex; flex-wrap: wrap;
   }
   var holidays = parseHolidays(shared.holidays);
   var standards = shared.standards || null;
+  var STD = Object.assign({}, S.DEFAULT_STANDARDS, standards || {});
 
   function todayStr() {
     var d = new Date();
@@ -387,64 +433,67 @@ footer { font-size: 12.5px; color: var(--muted); display: flex; flex-wrap: wrap;
     return {
       start: el('startDate').value,
       band: +document.querySelector('input[name="band"]:checked').value,
+      gc: document.querySelector('input[name="gc"]:checked').value,
       isNew: el('typeNew').checked,
-      inan: el('optIn').checked,
-      theu: el('optTheu').checked,
       skipSunday: el('optSun').checked
     };
   }
   function input(o, extra) {
-    return Object.assign({ base: 'factory', band: o.band, isNew: o.isNew, inan: o.inan, theu: o.theu, skipSunday: o.skipSunday, holidays: holidays, standards: standards }, extra || {});
+    var gc = (extra && extra.gc) || o.gc;
+    return Object.assign({
+      base: 'factory', band: o.band, isNew: o.isNew, inan: gc !== 'none', theu: false, sub: gc === 'none' ? 'hanhdang' : gc,
+      skipSunday: o.skipSunday, holidays: holidays, standards: standards
+    }, extra || {});
   }
   function dlabel(o, d) {
     var n = S.diffDays(o.start, d);
     return 'D' + (n === 0 ? '' : (n > 0 ? '+' : '−') + Math.abs(n));
   }
   function dt(d) {
-    return d.slice(8, 10) + '/' + d.slice(5, 7) + ' <span class="ja">(' + WD_JA[S.weekday(d)] + ')</span><span class="vi">(' + WD_VI[S.weekday(d)] + ')</span>';
+    return d.slice(8, 10) + '/' + d.slice(5, 7) + ' <span class="ja">(' + WD_JA[S.weekday(d)] + ')</span><span class="vio">(' + WD_VI[S.weekday(d)] + ')</span>';
   }
-  // Số ngày lịch cần từ 工場着 tới START khi START rơi vào ngày đang chọn.
-  function needed(o, extra) {
-    var eta = S.latestEta(input(o, extra), o.start);
-    return eta ? S.diffDays(eta, o.start) : null;
-  }
-  // Lâu nhất trong 7 thứ của tuần (để bảng không phụ thuộc ngày START cụ thể)
+  // Số ngày lịch từ 工場着 tới START, lấy lớn nhất trong 7 thứ của tuần.
   function neededMax(o, extra) {
     var mx = 0;
-    for (var w = 0; w < 7; w++) mx = Math.max(mx, needed(Object.assign({}, o, { start: S.addDays(o.start, w) }), extra));
+    for (var w = 0; w < 7; w++) {
+      var st = S.addDays(o.start, w);
+      var eta = S.latestEta(input(o, extra), st);
+      mx = Math.max(mx, S.diffDays(eta, st));
+    }
     return mx;
   }
   function gapText(g) {
     return g >= 0 ? bi('余裕 ' + g + '日', 'dư ' + g + ' ngày') : bi(Math.abs(g) + '日 不足', 'thiếu ' + Math.abs(g) + ' ngày');
   }
+  function pill(g, mini) { return '<span class="pill' + (mini ? ' mini' : '') + (g < 0 ? ' neg' : '') + '">' + (g >= 0 ? '+' : '−') + Math.abs(g) + '</span>'; }
 
   function render() {
     var o = opts();
     if (!o.start) return;
     el('root').dataset.lang = document.querySelector('input[name="lang"]:checked').value;
-    var need = needed(o);
 
     // ---- So sánh chuẩn cũ / mới ----
     function scenario(std) {
       var eta = S.addDays(o.start, -std.eta), fac = S.addDays(o.start, -std.factory);
       var s = S.computeSchedule(input(o, { eta: fac }));
-      return { std: std, eta: eta, fac: fac, s: s, m: s.milestones, gap: S.diffDays(s.milestones.lineStart, o.start) };
+      return { std: std, eta: eta, fac: fac, s: s, m: s.milestones, gap: S.diffDays(s.milestones.lineInput, o.start) };
     }
     var olds = scenario(OLD), news = scenario(NEW);
+    var need = S.diffDays(news.fac, news.m.lineInput);
+    var postDays = S.diffDays(news.m.lineInput, news.m.firstPieces);
     var axisStart = news.eta;
-    var axisEnd = S.addDays(o.start, Math.max(2, -olds.gap + 1, -news.gap + 1));
+    var axisEnd = S.addDays(o.start, Math.max(postDays, -olds.gap) + 1);
     var total = S.diffDays(axisStart, axisEnd);
     function pct(d) { return S.diffDays(axisStart, d) / total * 100; }
     function trackHtml(sc) {
       var m = sc.m;
       var segs = [
         { cls: 'port', from: sc.eta, to: sc.fac, ja: '通関・輸送', vi: 'Thông quan, vận chuyển' },
-        { from: sc.fac, to: m.cutStart, c: 'kythuat', ja: '検品・テスト・パターン', vi: 'Kiểm vải, test, rập, sơ đồ' },
-        { from: m.cutStart, to: m.btpReady, c: 'cat', ja: '裁断・プリント・刺繍', vi: 'Cắt, in, thêu' },
-        { from: m.btpReady, to: m.deployStart, c: 'chuyen', ja: '展開準備', vi: 'Họp triển khai' },
-        { from: m.deployStart, to: m.lineStart, c: 'giacong', ja: 'ライン展開', vi: 'Triển khai chuyền' }
+        { from: sc.fac, to: m.cutStart, c: 'kythuat', ja: '検品・テスト・型紙・マーカー', vi: 'Kiểm vải, test, rập, sơ đồ' },
+        { from: m.cutStart, to: m.cutDone, c: 'cat', ja: '裁断', vi: 'Cắt' },
+        { from: m.cutDone, to: m.lineInput, c: o.gc === 'none' ? 'chuyen' : 'giacong', ja: o.gc === 'none' ? '展開準備' : '外注・展開準備', vi: o.gc === 'none' ? 'Chuẩn bị triển khai' : 'Gia công, chuẩn bị' }
       ];
-      if (sc.gap > 0) segs.push({ cls: 'buffer', from: m.lineStart, to: o.start, ja: '予備', vi: 'Dự phòng' });
+      if (sc.gap > 0) segs.push({ cls: 'buffer', from: m.lineInput, to: o.start, ja: '予備', vi: 'Dự phòng' });
       var h = segs.map(function (g) {
         var n = S.diffDays(g.from, g.to);
         if (n <= 0) return '';
@@ -452,32 +501,39 @@ footer { font-size: 12.5px; color: var(--muted); display: flex; flex-wrap: wrap;
       }).join('');
       if (sc.gap < 0) {
         h += '<div class="sg over" style="left:' + pct(o.start) + '%;width:' + (-sc.gap / total * 100) + '%" title="' + (-sc.gap) + '"><b>+' + (-sc.gap) + '</b><span>' + unit('遅れ', 'trễ') + '</span></div>';
+      } else {
+        h += '<div class="sg post" style="left:' + pct(o.start) + '%;width:' + (postDays / total * 100) + '%" title="' + postDays + '"><b>' + postDays + '</b><span>' + unit('ライン展開', 'Triển khai') + '</span></div>';
       }
       return h + '<div class="startline" style="left:' + pct(o.start) + '%"></div>';
     }
     var ticks = [];
     for (var k = 0; k <= total; k += 7) ticks.push(S.addDays(axisStart, k));
     if (ticks.indexOf(o.start) < 0) ticks.push(o.start);
+    function verdict(sc) {
+      return sc.gap >= 0
+        ? '<span class="pill">' + bi('START前に準備完了、予備 ' + sc.gap + '日', 'Chuẩn bị xong trước START, dự phòng ' + sc.gap + ' ngày') + '</span>'
+        : '<span class="pill neg">' + bi('ライン投入が ' + (-sc.gap) + '日 遅れる', 'Vào chuyền trễ ' + (-sc.gap) + ' ngày') + '</span>';
+    }
     el('cmp').innerHTML =
       '<div class="who"><b>' + bi('旧基準', 'Chuẩn cũ') + '</b><span>ETA D−21 · 工場着 D−14</span></div><div class="track">' + trackHtml(olds) + '</div>' +
-      '<div class="verdict-cell">' + (olds.gap >= 0 ? '<span class="pill">' + gapText(olds.gap) + '</span>' : '<span class="pill neg">' + bi('STARTに ' + (-olds.gap) + '日 遅れる', 'Trễ START ' + (-olds.gap) + ' ngày') + '</span>') + '</div>' +
+      '<div class="verdict-cell">' + verdict(olds) + '</div>' +
       '<div class="who"><b>' + bi('新基準', 'Chuẩn mới') + '</b><span>ETA D−28 · 工場着 D−21</span></div><div class="track">' + trackHtml(news) + '</div>' +
-      '<div class="verdict-cell">' + (news.gap >= 0 ? '<span class="pill">' + bi('START前に完了、予備 ' + news.gap + '日', 'Xong trước START, dự phòng ' + news.gap + ' ngày') + '</span>' : '<span class="pill neg">' + bi((-news.gap) + '日 不足', 'Thiếu ' + (-news.gap) + ' ngày') + '</span>') + '</div>' +
+      '<div class="verdict-cell">' + verdict(news) + '</div>' +
       '<div class="axis">' + ticks.map(function (d) {
         return '<span style="left:' + pct(d) + '%">' + (d === o.start ? '<b>START</b>' : dlabel(o, d)) + '</span>';
       }).join('') + '</div>';
 
     el('kpis').innerHTML =
-      '<div class="kpi"><span class="k">' + bi('工場着→START 所要日数', 'Số ngày cần từ 工場着 → START') + '</span><span class="big">' + need + '<small>' + unit('日', 'ngày') + '</small></span><span class="muted">' + bi('暦日・選択中のケース', 'ngày lịch, trường hợp đang chọn') + '</span></div>' +
-      '<div class="kpi ' + (olds.gap >= 0 ? 'buffer' : 'neg') + '"><span class="k">' + bi('旧基準（工場着 14日前）', 'Chuẩn cũ (工場着 D−14)') + '</span><span class="big">' + (olds.gap >= 0 ? '+' : '−') + Math.abs(olds.gap) + '<small>' + unit('日', 'ngày') + '</small></span><span class="muted">' + gapText(olds.gap) + '</span></div>' +
-      '<div class="kpi ' + (news.gap >= 0 ? 'buffer' : 'neg') + '"><span class="k">' + bi('新基準（工場着 21日前）', 'Chuẩn mới (工場着 D−21)') + '</span><span class="big">' + (news.gap >= 0 ? '+' : '−') + Math.abs(news.gap) + '<small>' + unit('日', 'ngày') + '</small></span><span class="muted">' + gapText(news.gap) + '</span></div>';
+      '<div class="kpi"><span class="k">' + bi('工場着→START 所要日数', 'Số ngày cần 工場着 → START') + '</span><span class="big">' + need + '<small>' + unit('日', 'ngày') + '</small></span><span class="muted">' + bi('暦日・選択中のケース', 'ngày lịch, trường hợp đang chọn') + '</span></div>' +
+      '<div class="kpi ' + (olds.gap > 0 ? 'buffer' : 'neg') + '"><span class="k">' + bi('旧基準（工場着 14日前）', 'Chuẩn cũ (工場着 D−14)') + '</span><span class="big">' + (olds.gap >= 0 ? '+' : '−') + Math.abs(olds.gap) + '<small>' + unit('日', 'ngày') + '</small></span><span class="muted">' + gapText(olds.gap) + '</span></div>' +
+      '<div class="kpi ' + (news.gap > 0 ? 'buffer' : 'neg') + '"><span class="k">' + bi('新基準（工場着 21日前）', 'Chuẩn mới (工場着 D−21)') + '</span><span class="big">' + (news.gap >= 0 ? '+' : '−') + Math.abs(news.gap) + '<small>' + unit('日', 'ngày') + '</small></span><span class="muted">' + gapText(news.gap) + '</span></div>';
 
     // ---- Flowchart (chuẩn mới) ----
     var eta = news.eta, fac = news.fac, s = news.s, m = news.m, buffer = news.gap;
     var rows = {};
     s.rows.forEach(function (r) { rows[r.id] = r; });
     var plan = [{ band: 'eta' }, { steps: ['xnk'] }, { band: 'factory' }, { steps: ['khui'] }, { steps: ['qc', 'test'] }, { steps: ['xa', 'rap'] },
-      { steps: ['sodo'] }, { steps: ['cat', 'theu', 'inan', 'caitien'] }, { band: 'btp' }, { steps: ['hop'] }, { steps: ['trienkhai'] }, { band: 'buffer' }, { band: 'start' }];
+      { steps: ['sodo'] }, { steps: ['cat', 'caitien'] }, { steps: ['gc', 'hop'] }, { band: 'buffer' }, { band: 'start' }, { steps: ['trienkhai'] }, { band: 'after' }];
     plan = plan.filter(function (p) { return p.band ? (p.band !== 'buffer' || buffer !== 0) : p.steps.some(function (id) { return id === 'xnk' || rows[id]; }); });
     var xnk = { id: 'xnk', dept: 'xnk', nameJa: '通関・工場への輸送', name: 'Thông quan, chuyển hàng về nhà máy', days: NEW.eta - NEW.factory, start: eta, end: S.addDays(fac, -1), calendar: true };
     var h = [];
@@ -490,12 +546,12 @@ footer { font-size: 12.5px; color: var(--muted); display: flex; flex-wrap: wrap;
     });
     var bandText = {
       eta: [bi('ETA（港着）', 'ETA (hàng về cảng HCM)'), 'D−' + NEW.eta + ' · ' + dt(eta) + ' · ' + bi('旧基準 D−21', 'chuẩn cũ D−21')],
-      factory: [bi('工場着', 'Hàng về nhà máy (工場着)'), 'D−' + NEW.factory + ' · ' + dt(fac) + ' · ' + bi('旧基準 D−14', 'chuẩn cũ D−14')],
-      btp: [bi('半製品 工場内準備完了', 'Bán thành phẩm sẵn sàng tại nhà máy'), dlabel(o, m.btpReady) + ' · ' + dt(m.btpReady)],
+      factory: [bi('工場着', 'Hàng về nhà máy'), 'D−' + NEW.factory + ' · ' + dt(fac) + ' · ' + bi('旧基準 D−14', 'chuẩn cũ D−14')],
       buffer: buffer >= 0
-        ? [bi('予備日 ' + buffer + '日（不良・欠品時の再手配に使用）', 'Dự phòng ' + buffer + ' ngày (xử lý vải lỗi, thiếu hàng, bổ sung)'), dlabel(o, m.lineStart) + ' → D']
-        : [bi(Math.abs(buffer) + '日 不足：STARTに間に合わない', 'Thiếu ' + Math.abs(buffer) + ' ngày: không kịp START'), bi('先頭5枚完成 ', 'Ra 5 pcs đầu ') + dt(m.lineStart)],
-      start: [bi('START（先頭5枚完成・量産開始）', 'START (ra chuyền 5 pcs đầu, bắt đầu sản xuất)'), 'D · ' + dt(o.start)]
+        ? [bi('準備完了 ・予備日 ' + buffer + '日', 'Chuẩn bị xong · dự phòng ' + buffer + ' ngày'), dlabel(o, m.lineInput) + ' → D · ' + bi('ETA遅延・不良・欠品・同時進行品番に対応', 'cho ETA trễ, vải lỗi, thiếu hàng, nhiều mã chạy song song')]
+        : [bi(Math.abs(buffer) + '日 不足：STARTに間に合わない', 'Thiếu ' + Math.abs(buffer) + ' ngày: không kịp START'), bi('準備完了 ', 'Chuẩn bị xong ') + dt(m.lineInput)],
+      start: [bi('START ＝ ライン投入（準備完了）', 'START = vào chuyền (chuẩn bị xong)'), 'D · ' + dt(o.start)],
+      after: [bi('先頭5枚完成・量産開始', 'Ra 5 pcs đầu, bắt đầu sản xuất'), bi('START後 約' + postDays + '日', 'khoảng ' + postDays + ' ngày sau START')]
     };
     plan.forEach(function (p, i) {
       var row = i + 2;
@@ -511,64 +567,83 @@ footer { font-size: 12.5px; color: var(--muted); display: flex; flex-wrap: wrap;
       });
       Object.keys(byLane).forEach(function (l) {
         h.push('<div class="cell" style="grid-row:' + row + ';grid-column:' + (LANES.indexOf(l) + 1) + '">' + byLane[l].map(function (r) {
-          var range = r.days > 1 ? dlabel(o, r.start) + '→' + dlabel(o, r.end) : dlabel(o, r.start);
-          return '<div class="node' + (r.calendar ? ' cal' : '') + '" data-node="' + r.id + '" style="--c:' + color(r.dept) + '">' +
+          var post = r.id === 'trienkhai';
+          var st = post ? o.start : r.start;
+          var en = post ? S.addDays(o.start, postDays - 1) : r.end;
+          var range = r.days > 1 ? dlabel(o, st) + '→' + dlabel(o, en) : dlabel(o, st);
+          return '<div class="node' + (r.calendar ? ' cal' : '') + (post ? ' post' : '') + '" data-node="' + r.id + '" style="--c:' + color(r.dept) + '">' +
             blk(esc(r.nameJa), esc(r.name)) +
-            '<span class="meta"><span class="d">' + (r.calendar ? unit('最大' + r.days + '日', 'tối đa ' + r.days + ' ngày') : days(r.days)) + '</span><span>' + range + '</span><span>' + dt(r.start) + '</span></span></div>';
+            '<span class="meta"><span class="d">' + (r.calendar ? unit('最大' + r.days + '日', 'tối đa ' + r.days + ' ngày') : days(r.days)) + '</span><span>' + range + '</span><span>' + dt(st) + '</span></span></div>';
         }).join('') + '</div>');
       });
     });
     h.push('<svg class="edges" id="edges" aria-hidden="true"></svg>');
     flow.innerHTML = h.join('');
+    var into = buffer ? 'buffer' : 'start';
     flow._edges = [['eta', 'xnk'], ['xnk', 'factory'], ['factory', 'khui'], ['khui', 'qc'], ['khui', 'test'], ['qc', 'xa'], ['test', 'rap'],
-      ['rap', 'sodo', 'ss'], ['xa', 'cat'], ['sodo', 'cat'], ['sodo', 'caitien'], ['cat', 'theu', 'ss'], ['cat', 'inan', 'ss'],
-      ['cat', 'btp'], ['theu', 'btp'], ['inan', 'btp'], ['btp', 'hop'], ['hop', 'trienkhai'], ['trienkhai', buffer ? 'buffer' : 'start'], ['buffer', 'start']];
+      ['rap', 'sodo', 'ss'], ['xa', 'cat'], ['sodo', 'cat'], ['sodo', 'caitien'], ['cat', 'gc'], ['cat', 'hop'],
+      ['gc', into], ['hop', into], ['buffer', 'start'], ['start', 'trienkhai'], ['trienkhai', 'after']];
     drawEdges();
 
-    // ---- Lý do ----
-    var std = Object.assign({}, S.DEFAULT_STANDARDS, standards || {});
-    var reasons = [
-      ['ライン数の増加', 'Số chuyền tăng',
-        '10年前よりライン数が増え、複数品番の準備が同時に進む。技術課・裁断課の作業が重なり、1品番あたりの準備期間が延びる。',
-        'Số chuyền tăng so với 10 năm trước, nhiều mã được chuẩn bị cùng lúc. Kỹ thuật và phòng cắt phải xử lý chồng việc, thời gian chuẩn bị mỗi mã dài hơn.'],
-      ['難易度の上昇', 'Độ khó tăng',
-        '標準作業時間 8,000秒以上の品番では、パターン修正・マーキングが各' + std.rap[1] + '日、ライン展開指導が新規' + std.tkMoi[1] + '〜' + std.tkMoi[2] + '日必要。',
-        'Mã có SAH từ 8.000 giây trở lên cần ' + std.rap[1] + ' ngày chỉnh rập, ' + std.sodo[1] + ' ngày đi sơ đồ, và ' + std.tkMoi[1] + '–' + std.tkMoi[2] + ' ngày triển khai chuyền với mã mới.'],
-      ['小ロット化', 'Hàng lô nhỏ',
-        '同じ生産量でも品番数が増える。ロットが小さくても、生地テスト・パターン・マーキング・展開会議は品番ごとに必要。',
-        'Cùng sản lượng nhưng số mã nhiều hơn. Lô nhỏ vẫn phải làm đủ test vải, rập, sơ đồ, họp triển khai cho từng mã.'],
-      ['品番切替の増加', 'Chuyển đổi mã nhiều',
-        '切替のたびに展開用パターン作成・展開会議（' + std.hop[0] + '日）と、先頭5枚完成までのライン展開指導が発生する。',
-        'Mỗi lần chuyển đổi mã đều phải làm rập triển khai, họp triển khai (' + std.hop[0] + ' ngày) và triển khai chuyền đến khi ra 5 pcs đầu.']
+    // ---- Thời gian từng bước (họp) ----
+    var b = o.band;
+    var findings = [
+      ['bocvac', '荷降ろし・開梱検品', 'Xuống hàng, khui thùng kiểm tra', '1日', '1 ngày'],
+      ['qckho', '品質検査・有効幅の確認・報告', 'Kiểm chất lượng, xác nhận và báo khổ', '1日', '1 ngày'],
+      ['cat', '放反（リラックス）・原材料は裁断4日前までに準備完了', 'Xả vải; nguyên liệu sẵn sàng ít nhất 4 ngày trước khi cắt', '1日', '1 ngày'],
+      ['kythuat', '収縮率テスト・型紙微調整', 'Test co rút, chỉnh rập', '1〜2日', '1–2 ngày'],
+      ['kythuat', 'マーカー作成・型紙出力（12,000秒超は型紙＋マーカーで最低3日）', 'Đi sơ đồ, in rập (trên 12.000s: rập + sơ đồ tối thiểu 3 ngày)', '1日〜', '1 ngày+'],
+      ['cat', '裁断・ナンバリング・束ね', 'Cắt, đánh số, bó', '2日', '2 ngày'],
+      ['giacong', '外注 プリント・刺繍：Hành Đang 2〜3日、Bình Phát 4〜5日（輸送別）', 'In, thêu gia công ngoài: Hành Đang 2–3 ngày, Bình Phát 4–5 ngày (chưa gồm vận chuyển)', '2〜5日', '2–5 ngày'],
+      ['chuyen', '技術資料読込・展開準備（ライン投入前に完了）', 'Đọc tài liệu kỹ thuật, chuẩn bị triển khai (xong trước khi vào chuyền)', STD.hop[b] + '日', STD.hop[b] + ' ngày'],
+      ['chuyen', 'START後のライン展開：技術者1人 1,000〜1,200秒/日。8,000秒で約5日、12,000〜15,000秒で7〜8日', 'Triển khai sau START: 1 kỹ thuật ≈ 1.000–1.200 giây/ngày. 8.000s khoảng 5 ngày, 12.000–15.000s 7–8 ngày', '5〜8日', '5–8 ngày']
     ];
+    el('findings').innerHTML = findings.map(function (f) {
+      return '<li style="--c:' + color(f[0]) + '"><span class="bar"></span><span class="t">' + blk(f[1], f[2]) + '</span><span class="d">' + unit(f[3], f[4]) + '</span></li>';
+    }).join('');
+
+    // ---- Bảng trường hợp ----
+    var grid = [];
     var all = [];
-    [0, 1, 2].forEach(function (b) { [true, false].forEach(function (n) {
-      all.push(neededMax(Object.assign({}, o, { band: b, isNew: n }), { inan: false, theu: false }));
-      all.push(neededMax(Object.assign({}, o, { band: b, isNew: n }), { inan: true, theu: true }));
-    }); });
-    var lo = Math.min.apply(null, all), hi = Math.max.apply(null, all);
-    var okOld = all.filter(function (x) { return x <= OLD.factory; }).length, okNew = all.filter(function (x) { return x <= NEW.factory; }).length;
+    el('cases').innerHTML = [0, 1, 2].map(function (bd) {
+      var cells = GC.map(function (g) {
+        var n = neededMax(Object.assign({}, o, { band: bd }), { gc: g.id, inan: g.id !== 'none', sub: g.id === 'none' ? 'hanhdang' : g.id });
+        all.push({ band: bd, gc: g.id, n: n });
+        return '<td class="num"><span class="stack"><b>' + days(n) + '</b>' + pill(OLD.factory - n, true) + pill(NEW.factory - n, true) + '</span></td>';
+      }).join('');
+      return '<tr' + (bd === o.band ? ' class="cur"' : '') + '><td>' + esc(S.BANDS[bd].short.replace('s', '')) + unit('秒', 's') + '</td>' + cells + '</tr>';
+    }).join('');
+    var lo = Math.min.apply(null, all.map(function (x) { return x.n; }));
+    var hi = Math.max.apply(null, all.map(function (x) { return x.n; }));
+    var ok12 = all.filter(function (x) { return x.n <= 12; });
+    var okOld = all.filter(function (x) { return x.n <= OLD.factory; }).length;
+    var oldMinBuf = Math.min.apply(null, all.filter(function (x) { return x.n <= OLD.factory; }).map(function (x) { return OLD.factory - x.n; }));
+    var newMinBuf = NEW.factory - hi;
+    el('req1012').innerHTML = blk(
+      '10〜12日での展開要求：' + ok12.length + '/9ケースのみ物理的に可能（主に加工なし・Hành Đang）。予備日はゼロに近く、ETAの遅れや不良が1つでもあれば間に合わない。Bình Phát外注品は不可。',
+      'Yêu cầu triển khai trong 10–12 ngày: chỉ ' + ok12.length + '/9 trường hợp làm được về mặt thời gian (chủ yếu không in/thêu hoặc Hành Đang), gần như không có dự phòng; chỉ cần ETA trễ hoặc vải lỗi là không kịp. Mã gia công tại Bình Phát thì không thể.');
+
+    // ---- Lý do ----
+    var reasons = [
+      ['ライン数の増加・人員不足', 'Số chuyền tăng, thiếu kỹ thuật',
+        '10年前よりライン数が増え、複数品番の準備が同時進行。型紙担当・ライン指導担当が不足し、特定スタッフに負荷が集中している（会議で確認）。',
+        'Số chuyền tăng so với 10 năm trước, nhiều mã chuẩn bị cùng lúc. Kỹ thuật rập và kỹ thuật triển khai thiếu người, tải dồn vào một số người (đã xác nhận trong họp).'],
+      ['難易度の上昇', 'Độ khó tăng',
+        '12,000秒を超える品番は型紙調整＋マーカーで最低3日。ライン展開も技術者1人1日1,000〜1,200秒が限界で、12,000〜15,000秒では7〜8日かかる。',
+        'Mã trên 12.000 giây cần tối thiểu 3 ngày cho rập + sơ đồ. Mỗi kỹ thuật chỉ triển khai được 1.000–1.200 giây/ngày, mã 12.000–15.000 giây mất 7–8 ngày.'],
+      ['小ロット化・外注加工', 'Lô nhỏ, gia công ngoài',
+        '同じ生産量でも品番数が増え、品番ごとにテスト・型紙・マーカー・展開準備が必要。プリント・刺繍の外注（Bình Phát 4〜5日）で裁断からライン投入まで6日かかる。',
+        'Cùng sản lượng nhưng nhiều mã hơn, mã nào cũng cần test, rập, sơ đồ, chuẩn bị triển khai. In/thêu gia công ngoài (Bình Phát 4–5 ngày) làm khoảng cách từ cắt đến vào chuyền lên 6 ngày.'],
+      ['品番切替の増加', 'Chuyển đổi mã nhiều',
+        '切替のたびに技術資料の読込・展開用型紙・展開会議が必要。準備不足のままライン投入すると現場での研究時間が延び、効率が下がる（会議で指摘）。',
+        'Mỗi lần chuyển đổi mã đều phải đọc tài liệu, làm rập triển khai, họp triển khai. Vào chuyền khi chưa chuẩn bị đủ thì thời gian tìm hiểu tại chuyền kéo dài, hiệu suất giảm (đã nêu trong họp).']
+    ];
     el('reasons').innerHTML = reasons.map(function (r, i) {
       return '<div class="reason"><span class="n">' + (i + 1) + '</span><span class="h">' + blk(r[0], r[1]) + '</span><p>' + blk(r[2], r[3]) + '</p></div>';
     }).join('') +
       '<div class="conclusion">' + blk(
-        '結論：工場着からSTARTまで品番により' + lo + '〜' + hi + '日必要。旧基準（工場着 14日前）で間に合うのは12ケース中' + okOld + 'ケースのみ。新基準（工場着 21日前）では' + okNew + 'ケースが間に合い、残りも差は' + Math.max(0, hi - NEW.factory) + '日以内。',
-        'Kết luận: từ 工場着 đến START cần ' + lo + '–' + hi + ' ngày tùy mã. Chuẩn cũ (工場着 D−14) chỉ đáp ứng ' + okOld + '/12 trường hợp. Chuẩn mới (工場着 D−21) đáp ứng ' + okNew + '/12, các trường hợp còn lại chỉ thiếu tối đa ' + Math.max(0, hi - NEW.factory) + ' ngày.') + '</div>';
-
-    // ---- Bảng trường hợp ----
-    var cases = [];
-    [0, 1, 2].forEach(function (b) {
-      [true, false].forEach(function (isNew) {
-        var oo = Object.assign({}, o, { band: b, isNew: isNew });
-        var a = neededMax(oo, { inan: false, theu: false });
-        var c = neededMax(oo, { inan: true, theu: true });
-        var cur = b === o.band && isNew === o.isNew;
-        function pill(std) { var g = std - c; return '<span class="pill' + (g < 0 ? ' neg' : '') + '">' + (g >= 0 ? '+' : '−') + Math.abs(g) + '</span>'; }
-        cases.push('<tr' + (cur ? ' class="cur"' : '') + '><td>' + esc(S.BANDS[b].short.replace('s', '')) + unit('秒', 's') + '</td><td>' + (isNew ? blk('新規', 'Mới') : blk('リピート', 'Lặp lại')) + '</td>' +
-          '<td class="num">' + days(a) + '</td><td class="num">' + days(c) + '</td><td class="num">' + pill(OLD.factory) + '</td><td class="num">' + pill(NEW.factory) + '</td></tr>');
-      });
-    });
-    el('cases').innerHTML = cases.join('');
+        '結論：工場着からライン投入まで、1品番・人員が揃った場合でも' + lo + '〜' + hi + '日必要。旧基準14日で間に合うのは9ケース中' + okOld + 'ケース、予備日は最少' + oldMinBuf + '日で、Bình Phát外注品は最大' + Math.max(0, hi - OLD.factory) + '日不足。新基準21日なら全ケースで' + newMinBuf + '日以上の予備日を確保でき、ETA遅延・不良・同時進行品番による待ちを吸収できる。',
+        'Kết luận: từ 工場着 đến vào chuyền, dù 1 mã và đủ người, vẫn cần ' + lo + '–' + hi + ' ngày. Chuẩn cũ 14 ngày chỉ đáp ứng ' + okOld + '/9 trường hợp, dự phòng ít nhất chỉ ' + oldMinBuf + ' ngày, mã gia công Bình Phát thiếu tới ' + Math.max(0, hi - OLD.factory) + ' ngày. Chuẩn mới 21 ngày cho mọi trường hợp dự phòng ít nhất ' + newMinBuf + ' ngày để hấp thụ ETA trễ, vải lỗi và thời gian chờ khi nhiều mã chạy song song.') + '</div>';
 
     // ---- Đề nghị TIJ ----
     var asks = [
@@ -576,14 +651,21 @@ footer { font-size: 12.5px; color: var(--muted); display: flex; flex-wrap: wrap;
         'Toàn bộ nguyên phụ liệu (vải và phụ liệu): ETA về cảng chậm nhất <b>D−28</b>, về nhà máy chậm nhất <b>D−21</b>. (Chuẩn cũ: ETA D−21, 工場着 D−14.)'],
       ['分納の場合は最終便も同じ期限とする。1点でも欠品があると裁断を開始できない。',
         'Nếu giao nhiều đợt, đợt cuối cũng phải đúng mốc này. Thiếu một loại phụ liệu là không thể bắt đầu cắt.'],
-      ['出荷前にパッキングリスト・ロット・反数・生地幅を共有。工場着当日に開梱・数量確認、翌日に品質検査と生地テストを同時に行う。',
-        'Gửi trước packing list, số lot, số cây vải, khổ vải trước khi xuất hàng, để nhà máy khui thùng kiểm đếm ngay ngày hàng về, ngày hôm sau kiểm chất lượng và test vải song song.'],
-      ['不良・欠品が判明した場合の再手配は早急に対応。新基準でも難易度の高い新規品番は予備日がほとんどない。',
-        'Khi phát hiện vải lỗi hoặc thiếu hàng, cần bổ sung gấp. Ngay cả với chuẩn mới, mã mới có độ khó cao gần như không còn ngày dự phòng.'],
+      ['ETAの変更・遅延は判明次第すぐに共有。出荷前にパッキングリスト・ロット・反数・生地幅を共有する。',
+        'Báo ngay khi ETA thay đổi hoặc trễ. Gửi trước packing list, số lot, số cây vải, khổ vải trước khi xuất hàng.'],
+      ['10〜12日での展開要求は、加工なし・低難易度の品番に限り個別に協議する。',
+        'Yêu cầu triển khai trong 10–12 ngày chỉ áp dụng cho mã không in/thêu, độ khó thấp, và thỏa thuận riêng từng mã.'],
       ['テト・祝日が期間内に入る場合は休日日数分を前倒しする。',
         'Nếu khoảng thời gian này có Tết hoặc ngày lễ thì đẩy ETA sớm hơn đúng bằng số ngày nghỉ.']
     ];
-    el('asks').innerHTML = asks.map(function (a) { return '<li><span class="ja">' + a[0] + '</span><span class="vi">' + a[1] + '</span></li>'; }).join('');
+    el('asks').innerHTML = asks.map(function (a) { return '<li>' + blk(a[0], a[1]) + '</li>'; }).join('');
+    var commits = [
+      ['技術資料の読込・型紙確認をライン投入の2日前までに完了する体制をつくる。', 'Xây dựng cách làm để đọc tài liệu kỹ thuật, kiểm tra rập xong trước ngày vào chuyền 2 ngày.'],
+      ['倉庫・物流担当が原材料のETAを正確に管理し、計画チームと共有する。', 'Kho và logistics quản lý chính xác ETA nguyên liệu, chia sẻ với bộ phận kế hoạch.'],
+      ['型紙担当・ライン指導担当の技術スタッフを増強する（採用・他部署からの異動）。', 'Tăng cường kỹ thuật rập và kỹ thuật triển khai (tuyển mới hoặc điều chuyển từ bộ phận khác).'],
+      ['他工場の同等品番（8,000秒程度）のライン展開日数と比較・検証する。', 'Đối chiếu số ngày triển khai với mã tương đương (khoảng 8.000 giây) tại nhà máy khác.']
+    ];
+    el('commits').innerHTML = commits.map(function (a) { return '<li>' + blk(a[0], a[1]) + '</li>'; }).join('');
   }
 
   function drawEdges() {
@@ -596,14 +678,6 @@ footer { font-size: 12.5px; color: var(--muted); display: flex; flex-wrap: wrap;
       var r = n.getBoundingClientRect();
       return { l: r.left - box.left, r: r.right - box.left, t: r.top - box.top, b: r.bottom - box.top, cx: (r.left + r.right) / 2 - box.left, cy: (r.top + r.bottom) / 2 - box.top, band: n.classList.contains('band') };
     }
-    // Cạnh vào dải ngang: mỗi cột chỉ vẽ từ ô thấp nhất để mũi tên không cắt qua ô khác.
-    var lowest = {};
-    flow._edges.forEach(function (e) {
-      var a = rect(e[0]), b = rect(e[1]);
-      if (!a || !b || !b.band || a.band) return;
-      var key = e[1] + '@' + Math.round(a.cx);
-      if (!lowest[key] || lowest[key] < a.b) lowest[key] = a.b;
-    });
     var paths = [];
     flow._edges.forEach(function (e) {
       var a = rect(e[0]), b = rect(e[1]);
@@ -613,7 +687,6 @@ footer { font-size: 12.5px; color: var(--muted); display: flex; flex-wrap: wrap;
         var mx = (a.r + b.l) / 2;
         d = 'M' + a.r + ',' + a.cy + ' H' + mx + ' V' + b.cy + ' H' + (b.l - 2);
       } else if (b.band && !a.band) {
-        if (lowest[e[1] + '@' + Math.round(a.cx)] > a.b) return;
         d = 'M' + a.cx + ',' + a.b + ' V' + (b.t - 2);
       } else if (a.band && !b.band) {
         d = 'M' + b.cx + ',' + a.b + ' V' + (b.t - 2);
