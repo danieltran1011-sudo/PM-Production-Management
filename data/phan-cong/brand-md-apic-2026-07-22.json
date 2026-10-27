@@ -1,0 +1,64 @@
+{
+ "nguon": "data/nguon/Phan-cong-brand-MD-APIC-20260722.xlsx",
+ "sheet": "2026.07.22",
+ "ten_bang": "TIVN APIC担当業務表",
+ "ghi_chu": "(1) = brand của phòng 1 (1課) TI Nhật, (2) = phòng 2 (2課). Tên trong file BULK/SPL: HH = HELLY HANSEN, NW = NEUTRALWORKS, TNF(GTC企画) = TNF 富山企画, TNF別注 富山 = TNF 別注 SHIGEMOTO/NAKAO (Nhu), TNF別注 東京 = TNF 別注 HOSOYA (Huy), H.Trang = Huyen Trang, Q.Huy = Huy.",
+ "phan_cong": {
+  "Hien": [
+   "Teton Bros (2)",
+   "Mont-Bell (2)",
+   "ALLTERRAIN (2)",
+   "DESCENTE GOLF (2)"
+  ],
+  "Nhu": [
+   "TNF 別注 SHIGEMOTO 26SS~",
+   "TNF 別注 NAKAO 27SS~",
+   "UTMF フィニッシャーズ (1)",
+   "TOKYO MARATHON (2)"
+  ],
+  "Luan": [
+   "TNF 富山企画 (1) PPS~量産"
+  ],
+  "Cuong": [
+   "TNF 東京企画 (1) PPS~量産",
+   "HELLY HANSEN (1)",
+   "NEUTRALWORKS (1)",
+   "YONEX (2) ~26FW",
+   "全ブランドサンプル生産計画確認 (kiểm KH sản xuất mẫu mọi brand)"
+  ],
+  "Khanh": [
+   "TNF (ALL) 24FW~ 1st~SMS sample",
+   "Goldwin (1) 24FW PPS~量産",
+   "サスティナブル TORAIN (2) SMS"
+  ],
+  "Huy": [
+   "Goldwin (1)",
+   "TNF 別注 HOSOYA 26SS~",
+   "141 (サポート)",
+   "CANTERBURY (1) 26FW~",
+   "NANGA (2)"
+  ],
+  "Huyen Trang": [
+   "TNF HAT&CAP",
+   "141"
+  ],
+  "Bich Trang": [
+   "TNF (ALL) 27SS~ 1st~SMS sample",
+   "TNF Premium Snow 別注 26FW (1)",
+   "FOXFIRE (2)",
+   "TATRAS (2)",
+   "Kasco (2)",
+   "Yonex S27~ (2)"
+  ]
+ },
+ "lich_su_2017_2018": {
+  "mo_ta": "Các sheet ẩn (bảng 2/12/2017 và các bản sửa): nhân sự cũ Phong, Ngan, Thuan, Nhung; brand cũ MARMOT, MILLET, SNOW PEAK, UMBRO, WOOLRICH, SCHOFFEL, DESCENTE, C3FIT…",
+  "ky_thuat": {
+   "Cau": "Dịch/phiên dịch tiếng Nhật, Boken, đặt xe",
+   "Quyen": "Quản lý xưởng 1-A/B",
+   "Vy": "Nghiệp vụ mẫu (bản sau) hoặc xưởng 1-B + hỗ trợ mẫu (bản trước)",
+   "Hong": "Nghiệp vụ mẫu (bản trước)",
+   "Phung": "Quản lý xưởng 1-A, hỗ trợ mẫu"
+  }
+ }
+}

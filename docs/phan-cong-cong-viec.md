@@ -1,6 +1,6 @@
 # Dữ liệu phân công công việc TIVN (APIC, BTNB)
 
-Tài liệu tóm tắt 3 file Excel về phân công nghiệp vụ của nhân viên TIVN (Toray International Vietnam) tại hai nhà máy **APIC** và **BTNB**, dùng làm dữ liệu gốc khi phân công công việc.
+Tài liệu tóm tắt các file Excel về phân công nghiệp vụ của nhân viên TIVN (Toray International Vietnam) tại hai nhà máy **APIC** và **BTNB**, dùng làm dữ liệu gốc khi phân công công việc.
 
 ## Nguồn
 
@@ -9,10 +9,32 @@ Tài liệu tóm tắt 3 file Excel về phân công nghiệp vụ của nhân v
 | `Phan-tich-nghiep-vu-TIVN-APIC-2026-thuong-ky.xlsx` (2026年度上期, cập nhật 1/4/2026) | Bảng phân tích nghiệp vụ APIC: 102 việc × 18 người, tỷ lệ thời gian từng người. Danh sách mã hàng cố vấn 天方 phụ trách mùa 26SS. | `apic-2026-thuong-ky.json`, `ma-hang-co-van-amakata-26ss.json` |
 | `Hop-TIVN-phi-uy-thac-APIC-BTNB-20240130.xlsx` | Biên bản họp 15/9/2023, 31/10/2023, 27/11/2023, 30/1/2024 về phí ủy thác TIVN và khai trị giá hải quan (評価加算). Bảng phân tích nghiệp vụ APIC và BTNB năm 2023, 2024. Ngân sách phí ủy thác 2023, 2024. | `apic-2024.json`, `btnb-2024.json`, `apic-2023.json`, `btnb-2023.json` |
 | `Phan-cong-nghiep-vu-APIC-BTNB-2018-10.xlsx` | Bảng phân công cũ (10/2018): 110 việc, đánh dấu ●/○ theo người, kèm số giờ mỗi lần, tần suất, input/output. | `phan-cong-2018-10.json` |
+| `Phan-cong-brand-MD-APIC-20260722.xlsx` | Bảng phân công brand của nhóm MD APIC ngày 22/7/2026 (担当業務表). Các sheet ẩn: bảng brand 2017–2018 và lịch sử chuyển brand. | `brand-md-apic-2026-07-22.json` |
 
 Tạo lại JSON từ Excel: `python3 data/phan-cong/build.py . data/phan-cong`
 
 **Cách đọc số liệu:** mỗi người có tổng thời gian = 1,0 (100%). Ví dụ "Cuong 16%" nghĩa là Cuong dành khoảng 16% thời gian làm việc cho việc đó. Riêng file 2018 chỉ đánh dấu ● (phụ trách chính), ○ (phía Nhật hỗ trợ), (●) (phụ trách khi cần).
+
+## Phân công brand nhóm MD APIC (22/7/2026)
+
+(1) = brand do phòng 1 (1課) phía TI Nhật quản lý, (2) = phòng 2 (2課).
+
+| Người | Brand / phạm vi |
+|---|---|
+| Hien | Teton Bros (2), Mont-Bell (2), ALLTERRAIN (2), DESCENTE GOLF (2) |
+| Nhu | TNF 別注 SHIGEMOTO (từ 26SS), TNF 別注 NAKAO (từ 27SS), UTMF フィニッシャーズ (1), TOKYO MARATHON (2) |
+| Luan | TNF 富山企画 (1), từ PPS đến sản xuất đại trà |
+| Cuong | TNF 東京企画 (1) từ PPS đến đại trà, HELLY HANSEN (1), NEUTRALWORKS (1), YONEX (2) đến 26FW; **kiểm kế hoạch sản xuất mẫu của tất cả brand** |
+| Khanh | TNF (ALL) mẫu 1st–SMS từ 24FW, Goldwin (1) từ PPS đến đại trà từ 24FW, TORAIN bền vững (2) SMS. *Nghỉ thai sản, nay đã đi làm lại (10/2026).* |
+| Huy (Q.Huy) | Goldwin (1), TNF 別注 HOSOYA (từ 26SS), 141 (hỗ trợ), CANTERBURY (1) từ 26FW, NANGA (2) |
+| Huyen Trang (H.Trang) | TNF HAT&CAP, 141 |
+| Bich Trang (B.Trang) | TNF (ALL) mẫu 1st–SMS từ 27SS, TNF Premium Snow 別注 26FW (1), FOXFIRE (2), TATRAS (2), Kasco (2), YONEX (2) từ S27 |
+
+Tên viết tắt trong file BULK/SPL: HH = HELLY HANSEN, NW = NEUTRALWORKS, TNF(GTC企画) = TNF 富山企画, TNF別注 富山 = 別注 SHIGEMOTO/NAKAO (Nhu), TNF別注 東京 = 別注 HOSOYA (Huy).
+
+Trong thời gian Khanh nghỉ: mẫu TNF từ 27SS do Bich Trang làm, Goldwin đại trà từ 26FW do Huy làm.
+
+Lịch sử (sheet ẩn, 2017–2018): trước đây có Phong, Ngan, Thuan, Nhung làm merchandiser, phụ trách các brand như MARMOT, MILLET, SNOW PEAK, UMBRO, WOOLRICH, SCHOFFEL. Nhóm kỹ thuật khi đó: Cau dịch/phiên dịch tiếng Nhật, Boken, đặt xe; Quyen quản lý xưởng 1-A/B; Vy, Hong nghiệp vụ mẫu; Phung (email trucphuong, có lẽ là Phuong hiện nay) xưởng 1-A, hỗ trợ mẫu.
 
 ## Nhân sự APIC – 2026 上期 (dữ liệu mới nhất)
 

@@ -3,6 +3,7 @@
 Cập nhật: 27/10/2026. Nguồn dữ liệu:
 - `data/nguon/Thuc-te-BULK-19FW-27SS-20261012.xlsx`: hàng đại trà theo người, mùa, brand (số lượng, số mã, giây TB, ngày chuyền).
 - `data/nguon/Thuc-te-mau-SPL-23FW-27SS-20261012.xlsx`: mẫu (1st/2nd/3rd, SMS) theo người, mùa, brand, kèm bảng giờ dịch tài liệu cho mỗi mã theo brand.
+- `data/nguon/Phan-cong-brand-MD-APIC-20260722.xlsx`: phân công brand của nhóm MD ngày 22/7/2026.
 - `data/nguon/APIC-MD-Best-Practice-Handbook.docx`: định hướng MD (5 chức năng, KPI, chu kỳ tuần).
 - Bảng phân tích nghiệp vụ APIC 2026 上期 (`docs/phan-cong-cong-viec.md`).
 
@@ -39,7 +40,7 @@ Ngoài ra cần nhìn thêm:
 | B.Trang | 15 / 2.244 / 300 | 0 | 104 / 340 / 680 | 347 | 4 (TNF mẫu, TNF別注, FOXFIRE, TATRAS) | **1,1** |
 | Nhu | 79 / 56.164 / 770 | 35 / 32.056 / 448 | 34 / 49 / 98 | 230 | 1 (TNF別注富山) | **0,7** |
 | H.Trang | 0 | 0 | 8 / 24 / 96 | 13 | 1 (141) | **0,1** |
-| Khanh | 0 | 0 | 6 / 11 / 22 | 20 | 1 (TNF mẫu) | **0,1** |
+| Khanh *(nghỉ thai sản, vừa đi làm lại)* | 0 | 0 | 6 / 11 / 22 | 20 | 1 (TNF mẫu) | **0,1** |
 
 Chi tiết từng yếu tố (1,0 = trung bình):
 
@@ -67,17 +68,27 @@ Chi tiết từng yếu tố (1,0 = trung bình):
 
 ## Nhận xét
 
-1. **Cuong đang tải cao nhất**: nhiều mã nhất ở cả bulk và mẫu, 4 brand, ước khoảng 580 giờ dịch cho 27SS, vượt mức 375–500 giờ. HH là brand nặng nhất (4,3 giờ dịch/mã, 14 trang/mã) và đang tăng (mẫu 27SS: 34→45 cái, bulk 26FW: 40→56 mã).
+1. **Cuong đang tải cao nhất**: nhiều mã nhất ở cả bulk và mẫu, ước khoảng 580 giờ dịch cho 27SS, vượt mức 375–500 giờ. Ngoài brand, Cuong còn kiểm kế hoạch sản xuất mẫu của tất cả brand (việc này không có trong số liệu). YONEX đã chuyển sang B.Trang từ S27. HH là brand nặng nhất (4,3 giờ dịch/mã, 14 trang/mã) và đang tăng (mẫu 27SS: 34→45 cái, bulk 26FW: 40→56 mã).
 2. **Luan tải kiểu khác**: chỉ 1 brand, ít mã, nhưng số lượng bulk rất lớn (27SS: 207.757 cái, khoảng 62% số lượng bulk của nhóm), ngày chuyền gấp 4 lần trung bình. Việc nặng của Luan là theo dõi chuyền, NPL, xuất hàng, không phải dịch.
 3. **Hien và Q.Huy trên trung bình**: Hien chủ yếu do mẫu 27SS (TETON SMS 157 cái); Q.Huy tăng mạnh từ 26FW vì nhận thêm bulk GOLDWIN (trước là Khanh).
-4. **B.Trang (mới) đã nhận phần mẫu TNF** trước đây của Khanh (27SS: 340 cái, 104 mã). Mức tải gần trung bình.
+4. **B.Trang (mới) đã nhận phần mẫu TNF (ALL) từ 27SS** thay Khanh (340 cái, 104 mã), cộng thêm 5 brand nhỏ (Premium Snow 別注, FOXFIRE, TATRAS, Kasco, YONEX từ S27). Chỉ số 1,1 chưa tính hết YONEX/Kasco 27SS vì file chưa có số. Với người mới, khối lượng này là nặng.
 5. **Nhu thấp hơn** về mã hàng, nhưng còn việc hành chính, xuất hàng (bảng nghiệp vụ 2026 ghi khoảng 30% thời gian), nên tổng thể có thể gần trung bình.
-6. **Khanh và H.Trang gần như không có mã ở 27SS.** Khanh từng có tải mẫu lớn nhất nhóm (26FW: 566 cái, 145 mã), nay chuyển sang B.Trang và Q.Huy. Cần xác nhận hai bạn đang làm việc gì khác (xem câu hỏi bên dưới).
-7. **Bảng phân tích nghiệp vụ 2026 chưa phản ánh thực tế**: bảng chia gần như đều % cho các merchandiser (dịch 15%, tài liệu mẫu 14%, NPL thiếu ~30%…), trong khi chỉ số tải thực tế chênh nhau từ 0,7 đến 1,7.
+6. **Khanh vừa đi làm lại sau nghỉ thai sản**, nên số liệu 27SS gần như bằng 0. Trước khi nghỉ, Khanh có tải mẫu lớn nhất nhóm (26FW: 566 cái, 145 mã, 2.916 ngày may) và làm Goldwin đại trà. Đây là nguồn lực có kinh nghiệm để cân bằng lại nhóm.
+7. **H.Trang (Huyen Trang) chỉ phụ trách TNF HAT&CAP và 141**, khối lượng mã hàng rất nhỏ (27SS: 8 mã mẫu). Cần xác nhận phần thời gian còn lại của H.Trang dùng cho việc gì.
+8. **Bảng phân tích nghiệp vụ 2026 chưa phản ánh thực tế**: bảng chia gần như đều % cho các merchandiser (dịch 15%, tài liệu mẫu 14%, NPL thiếu ~30%…), trong khi chỉ số tải thực tế chênh nhau từ 0,7 đến 1,7.
 
 ### Gợi ý cân bằng
 
-- Giảm cho Cuong: chuyển 1 brand nhỏ (YONEX hoặc NW) hoặc một phần mẫu HH sang người đang tải thấp (Nhu, Khanh, H.Trang nếu còn trống).
+Khanh quay lại là cơ hội cân bằng. Trong năm đầu sau sinh, Khanh được nghỉ 60 phút/ngày vẫn tính công (Bộ luật Lao động 2019, Điều 137), nên tính công suất khoảng 7/8 người, và nên tăng việc dần trong 1–2 tháng đầu.
+
+| Phương án | Nội dung | Ưu | Nhược |
+|---|---|---|---|
+| A | Khanh nhận lại Goldwin đại trà (PPS~量産) từ Huy | Khanh đã quen brand. Huy giảm từ 1,3, có thể nhận bớt việc của Cuong (vd. NEUTRALWORKS). | Cần bàn giao giữa mùa 27SS đang chuẩn bị. |
+| B | Khanh làm cùng B.Trang mảng mẫu TNF (ALL), chia theo đợt (1st–3rd / SMS) hoặc theo nhóm mã | Giảm tải cho người mới. B.Trang còn 5 brand khác. Mẫu TNF là mảng Khanh có nhiều kinh nghiệm nhất. | Hai người cùng một brand nên phải chia mã rõ ràng. |
+| C | Khanh nhận NEUTRALWORKS hoặc một phần mẫu HELLY HANSEN từ Cuong | Giảm trực tiếp cho người tải cao nhất. | Khanh chưa làm brand này, cần thời gian làm quen. |
+
+Đề xuất: **A + B dần dần**. Tháng đầu Khanh nhận lại Goldwin đại trà (quen việc, ít rủi ro), sau đó nhận một phần mẫu TNF 27FW cùng B.Trang. Huy rảnh ra sẽ nhận NEUTRALWORKS từ Cuong.
+
 - Hỗ trợ Luan theo việc, không theo brand: tách phần theo dõi NPL/xuất hàng một phần lô lớn cho người khác.
 - Đưa bảng phân tích nghiệp vụ (業務分析表) kỳ sau theo số liệu thực tế. Lưu ý: các việc liên quan khai trị giá hải quan (ra rập, nhảy size, tài liệu may, phát triển SP) thay đổi người làm thì phải báo TI.
 
@@ -100,6 +111,7 @@ Sổ tay MD muốn MD chuyển từ "theo đuôi đơn hàng" sang "kiểm soát
 
 ## Câu hỏi mở
 
-- Khanh và H.Trang hiện làm việc gì (CAD, việc khác, nghỉ)? H.Trang có phải là "Trang" (CAD) trong bảng nghiệp vụ 2026 không?
+- Khanh đi làm lại từ ngày nào, làm đủ giờ hay đang giảm giờ? Mẫu TNF 27FW giao cho Khanh hay B.Trang?
+- Ngoài HAT&CAP và 141, H.Trang (Huyen Trang) còn làm việc gì? Có phải là "Trang" (CAD) trong bảng nghiệp vụ 2026 không?
 - Có tính Vy, nhóm kỹ thuật, nhóm CAD vào phân tích không? Hiện 2 file chỉ có nhóm merchandiser.
 - Muốn trọng số 4 yếu tố khác nhau không (vd. tăng trọng số giờ dịch)?
