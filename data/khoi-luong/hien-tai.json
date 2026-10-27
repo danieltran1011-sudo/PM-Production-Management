@@ -1,0 +1,182 @@
+{
+ "Cuong": {
+  "bulk_26FW_sl": 42691.0,
+  "bulk_26FW_ma": 81.0,
+  "bulk_26FW_ngay": 717.0,
+  "bulk_27SS_sl": 48820.0,
+  "bulk_27SS_ma": 48.0,
+  "bulk_27SS_ngay": 706.0,
+  "gio_dich": 581.6666666666667,
+  "spl_sl": 192.0,
+  "spl_ma": 89.0,
+  "spl_ngay": 738.0,
+  "so_brand": 4,
+  "chi_so": 1.69,
+  "cs_ma": 1.68,
+  "cs_bulk": 1.07,
+  "cs_mau": 1.96,
+  "cs_dich": 2.06,
+  "brands": [
+   "HH",
+   "NW",
+   "TNF(東京企画)",
+   "YONEX"
+  ]
+ },
+ "Hien": {
+  "bulk_26FW_sl": 31394.0,
+  "bulk_26FW_ma": 35.0,
+  "bulk_26FW_ngay": 579.0,
+  "bulk_27SS_sl": 20275.0,
+  "bulk_27SS_ma": 40.0,
+  "bulk_27SS_ngay": 371.0,
+  "gio_dich": 389.25,
+  "spl_sl": 282.0,
+  "spl_ma": 96.0,
+  "spl_ngay": 782.0,
+  "so_brand": 4,
+  "chi_so": 1.46,
+  "cs_ma": 1.67,
+  "cs_bulk": 0.71,
+  "cs_mau": 2.08,
+  "cs_dich": 1.38,
+  "brands": [
+   "ALLTERRAIN",
+   "DESCENT",
+   "MONTBELL",
+   "TETONBROS"
+  ]
+ },
+ "Nhu": {
+  "bulk_26FW_sl": 56164.0,
+  "bulk_26FW_ma": 79.0,
+  "bulk_26FW_ngay": 770.0,
+  "bulk_27SS_sl": 32056.0,
+  "bulk_27SS_ma": 35.0,
+  "bulk_27SS_ngay": 448.0,
+  "gio_dich": 230.0,
+  "spl_sl": 49.0,
+  "spl_ma": 34.0,
+  "spl_ngay": 98.0,
+  "so_brand": 1,
+  "chi_so": 0.71,
+  "cs_ma": 0.85,
+  "cs_bulk": 0.91,
+  "cs_mau": 0.26,
+  "cs_dich": 0.82,
+  "brands": [
+   "TNF別注富山"
+  ]
+ },
+ "Luan": {
+  "bulk_26FW_sl": 179012.0,
+  "bulk_26FW_ma": 89.0,
+  "bulk_26FW_ngay": 2922.0,
+  "bulk_27SS_sl": 207757.0,
+  "bulk_27SS_ma": 45.0,
+  "bulk_27SS_ngay": 2471.0,
+  "gio_dich": 268.33333333333337,
+  "spl_sl": 52.0,
+  "spl_ma": 25.0,
+  "spl_ngay": 104.0,
+  "so_brand": 1,
+  "chi_so": 1.53,
+  "cs_ma": 0.86,
+  "cs_bulk": 4.04,
+  "cs_mau": 0.28,
+  "cs_dich": 0.95,
+  "brands": [
+   "TNF(GTC企画)"
+  ]
+ },
+ "Q.Huy": {
+  "bulk_26FW_sl": 50760.0,
+  "bulk_26FW_ma": 77.0,
+  "bulk_26FW_ngay": 935.0,
+  "bulk_27SS_sl": 26439.0,
+  "bulk_27SS_ma": 43.0,
+  "bulk_27SS_ngay": 451.0,
+  "gio_dich": 407.0,
+  "spl_sl": 146.0,
+  "spl_ma": 80.0,
+  "spl_ngay": 492.0,
+  "so_brand": 4,
+  "chi_so": 1.32,
+  "cs_ma": 1.51,
+  "cs_bulk": 1.04,
+  "cs_mau": 1.31,
+  "cs_dich": 1.44,
+  "brands": [
+   "CANTERBURY",
+   "GOLDWIN",
+   "NANGA",
+   "TNF別注東京"
+  ]
+ },
+ "B.Trang": {
+  "bulk_26FW_sl": 2244.0,
+  "bulk_26FW_ma": 15.0,
+  "bulk_26FW_ngay": 300.0,
+  "spl_sl": 340.0,
+  "spl_ma": 104.0,
+  "spl_ngay": 680.0,
+  "gio_dich": 346.6666666666667,
+  "so_brand": 4,
+  "bulk_27SS_ma": 0.0,
+  "bulk_27SS_ngay": 0.0,
+  "chi_so": 1.13,
+  "cs_ma": 1.27,
+  "cs_bulk": 0.22,
+  "cs_mau": 1.81,
+  "cs_dich": 1.23,
+  "bulk_27SS_sl": 0.0,
+  "brands": [
+   "FOXFIRE",
+   "TATRAS",
+   "TNF(東京企画、GTC企画共通)サンプル",
+   "TNF別注東京"
+  ]
+ },
+ "Khanh": {
+  "spl_sl": 11.0,
+  "spl_ma": 6.0,
+  "spl_ngay": 22.0,
+  "gio_dich": 20.0,
+  "so_brand": 1,
+  "bulk_27SS_ma": 0.0,
+  "bulk_26FW_ngay": 0.0,
+  "bulk_27SS_ngay": 0.0,
+  "chi_so": 0.05,
+  "cs_ma": 0.07,
+  "cs_bulk": 0.0,
+  "cs_mau": 0.06,
+  "cs_dich": 0.07,
+  "bulk_26FW_ma": 0.0,
+  "bulk_26FW_sl": 0.0,
+  "bulk_27SS_sl": 0.0,
+  "brands": [
+   "TNF(東京企画、GTC企画共通)サンプル"
+  ]
+ },
+ "H.Trang": {
+  "spl_sl": 24.0,
+  "spl_ma": 8.0,
+  "spl_ngay": 96.0,
+  "gio_dich": 13.333333333333334,
+  "so_brand": 1,
+  "bulk_27SS_ma": 0.0,
+  "bulk_26FW_ngay": 0.0,
+  "bulk_27SS_ngay": 0.0,
+  "chi_so": 0.1,
+  "cs_ma": 0.1,
+  "cs_bulk": 0.0,
+  "cs_mau": 0.25,
+  "cs_dich": 0.05,
+  "bulk_26FW_ma": 0.0,
+  "bulk_26FW_sl": 0.0,
+  "bulk_27SS_sl": 0.0,
+  "brands": [
+   "141"
+  ]
+ }
+}
