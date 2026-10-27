@@ -59,6 +59,9 @@ def est_sec(b):
         if m in h: return h[m]
     return None
 CUR={'bulk':['26FW','27SS'],'spl':['27SS']}
+# Hệ số độ khó theo brand (định tính, do quản lý đánh giá 10/2026). Chỉ dùng khi tính chỉ số tải; số mã/ngày hiển thị vẫn là số gốc.
+# ALLTERRAIN, DESCENTE: tài liệu, rập không rõ, phải hỏi kỹ thuật nhiều; TIJ chuẩn bị yếu, hay thiếu NPL.
+HE_SO_KHO={'ALLTERRAIN':1.3,'DESCENT':1.3,'DESCENTEGOLF':1.3}
 P=collections.defaultdict(lambda: collections.defaultdict(float)); brands=collections.defaultdict(set); miss=set(); notes=[]
 for r in d['bulk']:
     if r['mua'] not in CUR['bulk']: continue
@@ -67,6 +70,9 @@ for r in d['bulk']:
     h=TB.get(key(r['brand']))
     if h is None: miss.add(('B',r['brand']))
     if m=='27SS': P[p]['gio_dich']+=r['ma']*(h or 0)
+    k=HE_SO_KHO.get(key(r['brand']),1.0)
+    P[p]['w_bulk']+=r['ngay']*k
+    if m=='27SS': P[p]['w_ma']+=r['ma']*k; P[p]['w_dich']+=r['ma']*(h or 0)*k
     brands[p].add(key(r['brand']))
 for r in d['spl']:
     if r['mua'] not in CUR['spl']: continue
@@ -78,6 +84,8 @@ for r in d['spl']:
     h=TS.get(key(r['brand'])) or TB.get(key(r['brand']))
     if h is None: miss.add(('S',r['brand']))
     P[p]['gio_dich']+=r['ma']*(h or 0); brands[p].add(key(r['brand']))
+    k=HE_SO_KHO.get(key(r['brand']),1.0)
+    P[p]['w_ma']+=r['ma']*k; P[p]['w_mau']+=ngay*k; P[p]['w_dich']+=r['ma']*(h or 0)*k
 for p in P: P[p]['so_brand']=len(brands[p])
 cols=['bulk_26FW_ma','bulk_26FW_sl','bulk_26FW_ngay','bulk_27SS_ma','bulk_27SS_sl','bulk_27SS_ngay','spl_ma','spl_sl','spl_ngay','gio_dich','so_brand']
 # chỉ số tải tương đối: TB phần chia của 4 nhóm yếu tố (mã hàng, ngày chuyền bulk, ngày may mẫu, giờ dịch), 1.0 = trung bình nhóm
@@ -89,10 +97,10 @@ people=[p for p in P if p not in CAD|KHONG_SO]
 def share(f):
     tot=sum(f(P[p]) for p in people); n=len(people)
     return {p:(f(P[p])/tot*n if tot else 0) for p in people}
-S1=share(lambda x:x['bulk_27SS_ma']+x['spl_ma'])
-S2=share(lambda x:x['bulk_26FW_ngay']+x['bulk_27SS_ngay'])
-S3=share(lambda x:x['spl_ngay'])
-S4=share(lambda x:x['gio_dich'])
+S1=share(lambda x:x['w_ma'])
+S2=share(lambda x:x['w_bulk'])
+S3=share(lambda x:x['w_mau'])
+S4=share(lambda x:x['w_dich'])
 # Trọng số 4 yếu tố (mã, ngày chuyền bulk, ngày may mẫu, giờ dịch). Mặc định chia đều.
 PHUONG_AN = {'deu': (.25,.25,.25,.25), 'uu_tien_dich': (.2,.2,.2,.4), 'uu_tien_bulk': (.2,.4,.2,.2), 'uu_tien_mau': (.2,.2,.4,.2)}
 for p in people:

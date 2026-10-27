@@ -1,56 +1,5 @@
 {
- "B.Trang làm hết mẫu TNF SMS 27FW": {
-  "Cuong": {
-   "chi_so": 1.26,
-   "ma": 117,
-   "ngay_bulk": 683,
-   "ngay_mau": 780,
-   "gio_dich": 500
-  },
-  "Luan": {
-   "chi_so": 1.4,
-   "ma": 70,
-   "ngay_bulk": 2471,
-   "ngay_mau": 104,
-   "gio_dich": 268
-  },
-  "Hien": {
-   "chi_so": 0.59,
-   "ma": 75,
-   "ngay_bulk": 371,
-   "ngay_mau": 136,
-   "gio_dich": 240
-  },
-  "Q.Huy": {
-   "chi_so": 1.33,
-   "ma": 144,
-   "ngay_bulk": 451,
-   "ngay_mau": 1055,
-   "gio_dich": 488
-  },
-  "B.Trang": {
-   "chi_so": 1.61,
-   "ma": 131,
-   "ngay_bulk": 0,
-   "ngay_mau": 2516,
-   "gio_dich": 437
-  },
-  "Nhu": {
-   "chi_so": 0.58,
-   "ma": 69,
-   "ngay_bulk": 448,
-   "ngay_mau": 98,
-   "gio_dich": 230
-  },
-  "Khanh": {
-   "chi_so": 0.15,
-   "ma": 17,
-   "ngay_bulk": 23,
-   "ngay_mau": 82,
-   "gio_dich": 65
-  }
- },
- "Khanh chia 1/3 mẫu TNF SMS 27FW": {
+ "0. Như lần trước (chưa bù mẫu Hien, chưa có hệ số khó)": {
   "Cuong": {
    "chi_so": 1.26,
    "ma": 117,
@@ -101,55 +50,310 @@
    "gio_dich": 172
   }
  },
- "Khanh chia 1/2 mẫu TNF SMS 27FW": {
+ "1. Đã quyết + bù mẫu 26FW Hien + hệ số khó ALLTERRAIN/DESCENTE 1,3": {
   "Cuong": {
-   "chi_so": 1.26,
+   "chi_so": 1.21,
    "ma": 117,
    "ngay_bulk": 683,
    "ngay_mau": 780,
    "gio_dich": 500
   },
   "Luan": {
-   "chi_so": 1.4,
+   "chi_so": 1.36,
    "ma": 70,
    "ngay_bulk": 2471,
    "ngay_mau": 104,
    "gio_dich": 268
   },
   "Hien": {
-   "chi_so": 0.59,
-   "ma": 75,
-   "ngay_bulk": 371,
-   "ngay_mau": 136,
-   "gio_dich": 240
+   "chi_so": 0.81,
+   "ma": 98,
+   "ngay_bulk": 442,
+   "ngay_mau": 401,
+   "gio_dich": 321
   },
   "Q.Huy": {
-   "chi_so": 1.33,
+   "chi_so": 1.28,
    "ma": 144,
    "ngay_bulk": 451,
    "ngay_mau": 1055,
    "gio_dich": 488
   },
   "B.Trang": {
-   "chi_so": 0.92,
-   "ma": 83,
+   "chi_so": 1.1,
+   "ma": 99,
    "ngay_bulk": 0,
-   "ngay_mau": 1316,
-   "gio_dich": 277
+   "ngay_mau": 1716,
+   "gio_dich": 330
   },
   "Nhu": {
-   "chi_so": 0.58,
+   "chi_so": 0.56,
    "ma": 69,
    "ngay_bulk": 448,
    "ngay_mau": 98,
    "gio_dich": 230
   },
   "Khanh": {
-   "chi_so": 0.93,
-   "ma": 65,
+   "chi_so": 0.64,
+   "ma": 49,
    "ngay_bulk": 23,
-   "ngay_mau": 1282,
+   "ngay_mau": 882,
+   "gio_dich": 172
+  }
+ },
+ "2. + giao thêm việc quản lý cho Luan, Cuong (10% mỗi người)": {
+  "Cuong": {
+   "chi_so": 1.35,
+   "ma": 117,
+   "ngay_bulk": 683,
+   "ngay_mau": 780,
+   "gio_dich": 500
+  },
+  "Luan": {
+   "chi_so": 1.52,
+   "ma": 70,
+   "ngay_bulk": 2471,
+   "ngay_mau": 104,
+   "gio_dich": 268
+  },
+  "Hien": {
+   "chi_so": 0.81,
+   "ma": 98,
+   "ngay_bulk": 442,
+   "ngay_mau": 401,
+   "gio_dich": 321
+  },
+  "Q.Huy": {
+   "chi_so": 1.28,
+   "ma": 144,
+   "ngay_bulk": 451,
+   "ngay_mau": 1055,
+   "gio_dich": 488
+  },
+  "B.Trang": {
+   "chi_so": 1.1,
+   "ma": 99,
+   "ngay_bulk": 0,
+   "ngay_mau": 1716,
+   "gio_dich": 330
+  },
+  "Nhu": {
+   "chi_so": 0.56,
+   "ma": 69,
+   "ngay_bulk": 448,
+   "ngay_mau": 98,
+   "gio_dich": 230
+  },
+  "Khanh": {
+   "chi_so": 0.64,
+   "ma": 49,
+   "ngay_bulk": 23,
+   "ngay_mau": 882,
+   "gio_dich": 172
+  }
+ },
+ "3. + 25% bulk TNF 富山企画 27SS (theo dõi NPL, xuất hàng) của Luan sang Khanh": {
+  "Cuong": {
+   "chi_so": 1.35,
+   "ma": 117,
+   "ngay_bulk": 683,
+   "ngay_mau": 780,
+   "gio_dich": 500
+  },
+  "Luan": {
+   "chi_so": 1.18,
+   "ma": 59,
+   "ngay_bulk": 1853,
+   "ngay_mau": 104,
    "gio_dich": 225
+  },
+  "Hien": {
+   "chi_so": 0.81,
+   "ma": 98,
+   "ngay_bulk": 442,
+   "ngay_mau": 401,
+   "gio_dich": 321
+  },
+  "Q.Huy": {
+   "chi_so": 1.28,
+   "ma": 144,
+   "ngay_bulk": 451,
+   "ngay_mau": 1055,
+   "gio_dich": 488
+  },
+  "B.Trang": {
+   "chi_so": 1.1,
+   "ma": 99,
+   "ngay_bulk": 0,
+   "ngay_mau": 1716,
+   "gio_dich": 330
+  },
+  "Nhu": {
+   "chi_so": 0.56,
+   "ma": 69,
+   "ngay_bulk": 448,
+   "ngay_mau": 98,
+   "gio_dich": 230
+  },
+  "Khanh": {
+   "chi_so": 0.98,
+   "ma": 60,
+   "ngay_bulk": 641,
+   "ngay_mau": 882,
+   "gio_dich": 215
+  }
+ },
+ "4. + 25% bulk TNF 富山企画 27SS của Luan sang Nhu (cùng nhóm TNF 富山)": {
+  "Cuong": {
+   "chi_so": 1.35,
+   "ma": 117,
+   "ngay_bulk": 683,
+   "ngay_mau": 780,
+   "gio_dich": 500
+  },
+  "Luan": {
+   "chi_so": 1.18,
+   "ma": 59,
+   "ngay_bulk": 1853,
+   "ngay_mau": 104,
+   "gio_dich": 225
+  },
+  "Hien": {
+   "chi_so": 0.81,
+   "ma": 98,
+   "ngay_bulk": 442,
+   "ngay_mau": 401,
+   "gio_dich": 321
+  },
+  "Q.Huy": {
+   "chi_so": 1.28,
+   "ma": 144,
+   "ngay_bulk": 451,
+   "ngay_mau": 1055,
+   "gio_dich": 488
+  },
+  "B.Trang": {
+   "chi_so": 1.1,
+   "ma": 99,
+   "ngay_bulk": 0,
+   "ngay_mau": 1716,
+   "gio_dich": 330
+  },
+  "Nhu": {
+   "chi_so": 0.86,
+   "ma": 80,
+   "ngay_bulk": 1066,
+   "ngay_mau": 98,
+   "gio_dich": 273
+  },
+  "Khanh": {
+   "chi_so": 0.64,
+   "ma": 49,
+   "ngay_bulk": 23,
+   "ngay_mau": 882,
+   "gio_dich": 172
+  }
+ },
+ "5. + 15% sang Khanh, 15% sang Nhu": {
+  "Cuong": {
+   "chi_so": 1.35,
+   "ma": 117,
+   "ngay_bulk": 683,
+   "ngay_mau": 780,
+   "gio_dich": 500
+  },
+  "Luan": {
+   "chi_so": 1.15,
+   "ma": 58,
+   "ngay_bulk": 1785,
+   "ngay_mau": 104,
+   "gio_dich": 220
+  },
+  "Hien": {
+   "chi_so": 0.81,
+   "ma": 98,
+   "ngay_bulk": 442,
+   "ngay_mau": 401,
+   "gio_dich": 321
+  },
+  "Q.Huy": {
+   "chi_so": 1.28,
+   "ma": 144,
+   "ngay_bulk": 451,
+   "ngay_mau": 1055,
+   "gio_dich": 488
+  },
+  "B.Trang": {
+   "chi_so": 1.1,
+   "ma": 99,
+   "ngay_bulk": 0,
+   "ngay_mau": 1716,
+   "gio_dich": 330
+  },
+  "Nhu": {
+   "chi_so": 0.71,
+   "ma": 75,
+   "ngay_bulk": 763,
+   "ngay_mau": 98,
+   "gio_dich": 252
+  },
+  "Khanh": {
+   "chi_so": 0.84,
+   "ma": 56,
+   "ngay_bulk": 394,
+   "ngay_mau": 882,
+   "gio_dich": 198
+  }
+ },
+ "6. Phương án 5 + Hien hỗ trợ 25% mẫu HELLY HANSEN của Cuong": {
+  "Cuong": {
+   "chi_so": 1.15,
+   "ma": 99,
+   "ngay_bulk": 683,
+   "ngay_mau": 585,
+   "gio_dich": 422
+  },
+  "Luan": {
+   "chi_so": 1.15,
+   "ma": 58,
+   "ngay_bulk": 1785,
+   "ngay_mau": 104,
+   "gio_dich": 220
+  },
+  "Hien": {
+   "chi_so": 0.98,
+   "ma": 116,
+   "ngay_bulk": 442,
+   "ngay_mau": 596,
+   "gio_dich": 399
+  },
+  "Q.Huy": {
+   "chi_so": 1.28,
+   "ma": 144,
+   "ngay_bulk": 451,
+   "ngay_mau": 1055,
+   "gio_dich": 488
+  },
+  "B.Trang": {
+   "chi_so": 1.1,
+   "ma": 99,
+   "ngay_bulk": 0,
+   "ngay_mau": 1716,
+   "gio_dich": 330
+  },
+  "Nhu": {
+   "chi_so": 0.71,
+   "ma": 75,
+   "ngay_bulk": 763,
+   "ngay_mau": 98,
+   "gio_dich": 252
+  },
+  "Khanh": {
+   "chi_so": 0.84,
+   "ma": 56,
+   "ngay_bulk": 394,
+   "ngay_mau": 882,
+   "gio_dich": 198
   }
  }
 }
