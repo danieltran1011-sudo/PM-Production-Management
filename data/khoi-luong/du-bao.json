@@ -1,164 +1,11 @@
 {
- "A. TNF 東京企画 → Luan; Khanh làm báo cáo 2 tuần, NPL, BL/P/L cho cả TNF 富山 + 東京 (~15% việc Luan)": {
+ "0. Chưa chia việc Luan – điều phối/quản lý ~1 giờ/ngày (Cuong 10%, Luan 10%)": {
   "Cuong": {
    "chi_so": 1.35,
-   "ma": 110,
-   "ngay_bulk": 433,
+   "ma": 117,
+   "ngay_bulk": 683,
    "ngay_mau": 780,
-   "gio_dich": 477
-  },
-  "Luan": {
-   "chi_so": 1.41,
-   "ma": 77,
-   "ngay_bulk": 2721,
-   "ngay_mau": 104,
-   "gio_dich": 292
-  },
-  "Hien": {
-   "chi_so": 0.81,
-   "ma": 98,
-   "ngay_bulk": 442,
-   "ngay_mau": 401,
-   "gio_dich": 321
-  },
-  "Q.Huy": {
-   "chi_so": 1.28,
-   "ma": 144,
-   "ngay_bulk": 451,
-   "ngay_mau": 1055,
-   "gio_dich": 488
-  },
-  "B.Trang": {
-   "chi_so": 1.1,
-   "ma": 99,
-   "ngay_bulk": 0,
-   "ngay_mau": 1716,
-   "gio_dich": 330
-  },
-  "Nhu": {
-   "chi_so": 0.56,
-   "ma": 69,
-   "ngay_bulk": 448,
-   "ngay_mau": 98,
-   "gio_dich": 230
-  },
-  "Khanh": {
-   "chi_so": 0.92,
-   "ma": 49,
-   "ngay_bulk": 23,
-   "ngay_mau": 882,
-   "gio_dich": 172
-  }
- },
- "B. Như A, thêm Khanh hỗ trợ dịch tài liệu TNF (~30% việc Luan)": {
-  "Cuong": {
-   "chi_so": 1.35,
-   "ma": 110,
-   "ngay_bulk": 433,
-   "ngay_mau": 780,
-   "gio_dich": 477
-  },
-  "Luan": {
-   "chi_so": 1.16,
-   "ma": 77,
-   "ngay_bulk": 2721,
-   "ngay_mau": 104,
-   "gio_dich": 292
-  },
-  "Hien": {
-   "chi_so": 0.81,
-   "ma": 98,
-   "ngay_bulk": 442,
-   "ngay_mau": 401,
-   "gio_dich": 321
-  },
-  "Q.Huy": {
-   "chi_so": 1.28,
-   "ma": 144,
-   "ngay_bulk": 451,
-   "ngay_mau": 1055,
-   "gio_dich": 488
-  },
-  "B.Trang": {
-   "chi_so": 1.1,
-   "ma": 99,
-   "ngay_bulk": 0,
-   "ngay_mau": 1716,
-   "gio_dich": 330
-  },
-  "Nhu": {
-   "chi_so": 0.56,
-   "ma": 69,
-   "ngay_bulk": 448,
-   "ngay_mau": 98,
-   "gio_dich": 230
-  },
-  "Khanh": {
-   "chi_so": 1.21,
-   "ma": 49,
-   "ngay_bulk": 23,
-   "ngay_mau": 882,
-   "gio_dich": 172
-  }
- },
- "C. TNF 東京企画 → Khanh (nguyên brand); Khanh làm báo cáo 2 tuần, NPL, BL/P/L của Luan (~15%)": {
-  "Cuong": {
-   "chi_so": 1.35,
-   "ma": 110,
-   "ngay_bulk": 433,
-   "ngay_mau": 780,
-   "gio_dich": 477
-  },
-  "Luan": {
-   "chi_so": 1.29,
-   "ma": 70,
-   "ngay_bulk": 2471,
-   "ngay_mau": 104,
-   "gio_dich": 268
-  },
-  "Hien": {
-   "chi_so": 0.81,
-   "ma": 98,
-   "ngay_bulk": 442,
-   "ngay_mau": 401,
-   "gio_dich": 321
-  },
-  "Q.Huy": {
-   "chi_so": 1.28,
-   "ma": 144,
-   "ngay_bulk": 451,
-   "ngay_mau": 1055,
-   "gio_dich": 488
-  },
-  "B.Trang": {
-   "chi_so": 1.1,
-   "ma": 99,
-   "ngay_bulk": 0,
-   "ngay_mau": 1716,
-   "gio_dich": 330
-  },
-  "Nhu": {
-   "chi_so": 0.56,
-   "ma": 69,
-   "ngay_bulk": 448,
-   "ngay_mau": 98,
-   "gio_dich": 230
-  },
-  "Khanh": {
-   "chi_so": 1.05,
-   "ma": 56,
-   "ngay_bulk": 273,
-   "ngay_mau": 882,
-   "gio_dich": 195
-  }
- },
- "D. TNF 東京企画 → Khanh (nguyên brand); Luan giữ nguyên việc của mình": {
-  "Cuong": {
-   "chi_so": 1.35,
-   "ma": 110,
-   "ngay_bulk": 433,
-   "ngay_mau": 780,
-   "gio_dich": 477
+   "gio_dich": 500
   },
   "Luan": {
    "chi_so": 1.52,
@@ -196,11 +43,266 @@
    "gio_dich": 230
   },
   "Khanh": {
-   "chi_so": 0.79,
-   "ma": 56,
-   "ngay_bulk": 273,
+   "chi_so": 0.64,
+   "ma": 49,
+   "ngay_bulk": 23,
    "ngay_mau": 882,
-   "gio_dich": 195
+   "gio_dich": 172
+  }
+ },
+ "1. Khanh làm hậu cần TNF 富山企画 (~15% việc Luan) – điều phối/quản lý ~1 giờ/ngày (Cuong 10%, Luan 10%)": {
+  "Cuong": {
+   "chi_so": 1.35,
+   "ma": 117,
+   "ngay_bulk": 683,
+   "ngay_mau": 780,
+   "gio_dich": 500
+  },
+  "Luan": {
+   "chi_so": 1.29,
+   "ma": 70,
+   "ngay_bulk": 2471,
+   "ngay_mau": 104,
+   "gio_dich": 268
+  },
+  "Hien": {
+   "chi_so": 0.81,
+   "ma": 98,
+   "ngay_bulk": 442,
+   "ngay_mau": 401,
+   "gio_dich": 321
+  },
+  "Q.Huy": {
+   "chi_so": 1.28,
+   "ma": 144,
+   "ngay_bulk": 451,
+   "ngay_mau": 1055,
+   "gio_dich": 488
+  },
+  "B.Trang": {
+   "chi_so": 1.1,
+   "ma": 99,
+   "ngay_bulk": 0,
+   "ngay_mau": 1716,
+   "gio_dich": 330
+  },
+  "Nhu": {
+   "chi_so": 0.56,
+   "ma": 69,
+   "ngay_bulk": 448,
+   "ngay_mau": 98,
+   "gio_dich": 230
+  },
+  "Khanh": {
+   "chi_so": 0.9,
+   "ma": 49,
+   "ngay_bulk": 23,
+   "ngay_mau": 882,
+   "gio_dich": 172
+  }
+ },
+ "2. + Khanh hỗ trợ dịch tài liệu (~25% việc Luan) – điều phối/quản lý ~1 giờ/ngày (Cuong 10%, Luan 10%)": {
+  "Cuong": {
+   "chi_so": 1.35,
+   "ma": 117,
+   "ngay_bulk": 683,
+   "ngay_mau": 780,
+   "gio_dich": 500
+  },
+  "Luan": {
+   "chi_so": 1.14,
+   "ma": 70,
+   "ngay_bulk": 2471,
+   "ngay_mau": 104,
+   "gio_dich": 268
+  },
+  "Hien": {
+   "chi_so": 0.81,
+   "ma": 98,
+   "ngay_bulk": 442,
+   "ngay_mau": 401,
+   "gio_dich": 321
+  },
+  "Q.Huy": {
+   "chi_so": 1.28,
+   "ma": 144,
+   "ngay_bulk": 451,
+   "ngay_mau": 1055,
+   "gio_dich": 488
+  },
+  "B.Trang": {
+   "chi_so": 1.1,
+   "ma": 99,
+   "ngay_bulk": 0,
+   "ngay_mau": 1716,
+   "gio_dich": 330
+  },
+  "Nhu": {
+   "chi_so": 0.56,
+   "ma": 69,
+   "ngay_bulk": 448,
+   "ngay_mau": 98,
+   "gio_dich": 230
+  },
+  "Khanh": {
+   "chi_so": 1.07,
+   "ma": 49,
+   "ngay_bulk": 23,
+   "ngay_mau": 882,
+   "gio_dich": 172
+  }
+ },
+ "0. Chưa chia việc Luan – điều phối ~2 giờ/ngày (Cuong 20%, Luan 10%)": {
+  "Cuong": {
+   "chi_so": 1.51,
+   "ma": 117,
+   "ngay_bulk": 683,
+   "ngay_mau": 780,
+   "gio_dich": 500
+  },
+  "Luan": {
+   "chi_so": 1.52,
+   "ma": 70,
+   "ngay_bulk": 2471,
+   "ngay_mau": 104,
+   "gio_dich": 268
+  },
+  "Hien": {
+   "chi_so": 0.81,
+   "ma": 98,
+   "ngay_bulk": 442,
+   "ngay_mau": 401,
+   "gio_dich": 321
+  },
+  "Q.Huy": {
+   "chi_so": 1.28,
+   "ma": 144,
+   "ngay_bulk": 451,
+   "ngay_mau": 1055,
+   "gio_dich": 488
+  },
+  "B.Trang": {
+   "chi_so": 1.1,
+   "ma": 99,
+   "ngay_bulk": 0,
+   "ngay_mau": 1716,
+   "gio_dich": 330
+  },
+  "Nhu": {
+   "chi_so": 0.56,
+   "ma": 69,
+   "ngay_bulk": 448,
+   "ngay_mau": 98,
+   "gio_dich": 230
+  },
+  "Khanh": {
+   "chi_so": 0.64,
+   "ma": 49,
+   "ngay_bulk": 23,
+   "ngay_mau": 882,
+   "gio_dich": 172
+  }
+ },
+ "1. Khanh làm hậu cần TNF 富山企画 (~15% việc Luan) – điều phối ~2 giờ/ngày (Cuong 20%, Luan 10%)": {
+  "Cuong": {
+   "chi_so": 1.51,
+   "ma": 117,
+   "ngay_bulk": 683,
+   "ngay_mau": 780,
+   "gio_dich": 500
+  },
+  "Luan": {
+   "chi_so": 1.29,
+   "ma": 70,
+   "ngay_bulk": 2471,
+   "ngay_mau": 104,
+   "gio_dich": 268
+  },
+  "Hien": {
+   "chi_so": 0.81,
+   "ma": 98,
+   "ngay_bulk": 442,
+   "ngay_mau": 401,
+   "gio_dich": 321
+  },
+  "Q.Huy": {
+   "chi_so": 1.28,
+   "ma": 144,
+   "ngay_bulk": 451,
+   "ngay_mau": 1055,
+   "gio_dich": 488
+  },
+  "B.Trang": {
+   "chi_so": 1.1,
+   "ma": 99,
+   "ngay_bulk": 0,
+   "ngay_mau": 1716,
+   "gio_dich": 330
+  },
+  "Nhu": {
+   "chi_so": 0.56,
+   "ma": 69,
+   "ngay_bulk": 448,
+   "ngay_mau": 98,
+   "gio_dich": 230
+  },
+  "Khanh": {
+   "chi_so": 0.9,
+   "ma": 49,
+   "ngay_bulk": 23,
+   "ngay_mau": 882,
+   "gio_dich": 172
+  }
+ },
+ "2. + Khanh hỗ trợ dịch tài liệu (~25% việc Luan) – điều phối ~2 giờ/ngày (Cuong 20%, Luan 10%)": {
+  "Cuong": {
+   "chi_so": 1.51,
+   "ma": 117,
+   "ngay_bulk": 683,
+   "ngay_mau": 780,
+   "gio_dich": 500
+  },
+  "Luan": {
+   "chi_so": 1.14,
+   "ma": 70,
+   "ngay_bulk": 2471,
+   "ngay_mau": 104,
+   "gio_dich": 268
+  },
+  "Hien": {
+   "chi_so": 0.81,
+   "ma": 98,
+   "ngay_bulk": 442,
+   "ngay_mau": 401,
+   "gio_dich": 321
+  },
+  "Q.Huy": {
+   "chi_so": 1.28,
+   "ma": 144,
+   "ngay_bulk": 451,
+   "ngay_mau": 1055,
+   "gio_dich": 488
+  },
+  "B.Trang": {
+   "chi_so": 1.1,
+   "ma": 99,
+   "ngay_bulk": 0,
+   "ngay_mau": 1716,
+   "gio_dich": 330
+  },
+  "Nhu": {
+   "chi_so": 0.56,
+   "ma": 69,
+   "ngay_bulk": 448,
+   "ngay_mau": 98,
+   "gio_dich": 230
+  },
+  "Khanh": {
+   "chi_so": 1.07,
+   "ma": 49,
+   "ngay_bulk": 23,
+   "ngay_mau": 882,
+   "gio_dich": 172
   }
  }
 }

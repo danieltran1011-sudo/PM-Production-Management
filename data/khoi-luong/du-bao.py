@@ -83,18 +83,14 @@ def in_kq(kq):
 
 if __name__ == '__main__':
     K = 1/3  # Khanh nhận 1/3 mẫu TNF triển lãm của B.Trang (đã quyết)
-    # Quyết định 10/2026: Hien, Huy, Nhu giữ nguyên. Cuong chỉ còn HELLY HANSEN + điều phối chung
-    # (theo dõi xuất hàng cả nhóm, quản lý chung may mẫu) – tạm tính 20% thời gian. Luan nhận việc quản lý ~10%.
-    GIAO = {'Luan': 0.1, 'Cuong': 0.2}
-    kq = {
-     'A. TNF 東京企画 → Luan; Khanh làm báo cáo 2 tuần, NPL, BL/P/L cho cả TNF 富山 + 東京 (~15% việc Luan)':
-        tai(K, giao_them=GIAO, chu_moi={'TNF(東京企画)': 'Luan'}, chuyen_phan=[('Luan', 'Khanh', 0.15)]),
-     'B. Như A, thêm Khanh hỗ trợ dịch tài liệu TNF (~30% việc Luan)':
-        tai(K, giao_them=GIAO, chu_moi={'TNF(東京企画)': 'Luan'}, chuyen_phan=[('Luan', 'Khanh', 0.30)]),
-     'C. TNF 東京企画 → Khanh (nguyên brand); Khanh làm báo cáo 2 tuần, NPL, BL/P/L của Luan (~15%)':
-        tai(K, giao_them=GIAO, chu_moi={'TNF(東京企画)': 'Khanh'}, chuyen_phan=[('Luan', 'Khanh', 0.15)]),
-     'D. TNF 東京企画 → Khanh (nguyên brand); Luan giữ nguyên việc của mình':
-        tai(K, giao_them=GIAO, chu_moi={'TNF(東京企画)': 'Khanh'}),
-    }
+    # Quyết định 10/2026: Hien, Huy, Nhu giữ nguyên. Cuong chỉ chuyển NEUTRALWORKS (→ Khanh), giữ HELLY HANSEN (chủ lực)
+    # và TNF 東京企画, nhận thêm điều phối chung (xuất hàng cả nhóm, quản lý chung may mẫu). Luan nhận việc quản lý.
+    # Thời gian việc giao thêm chưa biết, thử 2 mức.
+    kq = {}
+    for ten, giao in (('điều phối/quản lý ~1 giờ/ngày (Cuong 10%, Luan 10%)', {'Cuong': 0.1, 'Luan': 0.1}),
+                      ('điều phối ~2 giờ/ngày (Cuong 20%, Luan 10%)', {'Cuong': 0.2, 'Luan': 0.1})):
+        kq[f'0. Chưa chia việc Luan – {ten}'] = tai(K, giao_them=giao)
+        kq[f'1. Khanh làm hậu cần TNF 富山企画 (~15% việc Luan) – {ten}'] = tai(K, giao_them=giao, chuyen_phan=[('Luan', 'Khanh', 0.15)])
+        kq[f'2. + Khanh hỗ trợ dịch tài liệu (~25% việc Luan) – {ten}'] = tai(K, giao_them=giao, chuyen_phan=[('Luan', 'Khanh', 0.25)])
     in_kq(kq)
     json.dump(kq, open('data/khoi-luong/du-bao.json', 'w'), ensure_ascii=False, indent=1)
