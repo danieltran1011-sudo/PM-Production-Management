@@ -24,16 +24,15 @@ def run(moves, label):
         P[p]['ma']+=r['ma']; P[p]['mau']+=ngay
         P[p]['dich']+=r['ma']*((ns['TS'].get(ns['key'](r['brand'])) or ns['TB'].get(ns['key'](r['brand']))) or 0)
     people=['Cuong','Luan','Hien','Q.Huy','B.Trang','Nhu']
-    cap={'Khanh':7/8,'Nhu':0.7}  # Nhu ~30% hành chính
+    cap={'Khanh':8/9,'Nhu':0.7}  # Khanh 8 giờ/ngày so với 9 giờ; Nhu ~30% việc văn phòng
     out={}
-    for p in people+['Khanh']:
+    ds=people+['Khanh']  # trung bình theo tổng công suất, nên chuyển việc không làm đổi chỉ số người khác
+    for p in ds:
         v=0
         for k in ('ma','bulk','mau','dich'):
-            avg=sum(P[q][k] for q in people)/len(people)
+            avg=sum(P[q][k] for q in ds)/sum(cap.get(q,1) for q in ds)
             v+=P[p][k]/avg/4
         out[p]=round(v/cap.get(p,1),2)
     print(label, out)
 run([], 'Hiện tại (Nhu, Khanh đã quy đổi theo công suất):')
-run([('Cuong','Nhu','NW','all',None)], 'Chuyển NW Cuong→Nhu:')
-run([('Cuong','Nhu','NW','all',None),('Q.Huy','Khanh','GOLDWIN','bulk','27SS')], '+ Goldwin bulk 27SS Huy→Khanh:')
-run([('Cuong','Nhu','NW','all',None),('Q.Huy','Khanh','GOLDWIN','bulk','27SS'),('Cuong','Q.Huy','HH','spl','27SS')], '+ mẫu HH 27SS Cuong→Huy:')
+run([('Cuong','Khanh','NW','all',None)], 'Chuyển NEUTRALWORKS Cuong→Khanh:')

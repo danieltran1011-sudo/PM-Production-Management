@@ -97,28 +97,50 @@ Kết luận: **Cuong cao nhất, Nhu thấp nhất** dù đặt trọng số ki
 6. **Khanh đi làm lại được 2 tuần.** Trước khi nghỉ, Khanh có tải mẫu lớn nhất nhóm (26FW: 566 cái, 145 mã, 2.916 ngày may) và làm Goldwin đại trà. Đây là nguồn lực có kinh nghiệm để cân bằng lại nhóm.
 7. **Bảng phân tích nghiệp vụ 2026 chưa phản ánh thực tế**: bảng chia gần như đều % cho các merchandiser (dịch 15%, tài liệu mẫu 14%, NPL thiếu ~30%…), trong khi chỉ số tải thực tế chênh nhau từ 0,5 đến 1,3.
 
+### Quyết định (27/10/2026)
+
+- **Giờ làm**: mọi người 8 giờ + 1 giờ tăng ca/ngày là hợp lý (9 giờ). Khanh làm đến 16h, có thể tăng ca đến 17h (8 giờ, tức khoảng 8/9 công suất của người khác).
+- **NEUTRALWORKS chuyển từ Cuong sang Khanh.**
+- **Nhu giữ nguyên**, theo dõi thêm: ngoài brand, Nhu làm việc văn phòng, báo cáo tháng, hóa đơn…
+- **Mẫu theo mùa vụ**: mẫu triển lãm (SMS) lúc rất bận, lúc rảnh. Hiện đang làm mẫu triển lãm 27FW; xong sẽ chuyển sang phát triển mẫu 1st 28SS, cũng khá nhiều.
+
+## Dự báo giai đoạn tới (khoảng 11/2026 – 2/2027)
+
+File SPL mới có số liệu đến 27SS, nên phần đang làm (mẫu triển lãm 27FW) và sắp làm (1st 28SS) phải ước:
+- **Mẫu triển lãm 27FW** ≈ SMS 26FW của cùng brand (cùng mùa FW).
+- **Mẫu 1st 28SS** ≈ 1st–3rd 27SS của cùng brand.
+- **Bulk 27SS**: số thực tế.
+- Brand gán cho người đang phụ trách (bảng 22/7/2026, NEUTRALWORKS đã chuyển cho Khanh).
+- Mức trung bình tính trên cả 7 người theo công suất (Khanh = 8/9), nên chuyển việc giữa hai người không làm đổi chỉ số của người khác.
+
+Tính lại: `python3 data/khoi-luong/du-bao.py` → `data/khoi-luong/du-bao.json`.
+
+| Người | B.Trang làm hết mẫu TNF triển lãm 27FW | Khanh nhận 1/3 | Khanh nhận 1/2 |
+|---|---|---|---|
+| B.Trang | **1,61** | 1,15 | 0,92 |
+| Luan | 1,40 | 1,40 | 1,40 |
+| Huy | 1,33 | 1,33 | 1,33 |
+| Cuong | 1,26 | 1,26 | 1,26 |
+| Hien | 0,59 | 0,59 | 0,59 |
+| Nhu | 0,58 | 0,58 | 0,58 |
+| Khanh | 0,15 | 0,67 | 0,93 |
+
+Nhận xét:
+1. **Mẫu triển lãm TNF 27FW là cao điểm lớn nhất**: SMS 26FW của TNF là 480 cái, 96 mã, khoảng 2.400 ngày may. Nếu B.Trang (mới) làm một mình thì tải 1,61, cao nhất nhóm. **Nên cho Khanh nhận khoảng 1/3 ngay**, vì Khanh đã làm mảng này từ 24FW. Khi Khanh quen lại nhịp (sau 1–2 tháng) có thể tăng lên 1/2, cả hai về khoảng 0,9–1,0.
+2. **Huy nặng trong giai đoạn này** (1,33), chủ yếu do mẫu triển lãm Goldwin (26FW: 194 cái, 33 mã) và 1st 28SS (TNF別注 HOSOYA, Goldwin).
+3. **Cuong giảm sau khi bớt NEUTRALWORKS** nhưng vẫn trên trung bình (1,26) vì mẫu triển lãm HELLY HANSEN (26FW: 120 cái, 38 mã).
+4. **Luan** (1,40) nặng do bulk 27SS 207.757 cái sắp vào chuyền.
+5. **Hien nhẹ trong giai đoạn FW** (0,59): brand của Hien chủ yếu bận ở mùa SS. Tuy vậy file SPL không có dòng mẫu 26FW nào của Hien (sheet tổng hợp ghi 36 cái, 8 mã), nên số này có thể thấp hơn thực tế. Nếu đúng là nhẹ, **Hien có thể hỗ trợ Huy hoặc Cuong trong đợt mẫu triển lãm** (vd. theo dõi tổ mẫu, comment, gửi mẫu) rồi quay về brand mình khi vào mùa SS.
+6. **Nhu** (0,58) chỉ tính phần brand; phần văn phòng, báo cáo, hóa đơn chưa có số. Theo dõi thêm như đã quyết.
+
 ### Gợi ý cân bằng
 
-Khanh đi làm lại được 2 tuần. Trong năm đầu sau sinh, Khanh được nghỉ 60 phút/ngày vẫn tính công (Bộ luật Lao động 2019, Điều 137), nên tính công suất khoảng 7/8 người và tăng việc dần trong 1–2 tháng đầu.
-
-Mô phỏng chỉ số tải khi chuyển việc (Nhu quy đổi theo 70% thời gian cho brand, Khanh theo 7/8):
-
-| Bước | Cuong | Luan | Hien | Huy | B.Trang | Nhu | Khanh |
-|---|---|---|---|---|---|---|---|
-| Hiện tại | 1,30 | 1,16 | 1,12 | 1,01 | 0,87 | 0,77 | 0,04 |
-| 1. NEUTRALWORKS: Cuong → Nhu | 1,22 | 1,16 | 1,12 | 1,01 | 0,87 | 0,89 | 0,04 |
-| 2. + Goldwin đại trà 27SS: Huy → Khanh | 1,23 | 1,18 | 1,13 | 0,95 | 0,88 | 0,90 | 0,13 |
-| (Thử) chuyển hết mẫu HELLY HANSEN 27SS: Cuong → Huy | 0,42 | 1,18 | 1,13 | **1,75** | 0,88 | 0,90 | 0,13 |
-
-Đề xuất:
-1. **Ngay bây giờ: chuyển NEUTRALWORKS từ Cuong sang Nhu.** Brand nhỏ, ổn định; Nhu đang thấp nhất nhóm.
-2. **Tháng đầu của Khanh: nhận lại Goldwin đại trà từ Huy** (Khanh đã làm từ 24FW, ít rủi ro). Đồng thời hỗ trợ B.Trang phần SMS mẫu TNF 27SS, vì B.Trang mới và đang giữ 6 brand.
-3. **Mẫu HELLY HANSEN: chỉ tách khoảng 1/3 số mã**, không chuyển hết (chuyển hết làm người nhận quá tải, như dòng thử ở trên). Người nhận: Khanh khi đã quen việc, hoặc Huy sau khi bớt Goldwin.
-4. **Khi giao brand mùa 27FW**: Khanh và B.Trang chia mẫu TNF (ALL), theo đợt (1st–3rd / SMS) hoặc theo nhóm mã. Số liệu 27SS chưa thể hiện hết phần Khanh sẽ nhận, vì phần lớn việc của Khanh sẽ đến từ mùa 27FW.
-
-Ngoài ra:
-- Hỗ trợ Luan theo việc, không theo brand: tách phần theo dõi NPL/xuất hàng một phần lô lớn cho người khác.
-- Làm lại bảng phân tích nghiệp vụ (業務分析表) kỳ sau theo số liệu thực tế. Lưu ý: các việc liên quan khai trị giá hải quan (ra rập, nhảy size, tài liệu may, phát triển SP) thay đổi người làm thì phải báo TI.
+1. **Đã quyết: NEUTRALWORKS → Khanh.**
+2. **Mẫu triển lãm TNF 27FW: Khanh nhận khoảng 1/3 ngay** (chia theo nhóm mã), tăng dần lên 1/2 từ 1st 28SS.
+3. **Hien hỗ trợ trong đợt mẫu triển lãm FW** cho Huy (Goldwin) hoặc Cuong (HELLY HANSEN), vì brand của Hien vào mùa thấp điểm. Cần xác nhận lại số mẫu 26FW của Hien trước.
+4. **Tăng ca 1 giờ/ngày là đủ** cho những người ở mức 1,0–1,3. Người ở mức 1,4–1,6 (Luan, B.Trang nếu làm một mình) sẽ cần nhiều hơn 1 giờ/ngày, nên phải chia việc thay vì chỉ tăng ca.
+5. **Luan**: hỗ trợ theo việc (theo dõi NPL, xuất hàng một phần lô lớn bulk 27SS), không cần chia brand.
+6. Làm lại bảng phân tích nghiệp vụ (業務分析表) kỳ sau theo số liệu thực tế. Lưu ý: các việc liên quan khai trị giá hải quan thay đổi người làm thì phải báo TI.
 
 ## Dữ liệu cần xác nhận
 
@@ -139,6 +161,6 @@ Sổ tay MD muốn MD chuyển từ "theo đuôi đơn hàng" sang "kiểm soát
 
 ## Câu hỏi mở
 
-- Mẫu TNF 27FW đã giao cho Khanh hay B.Trang chưa? Khanh đang làm đủ giờ hay giảm giờ?
-- Nhu có nhận thêm brand được không, hay phần việc hành chính, xuất hàng thực tế nhiều hơn 30%?
+- Hien có làm mẫu 26FW không? File SPL không có dòng nào, nhưng sheet tổng hợp ghi 36 cái, 8 mã.
+- Số mẫu triển lãm 27FW thực tế (khi có) để thay số ước.
 - Phân tích nhóm kỹ thuật và CAD (gồm H.Trang) sẽ làm riêng sau khi xong nhóm MD.

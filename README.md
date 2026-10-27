@@ -19,7 +19,7 @@ Số ngày chuẩn lấy từ file rà soát 20260722, cập nhật theo cuộc 
 | `docs/quy-trinh-lead-time.md` | Tài liệu quy trình, bảng thời gian chuẩn, bảng so sánh, việc cần làm sau họp, các điểm còn mở. |
 | `docs/phan-cong-cong-viec.md` | Dữ liệu phân công công việc TIVN tại APIC, BTNB: nhân sự và việc chính từng người, danh mục ~100 việc kèm người làm và % thời gian, các việc tính vào trị giá hải quan, mã hàng cố vấn 天方 phụ trách. |
 | `docs/phan-tich-khoi-luong.md` | Phân tích khối lượng công việc hiện tại của nhóm merchandiser APIC (bulk, mẫu, giờ dịch, chỉ số tải), nhận xét, dữ liệu cần xác nhận, cách theo dõi theo sổ tay MD. |
-| `data/khoi-luong/` | Số liệu thực tế BULK/mẫu đã gom và tải hiện tại theo người (JSON), script `build.py` tính lại. |
+| `data/khoi-luong/` | Số liệu thực tế BULK/mẫu đã gom tải hiện tại và dự báo theo người (JSON); script `build.py` (tính tải), `du-bao.py` (dự báo các tháng tới), `mo-phong.py` (thử chuyển brand). |
 | `data/phan-cong/` | Dữ liệu phân công dạng JSON (APIC 2026 上期, APIC/BTNB 2023–2024, bảng 2018, phân công brand MD 22/7/2026) và script `build.py` tạo lại từ Excel. |
 | `data/nguon/` | Các file Excel gốc. |
 

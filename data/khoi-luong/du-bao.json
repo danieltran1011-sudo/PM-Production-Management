@@ -1,0 +1,155 @@
+{
+ "B.Trang làm hết mẫu TNF SMS 27FW": {
+  "Cuong": {
+   "chi_so": 1.26,
+   "ma": 117,
+   "ngay_bulk": 683,
+   "ngay_mau": 780,
+   "gio_dich": 500
+  },
+  "Luan": {
+   "chi_so": 1.4,
+   "ma": 70,
+   "ngay_bulk": 2471,
+   "ngay_mau": 104,
+   "gio_dich": 268
+  },
+  "Hien": {
+   "chi_so": 0.59,
+   "ma": 75,
+   "ngay_bulk": 371,
+   "ngay_mau": 136,
+   "gio_dich": 240
+  },
+  "Q.Huy": {
+   "chi_so": 1.33,
+   "ma": 144,
+   "ngay_bulk": 451,
+   "ngay_mau": 1055,
+   "gio_dich": 488
+  },
+  "B.Trang": {
+   "chi_so": 1.61,
+   "ma": 131,
+   "ngay_bulk": 0,
+   "ngay_mau": 2516,
+   "gio_dich": 437
+  },
+  "Nhu": {
+   "chi_so": 0.58,
+   "ma": 69,
+   "ngay_bulk": 448,
+   "ngay_mau": 98,
+   "gio_dich": 230
+  },
+  "Khanh": {
+   "chi_so": 0.15,
+   "ma": 17,
+   "ngay_bulk": 23,
+   "ngay_mau": 82,
+   "gio_dich": 65
+  }
+ },
+ "Khanh chia 1/3 mẫu TNF SMS 27FW": {
+  "Cuong": {
+   "chi_so": 1.26,
+   "ma": 117,
+   "ngay_bulk": 683,
+   "ngay_mau": 780,
+   "gio_dich": 500
+  },
+  "Luan": {
+   "chi_so": 1.4,
+   "ma": 70,
+   "ngay_bulk": 2471,
+   "ngay_mau": 104,
+   "gio_dich": 268
+  },
+  "Hien": {
+   "chi_so": 0.59,
+   "ma": 75,
+   "ngay_bulk": 371,
+   "ngay_mau": 136,
+   "gio_dich": 240
+  },
+  "Q.Huy": {
+   "chi_so": 1.33,
+   "ma": 144,
+   "ngay_bulk": 451,
+   "ngay_mau": 1055,
+   "gio_dich": 488
+  },
+  "B.Trang": {
+   "chi_so": 1.15,
+   "ma": 99,
+   "ngay_bulk": 0,
+   "ngay_mau": 1716,
+   "gio_dich": 330
+  },
+  "Nhu": {
+   "chi_so": 0.58,
+   "ma": 69,
+   "ngay_bulk": 448,
+   "ngay_mau": 98,
+   "gio_dich": 230
+  },
+  "Khanh": {
+   "chi_so": 0.67,
+   "ma": 49,
+   "ngay_bulk": 23,
+   "ngay_mau": 882,
+   "gio_dich": 172
+  }
+ },
+ "Khanh chia 1/2 mẫu TNF SMS 27FW": {
+  "Cuong": {
+   "chi_so": 1.26,
+   "ma": 117,
+   "ngay_bulk": 683,
+   "ngay_mau": 780,
+   "gio_dich": 500
+  },
+  "Luan": {
+   "chi_so": 1.4,
+   "ma": 70,
+   "ngay_bulk": 2471,
+   "ngay_mau": 104,
+   "gio_dich": 268
+  },
+  "Hien": {
+   "chi_so": 0.59,
+   "ma": 75,
+   "ngay_bulk": 371,
+   "ngay_mau": 136,
+   "gio_dich": 240
+  },
+  "Q.Huy": {
+   "chi_so": 1.33,
+   "ma": 144,
+   "ngay_bulk": 451,
+   "ngay_mau": 1055,
+   "gio_dich": 488
+  },
+  "B.Trang": {
+   "chi_so": 0.92,
+   "ma": 83,
+   "ngay_bulk": 0,
+   "ngay_mau": 1316,
+   "gio_dich": 277
+  },
+  "Nhu": {
+   "chi_so": 0.58,
+   "ma": 69,
+   "ngay_bulk": 448,
+   "ngay_mau": 98,
+   "gio_dich": 230
+  },
+  "Khanh": {
+   "chi_so": 0.93,
+   "ma": 65,
+   "ngay_bulk": 23,
+   "ngay_mau": 1282,
+   "gio_dich": 225
+  }
+ }
+}
