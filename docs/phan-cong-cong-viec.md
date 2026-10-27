@@ -34,6 +34,8 @@ Tên viết tắt trong file BULK/SPL: HH = HELLY HANSEN, NW = NEUTRALWORKS, TNF
 
 Trong thời gian Khanh nghỉ: mẫu TNF từ 27SS do Bich Trang làm, Goldwin đại trà từ 26FW do Huy làm.
 
+Quyết định 10/2026 (sau khi Khanh đi làm lại): NEUTRALWORKS chuyển từ Cuong sang Khanh; **Goldwin giữ ở Huy, làm xuyên suốt cả mẫu và đại trà**; Nhu giữ nguyên.
+
 Lịch sử (sheet ẩn, 2017–2018): trước đây có Phong, Ngan, Thuan, Nhung làm merchandiser, phụ trách các brand như MARMOT, MILLET, SNOW PEAK, UMBRO, WOOLRICH, SCHOFFEL. Nhóm kỹ thuật khi đó: Cau dịch/phiên dịch tiếng Nhật, Boken, đặt xe; Quyen quản lý xưởng 1-A/B; Vy, Hong nghiệp vụ mẫu; Phung (email trucphuong, có lẽ là Phuong hiện nay) xưởng 1-A, hỗ trợ mẫu.
 
 ## Nhân sự APIC – 2026 上期 (dữ liệu mới nhất)

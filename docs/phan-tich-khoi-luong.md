@@ -101,6 +101,7 @@ Kết luận: **Cuong cao nhất, Nhu thấp nhất** dù đặt trọng số ki
 
 - **Giờ làm**: mọi người 8 giờ + 1 giờ tăng ca/ngày là hợp lý (9 giờ). Khanh làm đến 16h, có thể tăng ca đến 17h (8 giờ, tức khoảng 8/9 công suất của người khác).
 - **NEUTRALWORKS chuyển từ Cuong sang Khanh.**
+- **Huy giữ nguyên**: Huy làm Goldwin xuyên suốt (mẫu và đại trà) để nắm brand kỹ hơn. Khanh không nhận lại Goldwin.
 - **Nhu giữ nguyên**, theo dõi thêm: ngoài brand, Nhu làm việc văn phòng, báo cáo tháng, hóa đơn…
 - **Mẫu theo mùa vụ**: mẫu triển lãm (SMS) lúc rất bận, lúc rảnh. Hiện đang làm mẫu triển lãm 27FW; xong sẽ chuyển sang phát triển mẫu 1st 28SS, cũng khá nhiều.
 
@@ -127,7 +128,7 @@ Tính lại: `python3 data/khoi-luong/du-bao.py` → `data/khoi-luong/du-bao.jso
 
 Nhận xét:
 1. **Mẫu triển lãm TNF 27FW là cao điểm lớn nhất**: SMS 26FW của TNF là 480 cái, 96 mã, khoảng 2.400 ngày may. Nếu B.Trang (mới) làm một mình thì tải 1,61, cao nhất nhóm. **Nên cho Khanh nhận khoảng 1/3 ngay**, vì Khanh đã làm mảng này từ 24FW. Khi Khanh quen lại nhịp (sau 1–2 tháng) có thể tăng lên 1/2, cả hai về khoảng 0,9–1,0.
-2. **Huy nặng trong giai đoạn này** (1,33), chủ yếu do mẫu triển lãm Goldwin (26FW: 194 cái, 33 mã) và 1st 28SS (TNF別注 HOSOYA, Goldwin).
+2. **Huy trên trung bình trong giai đoạn này** (1,33), chủ yếu do mẫu triển lãm Goldwin (26FW: 194 cái, 33 mã) và 1st 28SS (TNF別注 HOSOYA, Goldwin). Đã quyết giữ nguyên vì Huy làm Goldwin xuyên suốt; mức này nằm trong phạm vi tăng ca 1 giờ/ngày, nên chỉ cần theo dõi.
 3. **Cuong giảm sau khi bớt NEUTRALWORKS** nhưng vẫn trên trung bình (1,26) vì mẫu triển lãm HELLY HANSEN (26FW: 120 cái, 38 mã).
 4. **Luan** (1,40) nặng do bulk 27SS 207.757 cái sắp vào chuyền.
 5. **Hien nhẹ trong giai đoạn FW** (0,59): brand của Hien chủ yếu bận ở mùa SS. Tuy vậy file SPL không có dòng mẫu 26FW nào của Hien (sheet tổng hợp ghi 36 cái, 8 mã), nên số này có thể thấp hơn thực tế. Nếu đúng là nhẹ, **Hien có thể hỗ trợ Huy hoặc Cuong trong đợt mẫu triển lãm** (vd. theo dõi tổ mẫu, comment, gửi mẫu) rồi quay về brand mình khi vào mùa SS.
@@ -137,10 +138,11 @@ Nhận xét:
 
 1. **Đã quyết: NEUTRALWORKS → Khanh.**
 2. **Mẫu triển lãm TNF 27FW: Khanh nhận khoảng 1/3 ngay** (chia theo nhóm mã), tăng dần lên 1/2 từ 1st 28SS.
-3. **Hien hỗ trợ trong đợt mẫu triển lãm FW** cho Huy (Goldwin) hoặc Cuong (HELLY HANSEN), vì brand của Hien vào mùa thấp điểm. Cần xác nhận lại số mẫu 26FW của Hien trước.
-4. **Tăng ca 1 giờ/ngày là đủ** cho những người ở mức 1,0–1,3. Người ở mức 1,4–1,6 (Luan, B.Trang nếu làm một mình) sẽ cần nhiều hơn 1 giờ/ngày, nên phải chia việc thay vì chỉ tăng ca.
-5. **Luan**: hỗ trợ theo việc (theo dõi NPL, xuất hàng một phần lô lớn bulk 27SS), không cần chia brand.
-6. Làm lại bảng phân tích nghiệp vụ (業務分析表) kỳ sau theo số liệu thực tế. Lưu ý: các việc liên quan khai trị giá hải quan thay đổi người làm thì phải báo TI.
+3. **Hien hỗ trợ Cuong (HELLY HANSEN) trong đợt mẫu triển lãm FW**, vì brand của Hien vào mùa thấp điểm. Cần xác nhận lại số mẫu 26FW của Hien trước.
+4. **Huy giữ nguyên** (Goldwin xuyên suốt), theo dõi mức tải trong đợt mẫu triển lãm.
+5. **Tăng ca 1 giờ/ngày là đủ** cho những người ở mức 1,0–1,3. Người ở mức 1,4–1,6 (Luan, B.Trang nếu làm một mình) sẽ cần nhiều hơn 1 giờ/ngày, nên phải chia việc thay vì chỉ tăng ca.
+6. **Luan**: hỗ trợ theo việc (theo dõi NPL, xuất hàng một phần lô lớn bulk 27SS), không cần chia brand.
+7. Làm lại bảng phân tích nghiệp vụ (業務分析表) kỳ sau theo số liệu thực tế. Lưu ý: các việc liên quan khai trị giá hải quan thay đổi người làm thì phải báo TI.
 
 ## Dữ liệu cần xác nhận
 
