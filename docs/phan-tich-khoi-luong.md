@@ -99,74 +99,70 @@ Kết luận: **Hien và Cuong cao nhất, Nhu thấp nhất** dù đặt trọn
 6. **Khanh đi làm lại được 2 tuần.** Trước khi nghỉ, Khanh có tải mẫu lớn nhất nhóm (26FW: 566 cái, 145 mã, 2.916 ngày may) và làm Goldwin đại trà. Đây là nguồn lực có kinh nghiệm để cân bằng lại nhóm.
 7. **Bảng phân tích nghiệp vụ 2026 chưa phản ánh thực tế**: bảng chia gần như đều % cho các merchandiser (dịch 15%, tài liệu mẫu 14%, NPL thiếu ~30%…), trong khi chỉ số tải thực tế chênh nhau từ 0,5 đến 1,3.
 
-### Quyết định (27/10/2026)
+### Quyết định (10/2026)
 
-- **Giờ làm**: mọi người 8 giờ + 1 giờ tăng ca/ngày là hợp lý (9 giờ). Khanh làm đến 16h, có thể tăng ca đến 17h (8 giờ, tức khoảng 8/9 công suất của người khác).
-- **NEUTRALWORKS chuyển từ Cuong sang Khanh.**
-- **Huy giữ nguyên**: Huy làm Goldwin xuyên suốt (mẫu và đại trà) để nắm brand kỹ hơn. Khanh không nhận lại Goldwin.
-- **Khanh nhận 1/3 mẫu triển lãm TNF của B.Trang.**
-- **Quản lý sẽ giao một phần việc của mình cho Luan và Cuong**, nên cần giảm tải cho Luan (và Cuong).
-- **Hien**: từ 26FW theo DESCENTE, ALLTERRAIN; đơn hàng phức tạp hơn (xem hệ số độ khó).
-- **Nhu giữ nguyên**, theo dõi thêm: ngoài brand, Nhu làm việc văn phòng, báo cáo tháng, hóa đơn…
-- **Mẫu theo mùa vụ**: mẫu triển lãm (SMS) lúc rất bận, lúc rảnh. Hiện đang làm mẫu triển lãm 27FW; xong sẽ chuyển sang phát triển mẫu 1st 28SS, cũng khá nhiều.
+- **Giờ làm**: mọi người 8 giờ + 1 giờ tăng ca/ngày (9 giờ). Khanh làm đến 16h, có thể tăng ca đến 17h (8 giờ, khoảng 8/9 công suất người khác).
+- **Hien giữ nguyên** (Teton Bros, ALLTERRAIN, DESCENTE…), không giao thêm. Đơn của Hien chiếm khoảng 4/30 chuyền. Đơn ALLTERRAIN, DESCENTE phức tạp hơn (hệ số độ khó 1,3).
+- **Huy giữ nguyên**: Goldwin xuyên suốt cả mẫu và đại trà.
+- **Nhu giữ nguyên**, theo dõi thêm (ngoài brand còn việc văn phòng, báo cáo tháng, hóa đơn…).
+- **Cuong**: chuyển NEUTRALWORKS (→ Khanh) và TNF 東京企画 ra, chỉ giữ **HELLY HANSEN** là brand chủ lực. Cuong nhận thêm **điều phối chung**: theo dõi xuất hàng cho cả nhóm, quản lý chung việc may mẫu (đã có việc kiểm kế hoạch sản xuất mẫu của mọi brand).
+- **Khanh**: nhận NEUTRALWORKS, 1/3 mẫu triển lãm TNF của B.Trang, và **một phần việc của Luan**.
+- **Luan**: nhận một phần việc quản lý; giảm bớt việc bằng cách chuyển một phần cho Khanh. Một brand khó tách cho hai người, nên tách theo chức năng (Luan giữ brand).
+- **Mẫu theo mùa vụ**: hiện đang làm mẫu triển lãm 27FW; xong sẽ chuyển sang phát triển mẫu 1st 28SS, cũng khá nhiều.
 
 ## Dự báo giai đoạn tới (khoảng 11/2026 – 2/2027)
 
 File SPL mới có số liệu đến 27SS, nên phần đang làm (mẫu triển lãm 27FW) và sắp làm (1st 28SS) phải ước:
-- **Mẫu triển lãm 27FW** ≈ SMS 26FW của cùng brand (cùng mùa FW). Sheet Hien thiếu mẫu 26FW, nên bù bằng số ở sheet tổng hợp (36 cái, 8 mã, tạm coi là ALLTERRAIN).
+- **Mẫu triển lãm 27FW** ≈ SMS 26FW của cùng brand. Sheet Hien thiếu mẫu 26FW, nên bù bằng số ở sheet tổng hợp (36 cái, 8 mã, tạm coi là ALLTERRAIN).
 - **Mẫu 1st 28SS** ≈ 1st–3rd 27SS của cùng brand.
 - **Bulk 27SS**: số thực tế.
-- Brand gán cho người đang phụ trách (bảng 22/7/2026 và các quyết định ở trên). Hệ số độ khó ALLTERRAIN/DESCENTE × 1,3.
-- Công suất: 9 giờ/ngày (8 + 1 tăng ca); Khanh 8 giờ. Mức trung bình tính trên cả 7 người theo công suất, nên chuyển việc giữa hai người không làm đổi chỉ số của người khác.
-- **Việc quản lý giao cho Luan, Cuong**: chưa biết cụ thể, tạm tính mỗi người mất **10% thời gian (~0,9 giờ/ngày)**. Phần thời gian còn lại cho brand ít đi nên chỉ số tăng (chia cho 0,9).
-- **Nhu**: chỉ số chỉ tính phần brand. Nhu dành ~30% thời gian cho văn phòng, báo cáo, hóa đơn, nên **chỉ số thực ≈ chỉ số ÷ 0,7** (ghi trong ngoặc).
+- Hệ số độ khó ALLTERRAIN/DESCENTE × 1,3.
+- Công suất: 9 giờ/ngày; Khanh 8 giờ. Mức trung bình tính trên cả 7 người theo công suất.
+- **Việc giao thêm** (chưa biết cụ thể, tạm tính): Cuong điều phối chung **20%** thời gian (~1,8 giờ/ngày), Luan việc quản lý **10%** (~0,9 giờ/ngày). Phần thời gian còn cho brand ít đi nên chỉ số tăng tương ứng.
+- **Nhu**: chỉ số chỉ tính phần brand; chỉ số thực ≈ chỉ số ÷ 0,7 (ghi trong ngoặc) vì ~30% thời gian dành cho việc văn phòng.
 
 Tính lại: `python3 data/khoi-luong/du-bao.py` → `data/khoi-luong/du-bao.json`.
 
-| Phương án | Cuong | Luan | Hien | Huy | B.Trang | Nhu (thực) | Khanh |
+**TNF 東京企画** (từ Cuong) giao cho ai: bulk 27SS 7 mã, 18.885 cái, 250 ngày chuyền; ít mẫu (26SS: 2 mã). Thử 4 cách chia giữa Khanh và Luan:
+
+| Phương án | Cuong | Luan | Khanh | Hien | Huy | B.Trang | Nhu (thực) |
 |---|---|---|---|---|---|---|---|
-| 1. Đã quyết (NW → Khanh, Khanh 1/3 mẫu TNF) | 1,21 | 1,36 | 0,81 | 1,28 | 1,10 | 0,56 (0,80) | 0,64 |
-| 2. + giao việc quản lý cho Luan, Cuong (10% mỗi người) | **1,35** | **1,52** | 0,81 | 1,28 | 1,10 | 0,56 (0,80) | 0,64 |
-| 3. + 25% bulk TNF 富山企画 27SS của Luan → Khanh | 1,35 | 1,18 | 0,81 | 1,28 | 1,10 | 0,56 (0,80) | 0,98 |
-| 4. + 25% bulk TNF 富山企画 27SS của Luan → Nhu | 1,35 | 1,18 | 0,81 | 1,28 | 1,10 | 0,86 (**1,23**) | 0,64 |
-| 5. + 15% → Khanh, 15% → Nhu | 1,35 | 1,15 | 0,81 | 1,28 | 1,10 | 0,71 (1,01) | 0,84 |
-| 6. Phương án 5 + Hien hỗ trợ 25% mẫu HELLY HANSEN của Cuong | **1,15** | **1,15** | 0,98 | 1,28 | 1,10 | 0,71 (1,01) | 0,84 |
-| *Tách theo chức năng (Luan giữ nguyên brand):* | | | | | | | |
-| 7. Phương án 2 + Khanh làm báo cáo mã ngoài quy tắc 2 tuần, tiến độ NPL, BL/P/L của TNF 富山企画 (~15% việc Luan) | 1,35 | 1,29 | 0,81 | 1,28 | 1,10 | 0,56 (0,80) | 0,90 |
-| 8. Phương án 7 + Khanh hỗ trợ dịch tài liệu TNF 富山企画 (tổng ~27% việc Luan) | 1,35 | 1,11 | 0,81 | 1,28 | 1,10 | 0,56 (0,80) | 1,11 |
-| 9. Phương án 8 + Hien hỗ trợ 25% mẫu HELLY HANSEN của Cuong | **1,15** | **1,11** | 0,98 | 1,28 | 1,10 | 0,56 (0,80) | 1,11 |
+| A. TNF 東京企画 → Luan; Khanh làm báo cáo 2 tuần, tiến độ NPL, BL/P/L cho cả TNF 富山 + 東京 (~15% việc Luan) | 1,35 | **1,41** | 0,92 | 0,81 | 1,28 | 1,10 | 0,56 (0,80) |
+| B. Như A + Khanh hỗ trợ dịch tài liệu TNF (~30% việc Luan) | 1,35 | 1,16 | **1,21** | 0,81 | 1,28 | 1,10 | 0,56 (0,80) |
+| **C. TNF 東京企画 → Khanh (cả brand); Khanh làm báo cáo 2 tuần, tiến độ NPL, BL/P/L của TNF 富山企画 (~15% việc Luan)** | 1,35 | **1,29** | **1,05** | 0,81 | 1,28 | 1,10 | 0,56 (0,80) |
+| D. TNF 東京企画 → Khanh (cả brand); Luan giữ nguyên việc | 1,35 | 1,52 | 0,79 | 0,81 | 1,28 | 1,10 | 0,56 (0,80) |
 
 Nhận xét:
-1. **Giao thêm việc quản lý làm Luan lên 1,52 và Cuong lên 1,35**, vượt mức tăng ca 1 giờ/ngày. Phải chuyển bớt việc brand của cả hai, không chỉ Luan.
-2. **Giảm cho Luan: tách theo chức năng, không chia brand.** Chia một brand theo lô cho hai người (phương án 3–5) khó làm vì TIJ và nhà máy phải làm việc với hai đầu mối. Cách khác: Luan vẫn giữ toàn bộ TNF 富山企画 và làm đầu mối duy nhất; Khanh làm **các việc hậu cần có thể tách riêng** cho brand này. Theo bảng nghiệp vụ 2026, việc của Luan gồm:
+1. **Phương án C cân bằng nhất giữa Khanh và Luan.** Khanh có một brand trọn vẹn (TNF 東京企画: ít mã, quy trình PPS~đại trà giống Goldwin Khanh từng làm) và làm phần hậu cần cho TNF 富山企画. Luan giữ TNF 富山企画, là đầu mối duy nhất với TIJ.
+2. **A làm Luan nặng thêm** (nhận thêm brand); **B làm Khanh quá tải** (1,21 với người vừa đi làm lại); **D không giảm được cho Luan.**
+3. **Cuong 1,35** là do tạm tính điều phối chung 20% thời gian. Nếu điều phối chỉ khoảng 1 giờ/ngày (10%) thì Cuong ≈ 1,2. HELLY HANSEN vẫn là brand nặng (4,3 giờ dịch/mã, đang tăng). Việc điều phối xuất hàng chung có thể giúp mọi người bớt việc xuất hàng, nhưng phần này chưa đo được.
+4. **Luan 1,29, Khanh 1,05**: trong phạm vi tăng ca (Luan 1 giờ/ngày, Khanh đến 17h). Khi xong mẫu triển lãm 27FW, mẫu TNF của Khanh giảm nhiều (1st 27SS của TNF chỉ 47 cái so với SMS 26FW 480 cái); lúc đó có thể cho Khanh hỗ trợ thêm dịch tài liệu TNF 富山企画 nếu Luan vẫn nặng.
 
-   | Việc của Luan (bảng 2026) | % thời gian | Tách cho Khanh được không |
-   |---|---|---|
-   | Báo cáo mã ngoài quy tắc 2 tuần (月次) | 10% | **Được**: báo cáo tháng, số liệu từ nhà máy |
-   | Tiến độ NPL, báo nhà máy; BL, P/L, số DHL | ~6% | **Được**: theo dõi, cập nhật bảng |
-   | Dịch tài liệu (仕様書翻訳, nhận và dịch tài liệu, dịch bản sửa) | ~34% | **Được một phần**: Khanh dịch, Luan kiểm và làm việc với TIJ |
-   | NPL thiếu, báo TI (生産) | 15% | Không: cần người nắm brand, liên lạc TIJ |
-   | Kiểm rập/mẫu gốc, sự cố, sửa tài liệu | ~10% | Không: cần người nắm brand |
+### Phân chia việc giữa Luan và Khanh (đề xuất theo phương án C)
 
-   Tiền lệ: năm 2017, Nhung từng làm vai trò hỗ trợ dịch tài liệu TNF (TNF仕様書翻訳応援業務), dịch tài liệu sản xuất và kiểm Update (bảng phân công brand, sheet ẩn).
-   - **Phương án 7** (Khanh làm báo cáo 2 tuần + tiến độ NPL, BL/P/L, ~15%): Luan 1,52 → 1,29, Khanh 0,90.
-   - **Phương án 8** (thêm hỗ trợ dịch khoảng một nửa, tổng ~27%): Luan → 1,11, nhưng Khanh lên 1,11, hơi nặng với người vừa đi làm lại.
-   - Nên làm **theo 2 giai đoạn**: đang làm mẫu triển lãm 27FW (Khanh có 1/3 mẫu TNF) thì làm phương án 7; khi xong mẫu triển lãm, chuyển sang 1st 28SS, mẫu TNF của Khanh ít đi nhiều (1st 27SS của TNF chỉ 47 cái so với SMS 26FW 480 cái), lúc đó thêm phần hỗ trợ dịch (phương án 8).
-3. **Giảm cho Cuong: Hien hỗ trợ khoảng 25% mẫu HELLY HANSEN trong đợt mẫu triển lãm FW.** Brand của Hien vào mùa thấp điểm (0,81 kể cả hệ số độ khó), nên còn chỗ. Cuong về ~1,15.
-4. **Hien chỉ rảnh trong đợt mẫu FW.** Mùa SS (1st 28SS rồi SMS 28SS) Hien lại cao nhất nhóm (1,27 ở 27SS), nên phần hỗ trợ HELLY HANSEN chỉ nên làm đến hết mẫu triển lãm 27FW, không giao lâu dài.
-5. **Huy** (1,28) giữ nguyên như đã quyết, trong phạm vi tăng ca 1 giờ/ngày.
+| | Luan | Khanh |
+|---|---|---|
+| Brand phụ trách | **TNF 富山企画** (PPS~đại trà), đầu mối duy nhất với TIJ | **TNF 東京企画** (PPS~đại trà, nhận từ Cuong), **NEUTRALWORKS** (nhận từ Cuong), **1/3 mẫu triển lãm TNF** cùng B.Trang |
+| TNF 富山企画 – Luan giữ | Nhận, kiểm, dịch tài liệu; kiểm rập/mẫu gốc; báo NPL thiếu cho TI; xử lý sự cố; làm việc với TIJ và nhà máy | – |
+| TNF 富山企画 – Khanh làm hỗ trợ | Duyệt kết quả, xử lý khi có vấn đề | Báo cáo tháng mã ngoài quy tắc 2 tuần; cập nhật tiến độ NPL, báo nhà máy; gửi BL, P/L, số DHL cho nhà máy (cc Luan) |
+| Việc khác | Một phần việc quản lý (~10%) | – |
+| Từ 1st 28SS (khi mẫu triển lãm xong) | Nếu vẫn nặng, chuyển thêm một phần dịch tài liệu | Có thể hỗ trợ dịch tài liệu TNF 富山企画 |
 
-### Gợi ý cân bằng
+Quy tắc phối hợp (theo sổ tay MD, chương 7): mọi việc Khanh làm cho TNF 富山企画 đều ghi rõ nội dung, hạn, người phụ trách, ngày theo dõi tiếp; liên lạc với nhà máy luôn cc Luan; liên lạc với TIJ chỉ qua Luan.
 
-1. **Đã quyết**: NEUTRALWORKS → Khanh; Khanh nhận 1/3 mẫu triển lãm TNF của B.Trang; Huy giữ Goldwin xuyên suốt; Nhu giữ nguyên brand.
-2. **Giảm cho Luan theo chức năng, Luan giữ brand**:
-   - Giai đoạn 1 (đến hết mẫu triển lãm 27FW): Khanh làm báo cáo mã ngoài quy tắc 2 tuần, tiến độ NPL, BL/P/L của TNF 富山企画.
-   - Giai đoạn 2 (từ 1st 28SS): Khanh hỗ trợ thêm dịch tài liệu TNF 富山企画; Luan kiểm bản dịch và làm việc với TIJ.
-   - Giao việc quản lý cho Luan từ giai đoạn 2, khi Luan đã bớt khoảng 1/4 việc.
-3. **Trước khi giao việc quản lý cho Cuong**: Hien hỗ trợ ~25% mẫu HELLY HANSEN đến hết đợt mẫu triển lãm 27FW.
-4. **Tăng ca 1 giờ/ngày là đủ** cho người ở mức 1,0–1,3. Người từ 1,4 trở lên phải chia việc.
-5. **Việc giao cho Luan, Cuong nên thuộc nhóm kế hoạch** (họp SX tuần, plan table, điều chỉnh ngày xuất…). Đây đúng là bước "Order Follow-up MD → Planning Coordinator" (Level 1 → 2) trong sổ tay MD, nên coi là đào tạo, không chỉ là chia việc.
-6. Làm lại bảng phân tích nghiệp vụ (業務分析表) kỳ sau theo số liệu thực tế. Lưu ý: các việc liên quan khai trị giá hải quan thay đổi người làm thì phải báo TI.
+### Phân công dự kiến sau thay đổi
+
+| Người | Brand / việc |
+|---|---|
+| Cuong | HELLY HANSEN; điều phối xuất hàng chung cả nhóm; quản lý chung may mẫu (kiểm kế hoạch sản xuất mẫu mọi brand) |
+| Luan | TNF 富山企画; một phần việc quản lý |
+| Khanh | TNF 東京企画, NEUTRALWORKS, 1/3 mẫu triển lãm TNF; hỗ trợ hậu cần TNF 富山企画 |
+| Hien | Giữ nguyên (Teton Bros, ALLTERRAIN, Mont-Bell, DESCENTE GOLF) |
+| Huy | Giữ nguyên (Goldwin, TNF 別注 HOSOYA, 141 hỗ trợ, CANTERBURY, NANGA) |
+| B.Trang | TNF (ALL) mẫu (2/3 mẫu triển lãm), Premium Snow 別注, FOXFIRE, TATRAS, Kasco, YONEX |
+| Nhu | Giữ nguyên (TNF 別注 SHIGEMOTO/NAKAO, UTMF, TOKYO MARATHON) + việc văn phòng |
+
+Lưu ý: các việc liên quan khai trị giá hải quan (ra rập, nhảy size, tài liệu may, phát triển SP) thay đổi người làm thì phải báo TI. Các việc trong bảng trên không thuộc nhóm này.
 
 ## Dữ liệu cần xác nhận
 
@@ -187,9 +183,8 @@ Sổ tay MD muốn MD chuyển từ "theo đuôi đơn hàng" sang "kiểm soát
 
 ## Câu hỏi mở
 
-- Việc quản lý giao cho Luan và Cuong gồm những việc nào, mỗi người khoảng bao nhiêu giờ/ngày? (đang tạm tính 10%, ~0,9 giờ/ngày)
-- Tỷ lệ % việc của Luan lấy từ bảng nghiệp vụ 2026 (số khai báo). Luan có thể tự ước lại thời gian dịch và báo cáo 2 tuần thực tế để chốt phần tách cho Khanh.
-- Hệ số độ khó 1,3 cho ALLTERRAIN/DESCENTE có hợp lý không? Còn brand nào khó tương tự (vd. HELLY HANSEN nhiều trang tài liệu)?
+- TNF 東京企画 giao cho Khanh (phương án C) hay Luan?
+- Việc điều phối chung của Cuong và việc quản lý giao cho Luan chiếm khoảng bao nhiêu giờ/ngày? (đang tạm tính 20% và 10%)
 - Số mẫu 26FW thực tế của Hien theo brand (sheet Hien trong file SPL bị thiếu).
 - Số mẫu triển lãm 27FW thực tế (khi có) để thay số ước.
 - Phân tích nhóm kỹ thuật và CAD (gồm H.Trang) sẽ làm riêng sau khi xong nhóm MD.

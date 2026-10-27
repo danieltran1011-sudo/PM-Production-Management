@@ -28,13 +28,14 @@ HE_SO_KHO = {'ALLTERRAIN': 1.3, 'DESCENT': 1.3, 'DESCENTEGOLF': 1.3}
 BU_MAU = [dict(nguoi='Hien', mua='26FW', brand='ALLTERRAIN', loai='SMS', sl=36, ma=8, giay=13131, ngay=180, ghichu='bù từ sheet tổng hợp')]
 MD = ['Cuong', 'Luan', 'Hien', 'Q.Huy', 'B.Trang', 'Nhu', 'Khanh']
 
-def tai(chia_tnf_sms_cho_khanh=0.0, he_so_kho=True, bu_mau=True, chia=(), giao_them=None, chuyen_phan=()):
+def tai(chia_tnf_sms_cho_khanh=0.0, he_so_kho=True, bu_mau=True, chia=(), giao_them=None, chuyen_phan=(), chu_moi=None):
     """chia: [(brand, 'bulk'/'spl', người cũ, người mới, tỷ lệ)] – chia theo lô/mã của một brand.
     giao_them: {người: phần thời gian dành cho việc giao thêm, vd 0.1}.
     chuyen_phan: [(người cũ, người mới, tỷ lệ)] – chuyển một phần việc theo chức năng (vd. dịch, báo cáo),
     người cũ vẫn giữ brand; tỷ lệ tính trên phần việc brand của người cũ."""
     d = json.load(open('data/khoi-luong/thuc-te.json'))
     if bu_mau: d['spl'] = d['spl'] + BU_MAU
+    chu = dict(CHU, **(chu_moi or {}))
     P = collections.defaultdict(lambda: collections.defaultdict(float))
     def add1(p, b, ma, bulk, mau, dich):
         k = HE_SO_KHO.get(b, 1.0) if he_so_kho else 1.0
@@ -48,11 +49,11 @@ def tai(chia_tnf_sms_cho_khanh=0.0, he_so_kho=True, bu_mau=True, chia=(), giao_t
         add1(p, b, ma, bulk, mau, dich)
     for r in d['bulk']:
         if r['mua'] != '27SS': continue
-        b = key(r['brand']); p = CHU.get(b, r['nguoi'])
+        b = key(r['brand']); p = chu.get(b, r['nguoi'])
         add(p, r['ma'], r['ngay'], 0, r['ma'] * (TB.get(b) or 0), b, 'bulk')
     for r in d['spl']:
         if not ((r['mua'] == '26FW' and r['loai'] == 'SMS') or (r['mua'] == '27SS' and r['loai'] == '1st-3rd')): continue
-        b = key(r['brand']); p = CHU.get(b, r['nguoi'])
+        b = key(r['brand']); p = chu.get(b, r['nguoi'])
         ngay = r['ngay']
         if not r['giay']:
             s = est_sec(r['brand']); ngay = r['sl'] * ngay_mau(s) if s else ngay
@@ -76,21 +77,24 @@ def tai(chia_tnf_sms_cho_khanh=0.0, he_so_kho=True, bu_mau=True, chia=(), giao_t
         out[p] = dict(chi_so=round(cs / cap[p] / con_lai, 2), ma=round(P[p]['ma']), ngay_bulk=round(P[p]['bulk']), ngay_mau=round(P[p]['mau']), gio_dich=round(P[p]['dich']))
     return out
 
-if __name__ == '__main__':
-    K = 1/3  # Khanh nhận 1/3 mẫu TNF triển lãm của B.Trang (đã quyết)
-    GIAO = {'Luan': 0.1, 'Cuong': 0.1}  # việc quản lý giao thêm, giả định mỗi người 10% thời gian (~0,9 giờ/ngày)
-    kq = {
-     '0. Như lần trước (chưa bù mẫu Hien, chưa có hệ số khó)': tai(K, he_so_kho=False, bu_mau=False),
-     '1. Đã quyết + bù mẫu 26FW Hien + hệ số khó ALLTERRAIN/DESCENTE 1,3': tai(K),
-     '2. + giao thêm việc quản lý cho Luan, Cuong (10% mỗi người)': tai(K, giao_them=GIAO),
-     '3. + 25% bulk TNF 富山企画 27SS (theo dõi NPL, xuất hàng) của Luan sang Khanh': tai(K, giao_them=GIAO, chia=[('TNF(GTC企画)', 'bulk', 'Luan', 'Khanh', 0.25)]),
-     '4. + 25% bulk TNF 富山企画 27SS của Luan sang Nhu (cùng nhóm TNF 富山)': tai(K, giao_them=GIAO, chia=[('TNF(GTC企画)', 'bulk', 'Luan', 'Nhu', 0.25)]),
-     '5. + 15% sang Khanh, 15% sang Nhu': tai(K, giao_them=GIAO, chia=[('TNF(GTC企画)', 'bulk', 'Luan', 'Khanh', 0.15), ('TNF(GTC企画)', 'bulk', 'Luan', 'Nhu', 0.15)]),
-     '7. Tách theo chức năng: Khanh làm báo cáo 2 tuần + tiến độ NPL, BL/P/L của TNF 富山企画 (~15% việc Luan)': tai(K, giao_them=GIAO, chuyen_phan=[('Luan', 'Khanh', 0.15)]),
-     '8. Phương án 7 + Khanh hỗ trợ dịch tài liệu TNF 富山企画 (tổng ~27% việc Luan)': tai(K, giao_them=GIAO, chuyen_phan=[('Luan', 'Khanh', 0.27)]),
-     '9. Phương án 8 + Hien hỗ trợ 25% mẫu HELLY HANSEN của Cuong': tai(K, giao_them=GIAO, chuyen_phan=[('Luan', 'Khanh', 0.27)], chia=[('HH', 'spl', 'Cuong', 'Hien', 0.25)]),
-     '6. Phương án 5 + Hien hỗ trợ 25% mẫu HELLY HANSEN của Cuong': tai(K, giao_them=GIAO, chia=[('TNF(GTC企画)', 'bulk', 'Luan', 'Khanh', 0.15), ('TNF(GTC企画)', 'bulk', 'Luan', 'Nhu', 0.15), ('HH', 'spl', 'Cuong', 'Hien', 0.25)]),
-    }
+def in_kq(kq):
     for k, v in kq.items():
         print(k); print('   ', {p: x['chi_so'] for p, x in v.items()})
+
+if __name__ == '__main__':
+    K = 1/3  # Khanh nhận 1/3 mẫu TNF triển lãm của B.Trang (đã quyết)
+    # Quyết định 10/2026: Hien, Huy, Nhu giữ nguyên. Cuong chỉ còn HELLY HANSEN + điều phối chung
+    # (theo dõi xuất hàng cả nhóm, quản lý chung may mẫu) – tạm tính 20% thời gian. Luan nhận việc quản lý ~10%.
+    GIAO = {'Luan': 0.1, 'Cuong': 0.2}
+    kq = {
+     'A. TNF 東京企画 → Luan; Khanh làm báo cáo 2 tuần, NPL, BL/P/L cho cả TNF 富山 + 東京 (~15% việc Luan)':
+        tai(K, giao_them=GIAO, chu_moi={'TNF(東京企画)': 'Luan'}, chuyen_phan=[('Luan', 'Khanh', 0.15)]),
+     'B. Như A, thêm Khanh hỗ trợ dịch tài liệu TNF (~30% việc Luan)':
+        tai(K, giao_them=GIAO, chu_moi={'TNF(東京企画)': 'Luan'}, chuyen_phan=[('Luan', 'Khanh', 0.30)]),
+     'C. TNF 東京企画 → Khanh (nguyên brand); Khanh làm báo cáo 2 tuần, NPL, BL/P/L của Luan (~15%)':
+        tai(K, giao_them=GIAO, chu_moi={'TNF(東京企画)': 'Khanh'}, chuyen_phan=[('Luan', 'Khanh', 0.15)]),
+     'D. TNF 東京企画 → Khanh (nguyên brand); Luan giữ nguyên việc của mình':
+        tai(K, giao_them=GIAO, chu_moi={'TNF(東京企画)': 'Khanh'}),
+    }
+    in_kq(kq)
     json.dump(kq, open('data/khoi-luong/du-bao.json', 'w'), ensure_ascii=False, indent=1)
