@@ -25,9 +25,9 @@ Tạo lại JSON từ Excel: `python3 data/phan-cong/build.py . data/phan-cong`
 | Nhu | TNF 別注 SHIGEMOTO (từ 26SS), TNF 別注 NAKAO (từ 27SS), UTMF フィニッシャーズ (1), TOKYO MARATHON (2) |
 | Luan | TNF 富山企画 (1), từ PPS đến sản xuất đại trà |
 | Cuong | TNF 東京企画 (1) từ PPS đến đại trà, HELLY HANSEN (1), NEUTRALWORKS (1), YONEX (2) đến 26FW; **kiểm kế hoạch sản xuất mẫu của tất cả brand** |
-| Khanh | TNF (ALL) mẫu 1st–SMS từ 24FW, Goldwin (1) từ PPS đến đại trà từ 24FW, TORAIN bền vững (2) SMS. *Nghỉ thai sản, nay đã đi làm lại (10/2026).* |
+| Khanh | TNF (ALL) mẫu 1st–SMS từ 24FW, Goldwin (1) từ PPS đến đại trà từ 24FW, TORAIN bền vững (2) SMS. *Nghỉ thai sản, đi làm lại từ giữa 10/2026.* |
 | Huy (Q.Huy) | Goldwin (1), TNF 別注 HOSOYA (từ 26SS), 141 (hỗ trợ), CANTERBURY (1) từ 26FW, NANGA (2) |
-| Huyen Trang (H.Trang) | TNF HAT&CAP, 141 |
+| Huyen Trang (H.Trang) | TNF HAT&CAP, 141. *Thuộc nhóm CAD (là "Trang" trong bảng nghiệp vụ 2026), làm thêm 2 brand nhỏ này.* |
 | Bich Trang (B.Trang) | TNF (ALL) mẫu 1st–SMS từ 27SS, TNF Premium Snow 別注 26FW (1), FOXFIRE (2), TATRAS (2), Kasco (2), YONEX (2) từ S27 |
 
 Tên viết tắt trong file BULK/SPL: HH = HELLY HANSEN, NW = NEUTRALWORKS, TNF(GTC企画) = TNF 富山企画, TNF別注 富山 = 別注 SHIGEMOTO/NAKAO (Nhu), TNF別注 東京 = 別注 HOSOYA (Huy).

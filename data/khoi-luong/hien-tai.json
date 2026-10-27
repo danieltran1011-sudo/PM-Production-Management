@@ -11,11 +11,18 @@
   "spl_ma": 89.0,
   "spl_ngay": 738.0,
   "so_brand": 4,
-  "chi_so": 1.69,
-  "cs_ma": 1.68,
-  "cs_bulk": 1.07,
-  "cs_mau": 1.96,
-  "cs_dich": 2.06,
+  "cs_ma": 1.29,
+  "cs_bulk": 0.8,
+  "cs_mau": 1.53,
+  "cs_dich": 1.57,
+  "chi_so_theo_trong_so": {
+   "deu": 1.3,
+   "uu_tien_dich": 1.35,
+   "uu_tien_bulk": 1.2,
+   "uu_tien_mau": 1.34
+  },
+  "chi_so": 1.3,
+  "nhom": "MD",
   "brands": [
    "HH",
    "NW",
@@ -35,11 +42,18 @@
   "spl_ma": 96.0,
   "spl_ngay": 782.0,
   "so_brand": 4,
-  "chi_so": 1.46,
-  "cs_ma": 1.67,
-  "cs_bulk": 0.71,
-  "cs_mau": 2.08,
-  "cs_dich": 1.38,
+  "cs_ma": 1.28,
+  "cs_bulk": 0.53,
+  "cs_mau": 1.62,
+  "cs_dich": 1.05,
+  "chi_so_theo_trong_so": {
+   "deu": 1.12,
+   "uu_tien_dich": 1.11,
+   "uu_tien_bulk": 1.0,
+   "uu_tien_mau": 1.22
+  },
+  "chi_so": 1.12,
+  "nhom": "MD",
   "brands": [
    "ALLTERRAIN",
    "DESCENT",
@@ -59,11 +73,18 @@
   "spl_ma": 34.0,
   "spl_ngay": 98.0,
   "so_brand": 1,
-  "chi_so": 0.71,
-  "cs_ma": 0.85,
-  "cs_bulk": 0.91,
-  "cs_mau": 0.26,
-  "cs_dich": 0.82,
+  "cs_ma": 0.65,
+  "cs_bulk": 0.68,
+  "cs_mau": 0.2,
+  "cs_dich": 0.62,
+  "chi_so_theo_trong_so": {
+   "deu": 0.54,
+   "uu_tien_dich": 0.56,
+   "uu_tien_bulk": 0.57,
+   "uu_tien_mau": 0.47
+  },
+  "chi_so": 0.54,
+  "nhom": "MD",
   "brands": [
    "TNF別注富山"
   ]
@@ -80,11 +101,18 @@
   "spl_ma": 25.0,
   "spl_ngay": 104.0,
   "so_brand": 1,
-  "chi_so": 1.53,
-  "cs_ma": 0.86,
-  "cs_bulk": 4.04,
-  "cs_mau": 0.28,
-  "cs_dich": 0.95,
+  "cs_ma": 0.66,
+  "cs_bulk": 3.03,
+  "cs_mau": 0.22,
+  "cs_dich": 0.72,
+  "chi_so_theo_trong_so": {
+   "deu": 1.16,
+   "uu_tien_dich": 1.07,
+   "uu_tien_bulk": 1.53,
+   "uu_tien_mau": 0.97
+  },
+  "chi_so": 1.16,
+  "nhom": "MD",
   "brands": [
    "TNF(GTC企画)"
   ]
@@ -101,11 +129,18 @@
   "spl_ma": 80.0,
   "spl_ngay": 492.0,
   "so_brand": 4,
-  "chi_so": 1.32,
-  "cs_ma": 1.51,
-  "cs_bulk": 1.04,
-  "cs_mau": 1.31,
-  "cs_dich": 1.44,
+  "cs_ma": 1.15,
+  "cs_bulk": 0.78,
+  "cs_mau": 1.02,
+  "cs_dich": 1.1,
+  "chi_so_theo_trong_so": {
+   "deu": 1.01,
+   "uu_tien_dich": 1.03,
+   "uu_tien_bulk": 0.97,
+   "uu_tien_mau": 1.01
+  },
+  "chi_so": 1.01,
+  "nhom": "MD",
   "brands": [
    "CANTERBURY",
    "GOLDWIN",
@@ -124,11 +159,18 @@
   "so_brand": 4,
   "bulk_27SS_ma": 0.0,
   "bulk_27SS_ngay": 0.0,
-  "chi_so": 1.13,
-  "cs_ma": 1.27,
-  "cs_bulk": 0.22,
-  "cs_mau": 1.81,
-  "cs_dich": 1.23,
+  "cs_ma": 0.98,
+  "cs_bulk": 0.17,
+  "cs_mau": 1.41,
+  "cs_dich": 0.94,
+  "chi_so_theo_trong_so": {
+   "deu": 0.87,
+   "uu_tien_dich": 0.89,
+   "uu_tien_bulk": 0.73,
+   "uu_tien_mau": 0.98
+  },
+  "chi_so": 0.87,
+  "nhom": "MD",
   "bulk_27SS_sl": 0.0,
   "brands": [
    "FOXFIRE",
@@ -143,17 +185,7 @@
   "spl_ngay": 22.0,
   "gio_dich": 20.0,
   "so_brand": 1,
-  "bulk_27SS_ma": 0.0,
-  "bulk_26FW_ngay": 0.0,
-  "bulk_27SS_ngay": 0.0,
-  "chi_so": 0.05,
-  "cs_ma": 0.07,
-  "cs_bulk": 0.0,
-  "cs_mau": 0.06,
-  "cs_dich": 0.07,
-  "bulk_26FW_ma": 0.0,
-  "bulk_26FW_sl": 0.0,
-  "bulk_27SS_sl": 0.0,
+  "nhom": "MD – vừa đi làm lại, không tính chỉ số",
   "brands": [
    "TNF(東京企画、GTC企画共通)サンプル"
   ]
@@ -164,17 +196,7 @@
   "spl_ngay": 96.0,
   "gio_dich": 13.333333333333334,
   "so_brand": 1,
-  "bulk_27SS_ma": 0.0,
-  "bulk_26FW_ngay": 0.0,
-  "bulk_27SS_ngay": 0.0,
-  "chi_so": 0.1,
-  "cs_ma": 0.1,
-  "cs_bulk": 0.0,
-  "cs_mau": 0.25,
-  "cs_dich": 0.05,
-  "bulk_26FW_ma": 0.0,
-  "bulk_26FW_sl": 0.0,
-  "bulk_27SS_sl": 0.0,
+  "nhom": "CAD (không tính chỉ số MD)",
   "brands": [
    "141"
   ]

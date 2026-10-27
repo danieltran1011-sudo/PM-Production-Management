@@ -81,7 +81,11 @@ for r in d['spl']:
 for p in P: P[p]['so_brand']=len(brands[p])
 cols=['bulk_26FW_ma','bulk_26FW_sl','bulk_26FW_ngay','bulk_27SS_ma','bulk_27SS_sl','bulk_27SS_ngay','spl_ma','spl_sl','spl_ngay','gio_dich','so_brand']
 # chỉ số tải tương đối: TB phần chia của 4 nhóm yếu tố (mã hàng, ngày chuyền bulk, ngày may mẫu, giờ dịch), 1.0 = trung bình nhóm
-people=[p for p in P]
+# Chỉ số tải chỉ so trong nhóm MD đang làm đủ kỳ.
+# H.Trang thuộc nhóm CAD (chỉ phụ HAT&CAP, 141); Khanh nghỉ thai sản, đi làm lại từ giữa 10/2026.
+CAD = {'H.Trang'}
+KHONG_SO = {'Khanh'}
+people=[p for p in P if p not in CAD|KHONG_SO]
 def share(f):
     tot=sum(f(P[p]) for p in people); n=len(people)
     return {p:(f(P[p])/tot*n if tot else 0) for p in people}
@@ -89,9 +93,20 @@ S1=share(lambda x:x['bulk_27SS_ma']+x['spl_ma'])
 S2=share(lambda x:x['bulk_26FW_ngay']+x['bulk_27SS_ngay'])
 S3=share(lambda x:x['spl_ngay'])
 S4=share(lambda x:x['gio_dich'])
-for p in people: P[p]['chi_so']=round((S1[p]+S2[p]+S3[p]+S4[p])/4,2); P[p]['cs_ma']=round(S1[p],2); P[p]['cs_bulk']=round(S2[p],2); P[p]['cs_mau']=round(S3[p],2); P[p]['cs_dich']=round(S4[p],2)
+# Trọng số 4 yếu tố (mã, ngày chuyền bulk, ngày may mẫu, giờ dịch). Mặc định chia đều.
+PHUONG_AN = {'deu': (.25,.25,.25,.25), 'uu_tien_dich': (.2,.2,.2,.4), 'uu_tien_bulk': (.2,.4,.2,.2), 'uu_tien_mau': (.2,.2,.4,.2)}
+for p in people:
+    f=(S1[p],S2[p],S3[p],S4[p])
+    P[p]['cs_ma']=round(S1[p],2); P[p]['cs_bulk']=round(S2[p],2); P[p]['cs_mau']=round(S3[p],2); P[p]['cs_dich']=round(S4[p],2)
+    P[p]['chi_so_theo_trong_so']={k:round(sum(w*x for w,x in zip(ws,f)),2) for k,ws in PHUONG_AN.items()}
+    P[p]['chi_so']=P[p]['chi_so_theo_trong_so']['deu']
+for p in P:
+    if p in CAD: P[p]['nhom']='CAD (không tính chỉ số MD)'
+    elif p in KHONG_SO: P[p]['nhom']='MD – vừa đi làm lại, không tính chỉ số'
+    else: P[p]['nhom']='MD'
 print('person'.ljust(8),' '.join(c[-12:].rjust(12) for c in cols+['cs_ma','cs_bulk','cs_mau','cs_dich','chi_so']))
 for p in sorted(people,key=lambda p:-P[p]['chi_so']):
+    print(p, P[p]['chi_so_theo_trong_so'])
     print(p.ljust(8),' '.join(str(round(P[p][c],1)).rjust(12) for c in cols+['cs_ma','cs_bulk','cs_mau','cs_dich','chi_so']))
 print('MISS',miss); print('EST',notes)
 json.dump({p:dict(v,brands=sorted(brands[p])) for p,v in P.items()},open(OUT+'/hien-tai.json','w'),ensure_ascii=False,indent=1)
