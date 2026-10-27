@@ -305,6 +305,159 @@
    "gio_dich": 198
   }
  },
+ "7. Tách theo chức năng: Khanh làm báo cáo 2 tuần + tiến độ NPL, BL/P/L của TNF 富山企画 (~15% việc Luan)": {
+  "Cuong": {
+   "chi_so": 1.35,
+   "ma": 117,
+   "ngay_bulk": 683,
+   "ngay_mau": 780,
+   "gio_dich": 500
+  },
+  "Luan": {
+   "chi_so": 1.29,
+   "ma": 70,
+   "ngay_bulk": 2471,
+   "ngay_mau": 104,
+   "gio_dich": 268
+  },
+  "Hien": {
+   "chi_so": 0.81,
+   "ma": 98,
+   "ngay_bulk": 442,
+   "ngay_mau": 401,
+   "gio_dich": 321
+  },
+  "Q.Huy": {
+   "chi_so": 1.28,
+   "ma": 144,
+   "ngay_bulk": 451,
+   "ngay_mau": 1055,
+   "gio_dich": 488
+  },
+  "B.Trang": {
+   "chi_so": 1.1,
+   "ma": 99,
+   "ngay_bulk": 0,
+   "ngay_mau": 1716,
+   "gio_dich": 330
+  },
+  "Nhu": {
+   "chi_so": 0.56,
+   "ma": 69,
+   "ngay_bulk": 448,
+   "ngay_mau": 98,
+   "gio_dich": 230
+  },
+  "Khanh": {
+   "chi_so": 0.9,
+   "ma": 49,
+   "ngay_bulk": 23,
+   "ngay_mau": 882,
+   "gio_dich": 172
+  }
+ },
+ "8. Phương án 7 + Khanh hỗ trợ dịch tài liệu TNF 富山企画 (tổng ~27% việc Luan)": {
+  "Cuong": {
+   "chi_so": 1.35,
+   "ma": 117,
+   "ngay_bulk": 683,
+   "ngay_mau": 780,
+   "gio_dich": 500
+  },
+  "Luan": {
+   "chi_so": 1.11,
+   "ma": 70,
+   "ngay_bulk": 2471,
+   "ngay_mau": 104,
+   "gio_dich": 268
+  },
+  "Hien": {
+   "chi_so": 0.81,
+   "ma": 98,
+   "ngay_bulk": 442,
+   "ngay_mau": 401,
+   "gio_dich": 321
+  },
+  "Q.Huy": {
+   "chi_so": 1.28,
+   "ma": 144,
+   "ngay_bulk": 451,
+   "ngay_mau": 1055,
+   "gio_dich": 488
+  },
+  "B.Trang": {
+   "chi_so": 1.1,
+   "ma": 99,
+   "ngay_bulk": 0,
+   "ngay_mau": 1716,
+   "gio_dich": 330
+  },
+  "Nhu": {
+   "chi_so": 0.56,
+   "ma": 69,
+   "ngay_bulk": 448,
+   "ngay_mau": 98,
+   "gio_dich": 230
+  },
+  "Khanh": {
+   "chi_so": 1.11,
+   "ma": 49,
+   "ngay_bulk": 23,
+   "ngay_mau": 882,
+   "gio_dich": 172
+  }
+ },
+ "9. Phương án 8 + Hien hỗ trợ 25% mẫu HELLY HANSEN của Cuong": {
+  "Cuong": {
+   "chi_so": 1.15,
+   "ma": 99,
+   "ngay_bulk": 683,
+   "ngay_mau": 585,
+   "gio_dich": 422
+  },
+  "Luan": {
+   "chi_so": 1.11,
+   "ma": 70,
+   "ngay_bulk": 2471,
+   "ngay_mau": 104,
+   "gio_dich": 268
+  },
+  "Hien": {
+   "chi_so": 0.98,
+   "ma": 116,
+   "ngay_bulk": 442,
+   "ngay_mau": 596,
+   "gio_dich": 399
+  },
+  "Q.Huy": {
+   "chi_so": 1.28,
+   "ma": 144,
+   "ngay_bulk": 451,
+   "ngay_mau": 1055,
+   "gio_dich": 488
+  },
+  "B.Trang": {
+   "chi_so": 1.1,
+   "ma": 99,
+   "ngay_bulk": 0,
+   "ngay_mau": 1716,
+   "gio_dich": 330
+  },
+  "Nhu": {
+   "chi_so": 0.56,
+   "ma": 69,
+   "ngay_bulk": 448,
+   "ngay_mau": 98,
+   "gio_dich": 230
+  },
+  "Khanh": {
+   "chi_so": 1.11,
+   "ma": 49,
+   "ngay_bulk": 23,
+   "ngay_mau": 882,
+   "gio_dich": 172
+  }
+ },
  "6. Phương án 5 + Hien hỗ trợ 25% mẫu HELLY HANSEN của Cuong": {
   "Cuong": {
    "chi_so": 1.15,
