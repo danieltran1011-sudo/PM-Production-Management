@@ -17,7 +17,9 @@ Số ngày chuẩn lấy từ file rà soát 20260722, cập nhật theo cuộc 
 | `workflow/schedule.js` | Phần tính lịch dùng chung cho hai trang. |
 | `workflow/schedule.test.js` | Test đối chiếu với file Excel rà soát và các quy tắc đã xác nhận trong họp. |
 | `docs/quy-trinh-lead-time.md` | Tài liệu quy trình, bảng thời gian chuẩn, bảng so sánh, việc cần làm sau họp, các điểm còn mở. |
-| `data/nguon/` | Hai file Excel gốc. |
+| `docs/phan-cong-cong-viec.md` | Dữ liệu phân công công việc TIVN tại APIC, BTNB: nhân sự và việc chính từng người, danh mục ~100 việc kèm người làm và % thời gian, các việc tính vào trị giá hải quan, mã hàng cố vấn 天方 phụ trách. |
+| `data/phan-cong/` | Dữ liệu phân công dạng JSON (APIC 2026 上期, APIC/BTNB 2023–2024, bảng 2018) và script `build.py` tạo lại từ Excel. |
+| `data/nguon/` | Các file Excel gốc. |
 
 ## Sử dụng
 

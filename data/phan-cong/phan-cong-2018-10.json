@@ -1,0 +1,2680 @@
+{
+ "nguon": "data/nguon/Phan-cong-nghiep-vu-APIC-BTNB-2018-10.xlsx",
+ "sheet": "APIC BTNB",
+ "nam": "2018-10",
+ "ky_hieu": {
+  "●": "phụ trách chính",
+  "○": "hỗ trợ / tham gia (phía Nhật)",
+  "(●)": "phụ trách khi cần"
+ },
+ "nhan_su": [
+  {
+   "ten": "山口所長",
+   "to_chuc": "HCM事務所",
+   "nha_may": null,
+   "loai": "管理",
+   "cot": "N"
+  },
+  {
+   "ten": "植井部長",
+   "to_chuc": "HCM事務所",
+   "nha_may": null,
+   "loai": "管理",
+   "cot": "O"
+  },
+  {
+   "ten": "HonNgoc",
+   "to_chuc": "HCM事務所",
+   "nha_may": null,
+   "loai": "管理",
+   "cot": "P"
+  },
+  {
+   "ten": "Huyen",
+   "to_chuc": "HCM事務所",
+   "nha_may": null,
+   "loai": "管理",
+   "cot": "Q"
+  },
+  {
+   "ten": "石坂",
+   "to_chuc": "生産管理課",
+   "nha_may": null,
+   "loai": "管理",
+   "cot": "R"
+  },
+  {
+   "ten": "西山",
+   "to_chuc": "生産管理課",
+   "nha_may": null,
+   "loai": "管理",
+   "cot": "S"
+  },
+  {
+   "ten": "櫛田",
+   "to_chuc": "生産管理課",
+   "nha_may": null,
+   "loai": "管理",
+   "cot": "T"
+  },
+  {
+   "ten": "徐",
+   "to_chuc": "生産管理課",
+   "nha_may": null,
+   "loai": "管理",
+   "cot": "U"
+  },
+  {
+   "ten": "陸",
+   "to_chuc": "生産管理課",
+   "nha_may": null,
+   "loai": "管理",
+   "cot": "V"
+  },
+  {
+   "ten": "Nga",
+   "to_chuc": "生産管理課",
+   "nha_may": null,
+   "loai": "管理",
+   "cot": "W"
+  },
+  {
+   "ten": "大谷",
+   "to_chuc": "生産管理課",
+   "nha_may": null,
+   "loai": "技術",
+   "cot": "X"
+  },
+  {
+   "ten": "木戸",
+   "to_chuc": "加工技術部",
+   "nha_may": null,
+   "loai": "技術",
+   "cot": "Y"
+  },
+  {
+   "ten": "中家",
+   "to_chuc": "加工技術部",
+   "nha_may": null,
+   "loai": "技術",
+   "cot": "Z"
+  },
+  {
+   "ten": "井上",
+   "to_chuc": "現地常駐者",
+   "nha_may": "APIC",
+   "loai": "管理",
+   "cot": "AA"
+  },
+  {
+   "ten": "小山",
+   "to_chuc": "現地常駐者",
+   "nha_may": "APIC",
+   "loai": "技術",
+   "cot": "AB"
+  },
+  {
+   "ten": "Chanh",
+   "to_chuc": "TIVN",
+   "nha_may": "APIC",
+   "loai": "管理",
+   "cot": "AC"
+  },
+  {
+   "ten": "Phong",
+   "to_chuc": "TIVN",
+   "nha_may": "APIC",
+   "loai": "管理",
+   "cot": "AD"
+  },
+  {
+   "ten": "Hien",
+   "to_chuc": "TIVN",
+   "nha_may": "APIC",
+   "loai": "管理",
+   "cot": "AE"
+  },
+  {
+   "ten": "Cuong",
+   "to_chuc": "TIVN",
+   "nha_may": "APIC",
+   "loai": "管理",
+   "cot": "AF"
+  },
+  {
+   "ten": "Nhu",
+   "to_chuc": "TIVN",
+   "nha_may": "APIC",
+   "loai": "管理",
+   "cot": "AG"
+  },
+  {
+   "ten": "Luan",
+   "to_chuc": "TIVN",
+   "nha_may": "APIC",
+   "loai": "管理",
+   "cot": "AH"
+  },
+  {
+   "ten": "Nhung",
+   "to_chuc": "TIVN",
+   "nha_may": "APIC",
+   "loai": "管理",
+   "cot": "AI"
+  },
+  {
+   "ten": "Thuan",
+   "to_chuc": "TIVN",
+   "nha_may": "APIC",
+   "loai": "管理",
+   "cot": "AJ"
+  },
+  {
+   "ten": "Cau",
+   "to_chuc": "TIVN",
+   "nha_may": "APIC",
+   "loai": "技術",
+   "cot": "AK"
+  },
+  {
+   "ten": "Hong",
+   "to_chuc": "TIVN",
+   "nha_may": "APIC",
+   "loai": "技術",
+   "cot": "AL"
+  },
+  {
+   "ten": "Quyen",
+   "to_chuc": "TIVN",
+   "nha_may": "APIC",
+   "loai": "技術",
+   "cot": "AM"
+  },
+  {
+   "ten": "Phuong",
+   "to_chuc": "TIVN",
+   "nha_may": "APIC",
+   "loai": "技術",
+   "cot": "AN"
+  },
+  {
+   "ten": "Vy",
+   "to_chuc": "TIVN",
+   "nha_may": "APIC",
+   "loai": "技術",
+   "cot": "AO"
+  },
+  {
+   "ten": "稲葉",
+   "to_chuc": "現地常駐者",
+   "nha_may": "BTNB",
+   "loai": "管理",
+   "cot": "AP"
+  },
+  {
+   "ten": "井上",
+   "to_chuc": "現地常駐者",
+   "nha_may": "BTNB",
+   "loai": "管理",
+   "cot": "AQ"
+  },
+  {
+   "ten": "鈴木",
+   "to_chuc": "現地常駐者",
+   "nha_may": "BTNB",
+   "loai": "技術",
+   "cot": "AR"
+  },
+  {
+   "ten": "Binh",
+   "to_chuc": "TIVN",
+   "nha_may": "BTNB",
+   "loai": "管理",
+   "cot": "AS"
+  },
+  {
+   "ten": "Duc",
+   "to_chuc": "TIVN",
+   "nha_may": "BTNB",
+   "loai": "管理",
+   "cot": "AT"
+  },
+  {
+   "ten": "Tuyen",
+   "to_chuc": "TIVN",
+   "nha_may": "BTNB",
+   "loai": "管理",
+   "cot": "AU"
+  },
+  {
+   "ten": "Khang",
+   "to_chuc": "TIVN",
+   "nha_may": "BTNB",
+   "loai": "管理",
+   "cot": "AV"
+  },
+  {
+   "ten": "Thong",
+   "to_chuc": "TIVN",
+   "nha_may": "BTNB",
+   "loai": "技術",
+   "cot": "AW"
+  },
+  {
+   "ten": "Thu",
+   "to_chuc": "TIVN",
+   "nha_may": "BTNB",
+   "loai": "技術",
+   "cot": "AX"
+  },
+  {
+   "ten": "Phung",
+   "to_chuc": "TIVN",
+   "nha_may": "BTNB",
+   "loai": "技術",
+   "cot": "AY"
+  },
+  {
+   "ten": "Minh",
+   "to_chuc": "TIVN",
+   "nha_may": "BTNB",
+   "loai": "技術",
+   "cot": "AZ"
+  },
+  {
+   "ten": "Van",
+   "to_chuc": "TIVN",
+   "nha_may": "BTNB",
+   "loai": "技術",
+   "cot": "BA"
+  }
+ ],
+ "cong_viec": [
+  {
+   "phan_loai": "総括",
+   "cong_doan": "総務",
+   "cong_viec": "現地雇用",
+   "noi_dung": "求人、採用面接",
+   "tu": null,
+   "den": null,
+   "phuong_tien": [],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": null,
+   "tan_suat": null,
+   "phu_trach": {}
+  },
+  {
+   "phan_loai": "総括",
+   "cong_doan": "労務管理",
+   "cong_viec": "社内出勤管理",
+   "noi_dung": null,
+   "tu": null,
+   "den": null,
+   "phuong_tien": [],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": null,
+   "tan_suat": null,
+   "phu_trach": {}
+  },
+  {
+   "phan_loai": "総括",
+   "cong_doan": "労務管理",
+   "cong_viec": "生活環境改善",
+   "noi_dung": null,
+   "tu": null,
+   "den": null,
+   "phuong_tien": [],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": null,
+   "tan_suat": null,
+   "phu_trach": {}
+  },
+  {
+   "phan_loai": "総括",
+   "cong_doan": "労務管理",
+   "cong_viec": "業務管理",
+   "noi_dung": null,
+   "tu": null,
+   "den": null,
+   "phuong_tien": [],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": null,
+   "tan_suat": null,
+   "phu_trach": {}
+  },
+  {
+   "phan_loai": "総括",
+   "cong_doan": "労務管理",
+   "cong_viec": "業務評価",
+   "noi_dung": null,
+   "tu": null,
+   "den": null,
+   "phuong_tien": [],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": null,
+   "tan_suat": null,
+   "phu_trach": {}
+  },
+  {
+   "phan_loai": "総括",
+   "cong_doan": "契約管理・交渉",
+   "cong_viec": "DEVID NOTE",
+   "noi_dung": "DEVID NOTE確認、実績踏まえ更新交渉",
+   "tu": null,
+   "den": null,
+   "phuong_tien": [],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": null,
+   "tan_suat": null,
+   "phu_trach": {
+    "木戸@Y": "○"
+   }
+  },
+  {
+   "phan_loai": "総括",
+   "cong_doan": "契約管理・交渉",
+   "cong_viec": "出勤管理",
+   "noi_dung": "月ごとの出勤状況をまとめる",
+   "tu": null,
+   "den": null,
+   "phuong_tien": [],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 0.5,
+   "tan_suat": "月次",
+   "phu_trach": {
+    "木戸@Y": "○",
+    "小山@AB": "●",
+    "Phong@AD": "●"
+   }
+  },
+  {
+   "phan_loai": "総括",
+   "cong_doan": "契約管理・交渉",
+   "cong_viec": "支払工賃管理",
+   "noi_dung": "実績連動の工賃支払額の算定、交渉",
+   "tu": null,
+   "den": null,
+   "phuong_tien": [],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": null,
+   "tan_suat": null,
+   "phu_trach": {
+    "木戸@Y": "○"
+   }
+  },
+  {
+   "phan_loai": "総括",
+   "cong_doan": "契約管理・交渉",
+   "cong_viec": "期中変更対応",
+   "noi_dung": "工場からの業務内容変更要請対応",
+   "tu": null,
+   "den": null,
+   "phuong_tien": [],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 0.1,
+   "tan_suat": "不定期（頻度低）",
+   "phu_trach": {
+    "木戸@Y": "○",
+    "井上@AA": "●",
+    "Chanh@AC": "●",
+    "稲葉@AP": "●",
+    "Binh@AS": "●"
+   }
+  },
+  {
+   "phan_loai": "総括",
+   "cong_doan": "契約管理・交渉",
+   "cong_viec": "生産計画調整",
+   "noi_dung": "工場との生産計画調整・決定",
+   "tu": null,
+   "den": null,
+   "phuong_tien": [],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 5,
+   "tan_suat": "週次",
+   "phu_trach": {
+    "木戸@Y": "○",
+    "井上@AA": "●",
+    "Chanh@AC": "●",
+    "稲葉@AP": "●",
+    "Binh@AS": "●"
+   }
+  },
+  {
+   "phan_loai": "総括",
+   "cong_doan": "契約管理・交渉",
+   "cong_viec": "残業要請",
+   "noi_dung": null,
+   "tu": null,
+   "den": null,
+   "phuong_tien": [],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 0.1,
+   "tan_suat": "不定期（頻度低）",
+   "phu_trach": {
+    "井上@AA": "●",
+    "Chanh@AC": "●",
+    "稲葉@AP": "●",
+    "Binh@AS": "●"
+   }
+  },
+  {
+   "phan_loai": "総括",
+   "cong_doan": "契約管理・交渉",
+   "cong_viec": "AIR代負担交渉",
+   "noi_dung": null,
+   "tu": null,
+   "den": null,
+   "phuong_tien": [],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 0.1,
+   "tan_suat": "不定期（頻度低）",
+   "phu_trach": {
+    "井上@AA": "●",
+    "Chanh@AC": "●"
+   }
+  },
+  {
+   "phan_loai": "総括",
+   "cong_doan": "契約管理・交渉",
+   "cong_viec": "外注工賃交渉",
+   "noi_dung": null,
+   "tu": null,
+   "den": null,
+   "phuong_tien": [],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 0.1,
+   "tan_suat": "不定期（頻度低）",
+   "phu_trach": {
+    "井上@AA": "●",
+    "Chanh@AC": "●"
+   }
+  },
+  {
+   "phan_loai": "総括",
+   "cong_doan": "AUDIT",
+   "cong_viec": "事前準備",
+   "noi_dung": "提出書類、工場指導",
+   "tu": null,
+   "den": null,
+   "phuong_tien": [],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 3,
+   "tan_suat": "不定期（頻度低）",
+   "phu_trach": {
+    "Nhu@AG": "●",
+    "Tuyen@AU": "●"
+   }
+  },
+  {
+   "phan_loai": "総括",
+   "cong_doan": "AUDIT",
+   "cong_viec": "当日対応",
+   "noi_dung": null,
+   "tu": null,
+   "den": null,
+   "phuong_tien": [],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 3,
+   "tan_suat": "不定期（頻度低）",
+   "phu_trach": {
+    "Nhu@AG": "●",
+    "Tuyen@AU": "●"
+   }
+  },
+  {
+   "phan_loai": "総括",
+   "cong_doan": "来客・出張対応",
+   "cong_viec": "移動",
+   "noi_dung": "車、ホテル手配",
+   "tu": null,
+   "den": null,
+   "phuong_tien": [],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 0.5,
+   "tan_suat": "不定期（頻度高）",
+   "phu_trach": {
+    "井上@AA": "●",
+    "Cau@AK": "●",
+    "Binh@AS": "●"
+   }
+  },
+  {
+   "phan_loai": "総括",
+   "cong_doan": "来客・出張対応",
+   "cong_viec": "工場アテンド",
+   "noi_dung": "案内、食事",
+   "tu": null,
+   "den": null,
+   "phuong_tien": [],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 4,
+   "tan_suat": "不定期（頻度低）",
+   "phu_trach": {
+    "木戸@Y": "○",
+    "井上@AA": "●",
+    "Chanh@AC": "●",
+    "Phong@AD": "●",
+    "Quyen@AM": "●",
+    "Phuong@AN": "●",
+    "稲葉@AP": "●",
+    "Binh@AS": "●",
+    "Duc@AT": "●",
+    "Tuyen@AU": "●"
+   }
+  },
+  {
+   "phan_loai": "総括",
+   "cong_doan": "来客・出張対応",
+   "cong_viec": "安全管理",
+   "noi_dung": "行程把握、緊急時対応",
+   "tu": null,
+   "den": null,
+   "phuong_tien": [],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 1,
+   "tan_suat": "不定期（頻度高）",
+   "phu_trach": {
+    "井上@AA": "●",
+    "小山@AB": "●",
+    "Chanh@AC": "●"
+   }
+  },
+  {
+   "phan_loai": "企画",
+   "cong_doan": "開発",
+   "cong_viec": "商品開発",
+   "noi_dung": "新規素材、加工技術調査、サンプル試作",
+   "tu": null,
+   "den": null,
+   "phuong_tien": [],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 2,
+   "tan_suat": "不定期（頻度中）",
+   "phu_trach": {
+    "木戸@Y": "●",
+    "中家@Z": "●",
+    "小山@AB": "●",
+    "Cau@AK": "●"
+   }
+  },
+  {
+   "phan_loai": "企画",
+   "cong_doan": "開発",
+   "cong_viec": "加工技術",
+   "noi_dung": "溶着縫製、パターン自動機、ダウン充填機設計",
+   "tu": null,
+   "den": null,
+   "phuong_tien": [],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 2,
+   "tan_suat": "不定期（頻度中）",
+   "phu_trach": {
+    "木戸@Y": "●",
+    "中家@Z": "●",
+    "小山@AB": "●",
+    "Cau@AK": "●"
+   }
+  },
+  {
+   "phan_loai": "企画",
+   "cong_doan": "開発",
+   "cong_viec": "生産技術",
+   "noi_dung": "IE、ライン設計",
+   "tu": null,
+   "den": null,
+   "phuong_tien": [],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 1,
+   "tan_suat": "不定期（頻度低）",
+   "phu_trach": {
+    "木戸@Y": "●",
+    "中家@Z": "●",
+    "小山@AB": "●",
+    "Cau@AK": "●"
+   }
+  },
+  {
+   "phan_loai": "企画",
+   "cong_doan": "開発",
+   "cong_viec": "管理技術",
+   "noi_dung": "工程分析、進捗ばらつき、QC管理手法",
+   "tu": null,
+   "den": null,
+   "phuong_tien": [],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 3,
+   "tan_suat": "不定期（頻度中）",
+   "phu_trach": {
+    "木戸@Y": "●",
+    "中家@Z": "●",
+    "小山@AB": "●",
+    "Cau@AK": "●"
+   }
+  },
+  {
+   "phan_loai": "企画",
+   "cong_doan": "開発",
+   "cong_viec": "評価技術",
+   "noi_dung": "機能性評価、商品評価、物性試験等",
+   "tu": null,
+   "den": null,
+   "phuong_tien": [],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 2,
+   "tan_suat": "不定期（頻度中）",
+   "phu_trach": {
+    "木戸@Y": "●",
+    "中家@Z": "●",
+    "小山@AB": "●",
+    "Cau@AK": "●"
+   }
+  },
+  {
+   "phan_loai": "企画",
+   "cong_doan": "受注",
+   "cong_viec": "受注計画",
+   "noi_dung": "工場キャパシミュレーションに基づく受注計画",
+   "tu": "営業",
+   "den": "統括室",
+   "phuong_tien": [
+    "メール"
+   ],
+   "input": "計画情報",
+   "output": "キャパ試算表",
+   "gio_moi_lan": null,
+   "tan_suat": null,
+   "phu_trach": {
+    "石坂@R": "●",
+    "木戸@Y": "●"
+   }
+  },
+  {
+   "phan_loai": "企画",
+   "cong_doan": "受注",
+   "cong_viec": "コスト見積り",
+   "noi_dung": "早見表＋過去類似品番からの推定",
+   "tu": null,
+   "den": null,
+   "phuong_tien": [
+    "作業"
+   ],
+   "input": "コスト早見表",
+   "output": null,
+   "gio_moi_lan": null,
+   "tan_suat": null,
+   "phu_trach": {
+    "石坂@R": "●",
+    "櫛田@T": "●",
+    "木戸@Y": "○"
+   }
+  },
+  {
+   "phan_loai": "企画",
+   "cong_doan": "受注",
+   "cong_viec": "オーダーシート",
+   "noi_dung": null,
+   "tu": null,
+   "den": null,
+   "phuong_tien": [],
+   "input": "オーダーシート",
+   "output": null,
+   "gio_moi_lan": null,
+   "tan_suat": null,
+   "phu_trach": {
+    "Nga@W": "●",
+    "木戸@Y": "●",
+    "中家@Z": "●"
+   }
+  },
+  {
+   "phan_loai": "企画",
+   "cong_doan": "外注管理",
+   "cong_viec": "工場調査",
+   "noi_dung": "工場診断",
+   "tu": null,
+   "den": null,
+   "phuong_tien": [],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": null,
+   "tan_suat": null,
+   "phu_trach": {}
+  },
+  {
+   "phan_loai": "企画",
+   "cong_doan": "外注管理",
+   "cong_viec": "技術指導",
+   "noi_dung": "特殊縫製技術、機能評価指導",
+   "tu": null,
+   "den": null,
+   "phuong_tien": [],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": null,
+   "tan_suat": null,
+   "phu_trach": {
+    "木戸@Y": "●",
+    "中家@Z": "●"
+   }
+  },
+  {
+   "phan_loai": "前段取り",
+   "cong_doan": "生産計画",
+   "cong_viec": "生産管理表",
+   "noi_dung": null,
+   "tu": "営業",
+   "den": "統括室",
+   "phuong_tien": [
+    "メール"
+   ],
+   "input": "生産管理表",
+   "output": null,
+   "gio_moi_lan": null,
+   "tan_suat": null,
+   "phu_trach": {
+    "櫛田@T": "●",
+    "稲葉@AP": "●",
+    "Binh@AS": "●"
+   }
+  },
+  {
+   "phan_loai": "前段取り",
+   "cong_doan": "生産計画",
+   "cong_viec": "プランテーブル",
+   "noi_dung": "長期生産計画",
+   "tu": null,
+   "den": null,
+   "phuong_tien": [],
+   "input": null,
+   "output": "プランテーブル",
+   "gio_moi_lan": 4,
+   "tan_suat": "週次",
+   "phu_trach": {
+    "櫛田@T": "●",
+    "Nga@W": "●",
+    "井上@AA": "●",
+    "Chanh@AC": "●",
+    "稲葉@AP": "●"
+   }
+  },
+  {
+   "phan_loai": "前段取り",
+   "cong_doan": "生産計画",
+   "cong_viec": "明細連絡",
+   "noi_dung": "SKU明細を工場へ連絡する",
+   "tu": "統括室",
+   "den": "工場",
+   "phuong_tien": [
+    "メール"
+   ],
+   "input": "発注書",
+   "output": null,
+   "gio_moi_lan": 0.5,
+   "tan_suat": "日次",
+   "phu_trach": {
+    "櫛田@T": "●",
+    "Chanh@AC": "●",
+    "Phong@AD": "●",
+    "Hien@AE": "●",
+    "Cuong@AF": "●",
+    "Nhu@AG": "●",
+    "Luan@AH": "●",
+    "Nhung@AI": "●",
+    "Binh@AS": "●"
+   }
+  },
+  {
+   "phan_loai": "前段取り",
+   "cong_doan": "生産計画",
+   "cong_viec": "工場生産計画",
+   "noi_dung": "中期生産計画",
+   "tu": "統括室",
+   "den": "工場",
+   "phuong_tien": [
+    "メール"
+   ],
+   "input": null,
+   "output": "工場生産計画表",
+   "gio_moi_lan": 1,
+   "tan_suat": "週次",
+   "phu_trach": {
+    "木戸@Y": "○",
+    "井上@AA": "●",
+    "Chanh@AC": "●",
+    "稲葉@AP": "●",
+    "Binh@AS": "●"
+   }
+  },
+  {
+   "phan_loai": "前段取り",
+   "cong_doan": "生産計画",
+   "cong_viec": "資材進捗",
+   "noi_dung": "材料の進捗状況を確認し工場へ報告する",
+   "tu": null,
+   "den": null,
+   "phuong_tien": [],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 3,
+   "tan_suat": "日次",
+   "phu_trach": {
+    "Nga@W": "●",
+    "Chanh@AC": "●",
+    "Phong@AD": "●",
+    "Hien@AE": "●",
+    "Cuong@AF": "●",
+    "Nhu@AG": "●",
+    "Luan@AH": "●",
+    "Nhung@AI": "●"
+   }
+  },
+  {
+   "phan_loai": "前段取り",
+   "cong_doan": "生産計画",
+   "cong_viec": "注意連絡",
+   "noi_dung": "特別に注視する内容を工場へ連絡",
+   "tu": null,
+   "den": null,
+   "phuong_tien": [],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 0.5,
+   "tan_suat": "週次",
+   "phu_trach": {
+    "井上@AA": "●",
+    "Chanh@AC": "●"
+   }
+  },
+  {
+   "phan_loai": "前段取り",
+   "cong_doan": "サンプル",
+   "cong_viec": "受注",
+   "noi_dung": "営業オーダー受注。サンプル管理表への記入",
+   "tu": "営業",
+   "den": "統括室",
+   "phuong_tien": [
+    "メール"
+   ],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 0.2,
+   "tan_suat": "日次",
+   "phu_trach": {
+    "陸@V": "●",
+    "大谷@X": "○",
+    "Phong@AD": "●",
+    "Hien@AE": "●",
+    "Cuong@AF": "●",
+    "Nhu@AG": "●",
+    "Luan@AH": "●",
+    "Nhung@AI": "●",
+    "Hong@AL": "●",
+    "鈴木@AR": "●",
+    "Van@BA": "●"
+   }
+  },
+  {
+   "phan_loai": "前段取り",
+   "cong_doan": "サンプル",
+   "cong_viec": "工場指示",
+   "noi_dung": "日本からのサンプル依頼を工場へ連絡",
+   "tu": "統括室",
+   "den": "工場",
+   "phuong_tien": [
+    "メール"
+   ],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 0.2,
+   "tan_suat": "日次",
+   "phu_trach": {
+    "陸@V": "●",
+    "木戸@Y": "●",
+    "中家@Z": "●",
+    "井上@AA": "●",
+    "Phong@AD": "●",
+    "Hien@AE": "●",
+    "Cuong@AF": "●",
+    "Nhu@AG": "●",
+    "Luan@AH": "●",
+    "Nhung@AI": "●",
+    "鈴木@AR": "●",
+    "Van@BA": "●"
+   }
+  },
+  {
+   "phan_loai": "前段取り",
+   "cong_doan": "サンプル",
+   "cong_viec": "納期回答",
+   "noi_dung": "工場スケジューリング、納期回答",
+   "tu": "統括室",
+   "den": "営業",
+   "phuong_tien": [
+    "メール"
+   ],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 0.2,
+   "tan_suat": "日次",
+   "phu_trach": {
+    "西山@S": "●",
+    "大谷@X": "○",
+    "井上@AA": "●",
+    "Phong@AD": "●",
+    "Hong@AL": "●",
+    "鈴木@AR": "●",
+    "Van@BA": "●"
+   }
+  },
+  {
+   "phan_loai": "前段取り",
+   "cong_doan": "サンプル",
+   "cong_viec": "仕様",
+   "noi_dung": "仕様書の受領、翻訳",
+   "tu": "工場",
+   "den": null,
+   "phuong_tien": [
+    "作業"
+   ],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 2,
+   "tan_suat": "日次",
+   "phu_trach": {
+    "Phong@AD": "●",
+    "Hien@AE": "●",
+    "Cuong@AF": "●",
+    "Nhu@AG": "●",
+    "Luan@AH": "●",
+    "Nhung@AI": "●",
+    "鈴木@AR": "●",
+    "Tuyen@AU": "●"
+   }
+  },
+  {
+   "phan_loai": "前段取り",
+   "cong_doan": "サンプル",
+   "cong_viec": "パターンチェック",
+   "noi_dung": "パターンの受領、寸法チェック",
+   "tu": "工場",
+   "den": null,
+   "phuong_tien": [
+    "作業"
+   ],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 0.2,
+   "tan_suat": "日次",
+   "phu_trach": {
+    "大谷@X": "○",
+    "Phong@AD": "●",
+    "Hien@AE": "●",
+    "Cuong@AF": "●",
+    "Nhu@AG": "●",
+    "Luan@AH": "●",
+    "Nhung@AI": "●",
+    "Hong@AL": "●",
+    "鈴木@AR": "●",
+    "Van@BA": "●"
+   }
+  },
+  {
+   "phan_loai": "前段取り",
+   "cong_doan": "サンプル",
+   "cong_viec": "用尺計算",
+   "noi_dung": "マーカー図作成",
+   "tu": "工場",
+   "den": null,
+   "phuong_tien": [
+    "作業"
+   ],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 0.1,
+   "tan_suat": "日次",
+   "phu_trach": {
+    "Phong@AD": "●",
+    "Hien@AE": "●",
+    "Cuong@AF": "●",
+    "Nhu@AG": "●",
+    "Luan@AH": "●",
+    "Nhung@AI": "●",
+    "鈴木@AR": "●",
+    "Van@BA": "●"
+   }
+  },
+  {
+   "phan_loai": "前段取り",
+   "cong_doan": "サンプル",
+   "cong_viec": "資材不足確認",
+   "noi_dung": "不足資材を確認してTIへ連絡する",
+   "tu": "工場",
+   "den": "営業",
+   "phuong_tien": [
+    "メール"
+   ],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 2,
+   "tan_suat": "日次",
+   "phu_trach": {
+    "大谷@X": "○",
+    "Phong@AD": "●",
+    "Hien@AE": "●",
+    "Cuong@AF": "●",
+    "Nhu@AG": "●",
+    "Luan@AH": "●",
+    "Nhung@AI": "●",
+    "鈴木@AR": "●",
+    "Duc@AT": "●"
+   }
+  },
+  {
+   "phan_loai": "前段取り",
+   "cong_doan": "サンプル",
+   "cong_viec": "進捗フォロー",
+   "noi_dung": "サンプルラインへの進捗フォロー",
+   "tu": "統括室",
+   "den": "工場",
+   "phuong_tien": [
+    "メール"
+   ],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 2,
+   "tan_suat": "週3回程度",
+   "phu_trach": {
+    "大谷@X": "○",
+    "Phong@AD": "●",
+    "Hong@AL": "●",
+    "鈴木@AR": "●",
+    "Van@BA": "●"
+   }
+  },
+  {
+   "phan_loai": "前段取り",
+   "cong_doan": "サンプル",
+   "cong_viec": "諸確認",
+   "noi_dung": "サンプル班からの問合せ・質問対応",
+   "tu": "工場",
+   "den": "営業",
+   "phuong_tien": [
+    "メール"
+   ],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 0.5,
+   "tan_suat": "週3回程度",
+   "phu_trach": {
+    "大谷@X": "○",
+    "井上@AA": "●",
+    "小山@AB": "●",
+    "Phong@AD": "●",
+    "Hong@AL": "●",
+    "Quyen@AM": "●",
+    "Phuong@AN": "●",
+    "Vy@AO": "●",
+    "鈴木@AR": "●",
+    "Van@BA": "●"
+   }
+  },
+  {
+   "phan_loai": "前段取り",
+   "cong_doan": "サンプル",
+   "cong_viec": "問題抽出・改善提案",
+   "noi_dung": "仕様・素材に不具合があればアラート・改善提案する。",
+   "tu": "工場",
+   "den": "営業",
+   "phuong_tien": [
+    "メール"
+   ],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 0.1,
+   "tan_suat": "不定期（頻度中）",
+   "phu_trach": {
+    "大谷@X": "○",
+    "小山@AB": "●",
+    "Hong@AL": "●",
+    "Quyen@AM": "●",
+    "Phuong@AN": "●",
+    "Vy@AO": "●",
+    "鈴木@AR": "●",
+    "Van@BA": "●"
+   }
+  },
+  {
+   "phan_loai": "前段取り",
+   "cong_doan": "サンプル",
+   "cong_viec": "コメント連絡",
+   "noi_dung": "サンプルコメント・採寸表の記入と連絡",
+   "tu": "工場",
+   "den": "営業",
+   "phuong_tien": [
+    "メール"
+   ],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 6,
+   "tan_suat": "日次",
+   "phu_trach": {
+    "大谷@X": "○",
+    "小山@AB": "(●)",
+    "Hong@AL": "●",
+    "Quyen@AM": "(●)",
+    "Phuong@AN": "(●)",
+    "Vy@AO": "(●)",
+    "鈴木@AR": "●",
+    "Van@BA": "●"
+   }
+  },
+  {
+   "phan_loai": "前段取り",
+   "cong_doan": "サンプル",
+   "cong_viec": "二次加工",
+   "noi_dung": "外部工場の見本に関してバルクでの問題点を確認・連絡",
+   "tu": null,
+   "den": null,
+   "phuong_tien": [],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 0.1,
+   "tan_suat": "不定期（頻度低）",
+   "phu_trach": {
+    "小山@AB": "●",
+    "Phong@AD": "●",
+    "Hien@AE": "●",
+    "Cuong@AF": "●",
+    "Nhu@AG": "●",
+    "Luan@AH": "●",
+    "Nhung@AI": "●"
+   }
+  },
+  {
+   "phan_loai": "前段取り",
+   "cong_doan": "サンプル",
+   "cong_viec": "出荷連絡",
+   "noi_dung": "出荷明細、送り状NoをTIへ連絡する",
+   "tu": "工場",
+   "den": "営業",
+   "phuong_tien": [
+    "作業"
+   ],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 1,
+   "tan_suat": "日次",
+   "phu_trach": {
+    "Cau@AK": "●",
+    "Thong@AW": "●",
+    "Van@BA": "●"
+   }
+  },
+  {
+   "phan_loai": "前段取り",
+   "cong_doan": "サンプル",
+   "cong_viec": "発送",
+   "noi_dung": "サンプル発送",
+   "tu": "工場",
+   "den": "営業",
+   "phuong_tien": [
+    "作業"
+   ],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 1,
+   "tan_suat": "日次",
+   "phu_trach": {
+    "Cau@AK": "●",
+    "鈴木@AR": "●",
+    "Van@BA": "●"
+   }
+  },
+  {
+   "phan_loai": "前段取り",
+   "cong_doan": "サンプル",
+   "cong_viec": "生産条件設定",
+   "noi_dung": "接着・シーム条件検討。機能性検査・記録",
+   "tu": "工場",
+   "den": null,
+   "phuong_tien": [
+    "作業"
+   ],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 0.2,
+   "tan_suat": "日次",
+   "phu_trach": {
+    "Hong@AL": "●",
+    "鈴木@AR": "●",
+    "Phung@AY": "●",
+    "Van@BA": "●"
+   }
+  },
+  {
+   "phan_loai": "前段取り",
+   "cong_doan": "サンプル",
+   "cong_viec": "工程分析",
+   "noi_dung": "生産能力・コスト試算",
+   "tu": "工場",
+   "den": "統括室",
+   "phuong_tien": [
+    "作業"
+   ],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 1,
+   "tan_suat": "不定期（頻度低）",
+   "phu_trach": {
+    "井上@AA": "●",
+    "小山@AB": "●",
+    "Chanh@AC": "●",
+    "鈴木@AR": "●",
+    "Van@BA": "●"
+   }
+  },
+  {
+   "phan_loai": "前段取り",
+   "cong_doan": "サンプル",
+   "cong_viec": "元見本管理",
+   "noi_dung": "元見本台帳を作成し入出庫を管理する",
+   "tu": "工場",
+   "den": "統括室",
+   "phuong_tien": [
+    "作業"
+   ],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 0.2,
+   "tan_suat": "不定期（頻度中）",
+   "phu_trach": {
+    "木戸@Y": "○",
+    "中家@Z": "○",
+    "Phong@AD": "●",
+    "Hien@AE": "●",
+    "Cuong@AF": "●",
+    "Nhu@AG": "●",
+    "Luan@AH": "●",
+    "Nhung@AI": "●",
+    "Cau@AK": "●",
+    "Hong@AL": "●",
+    "鈴木@AR": "●",
+    "Van@BA": "●"
+   }
+  },
+  {
+   "phan_loai": "前段取り",
+   "cong_doan": "仕様書",
+   "cong_viec": "ファイル作成",
+   "noi_dung": "仕様書をプリントアウトしブランド・シーズン別にファイルを作成",
+   "tu": "工場",
+   "den": "工場",
+   "phuong_tien": [
+    "作業"
+   ],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 0.5,
+   "tan_suat": "不定期（頻度中）",
+   "phu_trach": {
+    "Phong@AD": "●",
+    "Hien@AE": "●",
+    "Cuong@AF": "●",
+    "Nhu@AG": "●",
+    "Luan@AH": "●",
+    "Nhung@AI": "●",
+    "Van@BA": "●"
+   }
+  },
+  {
+   "phan_loai": "前段取り",
+   "cong_doan": "仕様書",
+   "cong_viec": "翻訳",
+   "noi_dung": "ベトナム語への翻訳",
+   "tu": "工場",
+   "den": "工場",
+   "phuong_tien": [
+    "作業"
+   ],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 2,
+   "tan_suat": "日次",
+   "phu_trach": {
+    "Phong@AD": "●",
+    "Hien@AE": "●",
+    "Cuong@AF": "●",
+    "Nhu@AG": "●",
+    "Luan@AH": "●",
+    "Nhung@AI": "●",
+    "Thuan@AJ": "●",
+    "Tuyen@AU": "●"
+   }
+  },
+  {
+   "phan_loai": "前段取り",
+   "cong_doan": "仕様書",
+   "cong_viec": "チェック",
+   "noi_dung": "パターンや元見本と違ったり問題があった場合、TIへ連絡する",
+   "tu": "工場",
+   "den": "営業",
+   "phuong_tien": [
+    "メール"
+   ],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 0.2,
+   "tan_suat": "日次",
+   "phu_trach": {
+    "木戸@Y": "●",
+    "中家@Z": "●",
+    "小山@AB": "●",
+    "Phong@AD": "●",
+    "Hien@AE": "●",
+    "Cuong@AF": "●",
+    "Nhu@AG": "●",
+    "Luan@AH": "●",
+    "Nhung@AI": "●",
+    "鈴木@AR": "●"
+   }
+  },
+  {
+   "phan_loai": "前段取り",
+   "cong_doan": "仕様書",
+   "cong_viec": "修正連絡",
+   "noi_dung": "修正があれば修正仕様書を翻訳し工場へ連絡する",
+   "tu": "工場",
+   "den": "工場",
+   "phuong_tien": [
+    "メール"
+   ],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 0.2,
+   "tan_suat": "不定期（頻度高）",
+   "phu_trach": {
+    "大谷@X": "○",
+    "木戸@Y": "●",
+    "中家@Z": "●",
+    "Phong@AD": "●",
+    "Hien@AE": "●",
+    "Cuong@AF": "●",
+    "Nhu@AG": "●",
+    "Luan@AH": "●",
+    "Nhung@AI": "●",
+    "鈴木@AR": "●",
+    "Duc@AT": "●",
+    "Tuyen@AU": "●"
+   }
+  },
+  {
+   "phan_loai": "前段取り",
+   "cong_doan": "パターン",
+   "cong_viec": "パターン連絡",
+   "noi_dung": "パターンデータを工場に転送する",
+   "tu": "工場",
+   "den": "工場",
+   "phuong_tien": [
+    "作業"
+   ],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 0.2,
+   "tan_suat": "不定期（頻度高）",
+   "phu_trach": {
+    "Phong@AD": "●",
+    "Hien@AE": "●",
+    "Cuong@AF": "●",
+    "Nhu@AG": "●",
+    "Luan@AH": "●",
+    "Nhung@AI": "●",
+    "Duc@AT": "●"
+   }
+  },
+  {
+   "phan_loai": "前段取り",
+   "cong_doan": "パターン",
+   "cong_viec": "チェック",
+   "noi_dung": "仕様書と違ったり問題があった場合、TIへ連絡する",
+   "tu": "工場",
+   "den": "営業",
+   "phuong_tien": [
+    "メール"
+   ],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 0.2,
+   "tan_suat": "不定期（頻度中）",
+   "phu_trach": {
+    "大谷@X": "○",
+    "小山@AB": "●",
+    "Phong@AD": "●",
+    "Hien@AE": "●",
+    "Cuong@AF": "●",
+    "Nhu@AG": "●",
+    "Luan@AH": "●",
+    "Nhung@AI": "●",
+    "鈴木@AR": "●"
+   }
+  },
+  {
+   "phan_loai": "前段取り",
+   "cong_doan": "パターン",
+   "cong_viec": "修正",
+   "noi_dung": "一部不具合を工場で修正",
+   "tu": "工場",
+   "den": "工場",
+   "phuong_tien": [
+    "作業"
+   ],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 0.2,
+   "tan_suat": "不定期（頻度中）",
+   "phu_trach": {
+    "Phong@AD": "●",
+    "Hien@AE": "●",
+    "Cuong@AF": "●",
+    "Nhu@AG": "●",
+    "Luan@AH": "●",
+    "Nhung@AI": "●",
+    "Hong@AL": "●",
+    "鈴木@AR": "●",
+    "Tuyen@AU": "●",
+    "Thu@AX": "●"
+   }
+  },
+  {
+   "phan_loai": "前段取り",
+   "cong_doan": "資材管理",
+   "cong_viec": "資材着荷確認",
+   "noi_dung": "BL、P/L、DHL No などを工場へ連絡する",
+   "tu": "営業",
+   "den": "工場",
+   "phuong_tien": [
+    "メール"
+   ],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 1,
+   "tan_suat": "日次",
+   "phu_trach": {
+    "Phong@AD": "●",
+    "Hien@AE": "●",
+    "Cuong@AF": "●",
+    "Nhu@AG": "●",
+    "Luan@AH": "●",
+    "Nhung@AI": "●",
+    "鈴木@AR": "●",
+    "Duc@AT": "●",
+    "Khang@AV": "●"
+   }
+  },
+  {
+   "phan_loai": "前段取り",
+   "cong_doan": "資材管理",
+   "cong_viec": "資材不足確認",
+   "noi_dung": "工場からのバランスシートをもとにTIへ不足連絡をする",
+   "tu": "工場",
+   "den": "統括室",
+   "phuong_tien": [
+    "メール"
+   ],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 1,
+   "tan_suat": "日次",
+   "phu_trach": {
+    "Phong@AD": "●",
+    "Hien@AE": "●",
+    "Cuong@AF": "●",
+    "Nhu@AG": "●",
+    "Luan@AH": "●",
+    "Nhung@AI": "●",
+    "鈴木@AR": "●",
+    "Duc@AT": "●"
+   }
+  },
+  {
+   "phan_loai": "前段取り",
+   "cong_doan": "資材管理",
+   "cong_viec": "生地不良確認",
+   "noi_dung": "検反報告をもらい不良内容をTIへ確認する",
+   "tu": "工場",
+   "den": "統括室",
+   "phuong_tien": [
+    "メール"
+   ],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 1,
+   "tan_suat": "日次",
+   "phu_trach": {
+    "Phong@AD": "●",
+    "Hien@AE": "●",
+    "Cuong@AF": "●",
+    "Nhu@AG": "●",
+    "Luan@AH": "●",
+    "Nhung@AI": "●",
+    "鈴木@AR": "●",
+    "Khang@AV": "●"
+   }
+  },
+  {
+   "phan_loai": "本生産",
+   "cong_doan": "裁断",
+   "cong_viec": "明細確認",
+   "noi_dung": "裁断明細を入手しチェックする",
+   "tu": "工場",
+   "den": null,
+   "phuong_tien": [
+    "作業"
+   ],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 0.2,
+   "tan_suat": "日次",
+   "phu_trach": {
+    "Phong@AD": "●",
+    "Hien@AE": "●",
+    "Cuong@AF": "●",
+    "Nhu@AG": "●",
+    "Luan@AH": "●",
+    "Nhung@AI": "●",
+    "Khang@AV": "●",
+    "Phung@AY": "●"
+   }
+  },
+  {
+   "phan_loai": "本生産",
+   "cong_doan": "裁断",
+   "cong_viec": "要尺確認",
+   "noi_dung": "サンプル要尺を確認してTIへ連絡する",
+   "tu": "工場",
+   "den": "統括室",
+   "phuong_tien": [
+    "メール"
+   ],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 0.2,
+   "tan_suat": "日次",
+   "phu_trach": {
+    "Phong@AD": "●",
+    "Hien@AE": "●",
+    "Cuong@AF": "●",
+    "Nhu@AG": "●",
+    "Luan@AH": "●",
+    "Nhung@AI": "●",
+    "Khang@AV": "●"
+   }
+  },
+  {
+   "phan_loai": "本生産",
+   "cong_doan": "裁断",
+   "cong_viec": "トラブル対応",
+   "noi_dung": "色違い・収縮等のトラブル発生時の対応",
+   "tu": null,
+   "den": null,
+   "phuong_tien": [],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 1,
+   "tan_suat": "不定期（頻度高）",
+   "phu_trach": {
+    "井上@AA": "●",
+    "小山@AB": "●",
+    "Chanh@AC": "●",
+    "Phong@AD": "●",
+    "Hien@AE": "●",
+    "Cuong@AF": "●",
+    "Nhu@AG": "●",
+    "Luan@AH": "●",
+    "Nhung@AI": "●",
+    "Cau@AK": "●",
+    "Quyen@AM": "●",
+    "Phuong@AN": "●",
+    "Vy@AO": "●"
+   }
+  },
+  {
+   "phan_loai": "本生産",
+   "cong_doan": "二次加工",
+   "cong_viec": "刺繍",
+   "noi_dung": "刺繍データを入手し、刺繍屋に連絡する",
+   "tu": "工場",
+   "den": null,
+   "phuong_tien": [
+    "作業"
+   ],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 0.1,
+   "tan_suat": "不定期（頻度中）",
+   "phu_trach": {
+    "Phong@AD": "●",
+    "Hien@AE": "●",
+    "Cuong@AF": "●",
+    "Nhu@AG": "●",
+    "Luan@AH": "●",
+    "Nhung@AI": "●",
+    "Thong@AW": "●"
+   }
+  },
+  {
+   "phan_loai": "本生産",
+   "cong_doan": "二次加工",
+   "cong_viec": "プリント",
+   "noi_dung": "プリントデータを入手し、プリント屋に連絡する",
+   "tu": "工場",
+   "den": null,
+   "phuong_tien": [
+    "メール",
+    "作業"
+   ],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 0.1,
+   "tan_suat": "不定期（頻度中）",
+   "phu_trach": {
+    "Phong@AD": "●",
+    "Hien@AE": "●",
+    "Cuong@AF": "●",
+    "Nhu@AG": "●",
+    "Luan@AH": "●",
+    "Nhung@AI": "●",
+    "Thong@AW": "●"
+   }
+  },
+  {
+   "phan_loai": "本生産",
+   "cong_doan": "二次加工",
+   "cong_viec": "キルト",
+   "noi_dung": "依頼内容のバルク展開可否判断",
+   "tu": null,
+   "den": null,
+   "phuong_tien": [],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 0.5,
+   "tan_suat": "不定期（頻度低）",
+   "phu_trach": {
+    "Phong@AD": "●",
+    "Hien@AE": "●",
+    "Cuong@AF": "●",
+    "Nhu@AG": "●",
+    "Luan@AH": "●",
+    "Nhung@AI": "●"
+   }
+  },
+  {
+   "phan_loai": "本生産",
+   "cong_doan": "二次加工",
+   "cong_viec": "品位確認・評価",
+   "noi_dung": "現物確認、客先個別試験",
+   "tu": "工場",
+   "den": null,
+   "phuong_tien": [
+    "作業"
+   ],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 0.5,
+   "tan_suat": "不定期（頻度低）",
+   "phu_trach": {
+    "Chanh@AC": "●",
+    "Phong@AD": "●",
+    "Hien@AE": "●",
+    "Cuong@AF": "●",
+    "Nhu@AG": "●",
+    "Luan@AH": "●",
+    "Nhung@AI": "●",
+    "Cau@AK": "●",
+    "Thong@AW": "●"
+   }
+  },
+  {
+   "phan_loai": "本生産",
+   "cong_doan": "生産",
+   "cong_viec": "仕様確認",
+   "noi_dung": "TIとの量産品の仕様確認",
+   "tu": "工場",
+   "den": "営業",
+   "phuong_tien": [
+    "作業"
+   ],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 3,
+   "tan_suat": "日次",
+   "phu_trach": {
+    "小山@AB": "●",
+    "Cau@AK": "●",
+    "Quyen@AM": "●",
+    "Phuong@AN": "●",
+    "Vy@AO": "●",
+    "鈴木@AR": "●",
+    "Thu@AX": "●",
+    "Minh@AZ": "●"
+   }
+  },
+  {
+   "phan_loai": "本生産",
+   "cong_doan": "生産",
+   "cong_viec": "資材不足確認",
+   "noi_dung": "不足資材を確認してTIへ連絡する",
+   "tu": "工場",
+   "den": "営業",
+   "phuong_tien": [
+    "メール"
+   ],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 1,
+   "tan_suat": "日次",
+   "phu_trach": {
+    "小山@AB": "●",
+    "Phong@AD": "●",
+    "Hien@AE": "●",
+    "Cuong@AF": "●",
+    "Nhu@AG": "●",
+    "Luan@AH": "●",
+    "Nhung@AI": "●",
+    "Cau@AK": "●",
+    "Duc@AT": "●"
+   }
+  },
+  {
+   "phan_loai": "本生産",
+   "cong_doan": "生産",
+   "cong_viec": "縫製指導",
+   "noi_dung": "現場での縫製指導",
+   "tu": "工場",
+   "den": null,
+   "phuong_tien": [
+    "作業"
+   ],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 3,
+   "tan_suat": "日次",
+   "phu_trach": {
+    "小山@AB": "●",
+    "Cau@AK": "●",
+    "Quyen@AM": "●",
+    "Phuong@AN": "●",
+    "Vy@AO": "●",
+    "Thu@AX": "●",
+    "Phung@AY": "●",
+    "Minh@AZ": "●",
+    "Van@BA": "●"
+   }
+  },
+  {
+   "phan_loai": "本生産",
+   "cong_doan": "生産",
+   "cong_viec": "納期管理",
+   "noi_dung": "生産日報、進捗の確認",
+   "tu": "工場",
+   "den": "統括室",
+   "phuong_tien": [
+    "作業"
+   ],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 0.5,
+   "tan_suat": "日次",
+   "phu_trach": {
+    "井上@AA": "●",
+    "小山@AB": "●",
+    "Chanh@AC": "●",
+    "稲葉@AP": "●",
+    "Binh@AS": "●",
+    "Thong@AW": "●",
+    "Phung@AY": "●"
+   }
+  },
+  {
+   "phan_loai": "本生産",
+   "cong_doan": "生産",
+   "cong_viec": "トラブルシュート",
+   "noi_dung": "各種トラブル対応(段取り、計画、工程、品質)",
+   "tu": "工場",
+   "den": "統括室",
+   "phuong_tien": [
+    "メール",
+    "電話",
+    "作業"
+   ],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 1,
+   "tan_suat": "不定期（頻度高）",
+   "phu_trach": {
+    "大谷@X": "○",
+    "井上@AA": "●",
+    "小山@AB": "●",
+    "Chanh@AC": "●",
+    "Quyen@AM": "●",
+    "Phuong@AN": "●",
+    "Vy@AO": "●",
+    "稲葉@AP": "●",
+    "鈴木@AR": "●",
+    "Binh@AS": "●",
+    "Duc@AT": "●",
+    "Khang@AV": "●",
+    "Thong@AW": "●",
+    "Thu@AX": "●",
+    "Phung@AY": "●",
+    "Minh@AZ": "●",
+    "Van@BA": "●"
+   }
+  },
+  {
+   "phan_loai": "本生産",
+   "cong_doan": "生産",
+   "cong_viec": "生産結果記録",
+   "noi_dung": "問題・対策内容の記録と類似生産への水平展開",
+   "tu": "工場",
+   "den": "統括室",
+   "phuong_tien": [
+    "作業"
+   ],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 0.5,
+   "tan_suat": "不定期（頻度中）",
+   "phu_trach": {
+    "木戸@Y": "○",
+    "中家@Z": "○",
+    "井上@AA": "●",
+    "小山@AB": "●",
+    "Chanh@AC": "●",
+    "Cau@AK": "●",
+    "Quyen@AM": "●",
+    "Phuong@AN": "●",
+    "Vy@AO": "●",
+    "稲葉@AP": "●",
+    "鈴木@AR": "●",
+    "Binh@AS": "●",
+    "Thong@AW": "●"
+   }
+  },
+  {
+   "phan_loai": "本生産",
+   "cong_doan": "生産",
+   "cong_viec": "技術者MTG",
+   "noi_dung": "工場の投入前MTGに参加し注意事項の確認",
+   "tu": null,
+   "den": null,
+   "phuong_tien": [],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 1,
+   "tan_suat": "日次",
+   "phu_trach": {
+    "中家@Z": "●",
+    "Quyen@AM": "●",
+    "Phuong@AN": "●",
+    "Vy@AO": "●"
+   }
+  },
+  {
+   "phan_loai": "本生産",
+   "cong_doan": "検査",
+   "cong_viec": "検査目合わせ",
+   "noi_dung": "投入後、最初に上がった製品の基準目合わせ",
+   "tu": "工場",
+   "den": null,
+   "phuong_tien": [
+    "作業"
+   ],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 1,
+   "tan_suat": "不定期（頻度高）",
+   "phu_trach": {
+    "大谷@X": "○",
+    "小山@AB": "●",
+    "Cau@AK": "●",
+    "Quyen@AM": "●",
+    "Phuong@AN": "●",
+    "Vy@AO": "●",
+    "鈴木@AR": "●",
+    "Thu@AX": "●",
+    "Phung@AY": "●",
+    "Minh@AZ": "●"
+   }
+  },
+  {
+   "phan_loai": "本生産",
+   "cong_doan": "検査",
+   "cong_viec": "一次検査",
+   "noi_dung": "ライン上がり製品の縫製検査",
+   "tu": "工場",
+   "den": null,
+   "phuong_tien": [
+    "作業"
+   ],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 0.5,
+   "tan_suat": "日次",
+   "phu_trach": {
+    "大谷@X": "○",
+    "木戸@Y": "○",
+    "中家@Z": "○",
+    "小山@AB": "●",
+    "Cau@AK": "●",
+    "Quyen@AM": "●",
+    "Phuong@AN": "●",
+    "Vy@AO": "●",
+    "Phung@AY": "●",
+    "Minh@AZ": "●"
+   }
+  },
+  {
+   "phan_loai": "本生産",
+   "cong_doan": "検査",
+   "cong_viec": "二次検査",
+   "noi_dung": "仕上げ製品の外観検査",
+   "tu": "工場",
+   "den": null,
+   "phuong_tien": [
+    "作業"
+   ],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 0.5,
+   "tan_suat": "日次",
+   "phu_trach": {
+    "大谷@X": "○",
+    "小山@AB": "●",
+    "Cau@AK": "●",
+    "Quyen@AM": "●",
+    "Phuong@AN": "●",
+    "Vy@AO": "●",
+    "Phung@AY": "●",
+    "Minh@AZ": "●"
+   }
+  },
+  {
+   "phan_loai": "本生産",
+   "cong_doan": "検査",
+   "cong_viec": "出荷前検査",
+   "noi_dung": "工場検品後の製品の抜取チェック",
+   "tu": "工場",
+   "den": null,
+   "phuong_tien": [
+    "作業"
+   ],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 0.5,
+   "tan_suat": "日次",
+   "phu_trach": {
+    "大谷@X": "○",
+    "木戸@Y": "○",
+    "中家@Z": "○",
+    "小山@AB": "●",
+    "Cau@AK": "●",
+    "Quyen@AM": "●",
+    "Phuong@AN": "●",
+    "Vy@AO": "●",
+    "Thong@AW": "●",
+    "Minh@AZ": "●"
+   }
+  },
+  {
+   "phan_loai": "本生産",
+   "cong_doan": "検査",
+   "cong_viec": "下札、ﾈｰﾑ確認",
+   "noi_dung": "下げ札、ネーム類の印字内容のチェック",
+   "tu": "工場",
+   "den": null,
+   "phuong_tien": [
+    "作業"
+   ],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 0.5,
+   "tan_suat": "日次",
+   "phu_trach": {
+    "Phong@AD": "●",
+    "Hien@AE": "●",
+    "Cuong@AF": "●",
+    "Nhu@AG": "●",
+    "Luan@AH": "●",
+    "Nhung@AI": "●",
+    "Thong@AW": "●",
+    "Phung@AY": "●"
+   }
+  },
+  {
+   "phan_loai": "本生産",
+   "cong_doan": "検査",
+   "cong_viec": "客先検査",
+   "noi_dung": "客先検査結果の工場連絡",
+   "tu": "工場",
+   "den": "営業",
+   "phuong_tien": [
+    "メール"
+   ],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 0.5,
+   "tan_suat": "不定期（頻度高）",
+   "phu_trach": {
+    "大谷@X": "○",
+    "Quyen@AM": "●",
+    "Phuong@AN": "●",
+    "Vy@AO": "●",
+    "鈴木@AR": "●",
+    "Thong@AW": "●",
+    "Minh@AZ": "●"
+   }
+  },
+  {
+   "phan_loai": "本生産",
+   "cong_doan": "検査",
+   "cong_viec": "機能検査",
+   "noi_dung": "耐水圧・シーム製品抜き取り検査チェック",
+   "tu": "工場",
+   "den": null,
+   "phuong_tien": [
+    "作業"
+   ],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 0.5,
+   "tan_suat": "不定期（頻度中）",
+   "phu_trach": {
+    "中家@Z": "○",
+    "小山@AB": "●",
+    "Cau@AK": "●",
+    "Quyen@AM": "●",
+    "Phuong@AN": "●",
+    "Vy@AO": "●",
+    "Thong@AW": "●",
+    "Phung@AY": "●"
+   }
+  },
+  {
+   "phan_loai": "本生産",
+   "cong_doan": "検査",
+   "cong_viec": "第三者検品",
+   "noi_dung": "外部検査機関との品質基準・日程調整",
+   "tu": null,
+   "den": null,
+   "phuong_tien": [],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 0.2,
+   "tan_suat": "不定期（頻度中）",
+   "phu_trach": {
+    "中家@Z": "○",
+    "井上@AA": "●",
+    "小山@AB": "●",
+    "Phong@AD": "●",
+    "Hien@AE": "●",
+    "Cuong@AF": "●",
+    "Nhu@AG": "●",
+    "Luan@AH": "●",
+    "Nhung@AI": "●"
+   }
+  },
+  {
+   "phan_loai": "出荷",
+   "cong_doan": "出荷",
+   "cong_viec": "P/L管理",
+   "noi_dung": "出荷後のP/Lチェックし、減産していれば補充確認する",
+   "tu": "営業",
+   "den": "工場",
+   "phuong_tien": [
+    "作業"
+   ],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 3,
+   "tan_suat": "日次",
+   "phu_trach": {
+    "中家@Z": "○",
+    "Nhu@AG": "●",
+    "Binh@AS": "●",
+    "Khang@AV": "●"
+   }
+  },
+  {
+   "phan_loai": "出荷",
+   "cong_doan": "出荷",
+   "cong_viec": "出荷連絡",
+   "noi_dung": "TIへP/Lを連絡をする(BL、IVは工場から直接TIへ連絡する）",
+   "tu": "工場",
+   "den": "営業",
+   "phuong_tien": [
+    "メール",
+    "作業"
+   ],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 3,
+   "tan_suat": "日次",
+   "phu_trach": {
+    "Nhu@AG": "●",
+    "Binh@AS": "●",
+    "Khang@AV": "●"
+   }
+  },
+  {
+   "phan_loai": "出荷",
+   "cong_doan": "出荷",
+   "cong_viec": "日程調整",
+   "noi_dung": "出荷日・数量の変更依頼を工場と調整",
+   "tu": null,
+   "den": null,
+   "phuong_tien": [],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 1,
+   "tan_suat": "週次",
+   "phu_trach": {
+    "木戸@Y": "●",
+    "中家@Z": "●",
+    "井上@AA": "●",
+    "小山@AB": "●"
+   }
+  },
+  {
+   "phan_loai": "出荷",
+   "cong_doan": "備品管理",
+   "cong_viec": "消耗品管理",
+   "noi_dung": "工場で必要な消耗品をTIへ発注し受渡伝票を作成する",
+   "tu": "工場",
+   "den": "営業",
+   "phuong_tien": [
+    "作業"
+   ],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 0.2,
+   "tan_suat": "不定期（頻度低）",
+   "phu_trach": {
+    "Phong@AD": "●",
+    "Binh@AS": "●"
+   }
+  },
+  {
+   "phan_loai": "出荷",
+   "cong_doan": "労務管理",
+   "cong_viec": "出勤簿管理",
+   "noi_dung": "月ごとの出勤状況をまとめる",
+   "tu": "工場",
+   "den": "統括室",
+   "phuong_tien": [
+    "メール",
+    "作業"
+   ],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 0.5,
+   "tan_suat": "月次",
+   "phu_trach": {
+    "Phong@AD": "●",
+    "Tuyen@AU": "●"
+   }
+  },
+  {
+   "phan_loai": "その他",
+   "cong_doan": "日次作業",
+   "cong_viec": "業務日報",
+   "noi_dung": "当日の行内容をTI東京へ報告",
+   "tu": null,
+   "den": null,
+   "phuong_tien": [],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 1,
+   "tan_suat": "日次",
+   "phu_trach": {
+    "井上@AA": "●",
+    "小山@AB": "●",
+    "Chanh@AC": "●",
+    "Phong@AD": "●",
+    "Hien@AE": "●",
+    "Cuong@AF": "●",
+    "Nhu@AG": "●",
+    "Luan@AH": "●",
+    "Nhung@AI": "●",
+    "Thuan@AJ": "●"
+   }
+  },
+  {
+   "phan_loai": "その他",
+   "cong_doan": "日次作業",
+   "cong_viec": "進捗報告会",
+   "noi_dung": "前日の生産進捗・工員出欠を各工場長より確認",
+   "tu": null,
+   "den": null,
+   "phuong_tien": [],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 0.5,
+   "tan_suat": "日次",
+   "phu_trach": {
+    "井上@AA": "●",
+    "小山@AB": "●",
+    "Chanh@AC": "●",
+    "Phong@AD": "●",
+    "Hien@AE": "●",
+    "Cuong@AF": "●",
+    "Nhu@AG": "●",
+    "Luan@AH": "●",
+    "Nhung@AI": "●",
+    "Thuan@AJ": "●",
+    "Cau@AK": "●",
+    "Hong@AL": "●",
+    "Quyen@AM": "●",
+    "Phuong@AN": "●",
+    "Vy@AO": "●"
+   }
+  },
+  {
+   "phan_loai": "その他",
+   "cong_doan": "日次作業",
+   "cong_viec": "技術MTG",
+   "noi_dung": "工場技術・品管リーダーより前日のトピックスを確認",
+   "tu": null,
+   "den": null,
+   "phuong_tien": [],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 0.5,
+   "tan_suat": "日次",
+   "phu_trach": {
+    "井上@AA": "●",
+    "小山@AB": "●",
+    "Cau@AK": "●",
+    "Hong@AL": "●",
+    "Quyen@AM": "●",
+    "Phuong@AN": "●",
+    "Vy@AO": "●"
+   }
+  },
+  {
+   "phan_loai": "その他",
+   "cong_doan": "日次作業",
+   "cong_viec": "工場ラウンド",
+   "noi_dung": "工場報告内容確認",
+   "tu": null,
+   "den": null,
+   "phuong_tien": [],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 2,
+   "tan_suat": "日次",
+   "phu_trach": {
+    "小山@AB": "●",
+    "Cau@AK": "●"
+   }
+  },
+  {
+   "phan_loai": "その他",
+   "cong_doan": "週次作業",
+   "cong_viec": "生産MTG",
+   "noi_dung": "次週以降の生産計画を工場と調整・確認",
+   "tu": null,
+   "den": null,
+   "phuong_tien": [],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 5,
+   "tan_suat": "週次",
+   "phu_trach": {
+    "井上@AA": "●",
+    "小山@AB": "●",
+    "Chanh@AC": "●",
+    "Phong@AD": "●",
+    "Hien@AE": "●",
+    "Cuong@AF": "●",
+    "Nhu@AG": "●",
+    "Luan@AH": "●",
+    "Nhung@AI": "●"
+   }
+  },
+  {
+   "phan_loai": "その他",
+   "cong_doan": "週次作業",
+   "cong_viec": "サンプルMTG",
+   "noi_dung": "2府先までのサンプル班計画を調整・確認",
+   "tu": null,
+   "den": null,
+   "phuong_tien": [],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 2,
+   "tan_suat": "週次",
+   "phu_trach": {
+    "Phong@AD": "●",
+    "Hien@AE": "●",
+    "Cuong@AF": "●",
+    "Nhu@AG": "●",
+    "Luan@AH": "●",
+    "Nhung@AI": "●",
+    "Hong@AL": "●"
+   }
+  },
+  {
+   "phan_loai": "その他",
+   "cong_doan": "週次作業",
+   "cong_viec": "業務週報",
+   "noi_dung": "当週の行内容をTI東京へ報告",
+   "tu": null,
+   "den": null,
+   "phuong_tien": [],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 1,
+   "tan_suat": null,
+   "phu_trach": {
+    "Chanh@AC": "●",
+    "Phong@AD": "●",
+    "Hien@AE": "●",
+    "Cuong@AF": "●",
+    "Nhu@AG": "●",
+    "Luan@AH": "●",
+    "Nhung@AI": "●",
+    "Thuan@AJ": "●"
+   }
+  },
+  {
+   "phan_loai": "その他",
+   "cong_doan": "週次作業",
+   "cong_viec": "計画修正連絡",
+   "noi_dung": "生産管理課へ計画修正案・空きライン・問題点を連絡",
+   "tu": null,
+   "den": null,
+   "phuong_tien": [],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 2,
+   "tan_suat": "週次",
+   "phu_trach": {
+    "井上@AA": "●",
+    "小山@AB": "●"
+   }
+  },
+  {
+   "phan_loai": "その他",
+   "cong_doan": "週次作業",
+   "cong_viec": "プランテーブル修正",
+   "noi_dung": "生産管理課へ修正計画を盛り込んだプランテーブルを送付",
+   "tu": null,
+   "den": null,
+   "phuong_tien": [],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 2,
+   "tan_suat": "週次",
+   "phu_trach": {
+    "井上@AA": "●",
+    "小山@AB": "●"
+   }
+  },
+  {
+   "phan_loai": "その他",
+   "cong_doan": "週次作業",
+   "cong_viec": "update修正内容確認",
+   "noi_dung": "計画修正されたupdateとプランテーブルの照合",
+   "tu": null,
+   "den": null,
+   "phuong_tien": [],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 4,
+   "tan_suat": "週次",
+   "phu_trach": {
+    "井上@AA": "●",
+    "小山@AB": "●",
+    "Chanh@AC": "●",
+    "Nhung@AI": "●"
+   }
+  },
+  {
+   "phan_loai": "その他",
+   "cong_doan": "週次作業",
+   "cong_viec": "出勤名簿の抜き打ち確認",
+   "noi_dung": "工場工員の出勤名簿とラインの抜き打ち照合",
+   "tu": null,
+   "den": null,
+   "phuong_tien": [],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 0.5,
+   "tan_suat": "週次",
+   "phu_trach": {
+    "Phong@AD": "●",
+    "Nhu@AG": "●"
+   }
+  },
+  {
+   "phan_loai": "その他",
+   "cong_doan": "月次作業",
+   "cong_viec": "業務月報",
+   "noi_dung": "毎月のトピックス・生産実績・要員情報を報告",
+   "tu": null,
+   "den": null,
+   "phuong_tien": [],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 2,
+   "tan_suat": "月次",
+   "phu_trach": {
+    "井上@AA": "●",
+    "小山@AB": "●"
+   }
+  },
+  {
+   "phan_loai": "その他",
+   "cong_doan": "月次作業",
+   "cong_viec": "材料在庫管理",
+   "noi_dung": "工場算出の材料在庫数をまとめて報告",
+   "tu": null,
+   "den": null,
+   "phuong_tien": [],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 1,
+   "tan_suat": "月次",
+   "phu_trach": {
+    "井上@AA": "●"
+   }
+  },
+  {
+   "phan_loai": "その他",
+   "cong_doan": "月次作業",
+   "cong_viec": "製品在庫管理",
+   "noi_dung": "工場算出の生産実績日報を必要項目毎に計算して報告",
+   "tu": null,
+   "den": null,
+   "phuong_tien": [],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 1,
+   "tan_suat": "月次",
+   "phu_trach": {
+    "井上@AA": "●"
+   }
+  },
+  {
+   "phan_loai": "その他",
+   "cong_doan": "月次作業",
+   "cong_viec": "生産計画・実績報告",
+   "noi_dung": "前月の生産実績と翌月の生産計画を報告",
+   "tu": null,
+   "den": null,
+   "phuong_tien": [],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 0.1,
+   "tan_suat": "月次",
+   "phu_trach": {
+    "井上@AA": "●"
+   }
+  },
+  {
+   "phan_loai": "その他",
+   "cong_doan": "月次作業",
+   "cong_viec": "機材管理報告",
+   "noi_dung": "工場へ貸し出している機材明細の報告",
+   "tu": null,
+   "den": null,
+   "phuong_tien": [],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 0.1,
+   "tan_suat": "月次",
+   "phu_trach": {
+    "井上@AA": "●"
+   }
+  },
+  {
+   "phan_loai": "その他",
+   "cong_doan": "月次作業",
+   "cong_viec": "計画・実績情報報告",
+   "noi_dung": "品番毎の計画・実績及び早見表計画日数との比較を報告",
+   "tu": null,
+   "den": null,
+   "phuong_tien": [],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 1,
+   "tan_suat": "月次",
+   "phu_trach": {
+    "井上@AA": "●",
+    "Phong@AD": "●",
+    "Hien@AE": "●",
+    "Cuong@AF": "●",
+    "Nhu@AG": "●",
+    "Luan@AH": "●",
+    "Nhung@AI": "●"
+   }
+  },
+  {
+   "phan_loai": "その他",
+   "cong_doan": "月次作業",
+   "cong_viec": "2週間ルール外品番報告",
+   "noi_dung": "工場算出の2週間ルール外品番リストを報告",
+   "tu": null,
+   "den": null,
+   "phuong_tien": [],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 0.1,
+   "tan_suat": "月次",
+   "phu_trach": {
+    "井上@AA": "●",
+    "Chanh@AC": "●",
+    "Phong@AD": "●",
+    "Hien@AE": "●",
+    "Cuong@AF": "●",
+    "Nhu@AG": "●",
+    "Luan@AH": "●",
+    "Nhung@AI": "●"
+   }
+  },
+  {
+   "phan_loai": "その他",
+   "cong_doan": "月次作業",
+   "cong_viec": "品質改善報告会議",
+   "noi_dung": "会議資料作成",
+   "tu": null,
+   "den": null,
+   "phuong_tien": [],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 4,
+   "tan_suat": "月次",
+   "phu_trach": {
+    "小山@AB": "●",
+    "Cau@AK": "●"
+   }
+  },
+  {
+   "phan_loai": "その他",
+   "cong_doan": "月次作業",
+   "cong_viec": "品質改善報告会議",
+   "noi_dung": "会議",
+   "tu": null,
+   "den": null,
+   "phuong_tien": [],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 3,
+   "tan_suat": "月次",
+   "phu_trach": {
+    "井上@AA": "●",
+    "小山@AB": "●",
+    "Cau@AK": "●",
+    "Quyen@AM": "●",
+    "Phuong@AN": "●",
+    "Vy@AO": "●"
+   }
+  },
+  {
+   "phan_loai": "その他",
+   "cong_doan": "月次作業",
+   "cong_viec": "出勤名簿・D/N照合",
+   "noi_dung": "工員出勤名簿人数とD/N記載人数の照合",
+   "tu": null,
+   "den": null,
+   "phuong_tien": [],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 1,
+   "tan_suat": "月次",
+   "phu_trach": {
+    "Phong@AD": "●"
+   }
+  },
+  {
+   "phan_loai": "その他",
+   "cong_doan": "月次作業",
+   "cong_viec": "TIVNスタッフ労務管理",
+   "noi_dung": "TIVNスタッフのタイムカード確認及び残業時間確認",
+   "tu": null,
+   "den": null,
+   "phuong_tien": [],
+   "input": null,
+   "output": null,
+   "gio_moi_lan": 0.1,
+   "tan_suat": "月次",
+   "phu_trach": {
+    "井上@AA": "●"
+   }
+  }
+ ]
+}
