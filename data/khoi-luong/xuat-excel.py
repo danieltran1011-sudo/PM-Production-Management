@@ -131,18 +131,18 @@ widths(ws, [5, 11, 16, 6, 40, 7, 10, 11, 12, 14, 14, 24])
 t = json.load(open('data/khoi-luong/thuc-te.json'))
 ws = sheet('Số mã theo mùa')
 title(ws, 'Số mã bulk và mẫu theo người, theo mùa', 'Nguồn: sheet từng người trong file BULK và SPL.')
-S = ['24FW', '25SS', '25FW', '26SS', '26FW', '27SS']
+S = ['24FW', '25SS', '25FW', '26SS', '26FW', '27SS', '27FW']
 header(ws, 4, ['Người'] + [f'{s} bulk' for s in S] + [f'{s} mẫu' for s in S])
 people = ['Cuong', 'Luan', 'Hien', 'Q.Huy', 'B.Trang', 'Nhu', 'Khanh']
 for i, p in enumerate(people, 5):
     write(ws, i, 1, TEN.get(p, p), bold=True)
     for j, s in enumerate(S):
         write(ws, i, 2 + j, sum(r['ma'] for r in t['bulk'] if r['nguoi'] == p and r['mua'] == s), fmt='#,##0')
-        write(ws, i, 8 + j, sum(r['ma'] for r in t['spl'] if r['nguoi'] == p and r['mua'] == s), fmt='#,##0')
+        write(ws, i, 2 + len(S) + j, sum(r['ma'] for r in t['spl'] if r['nguoi'] == p and r['mua'] == s), fmt='#,##0')
 tr = 5 + len(people)
 write(ws, tr, 1, 'Tổng', bold=True)
-for j in range(2, 14): write(ws, tr, j, f'=SUM({L(j)}5:{L(j)}{tr-1})', bold=True, fmt='#,##0')
-widths(ws, [12] + [10] * 12)
+for j in range(2, 2 + 2 * len(S)): write(ws, tr, j, f'=SUM({L(j)}5:{L(j)}{tr-1})', bold=True, fmt='#,##0')
+widths(ws, [12] + [10] * 2 * len(S))
 
 # 5–6. Số liệu gốc
 for name, key_, cols_ in (('Thực tế BULK', 'bulk', ['nguoi', 'mua', 'brand', 'sl', 'ma', 'giay', 'ngay', 'ghichu']),

@@ -2,7 +2,7 @@
 # Chạy từ thư mục gốc repo: python3 data/khoi-luong/build.py
 # Kết quả: data/khoi-luong/thuc-te.json (dữ liệu gốc đã gom) và data/khoi-luong/hien-tai.json (tải hiện tại theo người).
 BULK = "data/nguon/Thuc-te-BULK-19FW-27SS-20261012.xlsx"
-SPL = "data/nguon/Thuc-te-mau-SPL-23FW-27SS-20261012.xlsx"
+SPL = "data/nguon/Thuc-te-mau-SPL-23FW-27FW-20261012.xlsx"
 OUT = "data/khoi-luong"
 import openpyxl, json, re, collections
 def norm(n): return str(n).strip()

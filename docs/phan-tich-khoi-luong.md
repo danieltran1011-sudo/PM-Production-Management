@@ -4,7 +4,7 @@ Phạm vi: chỉ nhóm MD. Nhóm kỹ thuật và CAD sẽ phân tích riêng sa
 
 Cập nhật: 28/10/2026. Nguồn dữ liệu:
 - `data/nguon/Thuc-te-BULK-19FW-27SS-20261012.xlsx`: hàng đại trà theo người, mùa, brand (số lượng, số mã, giây TB, ngày chuyền).
-- `data/nguon/Thuc-te-mau-SPL-23FW-27SS-20261012.xlsx`: mẫu (1st/2nd/3rd, SMS) theo người, mùa, brand, kèm bảng giờ dịch tài liệu cho mỗi mã theo brand.
+- `data/nguon/Thuc-te-mau-SPL-23FW-27FW-20261012.xlsx`: mẫu (1st/2nd/3rd, SMS) theo người, mùa, brand (bản cập nhật có thêm mùa 27FW), kèm bảng giờ dịch tài liệu cho mỗi mã theo brand.
 - `data/nguon/Phan-cong-brand-MD-APIC-20260722.xlsx`: phân công brand của nhóm MD ngày 22/7/2026.
 - `data/nguon/APIC-P-Plan-Plantable-2026-20261026.xlsm`: Plantable 26/10/2026 – kế hoạch sản xuất theo chuyền (ngày vào chuyền, kết thúc từng lô), sổ theo dõi đơn S27 (MD phụ trách từng đơn).
 - `data/nguon/APIC-Sample-20261023.xlsx`: kế hoạch và thực tế may mẫu 2025–2026 (MD phụ trách, loại mẫu, ngày cần, trạng thái), công suất phòng mẫu.
@@ -81,15 +81,35 @@ Kết luận: **Hien và Cuong cao nhất, Nhu thấp nhất** dù đặt trọn
 
 ### Xu hướng số mã theo mùa (mã bulk + mã mẫu)
 
-| Người | 24FW | 25SS | 25FW | 26SS | 26FW | 27SS |
-|---|---|---|---|---|---|---|
-| Cuong | 65+65 | 53+93 | 74+131 | 49+56 | 81+113 | 48+89 |
-| Huy | 24+29 | 32+46 | 19+101 | 33+103 | 77+127 | 43+80 |
-| Khanh | 47+108 | 15+77 | 36+183 | 23+112 | 0+145 | 0+6 |
-| Nhu | 20+95 | 1+37 | 66+26 | 49+63 | 79+49 | 35+34 |
-| Hien | 22+66 | 10+47 | 20+12 | 27+51 | 35+0 | 40+96 |
-| Luan | 83+0 | 88+39 | 86+61 | 41+14 | 89+15 | 45+25 |
-| B.Trang | – | – | – | 2+0 | 15+0 | 0+104 |
+| Người | 24FW | 25SS | 25FW | 26SS | 26FW | 27SS | 27FW (chỉ mẫu) |
+|---|---|---|---|---|---|---|---|
+| Cuong | 65+65 | 53+93 | 74+131 | 49+56 | 81+113 | 48+89 | **170** |
+| Huy | 24+29 | 32+46 | 19+101 | 33+103 | 77+127 | 43+80 | 62 |
+| Khanh | 47+108 | 15+77 | 36+183 | 23+112 | 0+145 | 0+6 | 0 |
+| Nhu | 20+95 | 1+37 | 66+26 | 49+63 | 79+49 | 35+34 | 9 |
+| Hien | 22+66 | 10+47 | 20+12 | 27+51 | 35+0 | 40+96 | 51 |
+| Luan | 83+0 | 88+39 | 86+61 | 41+14 | 89+15 | 45+25 | 12 |
+| B.Trang | – | – | – | 2+0 | 15+0 | 0+104 | **155** |
+
+### Mẫu mùa 27FW (thực tế, file SPL 12/10/2026) so với 26FW
+
+| Người | 1st–3rd 26FW (cái / mã) | 1st–3rd 27FW | Triển lãm SMS 26FW (cái / mã / ngày may) | Triển lãm SMS 27FW | Ghi chú 27FW |
+|---|---|---|---|---|---|
+| Cuong | 70 / 63 | **96 / 86** | 159 / 50 / 678 | **298 / 84 / 1.130** | HELLY HANSEN 267 cái, NEUTRALWORKS 31; YONEX 1st 5 |
+| B.Trang | – | 73 / 45 | – | **611 / 110 / 1.712** | TNF 367 cái (94 mã), **YONEX 244 cái** (16 mã) |
+| Khanh | 86 / 49 | – | 480 / 96 / 2.400 | – | Nghỉ thai sản; mẫu TNF chuyển cho B.Trang |
+| Huy | 169 / 91 | 41 / 32 | 205 / 36 / 831 | 209 / 30 / 1.015 | GOLDWIN 194 cái, CANTERBURY 15 |
+| Hien | (sheet thiếu) | 29 / 27 | (sheet thiếu) | 158 / 24 / 714 | **SKI 82 cái, ~22.000 giây/cái** (6 ngày/cái), ALLTERRAIN 35, TETON 41 |
+| Nhu | 89 / 49 | 9 / 9 | – | – | TNF 別注 |
+| Luan | 18 / 15 | 12 / 12 | – | – | TNF 富山企画 |
+
+Ngày may của mẫu chưa có giây TB được ước theo giây TB của brand mùa trước (YONEX chưa có nên tạm tính 1 ngày/cái, có thể thấp hơn thực tế).
+
+Nhận xét về mẫu 27FW:
+- **Cuong tăng mạnh**: SMS 27FW 298 cái (gần gấp đôi 26FW), cộng 96 mẫu 1st. Đây là lý do Cuong cao điểm từ tháng 9–11, nối tiếp cao điểm vào chuyền HELLY HANSEN tháng 12.
+- **B.Trang (nhân viên mới) gánh đợt mẫu triển lãm lớn nhất nhóm**: 611 cái, trong đó YONEX 244 cái (brand mới nhận). Tổng mẫu TNF thấp hơn năm trước (367 so với 480 cái của Khanh mùa 26FW), nhưng có thêm YONEX.
+- **Hien có mẫu SKI rất nặng** (82 cái, mỗi cái ~22.000 giây), nên đợt mẫu FW của Hien không nhẹ như số ước trước đây (36 cái).
+- Các đơn mẫu triển lãm 27FW còn lại (chưa xong) đã nằm trong phần "Tải theo tháng" (dồn vào 11/2026), nên kết quả theo tháng không đổi.
 
 ## Nhận xét
 
