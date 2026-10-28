@@ -30,9 +30,11 @@ MD = ['Cuong', 'Luan', 'Hien', 'Q.Huy', 'B.Trang', 'Nhu', 'Khanh']
 
 TNF_MAU = 'TNF(東京企画、GTC企画共通)サンプル'
 
-def tai(giai_doan, khanh_tnf=0.0, sms_con_lai=0.4, he_so_kho=True, bu_mau=True, chia=(), giao_them=None, chuyen_phan=(), chu_moi=None):
-    """giai_doan 1: bulk 27SS + phần còn lại của mẫu triển lãm 27FW (ước = SMS 26FW × sms_con_lai,
-                   vì mẫu đã vào may, chỉ còn theo dõi tiến độ và dịch góp ý; người đang làm làm tiếp).
+def tai(giai_doan, khanh_tnf=0.0, sms_con_lai=0.4, pps_them=0.05, he_so_kho=True, bu_mau=True, chia=(), giao_them=None, chuyen_phan=(), chu_moi=None):
+    """Bulk 26FW đã xong trên 95% nên không tính; sản xuất hiện tại là bulk 27SS (tính ở cả hai giai đoạn).
+       giai_doan 1: bulk 27SS + phần còn lại của mẫu triển lãm 27FW (ước = SMS 26FW × sms_con_lai,
+                   vì mẫu đã vào may, chỉ còn theo dõi tiến độ và dịch góp ý; người đang làm làm tiếp)
+                   + mẫu PPS 27SS: mỗi mã bulk 1 cái, cộng pps_them (~5%) tái PPS/tái mockup; người làm bulk theo dõi.
        giai_doan 2: bulk 27SS + mẫu 1st 28SS (ước = 1st–3rd 27SS); Khanh nhận khanh_tnf phần mẫu TNF của B.Trang.
     chia: [(brand, 'bulk'/'spl', người cũ, người mới, tỷ lệ)] – chia theo lô/mã của một brand.
     giao_them: {người: phần thời gian dành cho việc giao thêm, vd 0.1}.
@@ -55,6 +57,9 @@ def tai(giai_doan, khanh_tnf=0.0, sms_con_lai=0.4, he_so_kho=True, bu_mau=True, 
         if r['mua'] != '27SS': continue
         b = key(r['brand']); p = chu.get(b, r['nguoi'])
         add(p, r['ma'], r['ngay'], 0, r['ma'] * (TB.get(b) or 0), b, 'bulk')
+        if giai_doan == 1:  # mẫu PPS: chỉ cộng ngày may mẫu (tài liệu đã tính ở bulk)
+            pc = r['ma'] * (1 + pps_them)
+            add(p, 0, 0, pc * ngay_mau(float(r['giay'] or 8000)), 0, b, 'spl')
     for r in d['spl']:
         if giai_doan == 1 and (r['mua'], r['loai']) == ('26FW', 'SMS'): f = sms_con_lai
         elif giai_doan == 2 and (r['mua'], r['loai']) == ('27SS', '1st-3rd'): f = 1.0
@@ -93,10 +98,13 @@ if __name__ == '__main__':
     G = {'Cuong': 0.1, 'Luan': 0.1}
     HC = [('Luan', 'Khanh', 0.15)]   # Khanh làm hậu cần TNF 富山企画 (~15% việc Luan)
     kq = {
-     'GĐ1 (đến hết mẫu triển lãm 27FW). 0. Chưa chia việc Luan': tai(1, giao_them=G),
+     'GĐ1 (hiện tại: bulk 27SS, mẫu triển lãm 27FW, PPS 27SS). 0. Chưa chia việc Luan': tai(1, giao_them=G),
      'GĐ1. Khanh làm hậu cần TNF 富山企画 (~15% việc Luan)': tai(1, giao_them=G, chuyen_phan=HC),
      'GĐ1. Khanh làm hậu cần + hỗ trợ dịch (~25% việc Luan)': tai(1, giao_them=G, chuyen_phan=[('Luan', 'Khanh', 0.25)]),
-     'GĐ2 (1st 28SS). Khanh 1/3 mẫu TNF + hậu cần (~15%)': tai(2, khanh_tnf=1/3, giao_them=G, chuyen_phan=HC),
+     'GĐ1. Khanh hỗ trợ ~35% việc Luan': tai(1, giao_them=G, chuyen_phan=[('Luan', 'Khanh', 0.35)]),
+     'GĐ1. Khanh hỗ trợ ~25% việc Luan + nhận TNF 東京企画 ngay': tai(1, giao_them=G, chuyen_phan=[('Luan', 'Khanh', 0.25)], chu_moi={'TNF(東京企画)': 'Khanh'}),
+     'GĐ1. Khanh hỗ trợ ~35% việc Luan + nhận TNF 東京企画 ngay': tai(1, giao_them=G, chuyen_phan=[('Luan', 'Khanh', 0.35)], chu_moi={'TNF(東京企画)': 'Khanh'}),
+     'GĐ2 (mẫu phát triển, 1st 28SS). Khanh 1/3 mẫu TNF + hậu cần (~15%)': tai(2, khanh_tnf=1/3, giao_them=G, chuyen_phan=HC),
      'GĐ2. + Khanh hỗ trợ dịch (~25% việc Luan)': tai(2, khanh_tnf=1/3, giao_them=G, chuyen_phan=[('Luan', 'Khanh', 0.25)]),
      'GĐ2. Khanh hậu cần (~15%) + nhận TNF 東京企画 từ Cuong': tai(2, khanh_tnf=1/3, giao_them=G, chuyen_phan=HC, chu_moi={'TNF(東京企画)': 'Khanh'}),
      'GĐ2. Khanh hậu cần + dịch (~35% việc Luan)': tai(2, khanh_tnf=1/3, giao_them=G, chuyen_phan=[('Luan', 'Khanh', 0.35)]),

@@ -35,7 +35,7 @@ Ngoài ra cần nhìn thêm:
 - **Việc cố định không theo mã** (báo cáo, họp, hành chính): lấy từ bảng phân tích nghiệp vụ 2026. Ví dụ Nhu còn lo xuất hàng, P/L, danh sách công nhân, nhận NPL từ HCM (khoảng 30% thời gian); Cuong kiểm kế hoạch sản xuất mẫu của tất cả brand.
 - **So với công suất**: một mùa khoảng 6 tháng ≈ 1.250 giờ làm việc. Nếu việc dịch chỉ nên chiếm 30–40% thì mỗi người có khoảng **375–500 giờ dịch/mùa**.
 
-"Hiện tại" (cuối 10/2026) gồm: bulk 26FW đang sản xuất, bulk 27SS đang chuẩn bị, mẫu 27SS đang làm.
+**Kỳ tính ở phần "Kết quả"** là mùa mẫu 27SS vừa qua: bulk 26FW + 27SS, mẫu 27SS. Tình hình hiện tại (28/10/2026) khác: bulk 26FW đã xong trên 95%, sản xuất đã chuyển sang 27SS; phòng mẫu đang may mẫu triển lãm 27FW và mẫu PPS 27SS. Phần "Dự báo theo 2 giai đoạn" bên dưới tính theo tình hình hiện tại này.
 
 ## Kết quả
 
@@ -109,19 +109,20 @@ Kết luận: **Hien và Cuong cao nhất, Nhu thấp nhất** dù đặt trọn
 - **Khanh**: nhận NEUTRALWORKS, **1/3 mẫu TNF của B.Trang từ mẫu 1st 28SS**, và **một phần việc của Luan**.
 - **Mẫu triển lãm 27FW** đã vào giai đoạn may, chỉ còn theo dõi tiến độ và dịch góp ý gửi khách: **người đang làm làm tiếp đến hết**, không chia lại.
 - **Luan**: nhận một phần việc quản lý; giảm bớt việc bằng cách chuyển một phần cho Khanh. Một brand khó tách cho hai người, nên tách theo chức năng (Luan giữ brand).
-- **Mẫu theo mùa vụ**: xong mẫu triển lãm 27FW sẽ chuyển sang phát triển mẫu 1st 28SS, cũng khá nhiều.
+- **Tình hình hiện tại (28/10/2026)**: sản xuất 26FW đã xong trên 95% (còn vài mã), đang sản xuất 27SS. Phòng mẫu đang may mẫu triển lãm 27FW và **mẫu PPS 27SS** (mỗi mã có đơn sản xuất may 1 cái, tái PPS/tái mockup khoảng 5%). Sau triển lãm là mẫu phát triển, mẫu 1st 28SS, cũng khá nhiều.
 
 ## Dự báo theo 2 giai đoạn (11/2026 – 2/2027)
 
 | Giai đoạn | Thời gian (ước) | Việc chính |
 |---|---|---|
-| **GĐ1** | Từ nay đến hết mẫu triển lãm 27FW | Bulk 27SS chuẩn bị/vào chuyền; mẫu triển lãm 27FW chỉ còn theo dõi tiến độ, dịch góp ý (người đang làm làm tiếp) |
-| **GĐ2** | Mẫu 1st 28SS | Bulk 27SS đang chạy chuyền (cao điểm đại trà); phát triển mẫu 1st 28SS; Khanh nhận 1/3 mẫu TNF của B.Trang |
+| **GĐ1** | Hiện tại, đến hết mẫu triển lãm 27FW | Sản xuất 27SS; mẫu PPS 27SS; mẫu triển lãm 27FW chỉ còn theo dõi tiến độ, dịch góp ý (người đang làm làm tiếp) |
+| **GĐ2** | Mẫu phát triển, 1st 28SS | Sản xuất 27SS tiếp tục (cao điểm đại trà); mẫu phát triển, 1st 28SS; Khanh nhận 1/3 mẫu TNF của B.Trang |
 
 Cách ước:
 - **Mẫu triển lãm 27FW (GĐ1)** ≈ SMS 26FW của cùng brand × **40%** (phần còn lại: theo dõi tiến độ, dịch góp ý). Sheet Hien thiếu mẫu 26FW, bù bằng số ở sheet tổng hợp (36 cái, 8 mã, tạm coi là ALLTERRAIN).
 - **Mẫu 1st 28SS (GĐ2)** ≈ 1st–3rd 27SS của cùng brand.
-- **Bulk 27SS**: số thực tế, tính ở cả hai giai đoạn.
+- **Bulk 27SS**: số thực tế, tính ở cả hai giai đoạn. **Bulk 26FW không tính** (đã xong trên 95%).
+- **Mẫu PPS 27SS (GĐ1)**: mỗi mã bulk 27SS 1 cái + 5% tái PPS/tái mockup; ngày may theo giây TB của mã; người làm bulk brand đó theo dõi. Tài liệu đã tính ở phần bulk nên không cộng thêm giờ dịch.
 - Hệ số độ khó ALLTERRAIN/DESCENTE × 1,3. Công suất 9 giờ/ngày, Khanh 8 giờ.
 - **Việc giao thêm** (tạm tính ~1 giờ/ngày mỗi người): Cuong điều phối chung 10%, Luan việc quản lý 10%. Nếu điều phối của Cuong ~2 giờ/ngày thì chỉ số Cuong cao hơn khoảng 0,15.
 - **Nhu**: chỉ số chỉ tính phần brand (Nhu còn ~30% việc văn phòng).
@@ -129,13 +130,16 @@ Cách ước:
 
 Tính lại: `python3 data/khoi-luong/du-bao.py` → `data/khoi-luong/du-bao.json`.
 
-**GĐ1 – đến hết mẫu triển lãm 27FW**
+**GĐ1 – hiện tại, đến hết mẫu triển lãm 27FW (có mẫu PPS 27SS)**
 
 | Phương án | Cuong | Luan | Khanh | B.Trang | Huy | Hien | Nhu |
 |---|---|---|---|---|---|---|---|
-| Chưa chia việc của Luan | 1,42 | **1,65** | 0,15 | 1,43 | 1,14 | 0,85 | 0,57 |
-| Khanh làm hậu cần TNF 富山企画 (~15% việc Luan) | 1,42 | 1,40 | 0,40 | 1,43 | 1,14 | 0,85 | 0,57 |
-| **Khanh làm hậu cần + hỗ trợ dịch (~25% việc Luan)** | 1,42 | **1,24** | **0,57** | 1,43 | 1,14 | 0,85 | 0,57 |
+| Chưa chia việc của Luan | **1,46** | **1,73** | 0,15 | 1,17 | 1,14 | 0,96 | 0,62 |
+| Khanh làm hậu cần TNF 富山企画 (~15% việc Luan) | 1,46 | 1,47 | 0,41 | 1,17 | 1,14 | 0,96 | 0,62 |
+| Khanh làm hậu cần + hỗ trợ dịch (~25% việc Luan) | 1,46 | 1,30 | 0,59 | 1,17 | 1,14 | 0,96 | 0,62 |
+| Khanh hỗ trợ ~35% việc Luan | 1,46 | 1,13 | 0,76 | 1,17 | 1,14 | 0,96 | 0,62 |
+| Khanh hỗ trợ ~25% việc Luan + **nhận TNF 東京企画 ngay** | 1,25 | 1,30 | 0,80 | 1,17 | 1,14 | 0,96 | 0,62 |
+| **Khanh hỗ trợ ~35% việc Luan + nhận TNF 東京企画 ngay** | **1,25** | **1,13** | **0,97** | 1,17 | 1,14 | 0,96 | 0,62 |
 
 **GĐ2 – mẫu 1st 28SS (Khanh nhận 1/3 mẫu TNF)**
 
@@ -149,10 +153,12 @@ Tính lại: `python3 data/khoi-luong/du-bao.py` → `data/khoi-luong/du-bao.jso
 \* B.Trang ở GĐ2 bị tính thấp: file BULK chưa có bulk 27SS của FOXFIRE, TATRAS, Kasco, YONEX (các brand B.Trang mới nhận), nên số này chưa dùng được.
 
 Nhận xét:
-1. **Khanh đang còn nhiều sức ở GĐ1** (không phải chia mẫu triển lãm), nên có thể **nhận ngay cả hậu cần lẫn hỗ trợ dịch** cho Luan: Luan 1,65 → 1,24, Khanh 0,57. Thời gian này cũng là lúc Khanh làm quen lại TNF 富山企画 trước cao điểm.
+1. **Có mẫu PPS 27SS nên GĐ1 nặng hơn dự tính trước cho Luan và Cuong** (Luan 1,73, Cuong 1,46 nếu chưa chia), vì PPS do người làm bulk theo dõi. Trong khi đó **Khanh còn nhiều sức ở GĐ1** (không chia mẫu triển lãm).
+   - Khanh nhận ngay hậu cần + hỗ trợ dịch (~25–35% việc Luan): Luan về 1,13–1,30.
+   - **Gợi ý thêm: đưa việc bàn giao TNF 東京企画 lên ngay GĐ1** (thay vì GĐ2): Cuong 1,46 → 1,25, Khanh 0,80–0,97. Mẫu PPS 27SS của TNF 東京企画 đang may cũng là dịp để Khanh nắm mã trước khi lô vào chuyền. Phương án này cần bạn quyết lại, vì trước đã chốt chuyển ở GĐ2.
 2. **Luan nặng nhất ở GĐ2**, vì bulk 27SS (207.757 cái) vào chuyền đúng lúc này. Cần tăng phần Khanh hỗ trợ lên **khoảng 1/3 việc của Luan** thì Luan mới về ~1,2.
 3. **Cuong cao ở cả hai giai đoạn** (~1,4) do HELLY HANSEN và việc điều phối mới. **Đã quyết: TNF 東京企画 chuyển sang Khanh ở GĐ2**: Cuong → 1,24, Khanh → 1,08 (ở mức tăng ca đến 17h). Cần theo dõi Khanh vì lúc đó vừa có mẫu TNF, vừa hỗ trợ Luan, vừa nhận brand mới.
-4. **B.Trang cao ở GĐ1** (1,43) do còn mẫu triển lãm TNF, nhưng đợt này sắp xong (chỉ còn theo dõi, dịch góp ý), nên giữ như quyết định.
+4. **B.Trang ở GĐ1** 1,17 (mẫu triển lãm TNF còn theo dõi, dịch góp ý), giữ như quyết định. Mẫu PPS 27SS của FOXFIRE, TATRAS, Kasco, YONEX chưa tính vì file BULK chưa có bulk 27SS các brand này.
 5. **Huy 1,39 ở GĐ2** (mẫu 1st Goldwin, TNF別注 HOSOYA). Đã quyết giữ nguyên; cần theo dõi vì hơi vượt mức tăng ca 1 giờ/ngày.
 6. **Hien 1,13 ở GĐ2**: brand của Hien bận vào mùa SS, đúng như dự kiến; không giao thêm.
 
@@ -206,5 +212,6 @@ Sổ tay MD muốn MD chuyển từ "theo đuôi đơn hàng" sang "kiểm soát
 - Việc điều phối chung của Cuong và việc quản lý giao cho Luan chiếm khoảng bao nhiêu giờ/ngày? (đang tạm tính 20% và 10%)
 - Số mẫu 26FW thực tế của Hien theo brand (sheet Hien trong file SPL bị thiếu).
 - Số mẫu triển lãm 27FW thực tế và phần việc còn lại (đang tạm tính 40%).
+- Có chuyển TNF 東京企画 cho Khanh ngay từ GĐ1 không (Cuong đang 1,46 do mẫu PPS 27SS)?
 - Số bulk 27SS của FOXFIRE, TATRAS, Kasco, YONEX (B.Trang) để tính GĐ2 cho B.Trang.
 - Phân tích nhóm kỹ thuật và CAD (gồm H.Trang) sẽ làm riêng sau khi xong nhóm MD.

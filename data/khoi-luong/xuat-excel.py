@@ -50,7 +50,7 @@ widths(ws, [14, 70, 55, 34]); ws.freeze_panes = 'A5'
 # 2. Chỉ số tải mùa 27SS (có công thức)
 d = json.load(open('data/khoi-luong/hien-tai.json'))
 ws = sheet('Chỉ số tải 27SS')
-title(ws, 'Chỉ số tải nhóm MD – kỳ hiện tại (bulk 26FW + 27SS, mẫu 27SS)',
+title(ws, 'Chỉ số tải nhóm MD – kỳ vừa qua (bulk 26FW + 27SS, mẫu 27SS)',
       'Ô vàng chữ xanh = số đầu vào (đã nhân hệ số độ khó ALLTERRAIN/DESCENTE × 1,3) và trọng số; có thể sửa. Các cột chỉ số là công thức. 1,0 = trung bình 6 MD làm đủ kỳ.')
 write(ws, 4, 1, 'Trọng số', bold=True, fill=HEAD)
 for j, (lab, w) in enumerate((('Số mã', .25), ('Ngày chuyền bulk', .25), ('Ngày may mẫu', .25), ('Giờ dịch', .25)), 2):
@@ -96,7 +96,7 @@ for i, (name, res) in enumerate(k.items(), 5):
         if res[p]['chi_so'] >= 1.4: c.fill = PatternFill('solid', start_color='F8CBAD')
 n = 5 + len(k) + 1
 for t in ['Tô đỏ: chỉ số ≥ 1,4 (vượt mức tăng ca 1 giờ/ngày, cần chia việc).',
-          'GĐ1: mẫu triển lãm 27FW ước bằng SMS 26FW × 40% (chỉ còn theo dõi tiến độ, dịch góp ý). GĐ2: mẫu 1st 28SS ước bằng 1st–3rd 27SS.',
+          'Bulk 26FW không tính (đã xong trên 95%). GĐ1: mẫu triển lãm 27FW ước bằng SMS 26FW × 40% (chỉ còn theo dõi tiến độ, dịch góp ý) + mẫu PPS 27SS (1 cái/mã bulk + 5% tái PPS). GĐ2: mẫu phát triển, 1st 28SS ước bằng 1st–3rd 27SS.',
           'Bich Trang ở GĐ2 bị tính thấp: file BULK chưa có bulk 27SS của FOXFIRE, TATRAS, Kasco, YONEX.',
           'Nhu: chỉ tính phần brand; chỉ số thực ≈ chỉ số ÷ 0,7.']:
     ws.cell(n, 1, t).font = Font(name=F, size=9, italic=True); n += 1
