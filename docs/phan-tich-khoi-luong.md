@@ -145,7 +145,7 @@ Tính lại: `python3 data/khoi-luong/ke-hoach-nam.py` → `data/khoi-luong/ke-h
 **Cách tính:**
 - **Sản xuất**: mùa đã có kế hoạch (đến 27SS) dùng lịch thật trong Plantable 26/10/2026; mùa chưa có kế hoạch (27FW, 28SS) dùng lịch thật của mùa tương ứng năm trước (26FW, 27SS) dời 52 tuần. Người phụ trách theo các quyết định 10/2026 (NW, TNF 東京企画 → Khanh; Goldwin → Huy; YONEX từ 27SS → B.Trang).
 - **Mẫu**: đơn còn tồn dồn vào 11/2026 + số đơn cùng tháng năm trước theo brand (file mẫu 2025–2026), trọng số theo loại mẫu như trước; Khanh nhận 1/3 mẫu TNF của B.Trang từ 12/2026.
-- **Công suất theo ngày làm việc thực**: thứ 2 – thứ 7, nghỉ thứ 7 theo nhóm (file lịch nghỉ thứ 7 2026, đến 3/2027; sau đó giả định mỗi nhóm nghỉ 2 thứ 7/tháng), trừ ngày lễ. **Tết 2027 chưa có lịch công ty: tạm tính nghỉ 4–12/2/2027**; Giỗ Tổ 16/4/2027 cũng là giả định. Giờ/ngày: 9 (8 + 1 tăng ca), Khanh 8.
+- **Công suất theo ngày làm việc thực**: thứ 2 – thứ 7, nghỉ thứ 7 theo nhóm (file lịch nghỉ thứ 7 2026, đến 3/2027; sau đó giả định mỗi nhóm nghỉ 2 thứ 7/tháng), trừ ngày lễ theo lịch công ty: **24/11/2026 (Ngày Văn hóa Việt Nam, nghỉ từ 2026), 1/1/2027, Tết 4–14/2/2027 (dự kiến), 30/4–1/5/2027**. Giỗ Tổ 16/4/2027 và Quốc khánh 2–3/9/2027 chưa có trong lịch công ty, tạm tính theo luật. Giờ/ngày: 9 (8 + 1 tăng ca), Khanh 8.
 - Khanh hỗ trợ Luan ~25% (11–12/2026), ~35% từ 1/2027; Cuong, Luan mỗi người ~1 giờ/ngày cho việc giao thêm. Hệ số độ khó ALLTERRAIN/DESCENTE ×1,3.
 - **1,0 = khối lượng trung bình cho 1 ngày công trong cả 12 tháng.** Tháng ít ngày làm (tháng 2 có Tết) thì cùng khối lượng sẽ ra chỉ số cao hơn.
 
@@ -153,10 +153,10 @@ Tính lại: `python3 data/khoi-luong/ke-hoach-nam.py` → `data/khoi-luong/ke-h
 
 | Tháng | Giai đoạn theo vòng mùa | Ngày làm việc (nhóm A / nhóm B) |
 |---|---|---|
-| 11/26 | Mẫu 1st–3rd 27FW, SMS 27FW, Sản xuất 27SS | 23 / 23 |
+| 11/26 | Mẫu 1st–3rd 27FW, SMS 27FW, Sản xuất 27SS | 22 / 22 |
 | 12/26 | Sản xuất 27SS | 25 / 25 |
 | 1/27 | Mẫu 1st–3rd 28SS, Sản xuất 27SS | 22 / 22 |
-| 2/27 | Mẫu 1st–3rd 28SS, Sản xuất 27SS, PPS, chuẩn bị 27FW | 14 / 15 |
+| 2/27 | Mẫu 1st–3rd 28SS, Sản xuất 27SS, PPS, chuẩn bị 27FW | 14 / 14 |
 | 3/27 | Mẫu 1st–3rd 28SS, Sản xuất 27SS, PPS, chuẩn bị 27FW | 25 / 25 |
 | 4/27 | Mẫu 1st–3rd 28SS, SMS 28SS, Sản xuất 27FW | 22 / 22 |
 | 5/27 | Mẫu 1st–3rd 28SS, SMS 28SS, Sản xuất 27FW | 23 / 24 |
@@ -170,18 +170,18 @@ Tính lại: `python3 data/khoi-luong/ke-hoach-nam.py` → `data/khoi-luong/ke-h
 
 | Tháng | Cuong | Luan | Khanh | B.Trang | Huy | Hien | Nhu |
 |---|---|---|---|---|---|---|---|
-| 11/26 | **1,66** | **1,81** | 0,94 | 1,36 | **1,63** | **1,41** | 1,09 |
-| 12/26 | **1,95** | **1,54** | 1,22 | 0,55 | 0,41 | 1,32 | 0,31 |
-| 1/27 | 1,38 | 1,30 | 0,88 | 0,16 | **1,57** | 0,87 | 1,21 |
-| 2/27 | **1,93** | 0,91 | 0,99 | 0,17 | 0,70 | 0,88 | 1,22 |
-| 3/27 | 0,81 | 1,30 | 0,93 | 0,10 | 0,43 | 0,60 | 1,13 |
-| 4/27 | 0,96 | **1,69** | 1,12 | 0,42 | 1,03 | 0,55 | **2,57** |
-| 5/27 | 0,86 | **1,53** | 1,04 | 0,40 | **1,70** | 0,89 | 0,87 |
-| 6/27 | 0,97 | 1,12 | 1,22 | 0,78 | 1,31 | 1,35 | 0,27 |
-| 7/27 | **2,89** | 0,71 | 0,75 | 0,74 | **1,51** | 0,61 | 0,86 |
-| 8/27 | 0,90 | 0,75 | 0,60 | 0,42 | 1,34 | 0,56 | 0,82 |
-| 9/27 | 1,02 | 0,65 | 0,46 | 0,41 | 0,89 | 0,48 | 0,55 |
-| 10/27 | **1,57** | 0,88 | 1,01 | 0,65 | 1,14 | 1,27 | 0,84 |
+| 11/26 | **1,72** | **1,85** | 0,97 | **1,42** | **1,69** | **1,46** | 1,13 |
+| 12/26 | **1,94** | **1,54** | 1,21 | 0,55 | 0,41 | 1,31 | 0,31 |
+| 1/27 | 1,37 | 1,30 | 0,88 | 0,16 | **1,57** | 0,87 | 1,21 |
+| 2/27 | **2,04** | 0,87 | 0,96 | 0,17 | 0,68 | 0,93 | 1,20 |
+| 3/27 | 0,80 | 1,30 | 0,93 | 0,10 | 0,43 | 0,60 | 1,12 |
+| 4/27 | 0,96 | **1,69** | 1,12 | 0,41 | 1,03 | 0,55 | **2,56** |
+| 5/27 | 0,85 | **1,52** | 1,04 | 0,40 | **1,69** | 0,89 | 0,86 |
+| 6/27 | 0,97 | 1,11 | 1,22 | 0,77 | 1,30 | 1,34 | 0,27 |
+| 7/27 | **2,88** | 0,70 | 0,74 | 0,73 | **1,51** | 0,61 | 0,86 |
+| 8/27 | 0,90 | 0,75 | 0,60 | 0,42 | 1,33 | 0,56 | 0,82 |
+| 9/27 | 1,01 | 0,65 | 0,46 | 0,41 | 0,89 | 0,48 | 0,55 |
+| 10/27 | **1,56** | 0,88 | 1,01 | 0,65 | 1,14 | 1,27 | 0,84 |
 
 Như: chỉ số chỉ tính phần brand; Như còn ~30% thời gian cho việc văn phòng, nên chỉ số thực ≈ chỉ số ÷ 0,7.
 
@@ -206,13 +206,13 @@ Như: chỉ số chỉ tính phần brand; Như còn ~30% thời gian cho việc
 
 | Người | Tháng cao điểm |
 |---|---|
-| Cuong | 12/26 (1,95), 2/27 (1,93), 7/27 (2,89) |
-| Luan | 11/26 (1,81), 12/26 (1,54), 4/27 (1,69) |
-| Khanh | 12/26 (1,22), 4/27 (1,12), 6/27 (1,22) |
-| B.Trang | 11/26 (1,36), 6/27 (0,78), 7/27 (0,74) |
-| Huy | 11/26 (1,63), 1/27 (1,57), 5/27 (1,70) |
-| Hien | 11/26 (1,41), 12/26 (1,32), 6/27 (1,35) |
-| Nhu | 1/27 (1,21), 2/27 (1,22), 4/27 (2,57) |
+| Cuong | 12/26 (1,94), 2/27 (2,04), 7/27 (2,88) |
+| Luan | 11/26 (1,85), 12/26 (1,54), 4/27 (1,69) |
+| Khanh | 12/26 (1,21), 4/27 (1,12), 6/27 (1,22) |
+| B.Trang | 11/26 (1,42), 6/27 (0,77), 7/27 (0,73) |
+| Huy | 11/26 (1,69), 1/27 (1,57), 5/27 (1,69) |
+| Hien | 11/26 (1,46), 12/26 (1,31), 6/27 (1,34) |
+| Nhu | 1/27 (1,21), 2/27 (1,20), 4/27 (2,56) |
 
 Nhận xét:
 1. **Mỗi người có chu kỳ cao điểm riêng, lặp lại theo mùa**:
@@ -221,8 +221,8 @@ Nhận xét:
    - **Huy**: 11, 1 (25 mã TNF 別注 vào chuyền), **5 (mẫu Goldwin, ~62 đơn)**, 7.
    - **Nhu**: **tháng 4 rất cao** (40 mã TNF 別注 富山 mùa FW vào chuyền cùng tháng), cộng thêm việc văn phòng.
    - **Hien**: 11–12, 6 (mẫu ~50 đơn), 10.
-2. **Tháng 11 vẫn là tháng nặng nhất của cả nhóm** (mẫu triển lãm FW + đại trà SS bắt đầu + đơn mẫu tồn). Tháng 3 và tháng 8–9 nhẹ hơn.
-3. **Tháng 2/2027 chỉ có 14–15 ngày làm** (tạm tính Tết 4–12/2): ai có mã vào chuyền hoặc mẫu trong tháng 2 (Cuong 1,93, Nhu 1,22) sẽ bị dồn. Nên kéo bớt việc lên tháng 1 hoặc lùi sang tháng 3.
+2. **Tháng 11 vẫn là tháng nặng nhất của cả nhóm** (mẫu triển lãm FW + đại trà SS bắt đầu + đơn mẫu tồn), lại có thêm ngày nghỉ 24/11 nên chỉ còn 22 ngày làm: 5/7 người ở mức ≥ 1,4. Tháng 3 và tháng 8–9 nhẹ hơn.
+3. **Tháng 2/2027 chỉ có 14 ngày làm** (Tết dự kiến 4–14/2, nghỉ 9 ngày làm việc): ai có mã vào chuyền hoặc mẫu trong tháng 2 (Cuong 2,04, Nhu 1,20) sẽ bị dồn. Nên kéo bớt việc lên tháng 1 hoặc lùi sang tháng 3.
 4. **Cần lên kế hoạch trước cho tháng 4/2027 (Nhu)** và **tháng 7/2027 (Cuong)**: hai đỉnh này đến từ lịch năm trước nên gần như chắc sẽ lặp lại. Khanh và B.Trang đang thấp trong các tháng này (theo số liệu), là người có thể hỗ trợ tạm.
 5. **Khanh** dao động 0,9–1,2 sau khi nhận NW, TNF 東京企画, 1/3 mẫu TNF và hỗ trợ Luan – mức hợp lý cho người làm 8 giờ.
 6. **B.Trang thấp gần như cả năm** theo số liệu, nhưng **có thể do thiếu dữ liệu**: các brand mới (FOXFIRE, TATRAS, Kasco, YONEX) gần như chưa có lịch sản xuất năm trước, và mẫu TNF năm trước một phần do Khanh làm. Cần số liệu thật trước khi kết luận B.Trang còn dư sức.
@@ -269,7 +269,7 @@ Lưu ý: các việc liên quan khai trị giá hải quan (ra rập, nhảy siz
 - **H.Trang bulk 26SS**: 384 cái, 1 mã nhưng 768 ngày chuyền (ghi chú "SPL Line"), số này chưa hợp lý. H.Trang thuộc nhóm CAD nên không tính vào phân tích MD.
 - **Plantable có dòng cũ bị đẩy ngày**: sheet PLANTABLE 2026, chuyền AP1B-9, **dòng 1976–1996 (21 dòng)** là đơn cũ mùa 23SS/23FW (Snowpeak, Montbell, 1 dòng ALLTERRAIN; đơn năm 2022–2023). Ô START dòng 1976 bị gõ cứng 28/11/2026, các dòng sau nối tiếp bằng công thức (=AI dòng trên), nên cả chuỗi bị đẩy sang **28/11/2026 – 19/10/2027**. Từ dòng 1997 trở đi ngày cũ bình thường (2023–2024). Trong giai đoạn phân tích (11/2026 – 3/2027) có **8 dòng** rơi vào: 4 lô Snowpeak (dòng 1976–1979) và 4 lô Montbell (dòng 1980–1983); đã loại khỏi phần tính. Nên xóa hoặc sửa cả 21 dòng trong Plantable để không chiếm chỗ chuyền 9B.
 - **Mẫu 12/2026 – 10/2027 và sản xuất 27FW, 28SS** ước theo cùng kỳ năm trước; khi có kế hoạch thật thì thay vào.
-- **Lịch làm việc**: lịch nghỉ thứ 7 chỉ có đến 3/2027 (sau đó giả định mỗi nhóm nghỉ 2 thứ 7/tháng); **ngày nghỉ Tết 2027 (tạm 4–12/2) và Giỗ Tổ (tạm 16/4/2027) là giả định**.
+- **Lịch làm việc**: lịch nghỉ thứ 7 chỉ có đến 3/2027 (sau đó giả định mỗi nhóm nghỉ 2 thứ 7/tháng); lịch Tết 2027 (4–14/2) là **dự kiến** của công ty; **Giỗ Tổ (16/4/2027) và Quốc khánh 2027 (2–3/9) là giả định** theo luật.
 - **Giờ dịch/mã** trong bảng là ước tính chung theo brand. Giả định mỗi mã ở mỗi đợt (bulk, 1st–3rd, SMS) dịch một bộ tài liệu.
 
 ## Theo dõi định kỳ (theo sổ tay MD)
@@ -282,7 +282,7 @@ Sổ tay MD muốn MD chuyển từ "theo đuôi đơn hàng" sang "kiểm soát
 
 ## Câu hỏi mở
 
-- Lịch nghỉ Tết 2027 và các ngày lễ của công ty (đang tạm tính Tết 4–12/2/2027).
+- Lịch chính thức Tết 2027 (đang tính theo dự kiến 4–14/2), ngày nghỉ Giỗ Tổ và Quốc khánh 2027 (đang tạm theo luật).
 
 - Kế hoạch mẫu 1st 28SS (số mã theo brand) khi có, để thay số ước.
 - Việc điều phối của Cuong và việc quản lý giao cho Luan chiếm bao nhiêu giờ/ngày? (đang tạm tính ~1 giờ/ngày mỗi người)

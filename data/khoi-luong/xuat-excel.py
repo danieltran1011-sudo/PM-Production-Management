@@ -108,7 +108,7 @@ for lab, key_ in (('Mã vào chuyền', 'ma_vao_chuyen'), ('Ngày chuyền đang
         r += 1
 r += 1
 for t_ in ['Tô đỏ: chỉ số ≥ 1,4 (vượt mức tăng ca 1 giờ/ngày).',
-           'Công suất = ngày làm việc thực (thứ 2–7, nghỉ thứ 7 theo nhóm A/B, trừ lễ) × giờ/ngày (9; Khanh 8). Tết 2027 tạm tính nghỉ 4–12/2.',
+           'Công suất = ngày làm việc thực (thứ 2–7, nghỉ thứ 7 theo nhóm A/B, trừ lễ) × giờ/ngày (9; Khanh 8). Lễ: 24/11/2026, 1/1/2027, Tết dự kiến 4–14/2/2027, 30/4–1/5/2027; Giỗ Tổ, Quốc khánh 2027 tạm theo luật.',
            'Đã áp dụng: NW và TNF 東京企画 → Khanh từ 11/2026; Khanh hỗ trợ Luan ~25% (11–12/2026), ~35% từ 1/2027; 1/3 mẫu TNF → Khanh từ 12/2026.',
            'Nhu: chỉ tính phần brand (~30% thời gian là việc văn phòng). B.Trang có thể thấp do thiếu dữ liệu các brand mới.']:
     ws.cell(r, 1, t_).font = Font(name=F, size=9, italic=True); r += 1

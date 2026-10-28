@@ -1,16 +1,17 @@
 # Dùng: from lich_lam_viec import ngay_lam, ngay_xuong (chạy script trong data/khoi-luong). Chạy trực tiếp để in số ngày làm việc từng tháng.
 # Lịch làm việc TIVN-APIC: thứ 2 – thứ 7, mỗi kỳ lương nghỉ 2 thứ 7 theo nhóm (file 土曜休日 2026, đến 3/2027).
 # Sau 3/2027 chưa có lịch: giả định mỗi tháng mỗi nhóm nghỉ 2 thứ 7 (luân phiên B, A, B, A).
-# Ngày lễ: chưa có trong file, dùng lịch nghỉ lễ Việt Nam (Tết 2027 là giả định, cần lịch công ty).
+# Ngày lễ: theo lịch nghỉ công ty báo (10/2026); Giỗ Tổ và Quốc khánh 2027 chưa có lịch công ty, tạm theo luật (* = giả định).
 import datetime as dt, json, collections, openpyxl
 
 NHOM = {'Cuong': 'B', 'Hien': 'B', 'Luan': 'A', 'Khanh': 'A', 'Nhu': 'A', 'Q.Huy': 'A', 'B.Trang': 'A'}
 NGAY_LE = {  # nghỉ lễ (không làm), * = giả định
+    '2026-11-24': 'Ngày Văn hóa Việt Nam (từ 2026)',
     '2027-01-01': 'Tết Dương lịch',
-    **{f'2027-02-{d:02d}': 'Tết Nguyên đán (giả định 4–12/2)*' for d in range(4, 13)},
-    '2027-04-16': 'Giỗ Tổ Hùng Vương (10/3 âm lịch, giả định)*',
+    **{f'2027-02-{d:02d}': 'Tết Nguyên đán (dự kiến 4–14/2)' for d in range(4, 15)},
+    '2027-04-16': 'Giỗ Tổ Hùng Vương (10/3 âm lịch)*',
     '2027-04-30': 'Giải phóng miền Nam', '2027-05-01': 'Quốc tế Lao động',
-    '2027-09-02': 'Quốc khánh', '2027-09-03': 'Quốc khánh (nghỉ thêm)',
+    '2027-09-02': 'Quốc khánh*', '2027-09-03': 'Quốc khánh (nghỉ thêm)*',
 }
 
 def doc_lich(path='data/nguon/Lich-nghi-thu-7-TIVN-APIC-2026-20260811.xlsx'):

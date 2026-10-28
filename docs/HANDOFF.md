@@ -45,20 +45,20 @@ Viết tắt brand: HH = HELLY HANSEN, NW = NEUTRALWORKS, DCC = DESCENTE (TI: WT
 
 | Tháng | Cường | Luân | Khánh | Bích Trang | Huy | Hiền | Như (chỉ phần brand) |
 |---|---|---|---|---|---|---|---|
-| 11/2026 | 1,66 | 1,81 | 0,94 | 1,36 | 1,63 | 1,41 | 1,09 |
-| 12/2026 | 1,95 | 1,54 | 1,22 | 0,55 | 0,41 | 1,32 | 0,31 |
-| 1/2027 | 1,38 | 1,30 | 0,88 | 0,16 | 1,57 | 0,87 | 1,21 |
-| 2/2027 | 1,93 | 0,91 | 0,99 | 0,17 | 0,70 | 0,88 | 1,22 |
-| 3/2027 | 0,81 | 1,30 | 0,93 | 0,10 | 0,43 | 0,60 | 1,13 |
-| 4/2027 | 0,96 | 1,69 | 1,12 | 0,42 | 1,03 | 0,55 | 2,57 |
-| 5/2027 | 0,86 | 1,53 | 1,04 | 0,40 | 1,70 | 0,89 | 0,87 |
-| 6/2027 | 0,97 | 1,12 | 1,22 | 0,78 | 1,31 | 1,35 | 0,27 |
-| 7/2027 | 2,89 | 0,71 | 0,75 | 0,74 | 1,51 | 0,61 | 0,86 |
-| 8/2027 | 0,90 | 0,75 | 0,60 | 0,42 | 1,34 | 0,56 | 0,82 |
-| 9/2027 | 1,02 | 0,65 | 0,46 | 0,41 | 0,89 | 0,48 | 0,55 |
-| 10/2027 | 1,57 | 0,88 | 1,01 | 0,65 | 1,14 | 1,27 | 0,84 |
+| 11/2026 | 1,72 | 1,85 | 0,97 | 1,42 | 1,69 | 1,46 | 1,13 |
+| 12/2026 | 1,94 | 1,54 | 1,21 | 0,55 | 0,41 | 1,31 | 0,31 |
+| 1/2027 | 1,37 | 1,30 | 0,88 | 0,16 | 1,57 | 0,87 | 1,21 |
+| 2/2027 | 2,04 | 0,87 | 0,96 | 0,17 | 0,68 | 0,93 | 1,20 |
+| 3/2027 | 0,80 | 1,30 | 0,93 | 0,10 | 0,43 | 0,60 | 1,12 |
+| 4/2027 | 0,96 | 1,69 | 1,12 | 0,41 | 1,03 | 0,55 | 2,56 |
+| 5/2027 | 0,85 | 1,52 | 1,04 | 0,40 | 1,69 | 0,89 | 0,86 |
+| 6/2027 | 0,97 | 1,11 | 1,22 | 0,77 | 1,30 | 1,34 | 0,27 |
+| 7/2027 | 2,88 | 0,70 | 0,74 | 0,73 | 1,51 | 0,61 | 0,86 |
+| 8/2027 | 0,90 | 0,75 | 0,60 | 0,42 | 1,33 | 0,56 | 0,82 |
+| 9/2027 | 1,01 | 0,65 | 0,46 | 0,41 | 0,89 | 0,48 | 0,55 |
+| 10/2027 | 1,56 | 0,88 | 1,01 | 0,65 | 1,14 | 1,27 | 0,84 |
 
-Điểm cần theo dõi: tháng 11 nặng nhất cả nhóm; Cường cao điểm 12, 2 (Tết ít ngày làm), **7** (mẫu 1st FW HELLY HANSEN), 10; Luân 11–12 và **3–5** (hàng FW vào chuyền); Huy 11, 1, **5**; **Như tháng 4** (40 mã TNF 別注 FW vào chuyền); Hiền 11–12, 6. Bích Trang thấp có thể do thiếu dữ liệu các brand mới.
+Điểm cần theo dõi: tháng 11 nặng nhất cả nhóm; Cường cao điểm 12, 2 (Tết ít ngày làm, 2,04), **7** (mẫu 1st FW HELLY HANSEN), 10; Luân 11–12 và **3–5** (hàng FW vào chuyền); Huy 11, 1, **5**; **Như tháng 4** (40 mã TNF 別注 FW vào chuyền); Hiền 11–12, 6. Bích Trang thấp có thể do thiếu dữ liệu các brand mới.
 
 ## 5. Dữ liệu nguồn và các điểm dễ sai
 
@@ -73,7 +73,7 @@ Tất cả file gốc ở `data/nguon/`.
 | `Phan-cong-brand-MD-APIC-20260722.xlsx` | Phân công brand 22/7/2026 (sheet hiển thị) + lịch sử 2017–2018 (sheet ẩn) | (1)/(2) = phòng 1課/2課 phía TI |
 | `Phan-tich-nghiep-vu-TIVN-APIC-2026-thuong-ky.xlsx` | % thời gian theo ~100 việc của 18 người (2026 上期) | Số tự khai, chia gần đều; không phản ánh khối lượng thực |
 | `Hop-TIVN-phi-uy-thac-APIC-BTNB-20240130.xlsx` | Biên bản họp phí ủy thác, khai trị giá hải quan (評価加算), bảng nghiệp vụ 2023–2024 | Đổi người làm các việc tính thuế (phát triển SP, rập, nhảy size, tài liệu may…) phải báo TI |
-| `Lich-nghi-thu-7-TIVN-APIC-2026-20260811.xlsx` | Lịch nghỉ thứ 7 theo nhóm A (Luân, Khánh, Như, Huy, Bích Trang…) / B (Cường, Hiền…), kỳ lương 26–25 | Chỉ đến 3/2027; chưa có ngày lễ, Tết |
+| `Lich-nghi-thu-7-TIVN-APIC-2026-20260811.xlsx` | Lịch nghỉ thứ 7 theo nhóm A (Luân, Khánh, Như, Huy, Bích Trang…) / B (Cường, Hiền…), kỳ lương 26–25 | Chỉ đến 3/2027; ngày lễ, Tết lấy theo lịch nghỉ công ty quản lý báo 28/10/2026 (ghi trong `lich_lam_viec.py`) |
 | `APIC-MD-Best-Practice-Handbook.docx` | Định hướng MD (5 chức năng, KPI, chu kỳ tuần) | |
 
 **Cách gán MD cho mã sản xuất** (Plantable không có cột MD): YONEX từ 27SS luôn gán Bích Trang; còn lại lấy người theo dõi mẫu PPS/RE-PPS/MOCKUP của mã đó trong sheet サンプル表2026 (khớp 251/363 lô); không khớp thì theo brand (TNF → Luân; TNF 別注: HSY → Huy, còn lại → Như; HH, NW → Cường; Goldwin, NANGA, CANTERBURY → Huy; ALLTERRAIN, TETON, DESCENTE/DCC, Mont-Bell, Snowpeak → Hiền; FOXFIRE, TATRAS, Kasco, YONEX (từ 27SS) → Bích Trang). Không dùng mẫu 1st/SMS để gán, vì mẫu TNF do Bích Trang làm nhưng đại trà do Luân/Cường theo dõi.
@@ -83,7 +83,7 @@ Tất cả file gốc ở `data/nguon/`.
 - **Chỉ số tải** = trung bình 4 yếu tố (mỗi yếu tố so với mức trung bình): số mã, ngày chuyền, ngày may mẫu / đơn mẫu, giờ dịch. Trọng số đều 25% (đã thử 4 cách đặt trọng số: Cường cao nhất, Như thấp nhất không đổi; chỉ vị trí Luân phụ thuộc trọng số).
 - **Hệ số độ khó**: ALLTERRAIN, DESCENTE (DCC) × 1,3 (quản lý đánh giá: tài liệu, rập không rõ, TIJ hay thiếu NPL).
 - **Công suất**: 9 giờ/ngày, Khánh 8 giờ. Việc giao thêm: Cường, Luân mỗi người ~1 giờ/ngày (10%) – **chưa có số thật**.
-- **Tải 12 tháng** (`ke-hoach-nam.py`, dùng chính): sản xuất mùa đến 27SS lấy lịch thật trong Plantable; 27FW, 28SS lấy lịch của 26FW, 27SS năm trước dời 52 tuần; mẫu = đơn tồn (dồn vào 11/2026) + cùng tháng năm trước; công suất = ngày làm việc thực từng người (`lich_lam_viec.py`: thứ 2–7, nghỉ thứ 7 theo nhóm, trừ lễ; **Tết 2027 tạm 4–12/2, Giỗ Tổ tạm 16/4 – giả định**) × giờ/ngày; mốc 1,0 = trung bình 1 ngày công cả 12 tháng.
+- **Tải 12 tháng** (`ke-hoach-nam.py`, dùng chính): sản xuất mùa đến 27SS lấy lịch thật trong Plantable; 27FW, 28SS lấy lịch của 26FW, 27SS năm trước dời 52 tuần; mẫu = đơn tồn (dồn vào 11/2026) + cùng tháng năm trước; công suất = ngày làm việc thực từng người (`lich_lam_viec.py`: thứ 2–7, nghỉ thứ 7 theo nhóm, trừ lễ; lễ theo lịch công ty: 24/11/2026, 1/1/2027, **Tết dự kiến 4–14/2/2027**, 30/4–1/5/2027; Giỗ Tổ 16/4 và Quốc khánh 2–3/9/2027 tạm theo luật) × giờ/ngày; mốc 1,0 = trung bình 1 ngày công cả 12 tháng.
 - **Tải 4 tháng** (`ke-hoach-thang.py`, bản trước, không còn trong tài liệu): mã vào chuyền (mỗi mã tính 1 lần dù nhiều lô), ngày chuyền đang chạy (theo lô), đơn mẫu = đơn tồn (hạn ≤ 10/2026, chưa xong, dồn vào tháng 11) + số đơn cùng tháng năm trước theo brand; trọng số loại mẫu: 1st/0次 1,0; 2nd 0,8; PPS/mockup 0,6; SMS 0,5; khác 0,3. Mốc 1,0 chung cho cả 4 tháng.
 - **Mùa vừa qua** (`build.py`): bulk 26FW + 27SS, mẫu 27SS; Khánh (nghỉ) và H.Trang (CAD) không tính vào mức trung bình.
 - `du-bao.py` là bản ước cũ theo 2 giai đoạn (trước khi có Plantable), **không còn dùng** trong tài liệu.
@@ -117,7 +117,7 @@ npm test                                              # test workflow lead time 
 5. **Plantable dòng 1976–1996**: đã báo quản lý nên sửa; khi Plantable mới đã sửa thì không cần lọc thủ công.
 6. Mẫu TNF别注 富山 (Như) và 東京 (Huy) mùa 25FW, 26SS có số giống hệt nhau trong file SPL – có thể nhập trùng.
 7. **Phân tích nhóm kỹ thuật và CAD** (gồm H.Trang): quản lý muốn làm sau, tách riêng khỏi MD.
-8. **Lịch Tết 2027 và ngày lễ của công ty**, lịch nghỉ thứ 7 sau 3/2027 (đang giả định). **Kế hoạch 27FW/28SS thật** để thay số ước từ 4/2027.
+8. **Lịch Tết 2027 chính thức** (đang tính theo dự kiến 4–14/2), ngày nghỉ Giỗ Tổ và Quốc khánh 2027, lịch nghỉ thứ 7 sau 3/2027 (đang giả định). **Kế hoạch 27FW/28SS thật** để thay số ước từ 4/2027.
 9. Đề xuất theo dõi định kỳ theo sổ tay MD: mỗi mùa chạy lại; báo cáo tuần (thứ Sáu); thử ghi giờ theo 5 chức năng MD trong 2–4 tuần để đặt trọng số theo thực tế.
 
 ## 9. Lưu ý khi làm việc tiếp
