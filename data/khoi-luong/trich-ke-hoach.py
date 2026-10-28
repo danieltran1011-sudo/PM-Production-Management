@@ -1,5 +1,5 @@
 # Trích dữ liệu từ Plantable và file mẫu cho mô hình tải theo tháng (ke-hoach-thang.py).
-# Chạy từ thư mục gốc repo: python3 data/khoi-luong/trich-ke-hoach.py [PLANTABLE.xlsm] [SAMPLE.xlsx] [từ YYYY-MM-DD] [đến YYYY-MM-DD]
+# Chạy từ thư mục gốc repo: python3 data/khoi-luong/trich-ke-hoach.py [PLANTABLE.xlsm] [SAMPLE.xlsx] [từ YYYY-MM-DD] [đến YYYY-MM-DD] [file JSON ra]
 # Kết quả: data/khoi-luong/plantable-10-2026-3-2027.json, data/khoi-luong/mau-2025-2026.json
 import sys, json, re, collections, datetime as dt
 import openpyxl
@@ -8,7 +8,8 @@ PT = sys.argv[1] if len(sys.argv) > 1 else 'data/nguon/APIC-P-Plan-Plantable-202
 SP = sys.argv[2] if len(sys.argv) > 2 else 'data/nguon/APIC-Sample-20261023.xlsx'
 TU = dt.date.fromisoformat(sys.argv[3]) if len(sys.argv) > 3 else dt.date(2026, 10, 1)
 DEN = dt.date.fromisoformat(sys.argv[4]) if len(sys.argv) > 4 else dt.date(2027, 3, 31)
-MUA_TOI_THIEU = (26, 1)   # bỏ dòng mùa cũ hơn 26FW (dòng cũ bị đẩy ngày, vd. AP1B-9 dòng 1976–1996)
+OUT = sys.argv[5] if len(sys.argv) > 5 else 'data/khoi-luong/plantable-10-2026-3-2027.json'
+MUA_TOI_THIEU = (26, 0)   # bỏ dòng mùa cũ hơn 26SS (dòng cũ bị đẩy ngày, vd. AP1B-9 dòng 1976–1996 là 23SS/23FW)
 TEN = {'Như': 'Nhu', 'Luân': 'Luan', 'B Trang': 'B.Trang', 'Trang': 'H.Trang', 'H Trang': 'H.Trang', 'Huy': 'Q.Huy', 'Cường': 'Cuong', 'Khánh': 'Khanh'}
 LOAI_PPS = ('PPS', 'RE-PPS', 'BULK', 'MOCK UP', 'MOCKUP', '量産前SPL (TIEN PPS)', '工場控え (LUU)')
 
@@ -66,7 +67,7 @@ for i, r in enumerate(ws.iter_rows(min_row=10, max_col=40, values_only=True), 10
     x['nguoi'], x['nguon_gan'] = gan(x['ma'], r[6], x['tij'], mua)
     rows.append(x)
 json.dump(dict(rows=rows, loai_bo=dict(ly_do='Dòng mùa cũ hơn 26FW có ngày rơi vào giai đoạn (dòng cũ bị đẩy ngày)', so_dong=len(bo), dong=bo)),
-          open('data/khoi-luong/plantable-10-2026-3-2027.json', 'w'), ensure_ascii=False, indent=0)
+          open(OUT, 'w'), ensure_ascii=False, indent=0)
 json.dump(mau, open('data/khoi-luong/mau-2025-2026.json', 'w'), ensure_ascii=False)
 print(len(rows), 'lô sản xuất;', len(bo), 'dòng mùa cũ bị loại;', len(mau), 'đơn mẫu;',
       collections.Counter(x['nguon_gan'] for x in rows), collections.Counter(x['nguoi'] for x in rows))

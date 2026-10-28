@@ -1,0 +1,710 @@
+{
+ "2026-11": {
+  "Cuong": {
+   "chi_so": 1.66,
+   "ngay_lam": 23,
+   "ma_vao_chuyen": 4,
+   "ngay_chuyen": 83,
+   "don_mau": 100,
+   "gio_dich": 102
+  },
+  "Luan": {
+   "chi_so": 1.81,
+   "ngay_lam": 23,
+   "ma_vao_chuyen": 19,
+   "ngay_chuyen": 566,
+   "don_mau": 7,
+   "gio_dich": 93
+  },
+  "Khanh": {
+   "chi_so": 0.94,
+   "ngay_lam": 23,
+   "ma_vao_chuyen": 1,
+   "ngay_chuyen": 63,
+   "don_mau": 12,
+   "gio_dich": 13
+  },
+  "B.Trang": {
+   "chi_so": 1.36,
+   "ngay_lam": 23,
+   "ma_vao_chuyen": 1,
+   "ngay_chuyen": 16,
+   "don_mau": 121,
+   "gio_dich": 94
+  },
+  "Q.Huy": {
+   "chi_so": 1.63,
+   "ngay_lam": 23,
+   "ma_vao_chuyen": 9,
+   "ngay_chuyen": 113,
+   "don_mau": 65,
+   "gio_dich": 95
+  },
+  "Hien": {
+   "chi_so": 1.41,
+   "ngay_lam": 23,
+   "ma_vao_chuyen": 8,
+   "ngay_chuyen": 113,
+   "don_mau": 41,
+   "gio_dich": 95
+  },
+  "Nhu": {
+   "chi_so": 1.09,
+   "ngay_lam": 23,
+   "ma_vao_chuyen": 4,
+   "ngay_chuyen": 69,
+   "don_mau": 35,
+   "gio_dich": 99
+  },
+  "_giai_doan": "Mẫu 1st–3rd 27FW, SMS 27FW, Sản xuất 27SS"
+ },
+ "2026-12": {
+  "Cuong": {
+   "chi_so": 1.95,
+   "ngay_lam": 25,
+   "ma_vao_chuyen": 21,
+   "ngay_chuyen": 212,
+   "don_mau": 15,
+   "gio_dich": 145
+  },
+  "Luan": {
+   "chi_so": 1.54,
+   "ngay_lam": 25,
+   "ma_vao_chuyen": 14,
+   "ngay_chuyen": 619,
+   "don_mau": 13,
+   "gio_dich": 66
+  },
+  "Khanh": {
+   "chi_so": 1.22,
+   "ngay_lam": 25,
+   "ma_vao_chuyen": 3,
+   "ngay_chuyen": 83,
+   "don_mau": 17,
+   "gio_dich": 54
+  },
+  "B.Trang": {
+   "chi_so": 0.55,
+   "ngay_lam": 25,
+   "ma_vao_chuyen": 0,
+   "ngay_chuyen": 0,
+   "don_mau": 27,
+   "gio_dich": 68
+  },
+  "Q.Huy": {
+   "chi_so": 0.41,
+   "ngay_lam": 25,
+   "ma_vao_chuyen": 1,
+   "ngay_chuyen": 65,
+   "don_mau": 25,
+   "gio_dich": 18
+  },
+  "Hien": {
+   "chi_so": 1.32,
+   "ngay_lam": 25,
+   "ma_vao_chuyen": 12,
+   "ngay_chuyen": 108,
+   "don_mau": 26,
+   "gio_dich": 110
+  },
+  "Nhu": {
+   "chi_so": 0.31,
+   "ngay_lam": 25,
+   "ma_vao_chuyen": 2,
+   "ngay_chuyen": 17,
+   "don_mau": 24,
+   "gio_dich": 20
+  },
+  "_giai_doan": "Sản xuất 27SS"
+ },
+ "2027-01": {
+  "Cuong": {
+   "chi_so": 1.38,
+   "ngay_lam": 22,
+   "ma_vao_chuyen": 11,
+   "ngay_chuyen": 137,
+   "don_mau": 12,
+   "gio_dich": 96
+  },
+  "Luan": {
+   "chi_so": 1.3,
+   "ngay_lam": 22,
+   "ma_vao_chuyen": 7,
+   "ngay_chuyen": 474,
+   "don_mau": 34,
+   "gio_dich": 67
+  },
+  "Khanh": {
+   "chi_so": 0.88,
+   "ngay_lam": 22,
+   "ma_vao_chuyen": 1,
+   "ngay_chuyen": 29,
+   "don_mau": 2,
+   "gio_dich": 8
+  },
+  "B.Trang": {
+   "chi_so": 0.16,
+   "ngay_lam": 22,
+   "ma_vao_chuyen": 1,
+   "ngay_chuyen": 14,
+   "don_mau": 5,
+   "gio_dich": 11
+  },
+  "Q.Huy": {
+   "chi_so": 1.57,
+   "ngay_lam": 22,
+   "ma_vao_chuyen": 25,
+   "ngay_chuyen": 125,
+   "don_mau": 8,
+   "gio_dich": 87
+  },
+  "Hien": {
+   "chi_so": 0.87,
+   "ngay_lam": 22,
+   "ma_vao_chuyen": 10,
+   "ngay_chuyen": 70,
+   "don_mau": 14,
+   "gio_dich": 51
+  },
+  "Nhu": {
+   "chi_so": 1.21,
+   "ngay_lam": 22,
+   "ma_vao_chuyen": 12,
+   "ngay_chuyen": 107,
+   "don_mau": 21,
+   "gio_dich": 82
+  },
+  "_giai_doan": "Mẫu 1st–3rd 28SS, Sản xuất 27SS"
+ },
+ "2027-02": {
+  "Cuong": {
+   "chi_so": 1.93,
+   "ngay_lam": 15,
+   "ma_vao_chuyen": 9,
+   "ngay_chuyen": 120,
+   "don_mau": 15,
+   "gio_dich": 97
+  },
+  "Luan": {
+   "chi_so": 0.91,
+   "ngay_lam": 14,
+   "ma_vao_chuyen": 2,
+   "ngay_chuyen": 264,
+   "don_mau": 13,
+   "gio_dich": 25
+  },
+  "Khanh": {
+   "chi_so": 0.99,
+   "ngay_lam": 14,
+   "ma_vao_chuyen": 0,
+   "ngay_chuyen": 29,
+   "don_mau": 11,
+   "gio_dich": 22
+  },
+  "B.Trang": {
+   "chi_so": 0.17,
+   "ngay_lam": 14,
+   "ma_vao_chuyen": 0,
+   "ngay_chuyen": 0,
+   "don_mau": 5,
+   "gio_dich": 12
+  },
+  "Q.Huy": {
+   "chi_so": 0.7,
+   "ngay_lam": 14,
+   "ma_vao_chuyen": 2,
+   "ngay_chuyen": 50,
+   "don_mau": 15,
+   "gio_dich": 23
+  },
+  "Hien": {
+   "chi_so": 0.88,
+   "ngay_lam": 15,
+   "ma_vao_chuyen": 8,
+   "ngay_chuyen": 58,
+   "don_mau": 4,
+   "gio_dich": 37
+  },
+  "Nhu": {
+   "chi_so": 1.22,
+   "ngay_lam": 14,
+   "ma_vao_chuyen": 8,
+   "ngay_chuyen": 143,
+   "don_mau": 4,
+   "gio_dich": 39
+  },
+  "_giai_doan": "Mẫu 1st–3rd 28SS, Sản xuất 27SS, PPS, chuẩn bị 27FW"
+ },
+ "2027-03": {
+  "Cuong": {
+   "chi_so": 0.81,
+   "ngay_lam": 25,
+   "ma_vao_chuyen": 6,
+   "ngay_chuyen": 109,
+   "don_mau": 19,
+   "gio_dich": 49
+  },
+  "Luan": {
+   "chi_so": 1.3,
+   "ngay_lam": 25,
+   "ma_vao_chuyen": 12,
+   "ngay_chuyen": 487,
+   "don_mau": 27,
+   "gio_dich": 88
+  },
+  "Khanh": {
+   "chi_so": 0.93,
+   "ngay_lam": 25,
+   "ma_vao_chuyen": 0,
+   "ngay_chuyen": 3,
+   "don_mau": 14,
+   "gio_dich": 20
+  },
+  "B.Trang": {
+   "chi_so": 0.1,
+   "ngay_lam": 25,
+   "ma_vao_chuyen": 0,
+   "ngay_chuyen": 0,
+   "don_mau": 7,
+   "gio_dich": 10
+  },
+  "Q.Huy": {
+   "chi_so": 0.43,
+   "ngay_lam": 25,
+   "ma_vao_chuyen": 3,
+   "ngay_chuyen": 51,
+   "don_mau": 20,
+   "gio_dich": 21
+  },
+  "Hien": {
+   "chi_so": 0.6,
+   "ngay_lam": 25,
+   "ma_vao_chuyen": 2,
+   "ngay_chuyen": 66,
+   "don_mau": 21,
+   "gio_dich": 49
+  },
+  "Nhu": {
+   "chi_so": 1.13,
+   "ngay_lam": 25,
+   "ma_vao_chuyen": 10,
+   "ngay_chuyen": 249,
+   "don_mau": 11,
+   "gio_dich": 69
+  },
+  "_giai_doan": "Mẫu 1st–3rd 28SS, Sản xuất 27SS, PPS, chuẩn bị 27FW"
+ },
+ "2027-04": {
+  "Cuong": {
+   "chi_so": 0.96,
+   "ngay_lam": 22,
+   "ma_vao_chuyen": 2,
+   "ngay_chuyen": 123,
+   "don_mau": 44,
+   "gio_dich": 47
+  },
+  "Luan": {
+   "chi_so": 1.69,
+   "ngay_lam": 22,
+   "ma_vao_chuyen": 22,
+   "ngay_chuyen": 502,
+   "don_mau": 13,
+   "gio_dich": 104
+  },
+  "Khanh": {
+   "chi_so": 1.12,
+   "ngay_lam": 22,
+   "ma_vao_chuyen": 0,
+   "ngay_chuyen": 0,
+   "don_mau": 15,
+   "gio_dich": 14
+  },
+  "B.Trang": {
+   "chi_so": 0.42,
+   "ngay_lam": 22,
+   "ma_vao_chuyen": 0,
+   "ngay_chuyen": 0,
+   "don_mau": 33,
+   "gio_dich": 28
+  },
+  "Q.Huy": {
+   "chi_so": 1.03,
+   "ngay_lam": 22,
+   "ma_vao_chuyen": 0,
+   "ngay_chuyen": 0,
+   "don_mau": 46,
+   "gio_dich": 103
+  },
+  "Hien": {
+   "chi_so": 0.55,
+   "ngay_lam": 22,
+   "ma_vao_chuyen": 0,
+   "ngay_chuyen": 7,
+   "don_mau": 30,
+   "gio_dich": 43
+  },
+  "Nhu": {
+   "chi_so": 2.57,
+   "ngay_lam": 22,
+   "ma_vao_chuyen": 40,
+   "ngay_chuyen": 218,
+   "don_mau": 10,
+   "gio_dich": 147
+  },
+  "_giai_doan": "Mẫu 1st–3rd 28SS, SMS 28SS, Sản xuất 27FW"
+ },
+ "2027-05": {
+  "Cuong": {
+   "chi_so": 0.86,
+   "ngay_lam": 24,
+   "ma_vao_chuyen": 9,
+   "ngay_chuyen": 81,
+   "don_mau": 19,
+   "gio_dich": 49
+  },
+  "Luan": {
+   "chi_so": 1.53,
+   "ngay_lam": 23,
+   "ma_vao_chuyen": 23,
+   "ngay_chuyen": 492,
+   "don_mau": 5,
+   "gio_dich": 92
+  },
+  "Khanh": {
+   "chi_so": 1.04,
+   "ngay_lam": 23,
+   "ma_vao_chuyen": 0,
+   "ngay_chuyen": 0,
+   "don_mau": 15,
+   "gio_dich": 15
+  },
+  "B.Trang": {
+   "chi_so": 0.4,
+   "ngay_lam": 23,
+   "ma_vao_chuyen": 0,
+   "ngay_chuyen": 0,
+   "don_mau": 33,
+   "gio_dich": 29
+  },
+  "Q.Huy": {
+   "chi_so": 1.7,
+   "ngay_lam": 23,
+   "ma_vao_chuyen": 9,
+   "ngay_chuyen": 68,
+   "don_mau": 62,
+   "gio_dich": 130
+  },
+  "Hien": {
+   "chi_so": 0.89,
+   "ngay_lam": 24,
+   "ma_vao_chuyen": 5,
+   "ngay_chuyen": 90,
+   "don_mau": 33,
+   "gio_dich": 56
+  },
+  "Nhu": {
+   "chi_so": 0.87,
+   "ngay_lam": 23,
+   "ma_vao_chuyen": 11,
+   "ngay_chuyen": 112,
+   "don_mau": 8,
+   "gio_dich": 50
+  },
+  "_giai_doan": "Mẫu 1st–3rd 28SS, SMS 28SS, Sản xuất 27FW"
+ },
+ "2027-06": {
+  "Cuong": {
+   "chi_so": 0.97,
+   "ngay_lam": 24,
+   "ma_vao_chuyen": 11,
+   "ngay_chuyen": 67,
+   "don_mau": 15,
+   "gio_dich": 69
+  },
+  "Luan": {
+   "chi_so": 1.12,
+   "ngay_lam": 24,
+   "ma_vao_chuyen": 16,
+   "ngay_chuyen": 422,
+   "don_mau": 2,
+   "gio_dich": 65
+  },
+  "Khanh": {
+   "chi_so": 1.22,
+   "ngay_lam": 24,
+   "ma_vao_chuyen": 0,
+   "ngay_chuyen": 0,
+   "don_mau": 21,
+   "gio_dich": 69
+  },
+  "B.Trang": {
+   "chi_so": 0.78,
+   "ngay_lam": 24,
+   "ma_vao_chuyen": 3,
+   "ngay_chuyen": 15,
+   "don_mau": 24,
+   "gio_dich": 85
+  },
+  "Q.Huy": {
+   "chi_so": 1.31,
+   "ngay_lam": 24,
+   "ma_vao_chuyen": 17,
+   "ngay_chuyen": 193,
+   "don_mau": 20,
+   "gio_dich": 56
+  },
+  "Hien": {
+   "chi_so": 1.35,
+   "ngay_lam": 24,
+   "ma_vao_chuyen": 11,
+   "ngay_chuyen": 137,
+   "don_mau": 50,
+   "gio_dich": 82
+  },
+  "Nhu": {
+   "chi_so": 0.27,
+   "ngay_lam": 24,
+   "ma_vao_chuyen": 2,
+   "ngay_chuyen": 24,
+   "don_mau": 10,
+   "gio_dich": 17
+  },
+  "_giai_doan": "Sản xuất 27FW"
+ },
+ "2027-07": {
+  "Cuong": {
+   "chi_so": 2.89,
+   "ngay_lam": 25,
+   "ma_vao_chuyen": 11,
+   "ngay_chuyen": 85,
+   "don_mau": 71,
+   "gio_dich": 319
+  },
+  "Luan": {
+   "chi_so": 0.71,
+   "ngay_lam": 25,
+   "ma_vao_chuyen": 9,
+   "ngay_chuyen": 263,
+   "don_mau": 8,
+   "gio_dich": 46
+  },
+  "Khanh": {
+   "chi_so": 0.75,
+   "ngay_lam": 25,
+   "ma_vao_chuyen": 0,
+   "ngay_chuyen": 0,
+   "don_mau": 17,
+   "gio_dich": 38
+  },
+  "B.Trang": {
+   "chi_so": 0.74,
+   "ngay_lam": 25,
+   "ma_vao_chuyen": 5,
+   "ngay_chuyen": 48,
+   "don_mau": 28,
+   "gio_dich": 60
+  },
+  "Q.Huy": {
+   "chi_so": 1.51,
+   "ngay_lam": 25,
+   "ma_vao_chuyen": 18,
+   "ngay_chuyen": 276,
+   "don_mau": 24,
+   "gio_dich": 71
+  },
+  "Hien": {
+   "chi_so": 0.61,
+   "ngay_lam": 25,
+   "ma_vao_chuyen": 7,
+   "ngay_chuyen": 72,
+   "don_mau": 7,
+   "gio_dich": 41
+  },
+  "Nhu": {
+   "chi_so": 0.86,
+   "ngay_lam": 25,
+   "ma_vao_chuyen": 9,
+   "ngay_chuyen": 150,
+   "don_mau": 10,
+   "gio_dich": 56
+  },
+  "_giai_doan": "Mẫu 1st–3rd 28FW, Sản xuất 27FW"
+ },
+ "2027-08": {
+  "Cuong": {
+   "chi_so": 0.9,
+   "ngay_lam": 24,
+   "ma_vao_chuyen": 10,
+   "ngay_chuyen": 116,
+   "don_mau": 6,
+   "gio_dich": 54
+  },
+  "Luan": {
+   "chi_so": 0.75,
+   "ngay_lam": 24,
+   "ma_vao_chuyen": 7,
+   "ngay_chuyen": 204,
+   "don_mau": 22,
+   "gio_dich": 61
+  },
+  "Khanh": {
+   "chi_so": 0.6,
+   "ngay_lam": 24,
+   "ma_vao_chuyen": 2,
+   "ngay_chuyen": 10,
+   "don_mau": 4,
+   "gio_dich": 13
+  },
+  "B.Trang": {
+   "chi_so": 0.42,
+   "ngay_lam": 24,
+   "ma_vao_chuyen": 6,
+   "ngay_chuyen": 54,
+   "don_mau": 6,
+   "gio_dich": 21
+  },
+  "Q.Huy": {
+   "chi_so": 1.34,
+   "ngay_lam": 24,
+   "ma_vao_chuyen": 16,
+   "ngay_chuyen": 269,
+   "don_mau": 19,
+   "gio_dich": 50
+  },
+  "Hien": {
+   "chi_so": 0.56,
+   "ngay_lam": 24,
+   "ma_vao_chuyen": 2,
+   "ngay_chuyen": 81,
+   "don_mau": 13,
+   "gio_dich": 41
+  },
+  "Nhu": {
+   "chi_so": 0.82,
+   "ngay_lam": 24,
+   "ma_vao_chuyen": 5,
+   "ngay_chuyen": 126,
+   "don_mau": 16,
+   "gio_dich": 61
+  },
+  "_giai_doan": "Mẫu 1st–3rd 28FW, Sản xuất 27FW, PPS, chuẩn bị 28SS"
+ },
+ "2027-09": {
+  "Cuong": {
+   "chi_so": 1.02,
+   "ngay_lam": 22,
+   "ma_vao_chuyen": 10,
+   "ngay_chuyen": 140,
+   "don_mau": 8,
+   "gio_dich": 50
+  },
+  "Luan": {
+   "chi_so": 0.65,
+   "ngay_lam": 22,
+   "ma_vao_chuyen": 4,
+   "ngay_chuyen": 244,
+   "don_mau": 20,
+   "gio_dich": 31
+  },
+  "Khanh": {
+   "chi_so": 0.46,
+   "ngay_lam": 22,
+   "ma_vao_chuyen": 0,
+   "ngay_chuyen": 0,
+   "don_mau": 6,
+   "gio_dich": 7
+  },
+  "B.Trang": {
+   "chi_so": 0.41,
+   "ngay_lam": 22,
+   "ma_vao_chuyen": 4,
+   "ngay_chuyen": 31,
+   "don_mau": 17,
+   "gio_dich": 20
+  },
+  "Q.Huy": {
+   "chi_so": 0.89,
+   "ngay_lam": 22,
+   "ma_vao_chuyen": 8,
+   "ngay_chuyen": 168,
+   "don_mau": 19,
+   "gio_dich": 27
+  },
+  "Hien": {
+   "chi_so": 0.48,
+   "ngay_lam": 22,
+   "ma_vao_chuyen": 0,
+   "ngay_chuyen": 87,
+   "don_mau": 21,
+   "gio_dich": 20
+  },
+  "Nhu": {
+   "chi_so": 0.55,
+   "ngay_lam": 22,
+   "ma_vao_chuyen": 5,
+   "ngay_chuyen": 117,
+   "don_mau": 9,
+   "gio_dich": 21
+  },
+  "_giai_doan": "Mẫu 1st–3rd 28FW, Sản xuất 27FW, PPS, chuẩn bị 28SS"
+ },
+ "2027-10": {
+  "Cuong": {
+   "chi_so": 1.57,
+   "ngay_lam": 24,
+   "ma_vao_chuyen": 2,
+   "ngay_chuyen": 31,
+   "don_mau": 112,
+   "gio_dich": 111
+  },
+  "Luan": {
+   "chi_so": 0.88,
+   "ngay_lam": 24,
+   "ma_vao_chuyen": 8,
+   "ngay_chuyen": 432,
+   "don_mau": 7,
+   "gio_dich": 35
+  },
+  "Khanh": {
+   "chi_so": 1.01,
+   "ngay_lam": 24,
+   "ma_vao_chuyen": 1,
+   "ngay_chuyen": 18,
+   "don_mau": 38,
+   "gio_dich": 33
+  },
+  "B.Trang": {
+   "chi_so": 0.65,
+   "ngay_lam": 24,
+   "ma_vao_chuyen": 1,
+   "ngay_chuyen": 7,
+   "don_mau": 59,
+   "gio_dich": 46
+  },
+  "Q.Huy": {
+   "chi_so": 1.14,
+   "ngay_lam": 24,
+   "ma_vao_chuyen": 7,
+   "ngay_chuyen": 128,
+   "don_mau": 44,
+   "gio_dich": 58
+  },
+  "Hien": {
+   "chi_so": 1.27,
+   "ngay_lam": 24,
+   "ma_vao_chuyen": 4,
+   "ngay_chuyen": 126,
+   "don_mau": 48,
+   "gio_dich": 89
+  },
+  "Nhu": {
+   "chi_so": 0.84,
+   "ngay_lam": 24,
+   "ma_vao_chuyen": 7,
+   "ngay_chuyen": 159,
+   "don_mau": 14,
+   "gio_dich": 46
+  },
+  "_giai_doan": "Mẫu 1st–3rd 28FW, SMS 28FW, Sản xuất 28SS"
+ }
+}

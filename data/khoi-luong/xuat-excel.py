@@ -82,37 +82,37 @@ ws.cell(nr + 1, 1, 'Nguồn: file thực tế BULK 19FW–27SS và mẫu SPL 23F
 widths(ws, [12, 30] + [11] * 15 + [10] * 4 + [11]); ws.freeze_panes = 'C7'
 ws.row_dimensions[6].height = 45
 
-# 3. Tải theo tháng từ kế hoạch thật (kết quả mô hình ke-hoach-thang.py)
-k = json.load(open('data/khoi-luong/ke-hoach-thang.json'))
-ws = sheet('Tải theo tháng')
-title(ws, 'Chỉ số tải theo tháng 11/2026 – 2/2027 (Plantable 26/10/2026 + file mẫu 23/10/2026)',
-      'Kết quả từ mô hình data/khoi-luong/ke-hoach-thang.py (số đã tính). 1,0 = khối lượng trung bình 1 người/1 tháng của cả giai đoạn. Công suất 9 giờ/ngày, Khanh 8 giờ.')
+# 3. Tải theo tháng cả vòng 12 tháng (kết quả mô hình ke-hoach-nam.py)
+import sys as _s; _s.path.insert(0, 'data/khoi-luong')
+from lich_lam_viec import ngay_lam
+k = json.load(open('data/khoi-luong/ke-hoach-nam.json'))
+ws = sheet('Tải 12 tháng')
+title(ws, 'Chỉ số tải theo tháng 11/2026 – 10/2027 (mẫu và sản xuất chồng theo vòng mùa)',
+      'Mô hình data/khoi-luong/ke-hoach-nam.py (số đã tính). 1,0 = khối lượng trung bình 1 ngày công cả 12 tháng. Sản xuất mùa đến 27SS: Plantable thật; 27FW, 28SS: mùa tương ứng năm trước. Mẫu: tồn + cùng tháng năm trước.')
 ppl = ['Cuong', 'Luan', 'Khanh', 'B.Trang', 'Q.Huy', 'Hien', 'Nhu']
-header(ws, 4, ['Phương án', 'Tháng'] + [TEN.get(p, p) for p in ppl])
+header(ws, 4, ['Tháng', 'Giai đoạn theo vòng mùa', 'Ngày làm (nhóm A/B)'] + [TEN.get(p, p) for p in ppl])
 r = 5
-for name, res in k.items():
-    for m, v in res.items():
-        write(ws, r, 1, name); write(ws, r, 2, m[5:] + '/' + m[:4])
-        for j, p in enumerate(ppl, 3):
-            c = write(ws, r, j, v[p]['chi_so'], fmt='0.00')
-            if v[p]['chi_so'] >= 1.4: c.fill = PatternFill('solid', start_color='F8CBAD')
-        r += 1
+for m, v in k.items():
+    write(ws, r, 1, m[5:] + '/' + m[:4]); write(ws, r, 2, v['_giai_doan']); write(ws, r, 3, f"{ngay_lam(m, 'Luan')} / {ngay_lam(m, 'Cuong')}")
+    for j, p in enumerate(ppl, 4):
+        c = write(ws, r, j, v[p]['chi_so'], fmt='0.00')
+        if v[p]['chi_so'] >= 1.4: c.fill = PatternFill('solid', start_color='F8CBAD')
+    r += 1
 r += 1
-write(ws, r, 1, 'Số liệu gốc (phương án A)', bold=True, fill=HEAD); r += 1
-header(ws, r, ['Chỉ tiêu', 'Tháng'] + [TEN.get(p, p) for p in ppl]); r += 1
-first = list(k.values())[0]
-for lab, key_ in (('Mã vào chuyền', 'ma_vao_chuyen'), ('Mã đang chạy chuyền', 'ma_dang_chay'), ('Đơn mẫu (tồn + ước)', 'don_mau'), ('Giờ dịch (ước)', 'gio_dich')):
-    for m, v in first.items():
-        write(ws, r, 1, lab); write(ws, r, 2, m[5:] + '/' + m[:4])
-        for j, p in enumerate(ppl, 3): write(ws, r, j, v[p][key_], fmt='#,##0')
+write(ws, r, 1, 'Số liệu gốc', bold=True, fill=HEAD); r += 1
+header(ws, r, ['Chỉ tiêu', 'Tháng', ''] + [TEN.get(p, p) for p in ppl]); r += 1
+for lab, key_ in (('Mã vào chuyền', 'ma_vao_chuyen'), ('Ngày chuyền đang chạy', 'ngay_chuyen'), ('Đơn mẫu (tồn + ước)', 'don_mau'), ('Giờ dịch (ước)', 'gio_dich'), ('Ngày làm việc', 'ngay_lam')):
+    for m, v in k.items():
+        write(ws, r, 1, lab); write(ws, r, 2, m[5:] + '/' + m[:4]); write(ws, r, 3, None)
+        for j, p in enumerate(ppl, 4): write(ws, r, j, v[p][key_], fmt='#,##0')
         r += 1
 r += 1
 for t_ in ['Tô đỏ: chỉ số ≥ 1,4 (vượt mức tăng ca 1 giờ/ngày).',
-           'Sản xuất: lịch theo chuyền trong Plantable; MD theo người theo dõi mẫu PPS của mã, không có thì theo brand. Mã chia nhiều lô chỉ tính vào chuyền một lần.',
-           'Mẫu: đơn còn tồn dồn vào 11/2026 + số đơn cùng tháng năm trước theo brand. Trọng số: 1st/0次 1,0; 2nd 0,8; PPS 0,6; SMS 0,5; khác 0,3.',
-           'Nhu: chỉ tính phần brand (~30% thời gian là việc văn phòng). B.Trang tháng 12–2 có thể thấp do thiếu dữ liệu mẫu 1st 28SS và các brand mới.']:
+           'Công suất = ngày làm việc thực (thứ 2–7, nghỉ thứ 7 theo nhóm A/B, trừ lễ) × giờ/ngày (9; Khanh 8). Tết 2027 tạm tính nghỉ 4–12/2.',
+           'Đã áp dụng: NW và TNF 東京企画 → Khanh từ 11/2026; Khanh hỗ trợ Luan ~25% (11–12/2026), ~35% từ 1/2027; 1/3 mẫu TNF → Khanh từ 12/2026.',
+           'Nhu: chỉ tính phần brand (~30% thời gian là việc văn phòng). B.Trang có thể thấp do thiếu dữ liệu các brand mới.']:
     ws.cell(r, 1, t_).font = Font(name=F, size=9, italic=True); r += 1
-widths(ws, [58, 9] + [10] * 7); ws.freeze_panes = 'C5'
+widths(ws, [9, 52, 12] + [10] * 7); ws.freeze_panes = 'D5'
 
 # 3b. Đơn hàng S27 (sổ theo dõi)
 dh = json.load(open('data/khoi-luong/don-hang-s27.json'))
