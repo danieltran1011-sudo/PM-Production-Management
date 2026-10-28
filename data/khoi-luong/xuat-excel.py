@@ -34,9 +34,9 @@ def widths(ws, ws_):
 ws = sheet('Phân công dự kiến', True)
 title(ws, 'Phân công dự kiến nhóm MD APIC (quyết định 10/2026, cập nhật theo Plantable 26/10/2026)', 'Cột 2: 11–12/2026 (mẫu triển lãm 27FW, PPS 27SS, đại trà 27SS bắt đầu). Cột 3: từ mẫu 1st 28SS (1–2/2027). Cột 4: hỗ trợ tạm theo tháng (đề xuất).')
 rows = [
- ('Cuong', 'HELLY HANSEN (chủ lực); TNF 東京企画 bàn giao cho Khanh (đề xuất 11/2026, muộn nhất 12/2026); điều phối xuất hàng chung cả nhóm; quản lý chung may mẫu', 'HELLY HANSEN; điều phối xuất hàng chung; quản lý chung may mẫu', 'Cao điểm 12/2026 (21 mã HH vào chuyền): Huy hỗ trợ ~25%, Nhu ~15%'),
+ ('Cuong', 'HELLY HANSEN (chủ lực); TNF 東京企画 bàn giao cho Khanh từ 11/2026; điều phối xuất hàng chung cả nhóm; quản lý chung may mẫu', 'HELLY HANSEN; điều phối xuất hàng chung; quản lý chung may mẫu', 'Cao điểm 12/2026 (21 mã HH vào chuyền): Huy hỗ trợ ~25%, Nhu ~15%'),
  ('Luan', 'TNF 富山企画 (đầu mối duy nhất với TIJ); một phần việc quản lý (~1 giờ/ngày)', 'Như GĐ1', 'Khanh hỗ trợ ~1/4 việc ở GĐ1, ~1/3 ở GĐ2'),
- ('Khanh', 'NEUTRALWORKS; TNF 東京企画 (nhận từ Cuong); hỗ trợ TNF 富山企画 (~25%): báo cáo mã ngoài quy tắc 2 tuần, tiến độ NPL, BL/P/L (cc Luan), dịch một phần tài liệu', 'NEUTRALWORKS; TNF 東京企画 (PPS~đại trà); 1/3 mẫu TNF cùng B.Trang; hỗ trợ TNF 富山企画 (~1/3 việc Luan)', 'Làm đến 16h, có thể tăng ca đến 17h. Tháng 12 giữ hỗ trợ Luan ~25%'),
+ ('Khanh', 'NEUTRALWORKS; TNF 東京企画 (nhận từ Cuong từ 11/2026); hỗ trợ TNF 富山企画 (~25%): báo cáo mã ngoài quy tắc 2 tuần, tiến độ NPL, BL/P/L (cc Luan), dịch một phần tài liệu', 'NEUTRALWORKS; TNF 東京企画 (PPS~đại trà); 1/3 mẫu TNF cùng B.Trang; hỗ trợ TNF 富山企画 (~1/3 việc Luan)', 'Làm đến 16h, có thể tăng ca đến 17h. Tháng 12 giữ hỗ trợ Luan ~25%'),
  ('Bich Trang', 'TNF (ALL) mẫu (làm tiếp mẫu triển lãm 27FW); Premium Snow 別注, FOXFIRE, TATRAS, Kasco, YONEX', 'Như trên, chia 1/3 mẫu TNF cho Khanh', '1/2027: hỗ trợ Huy ~20%'),
  ('Huy', 'Goldwin (xuyên suốt mẫu và đại trà), TNF 別注 HOSOYA, 141 (hỗ trợ), CANTERBURY, NANGA', 'Giữ nguyên', '12/2026 rảnh: hỗ trợ Cuong ~25%. Cao điểm 1/2027 (25 mã 別注 vào chuyền): B.Trang hỗ trợ ~20%'),
  ('Hien', 'Teton Bros, ALLTERRAIN, Mont-Bell, DESCENTE GOLF', 'Giữ nguyên', 'Không giao thêm'),

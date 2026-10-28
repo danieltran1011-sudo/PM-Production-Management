@@ -33,7 +33,7 @@ def nhom_brand(b):
         if b.startswith(k): return v
     return b
 
-def tai(nw_cho_khanh=True, tnf_tokyo_cho_khanh_tu='2026-12', khanh_mau_tnf=1/3, khanh_mau_tu='2026-12',
+def tai(nw_cho_khanh=True, tnf_tokyo_cho_khanh_tu='2026-11', khanh_mau_tnf=1/3, khanh_mau_tu='2026-12',
         giao_them={'Cuong': 0.1, 'Luan': 0.1}, ho_tro_luan={}, ho_tro={}, he_so_kho=True):
     """ho_tro_luan: {tháng: tỷ lệ việc của Luan do Khanh làm (hậu cần, dịch)}
     ho_tro: {tháng: [(người được hỗ trợ, người hỗ trợ, tỷ lệ việc chuyển)]} – hỗ trợ tạm thời theo tháng"""
@@ -101,9 +101,9 @@ def tai(nw_cho_khanh=True, tnf_tokyo_cho_khanh_tu='2026-12', khanh_mau_tnf=1/3, 
 if __name__ == '__main__':
     L1 = {'2026-11': 0.25, '2026-12': 0.25, '2027-01': 0.35, '2027-02': 0.35}
     PA = {
-     'A. Chỉ các việc đã quyết (NW → Khanh ngay; TNF 東京企画 và 1/3 mẫu TNF → Khanh từ 12/2026)': tai(),
-     'B. A + Khanh hỗ trợ Luan (~25% tháng 11–12, ~35% tháng 1–2)': tai(ho_tro_luan=L1),
-     'C. B + chuyển TNF 東京企画 cho Khanh ngay từ 11/2026': tai(tnf_tokyo_cho_khanh_tu='2026-11', ho_tro_luan=L1),
+     'A. Phương án cũ: NW → Khanh ngay; TNF 東京企画 và 1/3 mẫu TNF → Khanh từ 12/2026': tai(tnf_tokyo_cho_khanh_tu='2026-12'),
+     'B. A + Khanh hỗ trợ Luan (~25% tháng 11–12, ~35% tháng 1–2)': tai(tnf_tokyo_cho_khanh_tu='2026-12', ho_tro_luan=L1),
+     'C. B + TNF 東京企画 → Khanh từ 11/2026 (đã quyết 28/10/2026)': tai(tnf_tokyo_cho_khanh_tu='2026-11', ho_tro_luan=L1),
      'D. C + hỗ trợ theo tháng: 12/2026 Huy hỗ trợ Cuong 25%; 1/2027 B.Trang hỗ trợ Huy 20%':
         tai(tnf_tokyo_cho_khanh_tu='2026-11', ho_tro_luan=L1, ho_tro={'2026-12': [('Cuong', 'Q.Huy', 0.25)], '2027-01': [('Q.Huy', 'B.Trang', 0.2)]}),
      'E. D + 12/2026 Nhu hỗ trợ thêm Cuong 15%':
