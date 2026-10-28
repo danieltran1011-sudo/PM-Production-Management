@@ -32,17 +32,17 @@ def widths(ws, ws_):
 
 # 1. Phân công dự kiến
 ws = sheet('Phân công dự kiến', True)
-title(ws, 'Phân công dự kiến nhóm MD APIC (quyết định 10/2026)', 'GĐ1: từ nay đến hết mẫu triển lãm 27FW. GĐ2: từ mẫu 1st 28SS (bulk 27SS chạy chuyền).')
+title(ws, 'Phân công dự kiến nhóm MD APIC (quyết định 10/2026, cập nhật theo Plantable 26/10/2026)', 'Cột 2: 11–12/2026 (mẫu triển lãm 27FW, PPS 27SS, đại trà 27SS bắt đầu). Cột 3: từ mẫu 1st 28SS (1–2/2027). Cột 4: hỗ trợ tạm theo tháng (đề xuất).')
 rows = [
- ('Cuong', 'HELLY HANSEN (chủ lực); TNF 東京企画 (đến hết GĐ1, bàn giao dần cho Khanh); điều phối xuất hàng chung cả nhóm; quản lý chung may mẫu', 'HELLY HANSEN; điều phối xuất hàng chung; quản lý chung may mẫu', 'NEUTRALWORKS đã chuyển cho Khanh'),
+ ('Cuong', 'HELLY HANSEN (chủ lực); TNF 東京企画 bàn giao cho Khanh (đề xuất 11/2026, muộn nhất 12/2026); điều phối xuất hàng chung cả nhóm; quản lý chung may mẫu', 'HELLY HANSEN; điều phối xuất hàng chung; quản lý chung may mẫu', 'Cao điểm 12/2026 (21 mã HH vào chuyền): Huy hỗ trợ ~25%, Nhu ~15%'),
  ('Luan', 'TNF 富山企画 (đầu mối duy nhất với TIJ); một phần việc quản lý (~1 giờ/ngày)', 'Như GĐ1', 'Khanh hỗ trợ ~1/4 việc ở GĐ1, ~1/3 ở GĐ2'),
- ('Khanh', 'NEUTRALWORKS; hỗ trợ TNF 富山企画: báo cáo mã ngoài quy tắc 2 tuần, tiến độ NPL, BL/P/L (cc Luan), dịch một phần tài liệu; theo cùng Cuong các lô TNF 東京企画', 'NEUTRALWORKS; TNF 東京企画 (PPS~đại trà); 1/3 mẫu TNF cùng B.Trang; hỗ trợ TNF 富山企画 (~1/3 việc Luan)', 'Làm đến 16h, có thể tăng ca đến 17h'),
- ('Bich Trang', 'TNF (ALL) mẫu (làm tiếp mẫu triển lãm 27FW); Premium Snow 別注, FOXFIRE, TATRAS, Kasco, YONEX', 'Như GĐ1, chia 1/3 mẫu TNF cho Khanh', ''),
- ('Huy', 'Goldwin (xuyên suốt mẫu và đại trà), TNF 別注 HOSOYA, 141 (hỗ trợ), CANTERBURY, NANGA', 'Giữ nguyên', 'Theo dõi: ~1,39 ở GĐ2'),
+ ('Khanh', 'NEUTRALWORKS; TNF 東京企画 (nhận từ Cuong); hỗ trợ TNF 富山企画 (~25%): báo cáo mã ngoài quy tắc 2 tuần, tiến độ NPL, BL/P/L (cc Luan), dịch một phần tài liệu', 'NEUTRALWORKS; TNF 東京企画 (PPS~đại trà); 1/3 mẫu TNF cùng B.Trang; hỗ trợ TNF 富山企画 (~1/3 việc Luan)', 'Làm đến 16h, có thể tăng ca đến 17h. Tháng 12 giữ hỗ trợ Luan ~25%'),
+ ('Bich Trang', 'TNF (ALL) mẫu (làm tiếp mẫu triển lãm 27FW); Premium Snow 別注, FOXFIRE, TATRAS, Kasco, YONEX', 'Như trên, chia 1/3 mẫu TNF cho Khanh', '1/2027: hỗ trợ Huy ~20%'),
+ ('Huy', 'Goldwin (xuyên suốt mẫu và đại trà), TNF 別注 HOSOYA, 141 (hỗ trợ), CANTERBURY, NANGA', 'Giữ nguyên', '12/2026 rảnh: hỗ trợ Cuong ~25%. Cao điểm 1/2027 (25 mã 別注 vào chuyền): B.Trang hỗ trợ ~20%'),
  ('Hien', 'Teton Bros, ALLTERRAIN, Mont-Bell, DESCENTE GOLF', 'Giữ nguyên', 'Không giao thêm'),
- ('Nhu', 'TNF 別注 SHIGEMOTO/NAKAO, UTMF, TOKYO MARATHON; việc văn phòng, báo cáo tháng, hóa đơn', 'Giữ nguyên', 'Theo dõi thêm'),
+ ('Nhu', 'TNF 別注 SHIGEMOTO/NAKAO, UTMF, TOKYO MARATHON; việc văn phòng, báo cáo tháng, hóa đơn', 'Giữ nguyên', 'Theo dõi thêm. 12/2026 rảnh: hỗ trợ Cuong ~15%'),
 ]
-header(ws, 4, ['Người', 'GĐ1 – từ nay đến hết mẫu triển lãm 27FW', 'GĐ2 – từ mẫu 1st 28SS', 'Ghi chú'])
+header(ws, 4, ['Người', '11–12/2026', 'Từ mẫu 1st 28SS (1–2/2027)', 'Ghi chú / hỗ trợ tạm theo tháng'])
 for i, r in enumerate(rows, 5):
     for j, v in enumerate(r, 1): write(ws, i, j, v, bold=(j == 1))
 widths(ws, [14, 70, 55, 34]); ws.freeze_panes = 'A5'
@@ -82,25 +82,50 @@ ws.cell(nr + 1, 1, 'Nguồn: file thực tế BULK 19FW–27SS và mẫu SPL 23F
 widths(ws, [12, 30] + [11] * 15 + [10] * 4 + [11]); ws.freeze_panes = 'C7'
 ws.row_dimensions[6].height = 45
 
-# 3. Dự báo 2 giai đoạn (kết quả mô hình)
-k = json.load(open('data/khoi-luong/du-bao.json'))
-ws = sheet('Dự báo GĐ1-GĐ2')
-title(ws, 'Dự báo chỉ số tải theo phương án (11/2026 – 2/2027)',
-      'Kết quả từ mô hình data/khoi-luong/du-bao.py (số đã tính, không phải công thức). 1,0 = trung bình nhóm trong giai đoạn. Công suất 9 giờ/ngày, Khanh 8 giờ. Việc giao thêm: Cuong, Luan ~1 giờ/ngày.')
+# 3. Tải theo tháng từ kế hoạch thật (kết quả mô hình ke-hoach-thang.py)
+k = json.load(open('data/khoi-luong/ke-hoach-thang.json'))
+ws = sheet('Tải theo tháng')
+title(ws, 'Chỉ số tải theo tháng 11/2026 – 2/2027 (Plantable 26/10/2026 + file mẫu 23/10/2026)',
+      'Kết quả từ mô hình data/khoi-luong/ke-hoach-thang.py (số đã tính). 1,0 = khối lượng trung bình 1 người/1 tháng của cả giai đoạn. Công suất 9 giờ/ngày, Khanh 8 giờ.')
 ppl = ['Cuong', 'Luan', 'Khanh', 'B.Trang', 'Q.Huy', 'Hien', 'Nhu']
-header(ws, 4, ['Phương án'] + [TEN.get(p, p) for p in ppl])
-for i, (name, res) in enumerate(k.items(), 5):
-    write(ws, i, 1, name, bold='đã quyết' in name)
-    for j, p in enumerate(ppl, 2):
-        c = write(ws, i, j, res[p]['chi_so'], fmt='0.00', bold='đã quyết' in name)
-        if res[p]['chi_so'] >= 1.4: c.fill = PatternFill('solid', start_color='F8CBAD')
-n = 5 + len(k) + 1
-for t in ['Tô đỏ: chỉ số ≥ 1,4 (vượt mức tăng ca 1 giờ/ngày, cần chia việc).',
-          'Bulk 26FW không tính (đã xong trên 95%). GĐ1: mẫu triển lãm 27FW ước bằng SMS 26FW × 40% (chỉ còn theo dõi tiến độ, dịch góp ý) + mẫu PPS 27SS (1 cái/mã bulk + 5% tái PPS). GĐ2: mẫu phát triển, 1st 28SS ước bằng 1st–3rd 27SS.',
-          'Bich Trang ở GĐ2 bị tính thấp: file BULK chưa có bulk 27SS của FOXFIRE, TATRAS, Kasco, YONEX.',
-          'Nhu: chỉ tính phần brand; chỉ số thực ≈ chỉ số ÷ 0,7.']:
-    ws.cell(n, 1, t).font = Font(name=F, size=9, italic=True); n += 1
-widths(ws, [62] + [11] * 7); ws.freeze_panes = 'B5'
+header(ws, 4, ['Phương án', 'Tháng'] + [TEN.get(p, p) for p in ppl])
+r = 5
+for name, res in k.items():
+    for m, v in res.items():
+        write(ws, r, 1, name); write(ws, r, 2, m[5:] + '/' + m[:4])
+        for j, p in enumerate(ppl, 3):
+            c = write(ws, r, j, v[p]['chi_so'], fmt='0.00')
+            if v[p]['chi_so'] >= 1.4: c.fill = PatternFill('solid', start_color='F8CBAD')
+        r += 1
+r += 1
+write(ws, r, 1, 'Số liệu gốc (phương án A)', bold=True, fill=HEAD); r += 1
+header(ws, r, ['Chỉ tiêu', 'Tháng'] + [TEN.get(p, p) for p in ppl]); r += 1
+first = list(k.values())[0]
+for lab, key_ in (('Mã vào chuyền', 'ma_vao_chuyen'), ('Mã đang chạy chuyền', 'ma_dang_chay'), ('Đơn mẫu (tồn + ước)', 'don_mau'), ('Giờ dịch (ước)', 'gio_dich')):
+    for m, v in first.items():
+        write(ws, r, 1, lab); write(ws, r, 2, m[5:] + '/' + m[:4])
+        for j, p in enumerate(ppl, 3): write(ws, r, j, v[p][key_], fmt='#,##0')
+        r += 1
+r += 1
+for t_ in ['Tô đỏ: chỉ số ≥ 1,4 (vượt mức tăng ca 1 giờ/ngày).',
+           'Sản xuất: lịch theo chuyền trong Plantable; MD theo người theo dõi mẫu PPS của mã, không có thì theo brand. Mã chia nhiều lô chỉ tính vào chuyền một lần.',
+           'Mẫu: đơn còn tồn dồn vào 11/2026 + số đơn cùng tháng năm trước theo brand. Trọng số: 1st/0次 1,0; 2nd 0,8; PPS 0,6; SMS 0,5; khác 0,3.',
+           'Nhu: chỉ tính phần brand (~30% thời gian là việc văn phòng). B.Trang tháng 12–2 có thể thấp do thiếu dữ liệu mẫu 1st 28SS và các brand mới.']:
+    ws.cell(r, 1, t_).font = Font(name=F, size=9, italic=True); r += 1
+widths(ws, [58, 9] + [10] * 7); ws.freeze_panes = 'C5'
+
+# 3b. Đơn hàng S27 (sổ theo dõi)
+dh = json.load(open('data/khoi-luong/don-hang-s27.json'))
+ws = sheet('Đơn hàng S27')
+title(ws, 'Sổ theo dõi đơn hàng S27 – MD phụ trách', 'Nguồn: sheet S27 受注・進捗管理台帳 trong Plantable 26/10/2026.')
+cols3 = [('stt', 'STT'), ('ngay', 'Ngày nhận'), ('brand', 'Brand'), ('mua', 'Mùa'), ('ten', 'Tên đơn'), ('so_ma', 'Số mã'), ('sl', 'Số lượng'), ('etd', 'ETD'), ('tij', 'TI phụ trách'), ('md', 'MD TIVN'), ('thieu', 'Tài liệu thiếu'), ('buoc_tiep', 'Việc tiếp theo')]
+header(ws, 4, [c[1] for c in cols3])
+for i, x in enumerate(dh, 5):
+    for j, (c, _) in enumerate(cols3, 1):
+        v = x.get(c); v = None if v in ('None', '') else v
+        write(ws, i, j, v, fmt='#,##0' if c in ('so_ma', 'sl') else None)
+ws.auto_filter.ref = f'A4:{L(len(cols3))}{len(dh) + 4}'; ws.freeze_panes = 'A5'
+widths(ws, [5, 11, 16, 6, 40, 7, 10, 11, 12, 14, 14, 24])
 
 # 4. Số mã theo mùa
 t = json.load(open('data/khoi-luong/thuc-te.json'))

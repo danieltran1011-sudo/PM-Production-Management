@@ -1,0 +1,1032 @@
+{
+ "A. Chỉ các việc đã quyết (NW → Khanh ngay; TNF 東京企画 và 1/3 mẫu TNF → Khanh từ 12/2026)": {
+  "2026-11": {
+   "Cuong": {
+    "chi_so": 1.88,
+    "ma_vao_chuyen": 5,
+    "ma_dang_chay": 10,
+    "don_mau": 100,
+    "gio_dich": 106
+   },
+   "Luan": {
+    "chi_so": 1.71,
+    "ma_vao_chuyen": 9,
+    "ma_dang_chay": 27,
+    "don_mau": 7,
+    "gio_dich": 38
+   },
+   "Khanh": {
+    "chi_so": 0.15,
+    "ma_vao_chuyen": 0,
+    "ma_dang_chay": 0,
+    "don_mau": 12,
+    "gio_dich": 9
+   },
+   "B.Trang": {
+    "chi_so": 1.41,
+    "ma_vao_chuyen": 1,
+    "ma_dang_chay": 3,
+    "don_mau": 121,
+    "gio_dich": 94
+   },
+   "Q.Huy": {
+    "chi_so": 1.64,
+    "ma_vao_chuyen": 8,
+    "ma_dang_chay": 10,
+    "don_mau": 65,
+    "gio_dich": 93
+   },
+   "Hien": {
+    "chi_so": 1.47,
+    "ma_vao_chuyen": 8,
+    "ma_dang_chay": 10,
+    "don_mau": 41,
+    "gio_dich": 95
+   },
+   "Nhu": {
+    "chi_so": 1.04,
+    "ma_vao_chuyen": 3,
+    "ma_dang_chay": 8,
+    "don_mau": 35,
+    "gio_dich": 92
+   }
+  },
+  "2026-12": {
+   "Cuong": {
+    "chi_so": 2.18,
+    "ma_vao_chuyen": 21,
+    "ma_dang_chay": 24,
+    "don_mau": 15,
+    "gio_dich": 145
+   },
+   "Luan": {
+    "chi_so": 1.92,
+    "ma_vao_chuyen": 10,
+    "ma_dang_chay": 29,
+    "don_mau": 13,
+    "gio_dich": 51
+   },
+   "Khanh": {
+    "chi_so": 0.75,
+    "ma_vao_chuyen": 3,
+    "ma_dang_chay": 5,
+    "don_mau": 17,
+    "gio_dich": 53
+   },
+   "B.Trang": {
+    "chi_so": 0.88,
+    "ma_vao_chuyen": 5,
+    "ma_dang_chay": 5,
+    "don_mau": 27,
+    "gio_dich": 75
+   },
+   "Q.Huy": {
+    "chi_so": 0.44,
+    "ma_vao_chuyen": 1,
+    "ma_dang_chay": 5,
+    "don_mau": 25,
+    "gio_dich": 18
+   },
+   "Hien": {
+    "chi_so": 1.48,
+    "ma_vao_chuyen": 12,
+    "ma_dang_chay": 14,
+    "don_mau": 26,
+    "gio_dich": 110
+   },
+   "Nhu": {
+    "chi_so": 0.35,
+    "ma_vao_chuyen": 2,
+    "ma_dang_chay": 3,
+    "don_mau": 24,
+    "gio_dich": 20
+   }
+  },
+  "2027-01": {
+   "Cuong": {
+    "chi_so": 1.31,
+    "ma_vao_chuyen": 10,
+    "ma_dang_chay": 18,
+    "don_mau": 12,
+    "gio_dich": 91
+   },
+   "Luan": {
+    "chi_so": 1.94,
+    "ma_vao_chuyen": 7,
+    "ma_dang_chay": 23,
+    "don_mau": 34,
+    "gio_dich": 67
+   },
+   "Khanh": {
+    "chi_so": 0.11,
+    "ma_vao_chuyen": 0,
+    "ma_dang_chay": 4,
+    "don_mau": 2,
+    "gio_dich": 5
+   },
+   "B.Trang": {
+    "chi_so": 0.15,
+    "ma_vao_chuyen": 1,
+    "ma_dang_chay": 1,
+    "don_mau": 5,
+    "gio_dich": 11
+   },
+   "Q.Huy": {
+    "chi_so": 1.59,
+    "ma_vao_chuyen": 25,
+    "ma_dang_chay": 26,
+    "don_mau": 8,
+    "gio_dich": 87
+   },
+   "Hien": {
+    "chi_so": 0.96,
+    "ma_vao_chuyen": 11,
+    "ma_dang_chay": 14,
+    "don_mau": 14,
+    "gio_dich": 55
+   },
+   "Nhu": {
+    "chi_so": 1.16,
+    "ma_vao_chuyen": 11,
+    "ma_dang_chay": 14,
+    "don_mau": 21,
+    "gio_dich": 79
+   }
+  },
+  "2027-02": {
+   "Cuong": {
+    "chi_so": 1.3,
+    "ma_vao_chuyen": 9,
+    "ma_dang_chay": 13,
+    "don_mau": 15,
+    "gio_dich": 97
+   },
+   "Luan": {
+    "chi_so": 0.7,
+    "ma_vao_chuyen": 1,
+    "ma_dang_chay": 12,
+    "don_mau": 13,
+    "gio_dich": 21
+   },
+   "Khanh": {
+    "chi_so": 0.4,
+    "ma_vao_chuyen": 1,
+    "ma_dang_chay": 1,
+    "don_mau": 11,
+    "gio_dich": 26
+   },
+   "B.Trang": {
+    "chi_so": 0.11,
+    "ma_vao_chuyen": 0,
+    "ma_dang_chay": 0,
+    "don_mau": 5,
+    "gio_dich": 12
+   },
+   "Q.Huy": {
+    "chi_so": 0.48,
+    "ma_vao_chuyen": 2,
+    "ma_dang_chay": 6,
+    "don_mau": 15,
+    "gio_dich": 23
+   },
+   "Hien": {
+    "chi_so": 0.68,
+    "ma_vao_chuyen": 8,
+    "ma_dang_chay": 13,
+    "don_mau": 4,
+    "gio_dich": 37
+   },
+   "Nhu": {
+    "chi_so": 0.8,
+    "ma_vao_chuyen": 7,
+    "ma_dang_chay": 14,
+    "don_mau": 4,
+    "gio_dich": 35
+   }
+  }
+ },
+ "B. A + Khanh hỗ trợ Luan (~25% tháng 11–12, ~35% tháng 1–2)": {
+  "2026-11": {
+   "Cuong": {
+    "chi_so": 1.88,
+    "ma_vao_chuyen": 5,
+    "ma_dang_chay": 10,
+    "don_mau": 100,
+    "gio_dich": 106
+   },
+   "Luan": {
+    "chi_so": 1.28,
+    "ma_vao_chuyen": 9,
+    "ma_dang_chay": 27,
+    "don_mau": 7,
+    "gio_dich": 38
+   },
+   "Khanh": {
+    "chi_so": 0.58,
+    "ma_vao_chuyen": 0,
+    "ma_dang_chay": 0,
+    "don_mau": 12,
+    "gio_dich": 9
+   },
+   "B.Trang": {
+    "chi_so": 1.41,
+    "ma_vao_chuyen": 1,
+    "ma_dang_chay": 3,
+    "don_mau": 121,
+    "gio_dich": 94
+   },
+   "Q.Huy": {
+    "chi_so": 1.64,
+    "ma_vao_chuyen": 8,
+    "ma_dang_chay": 10,
+    "don_mau": 65,
+    "gio_dich": 93
+   },
+   "Hien": {
+    "chi_so": 1.47,
+    "ma_vao_chuyen": 8,
+    "ma_dang_chay": 10,
+    "don_mau": 41,
+    "gio_dich": 95
+   },
+   "Nhu": {
+    "chi_so": 1.04,
+    "ma_vao_chuyen": 3,
+    "ma_dang_chay": 8,
+    "don_mau": 35,
+    "gio_dich": 92
+   }
+  },
+  "2026-12": {
+   "Cuong": {
+    "chi_so": 2.18,
+    "ma_vao_chuyen": 21,
+    "ma_dang_chay": 24,
+    "don_mau": 15,
+    "gio_dich": 145
+   },
+   "Luan": {
+    "chi_so": 1.44,
+    "ma_vao_chuyen": 10,
+    "ma_dang_chay": 29,
+    "don_mau": 13,
+    "gio_dich": 51
+   },
+   "Khanh": {
+    "chi_so": 1.24,
+    "ma_vao_chuyen": 3,
+    "ma_dang_chay": 5,
+    "don_mau": 17,
+    "gio_dich": 53
+   },
+   "B.Trang": {
+    "chi_so": 0.88,
+    "ma_vao_chuyen": 5,
+    "ma_dang_chay": 5,
+    "don_mau": 27,
+    "gio_dich": 75
+   },
+   "Q.Huy": {
+    "chi_so": 0.44,
+    "ma_vao_chuyen": 1,
+    "ma_dang_chay": 5,
+    "don_mau": 25,
+    "gio_dich": 18
+   },
+   "Hien": {
+    "chi_so": 1.48,
+    "ma_vao_chuyen": 12,
+    "ma_dang_chay": 14,
+    "don_mau": 26,
+    "gio_dich": 110
+   },
+   "Nhu": {
+    "chi_so": 0.35,
+    "ma_vao_chuyen": 2,
+    "ma_dang_chay": 3,
+    "don_mau": 24,
+    "gio_dich": 20
+   }
+  },
+  "2027-01": {
+   "Cuong": {
+    "chi_so": 1.31,
+    "ma_vao_chuyen": 10,
+    "ma_dang_chay": 18,
+    "don_mau": 12,
+    "gio_dich": 91
+   },
+   "Luan": {
+    "chi_so": 1.26,
+    "ma_vao_chuyen": 7,
+    "ma_dang_chay": 23,
+    "don_mau": 34,
+    "gio_dich": 67
+   },
+   "Khanh": {
+    "chi_so": 0.8,
+    "ma_vao_chuyen": 0,
+    "ma_dang_chay": 4,
+    "don_mau": 2,
+    "gio_dich": 5
+   },
+   "B.Trang": {
+    "chi_so": 0.15,
+    "ma_vao_chuyen": 1,
+    "ma_dang_chay": 1,
+    "don_mau": 5,
+    "gio_dich": 11
+   },
+   "Q.Huy": {
+    "chi_so": 1.59,
+    "ma_vao_chuyen": 25,
+    "ma_dang_chay": 26,
+    "don_mau": 8,
+    "gio_dich": 87
+   },
+   "Hien": {
+    "chi_so": 0.96,
+    "ma_vao_chuyen": 11,
+    "ma_dang_chay": 14,
+    "don_mau": 14,
+    "gio_dich": 55
+   },
+   "Nhu": {
+    "chi_so": 1.16,
+    "ma_vao_chuyen": 11,
+    "ma_dang_chay": 14,
+    "don_mau": 21,
+    "gio_dich": 79
+   }
+  },
+  "2027-02": {
+   "Cuong": {
+    "chi_so": 1.3,
+    "ma_vao_chuyen": 9,
+    "ma_dang_chay": 13,
+    "don_mau": 15,
+    "gio_dich": 97
+   },
+   "Luan": {
+    "chi_so": 0.46,
+    "ma_vao_chuyen": 1,
+    "ma_dang_chay": 12,
+    "don_mau": 13,
+    "gio_dich": 21
+   },
+   "Khanh": {
+    "chi_so": 0.64,
+    "ma_vao_chuyen": 1,
+    "ma_dang_chay": 1,
+    "don_mau": 11,
+    "gio_dich": 26
+   },
+   "B.Trang": {
+    "chi_so": 0.11,
+    "ma_vao_chuyen": 0,
+    "ma_dang_chay": 0,
+    "don_mau": 5,
+    "gio_dich": 12
+   },
+   "Q.Huy": {
+    "chi_so": 0.48,
+    "ma_vao_chuyen": 2,
+    "ma_dang_chay": 6,
+    "don_mau": 15,
+    "gio_dich": 23
+   },
+   "Hien": {
+    "chi_so": 0.68,
+    "ma_vao_chuyen": 8,
+    "ma_dang_chay": 13,
+    "don_mau": 4,
+    "gio_dich": 37
+   },
+   "Nhu": {
+    "chi_so": 0.8,
+    "ma_vao_chuyen": 7,
+    "ma_dang_chay": 14,
+    "don_mau": 4,
+    "gio_dich": 35
+   }
+  }
+ },
+ "C. B + chuyển TNF 東京企画 cho Khanh ngay từ 11/2026": {
+  "2026-11": {
+   "Cuong": {
+    "chi_so": 1.7,
+    "ma_vao_chuyen": 4,
+    "ma_dang_chay": 8,
+    "don_mau": 100,
+    "gio_dich": 102
+   },
+   "Luan": {
+    "chi_so": 1.28,
+    "ma_vao_chuyen": 9,
+    "ma_dang_chay": 27,
+    "don_mau": 7,
+    "gio_dich": 38
+   },
+   "Khanh": {
+    "chi_so": 0.77,
+    "ma_vao_chuyen": 1,
+    "ma_dang_chay": 2,
+    "don_mau": 12,
+    "gio_dich": 13
+   },
+   "B.Trang": {
+    "chi_so": 1.41,
+    "ma_vao_chuyen": 1,
+    "ma_dang_chay": 3,
+    "don_mau": 121,
+    "gio_dich": 94
+   },
+   "Q.Huy": {
+    "chi_so": 1.64,
+    "ma_vao_chuyen": 8,
+    "ma_dang_chay": 10,
+    "don_mau": 65,
+    "gio_dich": 93
+   },
+   "Hien": {
+    "chi_so": 1.47,
+    "ma_vao_chuyen": 8,
+    "ma_dang_chay": 10,
+    "don_mau": 41,
+    "gio_dich": 95
+   },
+   "Nhu": {
+    "chi_so": 1.04,
+    "ma_vao_chuyen": 3,
+    "ma_dang_chay": 8,
+    "don_mau": 35,
+    "gio_dich": 92
+   }
+  },
+  "2026-12": {
+   "Cuong": {
+    "chi_so": 2.18,
+    "ma_vao_chuyen": 21,
+    "ma_dang_chay": 24,
+    "don_mau": 15,
+    "gio_dich": 145
+   },
+   "Luan": {
+    "chi_so": 1.44,
+    "ma_vao_chuyen": 10,
+    "ma_dang_chay": 29,
+    "don_mau": 13,
+    "gio_dich": 51
+   },
+   "Khanh": {
+    "chi_so": 1.24,
+    "ma_vao_chuyen": 3,
+    "ma_dang_chay": 5,
+    "don_mau": 17,
+    "gio_dich": 53
+   },
+   "B.Trang": {
+    "chi_so": 0.88,
+    "ma_vao_chuyen": 5,
+    "ma_dang_chay": 5,
+    "don_mau": 27,
+    "gio_dich": 75
+   },
+   "Q.Huy": {
+    "chi_so": 0.44,
+    "ma_vao_chuyen": 1,
+    "ma_dang_chay": 5,
+    "don_mau": 25,
+    "gio_dich": 18
+   },
+   "Hien": {
+    "chi_so": 1.48,
+    "ma_vao_chuyen": 12,
+    "ma_dang_chay": 14,
+    "don_mau": 26,
+    "gio_dich": 110
+   },
+   "Nhu": {
+    "chi_so": 0.35,
+    "ma_vao_chuyen": 2,
+    "ma_dang_chay": 3,
+    "don_mau": 24,
+    "gio_dich": 20
+   }
+  },
+  "2027-01": {
+   "Cuong": {
+    "chi_so": 1.31,
+    "ma_vao_chuyen": 10,
+    "ma_dang_chay": 18,
+    "don_mau": 12,
+    "gio_dich": 91
+   },
+   "Luan": {
+    "chi_so": 1.26,
+    "ma_vao_chuyen": 7,
+    "ma_dang_chay": 23,
+    "don_mau": 34,
+    "gio_dich": 67
+   },
+   "Khanh": {
+    "chi_so": 0.8,
+    "ma_vao_chuyen": 0,
+    "ma_dang_chay": 4,
+    "don_mau": 2,
+    "gio_dich": 5
+   },
+   "B.Trang": {
+    "chi_so": 0.15,
+    "ma_vao_chuyen": 1,
+    "ma_dang_chay": 1,
+    "don_mau": 5,
+    "gio_dich": 11
+   },
+   "Q.Huy": {
+    "chi_so": 1.59,
+    "ma_vao_chuyen": 25,
+    "ma_dang_chay": 26,
+    "don_mau": 8,
+    "gio_dich": 87
+   },
+   "Hien": {
+    "chi_so": 0.96,
+    "ma_vao_chuyen": 11,
+    "ma_dang_chay": 14,
+    "don_mau": 14,
+    "gio_dich": 55
+   },
+   "Nhu": {
+    "chi_so": 1.16,
+    "ma_vao_chuyen": 11,
+    "ma_dang_chay": 14,
+    "don_mau": 21,
+    "gio_dich": 79
+   }
+  },
+  "2027-02": {
+   "Cuong": {
+    "chi_so": 1.3,
+    "ma_vao_chuyen": 9,
+    "ma_dang_chay": 13,
+    "don_mau": 15,
+    "gio_dich": 97
+   },
+   "Luan": {
+    "chi_so": 0.46,
+    "ma_vao_chuyen": 1,
+    "ma_dang_chay": 12,
+    "don_mau": 13,
+    "gio_dich": 21
+   },
+   "Khanh": {
+    "chi_so": 0.64,
+    "ma_vao_chuyen": 1,
+    "ma_dang_chay": 1,
+    "don_mau": 11,
+    "gio_dich": 26
+   },
+   "B.Trang": {
+    "chi_so": 0.11,
+    "ma_vao_chuyen": 0,
+    "ma_dang_chay": 0,
+    "don_mau": 5,
+    "gio_dich": 12
+   },
+   "Q.Huy": {
+    "chi_so": 0.48,
+    "ma_vao_chuyen": 2,
+    "ma_dang_chay": 6,
+    "don_mau": 15,
+    "gio_dich": 23
+   },
+   "Hien": {
+    "chi_so": 0.68,
+    "ma_vao_chuyen": 8,
+    "ma_dang_chay": 13,
+    "don_mau": 4,
+    "gio_dich": 37
+   },
+   "Nhu": {
+    "chi_so": 0.8,
+    "ma_vao_chuyen": 7,
+    "ma_dang_chay": 14,
+    "don_mau": 4,
+    "gio_dich": 35
+   }
+  }
+ },
+ "D. C + hỗ trợ theo tháng: 12/2026 Huy hỗ trợ Cuong 25%; 1/2027 B.Trang hỗ trợ Huy 20%": {
+  "2026-11": {
+   "Cuong": {
+    "chi_so": 1.7,
+    "ma_vao_chuyen": 4,
+    "ma_dang_chay": 8,
+    "don_mau": 100,
+    "gio_dich": 102
+   },
+   "Luan": {
+    "chi_so": 1.28,
+    "ma_vao_chuyen": 9,
+    "ma_dang_chay": 27,
+    "don_mau": 7,
+    "gio_dich": 38
+   },
+   "Khanh": {
+    "chi_so": 0.77,
+    "ma_vao_chuyen": 1,
+    "ma_dang_chay": 2,
+    "don_mau": 12,
+    "gio_dich": 13
+   },
+   "B.Trang": {
+    "chi_so": 1.41,
+    "ma_vao_chuyen": 1,
+    "ma_dang_chay": 3,
+    "don_mau": 121,
+    "gio_dich": 94
+   },
+   "Q.Huy": {
+    "chi_so": 1.64,
+    "ma_vao_chuyen": 8,
+    "ma_dang_chay": 10,
+    "don_mau": 65,
+    "gio_dich": 93
+   },
+   "Hien": {
+    "chi_so": 1.47,
+    "ma_vao_chuyen": 8,
+    "ma_dang_chay": 10,
+    "don_mau": 41,
+    "gio_dich": 95
+   },
+   "Nhu": {
+    "chi_so": 1.04,
+    "ma_vao_chuyen": 3,
+    "ma_dang_chay": 8,
+    "don_mau": 35,
+    "gio_dich": 92
+   }
+  },
+  "2026-12": {
+   "Cuong": {
+    "chi_so": 1.64,
+    "ma_vao_chuyen": 21,
+    "ma_dang_chay": 24,
+    "don_mau": 15,
+    "gio_dich": 145
+   },
+   "Luan": {
+    "chi_so": 1.44,
+    "ma_vao_chuyen": 10,
+    "ma_dang_chay": 29,
+    "don_mau": 13,
+    "gio_dich": 51
+   },
+   "Khanh": {
+    "chi_so": 1.24,
+    "ma_vao_chuyen": 3,
+    "ma_dang_chay": 5,
+    "don_mau": 17,
+    "gio_dich": 53
+   },
+   "B.Trang": {
+    "chi_so": 0.88,
+    "ma_vao_chuyen": 5,
+    "ma_dang_chay": 5,
+    "don_mau": 27,
+    "gio_dich": 75
+   },
+   "Q.Huy": {
+    "chi_so": 0.93,
+    "ma_vao_chuyen": 1,
+    "ma_dang_chay": 5,
+    "don_mau": 25,
+    "gio_dich": 18
+   },
+   "Hien": {
+    "chi_so": 1.48,
+    "ma_vao_chuyen": 12,
+    "ma_dang_chay": 14,
+    "don_mau": 26,
+    "gio_dich": 110
+   },
+   "Nhu": {
+    "chi_so": 0.35,
+    "ma_vao_chuyen": 2,
+    "ma_dang_chay": 3,
+    "don_mau": 24,
+    "gio_dich": 20
+   }
+  },
+  "2027-01": {
+   "Cuong": {
+    "chi_so": 1.31,
+    "ma_vao_chuyen": 10,
+    "ma_dang_chay": 18,
+    "don_mau": 12,
+    "gio_dich": 91
+   },
+   "Luan": {
+    "chi_so": 1.26,
+    "ma_vao_chuyen": 7,
+    "ma_dang_chay": 23,
+    "don_mau": 34,
+    "gio_dich": 67
+   },
+   "Khanh": {
+    "chi_so": 0.8,
+    "ma_vao_chuyen": 0,
+    "ma_dang_chay": 4,
+    "don_mau": 2,
+    "gio_dich": 5
+   },
+   "B.Trang": {
+    "chi_so": 0.47,
+    "ma_vao_chuyen": 1,
+    "ma_dang_chay": 1,
+    "don_mau": 5,
+    "gio_dich": 11
+   },
+   "Q.Huy": {
+    "chi_so": 1.27,
+    "ma_vao_chuyen": 25,
+    "ma_dang_chay": 26,
+    "don_mau": 8,
+    "gio_dich": 87
+   },
+   "Hien": {
+    "chi_so": 0.96,
+    "ma_vao_chuyen": 11,
+    "ma_dang_chay": 14,
+    "don_mau": 14,
+    "gio_dich": 55
+   },
+   "Nhu": {
+    "chi_so": 1.16,
+    "ma_vao_chuyen": 11,
+    "ma_dang_chay": 14,
+    "don_mau": 21,
+    "gio_dich": 79
+   }
+  },
+  "2027-02": {
+   "Cuong": {
+    "chi_so": 1.3,
+    "ma_vao_chuyen": 9,
+    "ma_dang_chay": 13,
+    "don_mau": 15,
+    "gio_dich": 97
+   },
+   "Luan": {
+    "chi_so": 0.46,
+    "ma_vao_chuyen": 1,
+    "ma_dang_chay": 12,
+    "don_mau": 13,
+    "gio_dich": 21
+   },
+   "Khanh": {
+    "chi_so": 0.64,
+    "ma_vao_chuyen": 1,
+    "ma_dang_chay": 1,
+    "don_mau": 11,
+    "gio_dich": 26
+   },
+   "B.Trang": {
+    "chi_so": 0.11,
+    "ma_vao_chuyen": 0,
+    "ma_dang_chay": 0,
+    "don_mau": 5,
+    "gio_dich": 12
+   },
+   "Q.Huy": {
+    "chi_so": 0.48,
+    "ma_vao_chuyen": 2,
+    "ma_dang_chay": 6,
+    "don_mau": 15,
+    "gio_dich": 23
+   },
+   "Hien": {
+    "chi_so": 0.68,
+    "ma_vao_chuyen": 8,
+    "ma_dang_chay": 13,
+    "don_mau": 4,
+    "gio_dich": 37
+   },
+   "Nhu": {
+    "chi_so": 0.8,
+    "ma_vao_chuyen": 7,
+    "ma_dang_chay": 14,
+    "don_mau": 4,
+    "gio_dich": 35
+   }
+  }
+ },
+ "E. D + 12/2026 Nhu hỗ trợ thêm Cuong 15%": {
+  "2026-11": {
+   "Cuong": {
+    "chi_so": 1.7,
+    "ma_vao_chuyen": 4,
+    "ma_dang_chay": 8,
+    "don_mau": 100,
+    "gio_dich": 102
+   },
+   "Luan": {
+    "chi_so": 1.28,
+    "ma_vao_chuyen": 9,
+    "ma_dang_chay": 27,
+    "don_mau": 7,
+    "gio_dich": 38
+   },
+   "Khanh": {
+    "chi_so": 0.77,
+    "ma_vao_chuyen": 1,
+    "ma_dang_chay": 2,
+    "don_mau": 12,
+    "gio_dich": 13
+   },
+   "B.Trang": {
+    "chi_so": 1.41,
+    "ma_vao_chuyen": 1,
+    "ma_dang_chay": 3,
+    "don_mau": 121,
+    "gio_dich": 94
+   },
+   "Q.Huy": {
+    "chi_so": 1.64,
+    "ma_vao_chuyen": 8,
+    "ma_dang_chay": 10,
+    "don_mau": 65,
+    "gio_dich": 93
+   },
+   "Hien": {
+    "chi_so": 1.47,
+    "ma_vao_chuyen": 8,
+    "ma_dang_chay": 10,
+    "don_mau": 41,
+    "gio_dich": 95
+   },
+   "Nhu": {
+    "chi_so": 1.04,
+    "ma_vao_chuyen": 3,
+    "ma_dang_chay": 8,
+    "don_mau": 35,
+    "gio_dich": 92
+   }
+  },
+  "2026-12": {
+   "Cuong": {
+    "chi_so": 1.39,
+    "ma_vao_chuyen": 21,
+    "ma_dang_chay": 24,
+    "don_mau": 15,
+    "gio_dich": 145
+   },
+   "Luan": {
+    "chi_so": 1.44,
+    "ma_vao_chuyen": 10,
+    "ma_dang_chay": 29,
+    "don_mau": 13,
+    "gio_dich": 51
+   },
+   "Khanh": {
+    "chi_so": 1.24,
+    "ma_vao_chuyen": 3,
+    "ma_dang_chay": 5,
+    "don_mau": 17,
+    "gio_dich": 53
+   },
+   "B.Trang": {
+    "chi_so": 0.88,
+    "ma_vao_chuyen": 5,
+    "ma_dang_chay": 5,
+    "don_mau": 27,
+    "gio_dich": 75
+   },
+   "Q.Huy": {
+    "chi_so": 0.93,
+    "ma_vao_chuyen": 1,
+    "ma_dang_chay": 5,
+    "don_mau": 25,
+    "gio_dich": 18
+   },
+   "Hien": {
+    "chi_so": 1.48,
+    "ma_vao_chuyen": 12,
+    "ma_dang_chay": 14,
+    "don_mau": 26,
+    "gio_dich": 110
+   },
+   "Nhu": {
+    "chi_so": 0.57,
+    "ma_vao_chuyen": 2,
+    "ma_dang_chay": 3,
+    "don_mau": 24,
+    "gio_dich": 20
+   }
+  },
+  "2027-01": {
+   "Cuong": {
+    "chi_so": 1.31,
+    "ma_vao_chuyen": 10,
+    "ma_dang_chay": 18,
+    "don_mau": 12,
+    "gio_dich": 91
+   },
+   "Luan": {
+    "chi_so": 1.26,
+    "ma_vao_chuyen": 7,
+    "ma_dang_chay": 23,
+    "don_mau": 34,
+    "gio_dich": 67
+   },
+   "Khanh": {
+    "chi_so": 0.8,
+    "ma_vao_chuyen": 0,
+    "ma_dang_chay": 4,
+    "don_mau": 2,
+    "gio_dich": 5
+   },
+   "B.Trang": {
+    "chi_so": 0.47,
+    "ma_vao_chuyen": 1,
+    "ma_dang_chay": 1,
+    "don_mau": 5,
+    "gio_dich": 11
+   },
+   "Q.Huy": {
+    "chi_so": 1.27,
+    "ma_vao_chuyen": 25,
+    "ma_dang_chay": 26,
+    "don_mau": 8,
+    "gio_dich": 87
+   },
+   "Hien": {
+    "chi_so": 0.96,
+    "ma_vao_chuyen": 11,
+    "ma_dang_chay": 14,
+    "don_mau": 14,
+    "gio_dich": 55
+   },
+   "Nhu": {
+    "chi_so": 1.16,
+    "ma_vao_chuyen": 11,
+    "ma_dang_chay": 14,
+    "don_mau": 21,
+    "gio_dich": 79
+   }
+  },
+  "2027-02": {
+   "Cuong": {
+    "chi_so": 1.3,
+    "ma_vao_chuyen": 9,
+    "ma_dang_chay": 13,
+    "don_mau": 15,
+    "gio_dich": 97
+   },
+   "Luan": {
+    "chi_so": 0.46,
+    "ma_vao_chuyen": 1,
+    "ma_dang_chay": 12,
+    "don_mau": 13,
+    "gio_dich": 21
+   },
+   "Khanh": {
+    "chi_so": 0.64,
+    "ma_vao_chuyen": 1,
+    "ma_dang_chay": 1,
+    "don_mau": 11,
+    "gio_dich": 26
+   },
+   "B.Trang": {
+    "chi_so": 0.11,
+    "ma_vao_chuyen": 0,
+    "ma_dang_chay": 0,
+    "don_mau": 5,
+    "gio_dich": 12
+   },
+   "Q.Huy": {
+    "chi_so": 0.48,
+    "ma_vao_chuyen": 2,
+    "ma_dang_chay": 6,
+    "don_mau": 15,
+    "gio_dich": 23
+   },
+   "Hien": {
+    "chi_so": 0.68,
+    "ma_vao_chuyen": 8,
+    "ma_dang_chay": 13,
+    "don_mau": 4,
+    "gio_dich": 37
+   },
+   "Nhu": {
+    "chi_so": 0.8,
+    "ma_vao_chuyen": 7,
+    "ma_dang_chay": 14,
+    "don_mau": 4,
+    "gio_dich": 35
+   }
+  }
+ }
+}
