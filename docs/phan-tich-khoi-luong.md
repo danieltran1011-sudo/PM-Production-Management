@@ -131,6 +131,8 @@ Nhận xét về mẫu 27FW:
 - **Khanh**: nhận NEUTRALWORKS, **1/3 mẫu TNF của B.Trang từ mẫu 1st 28SS**, và **một phần việc của Luan**.
 - **Mẫu triển lãm 27FW** đã vào giai đoạn may, chỉ còn theo dõi tiến độ và dịch góp ý gửi khách: **người đang làm làm tiếp đến hết**, không chia lại.
 - **Luan**: nhận một phần việc quản lý; giảm bớt việc bằng cách chuyển một phần cho Khanh. Một brand khó tách cho hai người, nên tách theo chức năng (Luan giữ brand).
+- **Hỗ trợ tạm theo tháng** (Huy, Nhu hỗ trợ Cuong tháng 12; B.Trang hỗ trợ Huy tháng 1): **chưa cần**, theo dõi thêm.
+- **Snowpeak** (4 lô trên Plantable): Hien theo dõi.
 - **Tình hình hiện tại (28/10/2026)**: sản xuất 26FW đã xong trên 95% (còn vài mã), đang sản xuất 27SS. Phòng mẫu đang may mẫu triển lãm 27FW và **mẫu PPS 27SS** (mỗi mã có đơn sản xuất may 1 cái, tái PPS/tái mockup khoảng 5%). Sau triển lãm là mẫu phát triển, mẫu 1st 28SS, cũng khá nhiều.
 
 ## Tải theo tháng từ kế hoạch thật (11/2026 – 2/2027)
@@ -146,43 +148,42 @@ Tính lại: `python3 data/khoi-luong/ke-hoach-thang.py` → `data/khoi-luong/ke
 - Hệ số độ khó ALLTERRAIN/DESCENTE (DCC) × 1,3. Công suất 9 giờ/ngày, Khanh 8 giờ. Cuong, Luan mỗi người ~1 giờ/ngày cho việc giao thêm.
 - **Mốc 1,0 = khối lượng trung bình của 1 người trong 1 tháng của cả giai đoạn 11/2026 – 2/2027**, dùng chung cho mọi tháng, nên so được tháng bận với tháng rảnh.
 
-**Số liệu chính theo tháng** (phương án A: NW → Khanh; TNF 東京企画 → Khanh từ 12/2026; từ 11/2026 thì 5 mã vào chuyền và các lô TNF 東京企画 của tháng 11 chuyển từ Cuong sang Khanh):
+**Số liệu chính theo tháng** (chia theo người phụ trách trước khi chuyển TNF 東京企画; từ 11/2026 các lô TNF 東京企画 tính cho Khanh):
 
 | Tháng | Mã vào chuyền | Đơn mẫu (tồn + ước) | Ghi chú |
 |---|---|---|---|
-| 11/2026 | Luan 9, Huy 8, Hien 8, Cuong 5, Nhu 3 | B.Trang 121, Cuong 100, Huy 65, Hien 41, Nhu 35 | **Cao điểm mẫu**: mẫu triển lãm 27FW + PPS 27SS + đơn tồn. Phòng mẫu SW1 tháng 10 đã vượt công suất (404 thực tế + 476 dự kiến so với 236/tháng) |
-| 12/2026 | **Cuong 21** (HELLY HANSEN 27SS), Hien 12, Luan 10, B.Trang 5, Khanh 3 | B.Trang 27, Hien 26, Huy 25, Nhu 24 | **Cao điểm vào chuyền của Cuong** |
+| 11/2026 | Luan 9, Hien 9, Huy 8, Cuong 5, Nhu 3 | B.Trang 121, Cuong 100, Huy 65, Hien 41, Nhu 35 | **Cao điểm mẫu**: mẫu triển lãm 27FW + PPS 27SS + đơn tồn. Phòng mẫu SW1 tháng 10 đã vượt công suất (404 thực tế + 476 dự kiến so với 236/tháng) |
+| 12/2026 | **Cuong 21** (HELLY HANSEN 27SS), Hien 14, Luan 10, B.Trang 5, Khanh 3 | B.Trang 27, Hien 26, Huy 25, Nhu 24 | **Cao điểm vào chuyền của Cuong** |
 | 1/2027 | **Huy 25** (TNF 別注 HOSOYA), Nhu 11, Hien 11, Cuong 10, Luan 7 | Luan 34 (PPS), Nhu 21, Hien 14 | Cao điểm vào chuyền của Huy |
 | 2/2027 | Cuong 9, Hien 8, Nhu 7 | Cuong 15, Huy 15, Luan 13 | Tết: ít việc |
 
 Luan đang có **27–29 mã chạy chuyền cùng lúc** trong 11–12/2026 (TNF 富山企画, 67 lô), nhiều nhất nhóm.
 
-**Chỉ số tải theo tháng**
+**Chỉ số tải theo tháng** (ô in đậm: ≥ 1,4)
 
 | Phương án | Tháng | Cuong | Luan | Khanh | B.Trang | Huy | Hien | Nhu |
 |---|---|---|---|---|---|---|---|---|
-| A. Phương án cũ (TNF 東京企画 → Khanh từ 12/2026) | 11/2026 | **1,88** | **1,71** | 0,15 | 1,41 | **1,64** | 1,47 | 1,04 |
-| | 12/2026 | **2,18** | **1,92** | 0,75 | 0,88 | 0,44 | 1,48 | 0,35 |
-| | 1/2027 | 1,31 | **1,94** | 0,11 | 0,15 | **1,59** | 0,96 | 1,16 |
-| | 2/2027 | 1,30 | 0,70 | 0,40 | 0,11 | 0,48 | 0,68 | 0,80 |
-| B. A + Khanh hỗ trợ Luan (~25% tháng 11–12, ~35% tháng 1–2) | 11/2026 | 1,88 | 1,28 | 0,58 | 1,41 | 1,64 | 1,47 | 1,04 |
-| | 12/2026 | 2,18 | 1,44 | 1,24 | 0,88 | 0,44 | 1,48 | 0,35 |
-| | 1/2027 | 1,31 | 1,26 | 0,80 | 0,15 | 1,59 | 0,96 | 1,16 |
-| **C. B + TNF 東京企画 → Khanh từ 11/2026 (đã quyết)** | 11/2026 | 1,70 | 1,28 | 0,77 | 1,41 | 1,64 | 1,47 | 1,04 |
-| **E. C + hỗ trợ tạm theo tháng** (12/2026: Huy hỗ trợ Cuong 25%, Nhu hỗ trợ Cuong 15%; 1/2027: B.Trang hỗ trợ Huy 20%) | 11/2026 | 1,70 | 1,28 | 0,77 | 1,41 | 1,64 | 1,47 | 1,04 |
-| | 12/2026 | **1,39** | 1,44 | 1,24 | 0,88 | 0,93 | 1,48 | 0,57 |
-| | 1/2027 | 1,31 | 1,26 | 0,80 | 0,47 | **1,27** | 0,96 | 1,16 |
-| | 2/2027 | 1,30 | 0,46 | 0,64 | 0,11 | 0,48 | 0,68 | 0,80 |
+| **Đã quyết** (NW và TNF 東京企画 → Khanh từ 11/2026; Khanh hỗ trợ Luan ~25% tháng 11–12, ~35% tháng 1–2; 1/3 mẫu TNF → Khanh từ 12/2026) | 11/2026 | **1,69** | 1,27 | 0,76 | **1,41** | **1,63** | **1,51** | 1,04 |
+|  | 12/2026 | **2,16** | **1,43** | 1,23 | 0,88 | 0,44 | **1,61** | 0,35 |
+|  | 01/2027 | 1,30 | 1,25 | 0,80 | 0,15 | **1,57** | 0,97 | 1,15 |
+|  | 02/2027 | 1,29 | 0,45 | 0,64 | 0,11 | 0,47 | 0,68 | 0,79 |
+| Để so sánh: chưa chia việc của Luan, TNF 東京企画 → Khanh từ 12/2026 | 11/2026 | **1,88** | **1,69** | 0,15 | **1,41** | **1,63** | **1,51** | 1,04 |
+|  | 12/2026 | **2,16** | **1,90** | 0,75 | 0,88 | 0,44 | **1,61** | 0,35 |
+|  | 01/2027 | 1,30 | **1,93** | 0,11 | 0,15 | **1,57** | 0,97 | 1,15 |
+|  | 02/2027 | 1,29 | 0,70 | 0,39 | 0,11 | 0,47 | 0,68 | 0,79 |
+| Tham khảo, **chưa áp dụng**: hỗ trợ tạm (12/2026 Huy 25% + Nhu 15% hỗ trợ Cuong; 1/2027 B.Trang hỗ trợ Huy 20%) | 12/2026 | 1,38 | **1,43** | 1,23 | 0,88 | 0,93 | **1,61** | 0,56 |
+|  | 01/2027 | 1,30 | 1,25 | 0,80 | 0,47 | 1,26 | 0,97 | 1,15 |
 
 Nhu: chỉ số chỉ tính phần brand; Nhu còn ~30% thời gian cho việc văn phòng, nên chỉ số thực ≈ chỉ số ÷ 0,7.
 
-Nhận xét:
-1. **Tháng 11/2026 là cao điểm của cả nhóm** (mẫu triển lãm 27FW, PPS 27SS, đơn mẫu tồn). Gần như ai cũng trên 1,4 trừ Khanh và Nhu; phòng mẫu cũng đang vượt công suất. Chia lại việc không đủ; cần **ưu tiên đơn mẫu theo hạn** và tăng ca.
-2. **Mỗi người cao điểm vào tháng khác nhau**: Cuong tháng 12 (21 mã HELLY HANSEN vào chuyền), Huy tháng 1 (25 mã TNF 別注 HOSOYA), Luan từ 11 đến 1 (27–29 mã chạy cùng lúc). Vì vậy **hỗ trợ tạm theo tháng** hiệu quả hơn chuyển hẳn brand: tháng 12 Huy và Nhu đang rảnh thì hỗ trợ Cuong; tháng 1 B.Trang rảnh thì hỗ trợ Huy.
-3. **Luan là người tải nặng kéo dài nhất** (1,7–1,9 từ 11 đến 1). Khanh hỗ trợ ~25–35% đưa Luan về ~1,3–1,4. Nên giữ phần hỗ trợ này suốt mùa đại trà 27SS.
-4. **Đã quyết: chuyển TNF 東京企画 cho Khanh từ tháng 11** (phương án C): Cuong tháng 11 giảm 1,88 → 1,70, Khanh vẫn dưới 0,8. Đợi đến tháng 12 thì Khanh nhận brand đúng lúc Cuong và Luan cao điểm.
-5. **Khanh tháng 12 lên 1,24** (TNF 東京企画 + 1/3 mẫu TNF + hỗ trợ Luan). Ở mức tăng ca đến 17h; nên giữ hỗ trợ Luan 25% (chưa tăng lên 35%) trong tháng 12.
-6. **B.Trang và Huy rảnh vào tháng 12–2** theo số liệu, nhưng có thể do thiếu dữ liệu: mẫu 1st 28SS TNF chưa có trong file (ước theo năm trước, khi Khanh nghỉ nên số thấp), và các brand mới của B.Trang (FOXFIRE, TATRAS, Kasco, YONEX) gần như chưa có trong Plantable.
+Nhận xét (theo các quyết định đã chốt):
+1. **Tháng 11/2026 là cao điểm của cả nhóm** (mẫu triển lãm 27FW, PPS 27SS, đơn mẫu tồn): Cuong 1,69, Huy 1,63, Hien 1,51, B.Trang 1,41. Phòng mẫu cũng đang vượt công suất. Chia lại việc không đủ; cần **ưu tiên đơn mẫu theo hạn** và tăng ca.
+2. **Cuong cao điểm tháng 12 (2,16)**: 21 mã HELLY HANSEN vào chuyền. Quản lý quyết **chưa cần hỗ trợ tạm**; nếu tháng 12 Cuong quá tải thì phương án tham khảo là Huy (0,44) và Nhu (0,35) hỗ trợ hậu cần các lô HELLY HANSEN (Cuong còn ~1,38).
+3. **Hien tháng 11–12 cũng cao (1,51–1,61)**: 14 mã vào chuyền tháng 12 (gồm Snowpeak, ALLTERRAIN/DESCENTE khó ×1,3) cùng mẫu triển lãm SKI. Không giao thêm việc cho Hien như đã quyết.
+4. **Huy cao điểm tháng 1 (1,57)**: 25 mã TNF 別注 HOSOYA vào chuyền; chưa cần hỗ trợ, theo dõi thêm.
+5. **Luan về ~1,25–1,43** nhờ Khanh hỗ trợ; vẫn là người có nhiều mã chạy chuyền nhất (27–29 mã cùng lúc). Nên giữ phần hỗ trợ suốt mùa đại trà 27SS.
+6. **Khanh tháng 12 lên 1,23** (TNF 東京企画, NEUTRALWORKS, 1/3 mẫu TNF, hỗ trợ Luan). Ở mức tăng ca đến 17h; nên giữ hỗ trợ Luan khoảng 25% trong tháng 12.
+7. **B.Trang và Huy thấp vào tháng 12–2** theo số liệu, nhưng có thể do thiếu dữ liệu (mẫu 1st 28SS chưa có kế hoạch, các brand mới của B.Trang gần như chưa có trong Plantable).
 
 **Số đơn hàng (案件) S27 mỗi MD phụ trách** (sổ theo dõi đơn S27): Huy 12 đơn (46 mã, ~30.000 cái), Nhu 10 đơn (34 mã, ~26.500 cái), Cuong 7,5 (71 mã, ~149.000 cái), Hien 2 (39 mã), Luan 1,5 (26 mã, ~121.000 cái). **Huy và Nhu làm nhiều đơn 別注 nhỏ**: mỗi đơn đều phải làm bảng cấu tạo, chi tiết đặt hàng, kế hoạch MD, kiểm công suất, kế hoạch sản xuất, nên khối lượng thực tế cao hơn số cái cho thấy.
 
@@ -212,7 +213,7 @@ Quy tắc phối hợp (theo sổ tay MD, chương 7): mọi việc Khanh làm c
 | B.Trang | TNF (ALL) mẫu (làm tiếp mẫu triển lãm 27FW; từ 1st 28SS chia 1/3 cho Khanh), Premium Snow 別注, FOXFIRE, TATRAS, Kasco, YONEX |
 | Nhu | Giữ nguyên (TNF 別注 SHIGEMOTO/NAKAO, UTMF, TOKYO MARATHON) + việc văn phòng |
 
-**Hỗ trợ tạm theo tháng** (đề xuất, không chuyển brand): 12/2026 Huy hỗ trợ Cuong ~25% và Nhu ~15% (hậu cần các lô HELLY HANSEN vào chuyền: NPL, BL/P/L, dịch tài liệu); 1/2027 B.Trang hỗ trợ Huy ~20% (các đơn TNF 別注 HOSOYA vào chuyền).
+**Hỗ trợ tạm theo tháng**: quản lý quyết **chưa cần** (28/10/2026). Phương án dự phòng nếu quá tải: 12/2026 Huy, Nhu hỗ trợ Cuong (hậu cần các lô HELLY HANSEN vào chuyền); 1/2027 B.Trang hỗ trợ Huy (các đơn TNF 別注 HOSOYA).
 
 Lưu ý: các việc liên quan khai trị giá hải quan (ra rập, nhảy size, tài liệu may, phát triển SP) thay đổi người làm thì phải báo TI. Các việc trong bảng trên không thuộc nhóm này.
 
@@ -223,7 +224,7 @@ Lưu ý: các việc liên quan khai trị giá hải quan (ra rập, nhảy siz
 - **Mẫu 27SS chưa có giây TB** cho nhiều brand, nên ngày may đang bằng số cái. Phân tích tạm lấy giây TB của brand mùa 26SS để ước (vd. HH 11.036 giây → 4 ngày/cái).
 - **TNF別注 富山 (Nhu) và TNF別注 東京 (Q.Huy)**: ở các mùa 25FW, 26SS, số mẫu của hai bạn giống hệt nhau (vd. 146 cái/63 mã), có thể bị nhập trùng.
 - **H.Trang bulk 26SS**: 384 cái, 1 mã nhưng 768 ngày chuyền (ghi chú "SPL Line"), số này chưa hợp lý. H.Trang thuộc nhóm CAD nên không tính vào phân tích MD.
-- **Plantable**: 4 lô Snowpeak (TI: NSK) chưa rõ MD phụ trách, chưa tính. Sheet S27本発注 là bảng mô phỏng xếp đơn (ngày kéo đến 2034), không dùng làm lịch.
+- **Plantable**: 4 lô Snowpeak (TI: NSK) do Hien theo dõi (quản lý xác nhận), đã tính cho Hien. Sheet S27本発注 là bảng mô phỏng xếp đơn (ngày kéo đến 2034), không dùng làm lịch.
 - **Mẫu 12/2026 – 2/2027** ước theo cùng kỳ năm trước; khi có kế hoạch mẫu 1st 28SS thật thì thay vào.
 - **Giờ dịch/mã** trong bảng là ước tính chung theo brand. Giả định mỗi mã ở mỗi đợt (bulk, 1st–3rd, SMS) dịch một bộ tài liệu.
 
@@ -237,7 +238,5 @@ Sổ tay MD muốn MD chuyển từ "theo đuôi đơn hàng" sang "kiểm soát
 
 ## Câu hỏi mở
 
-- Có áp dụng hỗ trợ tạm theo tháng (12/2026: Huy, Nhu hỗ trợ Cuong; 1/2027: B.Trang hỗ trợ Huy) không?
-- 4 lô Snowpeak (TI: NSK) trên Plantable do ai theo dõi?
 - Kế hoạch mẫu 1st 28SS (số mã theo brand) khi có, để thay số ước.
 - Việc điều phối của Cuong và việc quản lý giao cho Luan chiếm bao nhiêu giờ/ngày? (đang tạm tính ~1 giờ/ngày mỗi người)
