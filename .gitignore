@@ -1,2 +1,5 @@
 node_modules/
 .DS_Store
+__pycache__/
+# File kết quả chứa dữ liệu nội bộ – không đưa lên repo công khai
+nghiep-vu/*.xlsx

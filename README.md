@@ -18,6 +18,9 @@ Số ngày chuẩn lấy từ file rà soát 20260722, cập nhật theo cuộc 
 | `workflow/schedule.test.js` | Test đối chiếu với file Excel rà soát và các quy tắc đã xác nhận trong họp. |
 | `docs/quy-trinh-lead-time.md` | Tài liệu quy trình, bảng thời gian chuẩn, bảng so sánh, việc cần làm sau họp, các điểm còn mở. |
 | `data/nguon/` | Hai file Excel gốc. |
+| `nghiep-vu/Kiem-ke-nghiep-vu-Chanh-2026.xlsx` (không có trên repo, tạo bằng script) | 業務棚卸 của Chanh: danh sách nghiệp vụ theo 業務分析表 2026年度上期 + mục mới No.103+, phân tích tải, phạm vi theo chức vụ, đề xuất giao việc (dự thảo), tư vấn. |
+| `nghiep-vu/build_inventory.py` | Script tạo file trên từ file nguồn (`items.py`: định nghĩa mục và đề xuất; `name_map.py`: gán tên trong log → mục). |
+| `docs/kiem-ke-nghiep-vu-chanh.md` | Tóm tắt kết quả kiểm kê, tải và đề xuất. |
 
 ## Sử dụng
 
