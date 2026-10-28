@@ -132,7 +132,7 @@ Nhận xét về mẫu 27FW:
 - **Mẫu triển lãm 27FW** đã vào giai đoạn may, chỉ còn theo dõi tiến độ và dịch góp ý gửi khách: **người đang làm làm tiếp đến hết**, không chia lại.
 - **Luan**: nhận một phần việc quản lý; giảm bớt việc bằng cách chuyển một phần cho Khanh. Một brand khó tách cho hai người, nên tách theo chức năng (Luan giữ brand).
 - **Hỗ trợ tạm theo tháng** (Huy, Nhu hỗ trợ Cuong tháng 12; B.Trang hỗ trợ Huy tháng 1): **chưa cần**, theo dõi thêm.
-- **Snowpeak** (4 lô trên Plantable): Hien theo dõi.
+- **Snowpeak**: Hien theo dõi. 4 lô Snowpeak trên Plantable là dòng cũ (xem mục Dữ liệu cần xác nhận), đã loại khỏi phần tính.
 - **Tình hình hiện tại (28/10/2026)**: sản xuất 26FW đã xong trên 95% (còn vài mã), đang sản xuất 27SS. Phòng mẫu đang may mẫu triển lãm 27FW và **mẫu PPS 27SS** (mỗi mã có đơn sản xuất may 1 cái, tái PPS/tái mockup khoảng 5%). Sau triển lãm là mẫu phát triển, mẫu 1st 28SS, cũng khá nhiều.
 
 ## Tải theo tháng từ kế hoạch thật (11/2026 – 2/2027)
@@ -152,8 +152,8 @@ Tính lại: `python3 data/khoi-luong/ke-hoach-thang.py` → `data/khoi-luong/ke
 
 | Tháng | Mã vào chuyền | Đơn mẫu (tồn + ước) | Ghi chú |
 |---|---|---|---|
-| 11/2026 | Luan 9, Hien 9, Huy 8, Cuong 5, Nhu 3 | B.Trang 121, Cuong 100, Huy 65, Hien 41, Nhu 35 | **Cao điểm mẫu**: mẫu triển lãm 27FW + PPS 27SS + đơn tồn. Phòng mẫu SW1 tháng 10 đã vượt công suất (404 thực tế + 476 dự kiến so với 236/tháng) |
-| 12/2026 | **Cuong 21** (HELLY HANSEN 27SS), Hien 14, Luan 10, B.Trang 5, Khanh 3 | B.Trang 27, Hien 26, Huy 25, Nhu 24 | **Cao điểm vào chuyền của Cuong** |
+| 11/2026 | Luan 9, Huy 8, Hien 8, Cuong 5, Nhu 3 | B.Trang 121, Cuong 100, Huy 65, Hien 41, Nhu 35 | **Cao điểm mẫu**: mẫu triển lãm 27FW + PPS 27SS + đơn tồn. Phòng mẫu SW1 tháng 10 đã vượt công suất (404 thực tế + 476 dự kiến so với 236/tháng) |
+| 12/2026 | **Cuong 21** (HELLY HANSEN 27SS), Hien 12, Luan 10, B.Trang 5, Khanh 3 | B.Trang 27, Hien 26, Huy 25, Nhu 24 | **Cao điểm vào chuyền của Cuong** |
 | 1/2027 | **Huy 25** (TNF 別注 HOSOYA), Nhu 11, Hien 11, Cuong 10, Luan 7 | Luan 34 (PPS), Nhu 21, Hien 14 | Cao điểm vào chuyền của Huy |
 | 2/2027 | Cuong 9, Hien 8, Nhu 7 | Cuong 15, Huy 15, Luan 13 | Tết: ít việc |
 
@@ -163,26 +163,26 @@ Luan đang có **27–29 mã chạy chuyền cùng lúc** trong 11–12/2026 (TN
 
 | Phương án | Tháng | Cuong | Luan | Khanh | B.Trang | Huy | Hien | Nhu |
 |---|---|---|---|---|---|---|---|---|
-| **Đã quyết** (NW và TNF 東京企画 → Khanh từ 11/2026; Khanh hỗ trợ Luan ~25% tháng 11–12, ~35% tháng 1–2; 1/3 mẫu TNF → Khanh từ 12/2026) | 11/2026 | **1,69** | 1,27 | 0,76 | **1,41** | **1,63** | **1,51** | 1,04 |
-|  | 12/2026 | **2,16** | **1,43** | 1,23 | 0,88 | 0,44 | **1,61** | 0,35 |
-|  | 01/2027 | 1,30 | 1,25 | 0,80 | 0,15 | **1,57** | 0,97 | 1,15 |
-|  | 02/2027 | 1,29 | 0,45 | 0,64 | 0,11 | 0,47 | 0,68 | 0,79 |
-| Để so sánh: chưa chia việc của Luan, TNF 東京企画 → Khanh từ 12/2026 | 11/2026 | **1,88** | **1,69** | 0,15 | **1,41** | **1,63** | **1,51** | 1,04 |
-|  | 12/2026 | **2,16** | **1,90** | 0,75 | 0,88 | 0,44 | **1,61** | 0,35 |
-|  | 01/2027 | 1,30 | **1,93** | 0,11 | 0,15 | **1,57** | 0,97 | 1,15 |
-|  | 02/2027 | 1,29 | 0,70 | 0,39 | 0,11 | 0,47 | 0,68 | 0,79 |
-| Tham khảo, **chưa áp dụng**: hỗ trợ tạm (12/2026 Huy 25% + Nhu 15% hỗ trợ Cuong; 1/2027 B.Trang hỗ trợ Huy 20%) | 12/2026 | 1,38 | **1,43** | 1,23 | 0,88 | 0,93 | **1,61** | 0,56 |
-|  | 01/2027 | 1,30 | 1,25 | 0,80 | 0,47 | 1,26 | 0,97 | 1,15 |
+| **Đã quyết** (NW và TNF 東京企画 → Khanh từ 11/2026; Khanh hỗ trợ Luan ~25% tháng 11–12, ~35% tháng 1–2; 1/3 mẫu TNF → Khanh từ 12/2026) | 11/2026 | **1,71** | 1,30 | 0,78 | **1,42** | **1,65** | **1,48** | 1,05 |
+|  | 12/2026 | **2,21** | **1,46** | 1,25 | 0,89 | 0,45 | **1,50** | 0,35 |
+|  | 01/2027 | 1,32 | 1,27 | 0,81 | 0,15 | **1,61** | 0,89 | 1,17 |
+|  | 02/2027 | 1,31 | 0,46 | 0,65 | 0,11 | 0,48 | 0,54 | 0,81 |
+| Để so sánh: chưa chia việc của Luan, TNF 東京企画 → Khanh từ 12/2026 | 11/2026 | **1,89** | **1,73** | 0,15 | **1,42** | **1,65** | **1,48** | 1,05 |
+|  | 12/2026 | **2,21** | **1,94** | 0,76 | 0,89 | 0,45 | **1,50** | 0,35 |
+|  | 01/2027 | 1,32 | **1,96** | 0,12 | 0,15 | **1,61** | 0,89 | 1,17 |
+|  | 02/2027 | 1,31 | 0,71 | 0,40 | 0,11 | 0,48 | 0,54 | 0,81 |
+| Tham khảo, **chưa áp dụng**: hỗ trợ tạm (12/2026 Huy 25% + Nhu 15% hỗ trợ Cuong; 1/2027 B.Trang hỗ trợ Huy 20%) | 12/2026 | **1,41** | **1,46** | 1,25 | 0,89 | 0,94 | **1,50** | 0,57 |
+|  | 01/2027 | 1,32 | 1,27 | 0,81 | 0,48 | 1,29 | 0,89 | 1,17 |
 
 Nhu: chỉ số chỉ tính phần brand; Nhu còn ~30% thời gian cho việc văn phòng, nên chỉ số thực ≈ chỉ số ÷ 0,7.
 
 Nhận xét (theo các quyết định đã chốt):
-1. **Tháng 11/2026 là cao điểm của cả nhóm** (mẫu triển lãm 27FW, PPS 27SS, đơn mẫu tồn): Cuong 1,69, Huy 1,63, Hien 1,51, B.Trang 1,41. Phòng mẫu cũng đang vượt công suất. Chia lại việc không đủ; cần **ưu tiên đơn mẫu theo hạn** và tăng ca.
-2. **Cuong cao điểm tháng 12 (2,16)**: 21 mã HELLY HANSEN vào chuyền. Quản lý quyết **chưa cần hỗ trợ tạm**; nếu tháng 12 Cuong quá tải thì phương án tham khảo là Huy (0,44) và Nhu (0,35) hỗ trợ hậu cần các lô HELLY HANSEN (Cuong còn ~1,38).
-3. **Hien tháng 11–12 cũng cao (1,51–1,61)**: 14 mã vào chuyền tháng 12 (gồm Snowpeak, ALLTERRAIN/DESCENTE khó ×1,3) cùng mẫu triển lãm SKI. Không giao thêm việc cho Hien như đã quyết.
-4. **Huy cao điểm tháng 1 (1,57)**: 25 mã TNF 別注 HOSOYA vào chuyền; chưa cần hỗ trợ, theo dõi thêm.
-5. **Luan về ~1,25–1,43** nhờ Khanh hỗ trợ; vẫn là người có nhiều mã chạy chuyền nhất (27–29 mã cùng lúc). Nên giữ phần hỗ trợ suốt mùa đại trà 27SS.
-6. **Khanh tháng 12 lên 1,23** (TNF 東京企画, NEUTRALWORKS, 1/3 mẫu TNF, hỗ trợ Luan). Ở mức tăng ca đến 17h; nên giữ hỗ trợ Luan khoảng 25% trong tháng 12.
+1. **Tháng 11/2026 là cao điểm của cả nhóm** (mẫu triển lãm 27FW, PPS 27SS, đơn mẫu tồn): Cuong 1,71, Huy 1,65, Hien 1,48, B.Trang 1,42. Phòng mẫu cũng đang vượt công suất. Chia lại việc không đủ; cần **ưu tiên đơn mẫu theo hạn** và tăng ca.
+2. **Cuong cao điểm tháng 12 (2,21)**: 21 mã HELLY HANSEN vào chuyền. Quản lý quyết **chưa cần hỗ trợ tạm**; nếu tháng 12 Cuong quá tải thì phương án dự phòng là Huy (0,45) và Nhu (0,35) hỗ trợ hậu cần các lô HELLY HANSEN (Cuong còn ~1,41).
+3. **Hien tháng 11–12 khá cao (1,48–1,50)**: 12 mã vào chuyền tháng 12 (ALLTERRAIN/DESCENTE khó ×1,3) cùng mẫu triển lãm SKI. Không giao thêm việc cho Hien như đã quyết.
+4. **Huy cao điểm tháng 1 (1,61)**: 25 mã TNF 別注 HOSOYA vào chuyền; chưa cần hỗ trợ, theo dõi thêm.
+5. **Luan về ~1,27–1,46** nhờ Khanh hỗ trợ; vẫn là người có nhiều mã chạy chuyền nhất (27–29 mã cùng lúc). Nên giữ phần hỗ trợ suốt mùa đại trà 27SS.
+6. **Khanh tháng 12 lên 1,25** (TNF 東京企画, NEUTRALWORKS, 1/3 mẫu TNF, hỗ trợ Luan). Ở mức tăng ca đến 17h; nên giữ hỗ trợ Luan khoảng 25% trong tháng 12.
 7. **B.Trang và Huy thấp vào tháng 12–2** theo số liệu, nhưng có thể do thiếu dữ liệu (mẫu 1st 28SS chưa có kế hoạch, các brand mới của B.Trang gần như chưa có trong Plantable).
 
 **Số đơn hàng (案件) S27 mỗi MD phụ trách** (sổ theo dõi đơn S27): Huy 12 đơn (46 mã, ~30.000 cái), Nhu 10 đơn (34 mã, ~26.500 cái), Cuong 7,5 (71 mã, ~149.000 cái), Hien 2 (39 mã), Luan 1,5 (26 mã, ~121.000 cái). **Huy và Nhu làm nhiều đơn 別注 nhỏ**: mỗi đơn đều phải làm bảng cấu tạo, chi tiết đặt hàng, kế hoạch MD, kiểm công suất, kế hoạch sản xuất, nên khối lượng thực tế cao hơn số cái cho thấy.
@@ -224,7 +224,7 @@ Lưu ý: các việc liên quan khai trị giá hải quan (ra rập, nhảy siz
 - **Mẫu 27SS chưa có giây TB** cho nhiều brand, nên ngày may đang bằng số cái. Phân tích tạm lấy giây TB của brand mùa 26SS để ước (vd. HH 11.036 giây → 4 ngày/cái).
 - **TNF別注 富山 (Nhu) và TNF別注 東京 (Q.Huy)**: ở các mùa 25FW, 26SS, số mẫu của hai bạn giống hệt nhau (vd. 146 cái/63 mã), có thể bị nhập trùng.
 - **H.Trang bulk 26SS**: 384 cái, 1 mã nhưng 768 ngày chuyền (ghi chú "SPL Line"), số này chưa hợp lý. H.Trang thuộc nhóm CAD nên không tính vào phân tích MD.
-- **Plantable**: 4 lô Snowpeak (TI: NSK) do Hien theo dõi (quản lý xác nhận), đã tính cho Hien. Sheet S27本発注 là bảng mô phỏng xếp đơn (ngày kéo đến 2034), không dùng làm lịch.
+- **Plantable có dòng cũ bị đẩy ngày**: sheet PLANTABLE 2026, chuyền AP1B-9 phần B, dòng 1976–1983: 4 lô Snowpeak mùa 23SS (PA-23SU003 ×2, SW-23SU003, SW-23SU004) và 4 lô Montbell mùa 23SS/23FW (đơn năm 2022–2023, ghi chú "7末PO発行予定"). Ô START dòng 1976 bị gõ cứng 28/11/2026, các dòng sau nối tiếp bằng công thức (=AI dòng trên), nên ngày bị đẩy sang 28/11/2026 – 18/4/2027. Đã loại 8 dòng này khỏi phần tính; nên xóa hoặc sửa trong Plantable để không chiếm chỗ chuyền 9B. Sheet S27本発注 là bảng mô phỏng xếp đơn (ngày kéo đến 2034), không dùng làm lịch.
 - **Mẫu 12/2026 – 2/2027** ước theo cùng kỳ năm trước; khi có kế hoạch mẫu 1st 28SS thật thì thay vào.
 - **Giờ dịch/mã** trong bảng là ước tính chung theo brand. Giả định mỗi mã ở mỗi đợt (bulk, 1st–3rd, SMS) dịch một bộ tài liệu.
 

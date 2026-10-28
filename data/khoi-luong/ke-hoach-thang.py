@@ -48,7 +48,7 @@ def tai(nw_cho_khanh=True, tnf_tokyo_cho_khanh_tu='2026-11', khanh_mau_tnf=1/3, 
         if x['start'] < THANG[0] + '-01': dau_tien.setdefault((x['ma'], x['nguoi']), None)   # mã đã vào chuyền trước 11/2026
     for x in pt:
         b = nhom_brand(x['brand']); p = x['nguoi']
-        if p == '?' and b in ('DCC', 'SNOWPEAK'): p = 'Hien'   # Snowpeak: quản lý xác nhận Hien theo dõi
+        if p == '?' and b in ('DCC', 'SNOWPEAK'): p = 'Hien'   # Snowpeak: Hien theo dõi (các dòng Snowpeak 23SS cũ đã loại khỏi dữ liệu)
         if nw_cho_khanh and b == 'NW' and p == 'Cuong': p = 'Khanh'
         s, e = dt.date.fromisoformat(x['start']), dt.date.fromisoformat(x['end'])
         for m in THANG:

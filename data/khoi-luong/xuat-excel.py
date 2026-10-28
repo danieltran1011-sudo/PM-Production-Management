@@ -39,7 +39,7 @@ rows = [
  ('Khanh', 'NEUTRALWORKS; TNF 東京企画 (nhận từ Cuong từ 11/2026); hỗ trợ TNF 富山企画 (~25%): báo cáo mã ngoài quy tắc 2 tuần, tiến độ NPL, BL/P/L (cc Luan), dịch một phần tài liệu', 'NEUTRALWORKS; TNF 東京企画 (PPS~đại trà); 1/3 mẫu TNF cùng B.Trang; hỗ trợ TNF 富山企画 (~1/3 việc Luan)', 'Làm đến 16h, có thể tăng ca đến 17h. Tháng 12 giữ hỗ trợ Luan ~25%'),
  ('Bich Trang', 'TNF (ALL) mẫu (làm tiếp mẫu triển lãm 27FW); Premium Snow 別注, FOXFIRE, TATRAS, Kasco, YONEX', 'Như trên, chia 1/3 mẫu TNF cho Khanh', 'Gánh đợt mẫu triển lãm 27FW lớn nhất nhóm (611 cái, gồm YONEX 244)'),
  ('Huy', 'Goldwin (xuyên suốt mẫu và đại trà), TNF 別注 HOSOYA, 141 (hỗ trợ), CANTERBURY, NANGA', 'Giữ nguyên', 'Cao điểm 1/2027 (25 mã 別注 vào chuyền). Hỗ trợ tạm: chưa cần, theo dõi'),
- ('Hien', 'Teton Bros, ALLTERRAIN, Mont-Bell, DESCENTE GOLF, Snowpeak (4 lô trên Plantable)', 'Giữ nguyên', 'Không giao thêm. Tháng 11–12 khá cao (mẫu SKI, 14 mã vào chuyền tháng 12)'),
+ ('Hien', 'Teton Bros, ALLTERRAIN, Mont-Bell, DESCENTE GOLF, Snowpeak', 'Giữ nguyên', 'Không giao thêm. Tháng 11–12 khá cao (mẫu SKI, 12 mã vào chuyền tháng 12)'),
  ('Nhu', 'TNF 別注 SHIGEMOTO/NAKAO, UTMF, TOKYO MARATHON; việc văn phòng, báo cáo tháng, hóa đơn', 'Giữ nguyên', 'Theo dõi thêm'),
 ]
 header(ws, 4, ['Người', '11–12/2026', 'Từ mẫu 1st 28SS (1–2/2027)', 'Ghi chú'])
