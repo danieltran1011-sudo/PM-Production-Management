@@ -105,7 +105,7 @@ Kết luận: **Hien và Cuong cao nhất, Nhu thấp nhất** dù đặt trọn
 - **Hien giữ nguyên** (Teton Bros, ALLTERRAIN, DESCENTE…), không giao thêm. Đơn của Hien chiếm khoảng 4/30 chuyền. Đơn ALLTERRAIN, DESCENTE phức tạp hơn (hệ số độ khó 1,3).
 - **Huy giữ nguyên**: Goldwin xuyên suốt cả mẫu và đại trà.
 - **Nhu giữ nguyên**, theo dõi thêm (ngoài brand còn việc văn phòng, báo cáo tháng, hóa đơn…).
-- **Cuong**: chuyển NEUTRALWORKS sang Khanh; giữ **HELLY HANSEN** (brand chủ lực) và TNF 東京企画. Cuong nhận thêm **điều phối chung**: theo dõi xuất hàng cho cả nhóm, quản lý chung việc may mẫu (đã có việc kiểm kế hoạch sản xuất mẫu của mọi brand).
+- **Cuong**: chuyển NEUTRALWORKS sang Khanh (ngay), **TNF 東京企画 sang Khanh từ GĐ2** (mẫu 1st 28SS); giữ **HELLY HANSEN** (brand chủ lực). Cuong nhận thêm **điều phối chung**: theo dõi xuất hàng cho cả nhóm, quản lý chung việc may mẫu (đã có việc kiểm kế hoạch sản xuất mẫu của mọi brand).
 - **Khanh**: nhận NEUTRALWORKS, **1/3 mẫu TNF của B.Trang từ mẫu 1st 28SS**, và **một phần việc của Luan**.
 - **Mẫu triển lãm 27FW** đã vào giai đoạn may, chỉ còn theo dõi tiến độ và dịch góp ý gửi khách: **người đang làm làm tiếp đến hết**, không chia lại.
 - **Luan**: nhận một phần việc quản lý; giảm bớt việc bằng cách chuyển một phần cho Khanh. Một brand khó tách cho hai người, nên tách theo chức năng (Luan giữ brand).
@@ -151,7 +151,7 @@ Tính lại: `python3 data/khoi-luong/du-bao.py` → `data/khoi-luong/du-bao.jso
 Nhận xét:
 1. **Khanh đang còn nhiều sức ở GĐ1** (không phải chia mẫu triển lãm), nên có thể **nhận ngay cả hậu cần lẫn hỗ trợ dịch** cho Luan: Luan 1,65 → 1,24, Khanh 0,57. Thời gian này cũng là lúc Khanh làm quen lại TNF 富山企画 trước cao điểm.
 2. **Luan nặng nhất ở GĐ2**, vì bulk 27SS (207.757 cái) vào chuyền đúng lúc này. Cần tăng phần Khanh hỗ trợ lên **khoảng 1/3 việc của Luan** thì Luan mới về ~1,2.
-3. **Cuong cao ở cả hai giai đoạn** (~1,4) do HELLY HANSEN và việc điều phối mới. Nếu muốn giảm, chuyển **TNF 東京企画 sang Khanh ở GĐ2**: Cuong → 1,24, Khanh → 1,08 (ở mức tăng ca đến 17h). Cân nhắc vì Khanh lúc đó vừa có mẫu TNF, vừa hỗ trợ Luan.
+3. **Cuong cao ở cả hai giai đoạn** (~1,4) do HELLY HANSEN và việc điều phối mới. **Đã quyết: TNF 東京企画 chuyển sang Khanh ở GĐ2**: Cuong → 1,24, Khanh → 1,08 (ở mức tăng ca đến 17h). Cần theo dõi Khanh vì lúc đó vừa có mẫu TNF, vừa hỗ trợ Luan, vừa nhận brand mới.
 4. **B.Trang cao ở GĐ1** (1,43) do còn mẫu triển lãm TNF, nhưng đợt này sắp xong (chỉ còn theo dõi, dịch góp ý), nên giữ như quyết định.
 5. **Huy 1,39 ở GĐ2** (mẫu 1st Goldwin, TNF別注 HOSOYA). Đã quyết giữ nguyên; cần theo dõi vì hơi vượt mức tăng ca 1 giờ/ngày.
 6. **Hien 1,13 ở GĐ2**: brand của Hien bận vào mùa SS, đúng như dự kiến; không giao thêm.
@@ -160,11 +160,13 @@ Nhận xét:
 
 | | Luan | Khanh |
 |---|---|---|
-| Brand phụ trách | **TNF 富山企画** (PPS~đại trà), đầu mối duy nhất với TIJ | **NEUTRALWORKS** (nhận từ Cuong); **1/3 mẫu TNF** cùng B.Trang từ 1st 28SS |
+| Brand phụ trách | **TNF 富山企画** (PPS~đại trà), đầu mối duy nhất với TIJ | **NEUTRALWORKS** (nhận từ Cuong, ngay); **TNF 東京企画** (nhận từ Cuong, từ GĐ2); **1/3 mẫu TNF** cùng B.Trang từ 1st 28SS |
 | TNF 富山企画 – Luan giữ | Kiểm tài liệu; kiểm rập/mẫu gốc; báo NPL thiếu cho TI; xử lý sự cố; làm việc với TIJ và nhà máy | – |
 | **GĐ1 (ngay bây giờ)** – Khanh hỗ trợ TNF 富山企画 (~25% việc Luan) | Duyệt kết quả, kiểm bản dịch | Báo cáo tháng mã ngoài quy tắc 2 tuần; tiến độ NPL, báo nhà máy; BL, P/L, số DHL (cc Luan); **dịch một phần tài liệu** |
 | **GĐ2 (1st 28SS, bulk 27SS chạy chuyền)** | Như trên | Tăng phần hỗ trợ lên ~1/3 việc Luan (thêm dịch tài liệu, theo dõi NPL cho các lô đang chạy) |
-| Việc khác | Một phần việc quản lý (~1 giờ/ngày) | Có thể nhận TNF 東京企画 từ Cuong ở GĐ2 nếu Cuong quá tải |
+| Việc khác | Một phần việc quản lý (~1 giờ/ngày) | – |
+
+**Bàn giao TNF 東京企画 (Cuong → Khanh)**: trong GĐ1 Khanh theo cùng Cuong các lô bulk 27SS đang chạy (7 mã) để nắm tài liệu, NPL, liên lạc TIJ; từ GĐ2 Khanh làm đầu mối, Cuong hỗ trợ khi cần. Báo TIJ và nhà máy người phụ trách mới trước khi chuyển.
 
 Quy tắc phối hợp (theo sổ tay MD, chương 7): mọi việc Khanh làm cho TNF 富山企画 đều ghi rõ nội dung, hạn, người phụ trách, ngày theo dõi tiếp; liên lạc với nhà máy luôn cc Luan; liên lạc với TIJ chỉ qua Luan.
 
@@ -172,9 +174,9 @@ Quy tắc phối hợp (theo sổ tay MD, chương 7): mọi việc Khanh làm c
 
 | Người | Brand / việc |
 |---|---|
-| Cuong | HELLY HANSEN (chủ lực), TNF 東京企画; điều phối xuất hàng chung cả nhóm; quản lý chung may mẫu (kiểm kế hoạch sản xuất mẫu mọi brand) |
+| Cuong | HELLY HANSEN (chủ lực); TNF 東京企画 đến hết GĐ1 rồi bàn giao cho Khanh; điều phối xuất hàng chung cả nhóm; quản lý chung may mẫu (kiểm kế hoạch sản xuất mẫu mọi brand) |
 | Luan | TNF 富山企画; một phần việc quản lý |
-| Khanh | NEUTRALWORKS; hỗ trợ TNF 富山企画 (hậu cần, dịch); 1/3 mẫu TNF từ 1st 28SS |
+| Khanh | NEUTRALWORKS; hỗ trợ TNF 富山企画 (hậu cần, dịch); từ GĐ2: TNF 東京企画 (PPS~đại trà) và 1/3 mẫu TNF |
 | Hien | Giữ nguyên (Teton Bros, ALLTERRAIN, Mont-Bell, DESCENTE GOLF) |
 | Huy | Giữ nguyên (Goldwin, TNF 別注 HOSOYA, 141 hỗ trợ, CANTERBURY, NANGA) |
 | B.Trang | TNF (ALL) mẫu (làm tiếp mẫu triển lãm 27FW; từ 1st 28SS chia 1/3 cho Khanh), Premium Snow 別注, FOXFIRE, TATRAS, Kasco, YONEX |

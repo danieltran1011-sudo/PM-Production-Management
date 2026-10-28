@@ -87,7 +87,7 @@ def in_kq(kq):
         print(k); print('   ', {p: x['chi_so'] for p, x in v.items()})
 
 if __name__ == '__main__':
-    # Quyết định 10/2026: Hien, Huy, Nhu giữ nguyên. Cuong chuyển NEUTRALWORKS (→ Khanh), giữ HELLY HANSEN và TNF 東京企画,
+    # Quyết định 10/2026: Hien, Huy, Nhu giữ nguyên. Cuong chuyển NEUTRALWORKS (→ Khanh, ngay) và TNF 東京企画 (→ Khanh, từ GĐ2), giữ HELLY HANSEN,
     # nhận điều phối chung. Luan nhận việc quản lý. Mẫu triển lãm 27FW: người đang làm làm tiếp đến hết.
     # Khanh nhận 1/3 mẫu TNF của B.Trang từ 1st 28SS. Thời gian việc giao thêm chưa biết: tạm tính ~1 giờ/ngày mỗi người.
     G = {'Cuong': 0.1, 'Luan': 0.1}
@@ -100,7 +100,7 @@ if __name__ == '__main__':
      'GĐ2. + Khanh hỗ trợ dịch (~25% việc Luan)': tai(2, khanh_tnf=1/3, giao_them=G, chuyen_phan=[('Luan', 'Khanh', 0.25)]),
      'GĐ2. Khanh hậu cần (~15%) + nhận TNF 東京企画 từ Cuong': tai(2, khanh_tnf=1/3, giao_them=G, chuyen_phan=HC, chu_moi={'TNF(東京企画)': 'Khanh'}),
      'GĐ2. Khanh hậu cần + dịch (~35% việc Luan)': tai(2, khanh_tnf=1/3, giao_them=G, chuyen_phan=[('Luan', 'Khanh', 0.35)]),
-     'GĐ2. Khanh hậu cần + dịch (~35%) + TNF 東京企画': tai(2, khanh_tnf=1/3, giao_them=G, chuyen_phan=[('Luan', 'Khanh', 0.35)], chu_moi={'TNF(東京企画)': 'Khanh'}),
+     'GĐ2. Khanh hậu cần + dịch (~35%) + TNF 東京企画 (đã quyết)': tai(2, khanh_tnf=1/3, giao_them=G, chuyen_phan=[('Luan', 'Khanh', 0.35)], chu_moi={'TNF(東京企画)': 'Khanh'}),
     }
     in_kq(kq)
     json.dump(kq, open('data/khoi-luong/du-bao.json', 'w'), ensure_ascii=False, indent=1)
