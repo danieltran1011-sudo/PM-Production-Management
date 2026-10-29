@@ -17,7 +17,9 @@ Số ngày chuẩn lấy từ file rà soát 20260722, cập nhật theo cuộc 
 | `workflow/schedule.js` | Phần tính lịch dùng chung cho hai trang. |
 | `workflow/schedule.test.js` | Test đối chiếu với file Excel rà soát và các quy tắc đã xác nhận trong họp. |
 | `docs/quy-trinh-lead-time.md` | Tài liệu quy trình, bảng thời gian chuẩn, bảng so sánh, việc cần làm sau họp, các điểm còn mở. |
-| `data/nguon/` | Hai file Excel gốc. |
+| `dau-tu-thiet-bi-2026/APIC2026年度設備投資_説明資料_費用対効果.xlsx` | Hồ sơ giải trình đầu tư thiết bị APIC 2026 cho TIJ (tiếng Nhật): phương án điều chỉnh ≤ 4,000万円, trả lời 要確認事項 ①②③⑤⑦, tính 費用対効果 và P/L. Tạo lại bằng `build_workbook.py`. |
+| `docs/dau-tu-thiet-bi-2026.md` | Tóm tắt tiếng Việt: số chính, điều chỉnh, lỗi trong file gốc, số liệu còn thiếu. |
+| `data/nguon/` | Các file Excel gốc. |
 
 ## Sử dụng
 
