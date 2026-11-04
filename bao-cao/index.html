@@ -385,6 +385,7 @@ td .sub, th .sub { display: block; font-size: 11px; font-weight: 400; color: var
   // ---------- Đọc file ----------
   function setStatus(msg, err) { var el = $('status'); el.textContent = msg || ''; el.className = 'status' + (err ? ' err' : ''); }
 
+  var XL_ERR = { 0: '#NULL!', 7: '#DIV/0!', 15: '#VALUE!', 23: '#REF!', 29: '#NAME?', 36: '#NUM!', 42: '#N/A' };
   function readFile(file) {
     return new Promise(function (resolve, reject) {
       var fr = new FileReader();
@@ -410,14 +411,20 @@ td .sub, th .sub { display: block; font-size: 11px; font-weight: 400; color: var
         var wb = XLSX.read(buf, { type: 'array', sheets: [sheet], cellFormula: true, cellHTML: false, cellText: false, cellStyles: false, bookVBA: false });
         var ws = wb.Sheets[sheet];
         var rows = XLSX.utils.sheet_to_json(ws, { header: 1, raw: true, defval: null });
-        var formulas = {};
-        R.SUMMARY_CELLS.forEach(function (sc) { if (ws[sc.cell] && ws[sc.cell].f) formulas[sc.cell] = ws[sc.cell].f; });
+        // Công thức và ô lỗi trong vùng tổng A1:R3
+        var formulas = {}, errors = {};
+        for (var rr = 0; rr < 3; rr++) for (var cc = 0; cc < 18; cc++) {
+          var addr = XLSX.utils.encode_cell({ r: rr, c: cc }), cell = ws[addr];
+          if (!cell) continue;
+          if (cell.f) formulas[addr] = cell.f;
+          if (cell.t === 'e') errors[addr] = cell.w || XL_ERR[cell.v] || '#lỗi';
+        }
         var date1904 = !!(wb.Workbook && wb.Workbook.WBProps && wb.Workbook.WBProps.date1904);
         var p = R.parseRows(rows, { name: file.name, date1904: date1904 });
         if (!p.facts.length) throw new Error('không thấy mã hàng nào (cặp hàng KH/TH)');
         p.id = p.factory + '|' + p.updateDate;
         p.sheet = sheet;
-        p.check = R.checkSummary(rows, formulas);
+        p.check = R.checkSummary(rows, formulas, errors);
         p.loadedAt = new Date().toISOString();
         files = files.filter(function (f) { return f.id !== p.id; });
         files.push(p);
@@ -468,26 +475,42 @@ td .sub, th .sub { display: block; font-size: 11px; font-weight: 400; color: var
 
   // ---------- Kiểm tra công thức tổng (sheet TORAY) của từng file ----------
   var CHECK_FMT = { kh: 0, th: 0, changes: 0, lot: 0, people: 1, sam: 0 };
+  function hasProblem(f) { return f.check && ((f.check.cells || []).length || f.check.issues.length); }
   function checkNote(f) {
-    if (!f.check) return '<span class="muted">Chưa kiểm tra công thức (nạp lại file để kiểm tra).</span> ';
-    if (!f.check.issues.length) return '<span class="up">✓ Công thức TORAY đủ vùng.</span> ';
-    return '<span class="down">⚠ Công thức TORAY chỉ tính đến hàng ' + Math.min.apply(null, f.check.issues.map(function (i) { return i.end; })) + ', dữ liệu đến hàng ' + f.check.lastRow + '.</span> ';
+    if (!f.check || !f.check.cells) return '<span class="muted">Chưa kiểm tra công thức (nạp lại file để kiểm tra).</span> ';
+    if (!hasProblem(f)) return '<span class="up">✓ Công thức tổng (A1:R3) đủ vùng, không có ô lỗi.</span> ';
+    return '<span class="down">⚠ Công thức tổng cần sửa: ' + esc(f.check.cells.map(function (c) { return c.cell; }).join(', ')) + ' (dữ liệu đến hàng ' + f.check.lastRow + ').</span> ';
+  }
+  // Hướng dẫn sửa, gộp theo số hàng cần thay (dùng Ctrl+H trong vùng A1:R3)
+  function fixHint(c) {
+    var byEnd = {}, mism = [], errs = [];
+    (c.cells || []).forEach(function (x) {
+      (x.shortEnds || []).forEach(function (e) { (byEnd[e] = byEnd[e] || []).push(x.cell); });
+      if (x.mismatch) mism.push('<b>' + esc(x.cell) + '</b> (' + esc(x.mismatch) + ')');
+      if (x.error) errs.push('<b>' + esc(x.cell) + '</b> ' + esc(x.error));
+    });
+    var out = Object.keys(byEnd).map(Number).sort(function (a, b) { return a - b; }).map(function (e) {
+      return 'Đổi hàng <b>' + e + '</b> → 14871: ' + esc(byEnd[e].join(', '));
+    });
+    if (mism.length) out.push('Vùng không cùng số hàng: ' + mism.join(', '));
+    if (errs.length) out.push('Ô đang lỗi: ' + errs.join(', '));
+    return out.join('<br>');
   }
   function checkTable() {
-    var bad = files.filter(function (f) { return f.check && f.check.issues.length; });
-    var checked = files.filter(function (f) { return f.check; }).length;
+    var bad = files.filter(hasProblem);
+    var checked = files.filter(function (f) { return f.check && f.check.cells; }).length;
     if (!checked) return '';
     var h = '<h3 style="margin:20px 0 6px">Kiểm tra công thức sheet TORAY</h3><p class="muted" style="margin-bottom:10px">' +
-      (bad.length ? bad.length + '/' + checked + ' file có công thức tổng không phủ hết hàng dữ liệu, nên số ở sheet TORAY của file đó bị thiếu. Bảng dưới so số trong file với số tính đủ mọi hàng. Báo cáo trên trang này không bị ảnh hưởng (tính từ số từng ngày).'
-        : 'Đã kiểm tra ' + checked + ' file: công thức tổng đều phủ hết hàng dữ liệu.') + '</p>';
+      (bad.length ? bad.length + '/' + checked + ' file có công thức tổng (XN1AB!A1:R3) cần sửa: vùng không phủ hết hàng dữ liệu, vùng không cùng số hàng, hoặc ô đang lỗi. Bảng dưới so số trong file với số tính đủ mọi hàng. Báo cáo trên trang này không bị ảnh hưởng (tính từ số từng ngày).'
+        : 'Đã kiểm tra ' + checked + ' file: công thức tổng đều phủ hết hàng dữ liệu, không có ô lỗi.') + '</p>';
     if (!bad.length) return h;
-    h += '<div class="tbl-wrap"><table><thead><tr><th>Xưởng</th><th class="txt">Ngày update</th><th class="txt">Tháng ở TORAY</th><th>Công thức đến hàng</th><th>Dữ liệu đến hàng</th>' +
+    h += '<div class="tbl-wrap"><table><thead><tr><th>Xưởng</th><th class="txt">Ngày update</th><th class="txt">Tháng ở TORAY</th><th>Dữ liệu đến hàng</th><th class="txt">Ô cần sửa</th>' +
       R.SUMMARY_CELLS.map(function (sc) { return '<th class="bl">' + sc.label + '<span class="sub">trong file → đúng</span></th>'; }).join('') + '</tr></thead><tbody>';
     bad.forEach(function (f) {
       var c = f.check, wrong = {};
       c.issues.forEach(function (i) { wrong[i.key] = i; });
       h += '<tr><td>' + esc(f.factory) + '</td><td class="txt num">' + fmtDate(f.updateDate) + '</td><td class="txt">' + (c.month ? R.monthLabel(c.month) : '—') + '</td>' +
-        '<td class="num">' + fmtN(Math.min.apply(null, c.issues.map(function (i) { return i.end; }))) + '</td><td class="num">' + fmtN(c.lastRow) + '</td>' +
+        '<td class="num">' + fmtN(c.lastRow) + '</td><td class="txt" style="white-space:normal;min-width:280px">' + fixHint(c) + '</td>' +
         R.SUMMARY_CELLS.map(function (sc) {
           var a = c.file[sc.key], b = c.full[sc.key], d = CHECK_FMT[sc.key];
           if (!wrong[sc.key]) return '<td class="num bl muted">' + fmtN(a, d) + ' ✓</td>';
@@ -827,13 +850,13 @@ td .sub, th .sub { display: block; font-size: 11px; font-weight: 400; color: var
     });
     add('Du lieu', raw);
 
-    var chk = [['Xưởng', 'Ngày update', 'Tên file', 'Tháng ở TORAY', 'Kết quả', 'Công thức đến hàng', 'Dữ liệu đến hàng']];
+    var chk = [['Xưởng', 'Ngày update', 'Tên file', 'Tháng ở TORAY', 'Kết quả', 'Ô cần sửa', 'Dữ liệu đến hàng']];
     R.SUMMARY_CELLS.forEach(function (sc) { chk[0].push(sc.label + ' – trong file', sc.label + ' – đúng'); });
     files.forEach(function (f) {
       var c = f.check;
       if (!c) { chk.push([f.factory, f.updateDate, f.name, '', 'Chưa kiểm tra']); return; }
-      var row = [f.factory, f.updateDate, f.name, c.month, c.issues.length ? 'Thiếu vùng' : 'Đủ vùng',
-        c.issues.length ? Math.min.apply(null, c.issues.map(function (i) { return i.end; })) : null, c.lastRow];
+      var row = [f.factory, f.updateDate, f.name, c.month, hasProblem(f) ? 'Cần sửa' : 'Đúng',
+        (c.cells || []).map(function (x) { return x.cell + ': ' + x.text; }).join(' | '), c.lastRow];
       R.SUMMARY_CELLS.forEach(function (sc) { row.push(r2(c.file[sc.key], 2), r2(c.full[sc.key], 2)); });
       chk.push(row);
     });

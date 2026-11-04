@@ -355,27 +355,51 @@
     { cell: 'G1', key: 'sam', label: 'Thời gian may bình quân (平均工程分析時間)' }
   ];
   /*
-   * rows: mảng 2 chiều sheet XN1AB (giá trị đã lưu); formulas: { 'C2': 'SUMIF(...)', ... }.
-   * Công thức có vùng dữ liệu (bắt đầu từ hàng 13) kết thúc trước hàng dữ liệu cuối → sheet TORAY tính thiếu.
-   * Tính lại các chỉ tiêu với đủ mọi hàng (cùng cách tính của công thức trong file) để so sánh.
+   * rows: mảng 2 chiều sheet XN1AB (giá trị đã lưu); formulas: { 'C2': 'SUMIF(...)', ... } (mọi ô A1:R3);
+   * errors: { 'K2': '#VALUE!' } các ô đang ra lỗi.
+   * - Công thức có vùng dữ liệu (bắt đầu từ hàng 7–13) kết thúc trước hàng dữ liệu cuối → tính thiếu.
+   * - SUMPRODUCT có các vùng khác số hàng → #VALUE!.
+   * Tính lại các chỉ tiêu chính với đủ mọi hàng (cùng cách tính của công thức trong file) để so sánh.
    */
-  function checkSummary(rows, formulas) {
-    formulas = formulas || {};
+  function checkSummary(rows, formulas, errors) {
+    formulas = formulas || {}; errors = errors || {};
     var t = function (r) { return norm(r && r[1]); };
     var last = 0;
     rows.forEach(function (r, i) { var x = t(r); if (x === 'KH' || x === 'TH' || x === 'dự định') last = i + 1; });
-    var issues = [];
-    SUMMARY_CELLS.forEach(function (sc) {
-      var f = formulas[sc.cell];
-      if (!f) return;
-      var ends = [], re = /\$?([A-Z]{1,3})\$?(\d+):\$?([A-Z]{1,3})\$?(\d+)/g, m;
+    var issues = [], others = [], byCell = {};
+    SUMMARY_CELLS.forEach(function (sc) { byCell[sc.cell] = sc; });
+    var cellOrder = function (a, b) {
+      var ra = +a.replace(/[A-Z]+/, ''), rb = +b.replace(/[A-Z]+/, '');
+      return ra - rb || a.replace(/\d+/, '').localeCompare(b.replace(/\d+/, ''));
+    };
+    Object.keys(formulas).sort(cellOrder).forEach(function (cell) {
+      var f = formulas[cell], ends = [], all = [], re = /\$?([A-Z]{1,3})\$?(\d+):\$?([A-Z]{1,3})\$?(\d+)/g, m;
       while ((m = re.exec(f))) {
+        if (!(+m[2] >= 7 && +m[2] <= 13)) continue;
+        all.push(m[0].replace(/\$/g, ''));
         // vùng tiêu chí cột B quyết định số hàng (Excel tự kéo dài vùng cộng của SUMIF)
-        if (+m[2] >= 7 && +m[2] <= 13 && (m[1] === 'B' || !/SUMIF|AVERAGEIF/.test(f))) ends.push(+m[4]);
+        if (m[1] === 'B' || !/SUMIF|AVERAGEIF/.test(f)) ends.push(+m[4]);
       }
-      if (!ends.length) return;
-      var end = Math.min.apply(null, ends);
-      if (end < last) issues.push({ cell: sc.cell, key: sc.key, label: sc.label, end: end });
+      var sc = byCell[cell], problems = [], item = { cell: cell, label: sc ? sc.label : '', end: null, mismatch: null, error: errors[cell] || null };
+      var end = ends.length ? Math.min.apply(null, ends) : null;
+      // các số hàng cuối ngắn hơn dữ liệu (để thay bằng Ctrl+H)
+      var shortEnds = {};
+      all.forEach(function (r) { var e = +r.split(':')[1].replace(/[A-Z]+/, ''); if (e < last) shortEnds[e] = 1; });
+      item.shortEnds = Object.keys(shortEnds).map(Number).sort(function (a, b) { return a - b; });
+      if (end != null && end < last) { item.end = end; problems.push('dừng ở hàng ' + end); }
+      if (/SUMPRODUCT/.test(f)) {
+        var sizes = {};
+        all.forEach(function (r) { var p = r.split(':'); sizes[+p[1].replace(/[A-Z]+/, '') - +p[0].replace(/[A-Z]+/, '')] = 1; });
+        if (Object.keys(sizes).length > 1) { item.mismatch = all.join(', '); problems.push('vùng không cùng số hàng (' + item.mismatch + ') → #VALUE!'); }
+      }
+      if (item.error) problems.push('đang ra lỗi ' + item.error);
+      if (!problems.length) return;
+      if (sc && end != null && end < last) issues.push({ cell: cell, key: sc.key, label: sc.label, end: end });
+      item.text = problems.join('; ');
+      others.push(item);
+    });
+    Object.keys(errors).forEach(function (cell) {
+      if (!formulas[cell]) others.push({ cell: cell, label: '', end: null, mismatch: null, error: errors[cell], shortEnds: [], text: 'đang ra lỗi ' + errors[cell] });
     });
     // Tính lại theo cột tóm tắt từng hàng: C sản lượng tháng chọn, D cờ TH, E SL, F lot, G giây, H người, M chuyển mã
     var r1 = rows[0] || [], d6 = norm((rows[5] || [])[3]) || 'TH', b1 = norm(r1[1]) || 'dự định';
@@ -394,7 +418,7 @@
     };
     var y = (rows[4] || [])[1], mo = (rows[5] || [])[1];
     return {
-      lastRow: last, issues: issues,
+      lastRow: last, issues: issues, cells: others,
       month: typeof y === 'number' && typeof mo === 'number' ? y + '-' + pad(mo) : null,
       file: { kh: num((rows[1] || [])[2]), th: num((rows[2] || [])[2]), changes: num(r1[12]), lot: numOrNull(r1[5]), sam: numOrNull(r1[6]), people: numOrNull(r1[7]) },
       full: calc(last)

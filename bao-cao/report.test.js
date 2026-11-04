@@ -263,11 +263,25 @@ test('Kiểm tra công thức tổng: phát hiện vùng dừng trước hàng d
   const c = R.checkSummary(rows, formulas);
   assert.strictEqual(c.lastRow, 21);
   assert.strictEqual(c.month, '2024-03');
-  assert.deepStrictEqual(c.issues.map((i) => i.cell + '@' + i.end), ['C2@18', 'M1@18']);
+  assert.deepStrictEqual(c.issues.map((i) => i.cell + '@' + i.end), ['M1@18', 'C2@18']);
   assert.strictEqual(c.full.kh, 350);
   assert.strictEqual(c.full.th, 350);
   assert.strictEqual(c.full.changes, 3);
   assert.strictEqual(c.file.kh, 300);
   const ok = R.checkSummary(rows, { C2: 'SUMIF($B$13:$B$14871,$B2,$C$13:$C$14871)' });
   assert.strictEqual(ok.issues.length, 0);
+});
+
+test('Kiểm tra công thức tổng: SUMPRODUCT có vùng khác số hàng và ô đang lỗi', () => {
+  const rows = [];
+  for (let i = 0; i < 20; i++) rows.push(new Array(14).fill(null));
+  rows[15][1] = 'KH'; rows[16][1] = 'TH';
+  const c = R.checkSummary(rows, {
+    I2: 'SUMPRODUCT($E13:$E15000,I13:I15000)/SUM($E13:$E15000)',
+    K2: 'SUMPRODUCT($E13:$E15000,K13:K867)/SUM($E13:$E15000)'
+  }, { K2: '#VALUE!', K3: '#VALUE!' });
+  assert.deepStrictEqual(c.cells.map((x) => x.cell), ['K2', 'K3']);
+  assert.match(c.cells[0].text, /không cùng số hàng/);
+  assert.match(c.cells[0].text, /#VALUE!/);
+  assert.strictEqual(c.issues.length, 0); // không phải ô chỉ tiêu chính của TORAY
 });
