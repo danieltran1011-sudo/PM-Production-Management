@@ -1,0 +1,843 @@
+<!doctype html>
+<html lang="vi">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Báo cáo sản xuất tháng</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Be+Vietnam+Pro:wght@400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap">
+<style>
+/* Trên cùng: nạp file + bộ lọc; sau đó tổng quan tháng, bảng theo chiều, xu hướng tháng, năm tài chính, mã hàng. */
+:root {
+  --paper: #F2F4F8;
+  --grid: rgba(43, 63, 158, 0.055);
+  --surface: #FFFFFF;
+  --surface-2: #F7F8FB;
+  --ink: #17203B;
+  --muted: #5B6482;
+  --line: #D8DDE8;
+  --accent: #2B3F9E;
+  --accent-soft: #E6EAFA;
+  --accent-ink: #FFFFFF;
+  --good: #1D7A4B;
+  --good-soft: #E1F3E9;
+  --bad: #B3261E;
+  --bad-soft: #FBE6E4;
+  --warn-soft: #FDF1DC;
+  --series-1: #2a78d6;
+  --series-2: #eb6834;
+  --f-display: "Barlow Condensed", "Arial Narrow", "Roboto Condensed", sans-serif;
+  --f-body: "Be Vietnam Pro", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --f-mono: "Roboto Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0E1220; --grid: rgba(150, 170, 235, 0.05); --surface: #161B2B; --surface-2: #1B2134;
+    --ink: #E5E8F2; --muted: #9AA3BE; --line: #2A3249; --accent: #93A5FF; --accent-soft: #232C4E;
+    --accent-ink: #0E1220; --good: #5DCB8F; --good-soft: #17301F; --bad: #FF8178; --bad-soft: #3A1C1B;
+    --warn-soft: #3A2E17; --series-1: #3987e5; --series-2: #d95926;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0E1220; --grid: rgba(150, 170, 235, 0.05); --surface: #161B2B; --surface-2: #1B2134;
+  --ink: #E5E8F2; --muted: #9AA3BE; --line: #2A3249; --accent: #93A5FF; --accent-soft: #232C4E;
+  --accent-ink: #0E1220; --good: #5DCB8F; --good-soft: #17301F; --bad: #FF8178; --bad-soft: #3A1C1B;
+  --warn-soft: #3A2E17; --series-1: #3987e5; --series-2: #d95926;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body {
+  margin: 0;
+  background-color: var(--paper);
+  background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 24px 24px;
+  color: var(--ink); font-family: var(--f-body); font-size: 14px; line-height: 1.5;
+}
+.wrap {
+  max-width: 1280px; margin: 0 auto; padding-block: 28px 64px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: grid; gap: 24px;
+}
+h1, h2, h3 { font-family: var(--f-display); font-weight: 700; letter-spacing: 0.01em; text-wrap: balance; margin: 0; }
+h1 { font-size: clamp(30px, 5vw, 44px); line-height: 1.05; }
+h2 { font-size: 26px; line-height: 1.1; }
+h3 { font-size: 18px; }
+p { margin: 0; }
+a { color: var(--accent); }
+.eyebrow { font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); }
+.muted { color: var(--muted); }
+.mono, .num { font-family: var(--f-mono); font-variant-numeric: tabular-nums; }
+header.top { display: grid; gap: 10px; }
+header.top p { max-width: 75ch; color: var(--muted); }
+nav.jump { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+nav.jump a { font-size: 13px; text-decoration: none; color: var(--ink); padding: 4px 10px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); }
+nav.jump a:hover { border-color: var(--accent); color: var(--accent); }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 20px; min-width: 0; }
+.section-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 16px; margin-bottom: 14px; }
+.section-head p { color: var(--muted); max-width: 75ch; }
+
+button, .btn {
+  font: inherit; font-weight: 600; font-size: 13px; color: var(--ink); background: var(--surface-2);
+  border: 1px solid var(--line); border-radius: 6px; padding: 7px 12px; cursor: pointer; white-space: nowrap;
+}
+button:hover, .btn:hover { border-color: var(--accent); color: var(--accent); }
+button.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+button.primary:hover { color: var(--accent-ink); filter: brightness(1.08); }
+button.link { background: none; border: 0; padding: 2px 4px; color: var(--accent); font-weight: 500; }
+button:disabled { opacity: 0.5; cursor: default; }
+select, input[type="text"], textarea {
+  font: inherit; color: var(--ink); background: var(--surface-2); border: 1px solid var(--line);
+  border-radius: 6px; padding: 7px 9px; width: 100%; min-width: 0;
+}
+textarea { font-family: var(--f-mono); font-size: 13px; min-height: 90px; resize: vertical; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* ---- Nạp file ---- */
+.drop {
+  display: grid; place-items: center; gap: 8px; text-align: center; padding: 26px 16px;
+  border: 2px dashed var(--line); border-radius: 10px; background: var(--surface-2); cursor: pointer;
+}
+.drop.over { border-color: var(--accent); background: var(--accent-soft); }
+.drop strong { font-size: 15px; }
+.drop input { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+.status { margin-top: 10px; font-size: 13px; }
+.status.err { color: var(--bad); }
+.toolbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 14px; }
+.toolbar .spacer { flex: 1; }
+
+/* ---- Bộ lọc ---- */
+.filters { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; align-items: end; }
+.field { display: grid; gap: 5px; min-width: 0; }
+.field > label { font-size: 12px; font-weight: 600; color: var(--muted); letter-spacing: 0.02em; }
+details.settings { margin-top: 14px; }
+details.settings summary { cursor: pointer; font-weight: 600; font-size: 13px; color: var(--accent); }
+details.settings .inner { display: grid; gap: 8px; margin-top: 10px; max-width: 640px; }
+
+/* ---- Thẻ chỉ tiêu ---- */
+.kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+.kpi { border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; background: var(--surface-2); display: grid; gap: 4px; min-width: 0; }
+.kpi .lbl { font-size: 12px; color: var(--muted); font-weight: 600; }
+.kpi .val { font-family: var(--f-display); font-size: 32px; font-weight: 700; line-height: 1; font-variant-numeric: tabular-nums; }
+.kpi .val small { font-family: var(--f-body); font-size: 12px; font-weight: 500; color: var(--muted); margin-left: 4px; }
+.kpi .cmp { font-size: 12px; color: var(--muted); display: flex; justify-content: space-between; gap: 8px; }
+.meta-line { font-size: 13px; color: var(--muted); margin-bottom: 14px; }
+.chip { display: inline-block; font-size: 11px; font-weight: 600; padding: 1px 8px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); white-space: nowrap; }
+.chip.chot { background: var(--good-soft); color: var(--good); }
+.chip.dang { background: var(--warn-soft); color: var(--ink); }
+
+/* ---- Bảng ---- */
+.tbl-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 8px; }
+table { border-collapse: collapse; width: 100%; font-size: 13px; }
+th, td { padding: 6px 10px; border-bottom: 1px solid var(--line); text-align: right; white-space: nowrap; }
+th { font-size: 12px; font-weight: 600; color: var(--muted); background: var(--surface-2); position: sticky; top: 0; }
+th:first-child, td:first-child { text-align: left; position: sticky; left: 0; background: var(--surface); z-index: 1; }
+th:first-child { background: var(--surface-2); z-index: 2; }
+td.txt, th.txt { text-align: left; }
+tbody tr:hover td { background: var(--surface-2); }
+tr.total td { font-weight: 700; border-top: 2px solid var(--line); }
+tr.sel td { background: var(--accent-soft) !important; }
+td .sub, th .sub { display: block; font-size: 11px; font-weight: 400; color: var(--muted); }
+.up { color: var(--good); }
+.down { color: var(--bad); }
+.group-head th { text-align: center; border-left: 1px solid var(--line); }
+.bl { border-left: 1px solid var(--line); }
+
+.seg { display: inline-flex; flex-wrap: wrap; gap: 4px; }
+.seg button { font-weight: 500; }
+.seg button[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.row-tools { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.row-tools .field { min-width: 200px; }
+
+/* ---- Biểu đồ ---- */
+.chart { position: relative; margin-bottom: 16px; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 13px; margin-bottom: 8px; }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.legend i { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+.chart svg { display: block; width: 100%; height: 260px; overflow: visible; }
+.chart .axis { fill: var(--muted); font-size: 11px; font-family: var(--f-body); }
+.chart .gridl { stroke: var(--line); stroke-width: 1; }
+.chart .hit { fill: transparent; }
+.chart .hit:hover { fill: var(--accent-soft); fill-opacity: 0.5; }
+.tip {
+  position: absolute; pointer-events: none; background: var(--surface); border: 1px solid var(--line); border-radius: 8px;
+  padding: 8px 10px; font-size: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.12); min-width: 170px; z-index: 5;
+}
+.tip b { display: block; margin-bottom: 4px; }
+.tip div { display: flex; justify-content: space-between; gap: 12px; }
+.empty { padding: 28px 16px; text-align: center; color: var(--muted); border: 1px dashed var(--line); border-radius: 8px; }
+.notes { display: grid; gap: 8px; max-width: 85ch; }
+.notes li { margin-bottom: 4px; }
+.warn { font-size: 12px; color: var(--muted); }
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <span class="eyebrow">Báo cáo sản xuất · 生産月次報告</span>
+    <h1>Báo cáo tháng từ file KH_UPDATE</h1>
+    <p>Chọn các file KH_UPDATE (mỗi xưởng, mỗi lần update một file; càng nhiều tháng, nhiều năm càng tốt). Trang tự gộp, lấy số chốt của từng tháng và so sánh với tháng trước, cùng kỳ năm trước, lũy kế năm tài chính. Dữ liệu chỉ lưu trong trình duyệt này, không gửi đi đâu.</p>
+    <nav class="jump" aria-label="Mục">
+      <a href="#du-lieu">Dữ liệu</a><a href="#tong-quan">Tổng quan tháng</a><a href="#theo-chieu">Nhãn hàng · chuyền · chủng loại</a>
+      <a href="#theo-thang">Theo tháng</a><a href="#theo-nam">Năm tài chính</a><a href="#ma-hang">Mã hàng</a><a href="#cach-tinh">Cách tính</a>
+    </nav>
+  </header>
+
+  <section class="panel" id="du-lieu">
+    <div class="section-head">
+      <h2>Dữ liệu</h2>
+      <p>Chọn lại một file cùng xưởng, cùng ngày update thì file mới thay file cũ.</p>
+    </div>
+    <label class="drop" id="drop">
+      <input type="file" id="fileInput" multiple accept=".xlsm,.xlsx,.xls">
+      <strong>Kéo thả file KH_UPDATE vào đây, hoặc bấm để chọn</strong>
+      <span class="muted">Chọn được nhiều file một lúc. Mỗi file mất vài giây để đọc.</span>
+    </label>
+    <p class="status" id="status" role="status" aria-live="polite"></p>
+    <div id="fileList"></div>
+    <div class="toolbar">
+      <button class="primary" id="btnExport" disabled>Xuất Excel</button>
+      <span class="spacer"></span>
+      <button id="btnClear" disabled>Xóa toàn bộ dữ liệu</button>
+    </div>
+  </section>
+
+  <section class="panel" id="bo-loc" hidden>
+    <div class="filters">
+      <div class="field"><label for="fMonth">Tháng báo cáo</label><select id="fMonth"></select></div>
+      <div class="field"><label for="fFactory">Xưởng</label><select id="fFactory"></select></div>
+      <div class="field"><label for="fBrand">Nhãn hàng</label><select id="fBrand"></select></div>
+      <div class="field"><label for="fFy">Năm tài chính bắt đầu</label><select id="fFy"></select></div>
+    </div>
+    <details class="settings">
+      <summary>Gộp tên nhãn hàng viết khác nhau</summary>
+      <div class="inner">
+        <p class="muted">Mỗi dòng một cặp <span class="mono">TÊN TRONG FILE = TÊN DÙNG TRONG BÁO CÁO</span>. Chữ hoa/thường và khoảng trắng thừa đã được gộp sẵn; ALLTERAIN → ALLTERRAIN và DESCSENTE → DESCENTE cũng đã có sẵn.</p>
+        <textarea id="aliases" spellcheck="false" placeholder="TNF = THE NORTH FACE"></textarea>
+        <div><button id="btnAliases">Áp dụng</button></div>
+        <div id="brandRaw" class="warn"></div>
+      </div>
+    </details>
+  </section>
+
+  <div id="empty" class="panel empty">Chưa có dữ liệu. Chọn ít nhất một file KH_UPDATE ở trên.</div>
+
+  <section class="panel" id="tong-quan" hidden>
+    <div class="section-head">
+      <h2 id="ovTitle">Tổng quan tháng</h2>
+      <p id="ovScope"></p>
+    </div>
+    <p class="meta-line" id="ovMeta"></p>
+    <div class="kpis" id="kpis"></div>
+    <h3 style="margin:20px 0 10px">So sánh các kỳ</h3>
+    <div class="tbl-wrap" id="cmpTable"></div>
+  </section>
+
+  <section class="panel" id="theo-chieu" hidden>
+    <div class="section-head">
+      <h2>Theo nhãn hàng, chuyền, chủng loại</h2>
+      <p>Số của tháng báo cáo, so với tháng trước, cùng kỳ năm trước và lũy kế năm tài chính.</p>
+    </div>
+    <div class="row-tools">
+      <div class="seg" id="dimSeg" role="group" aria-label="Chiều tổng hợp"></div>
+      <div class="field"><label for="dimSort">Sắp xếp</label>
+        <select id="dimSort"><option value="th">Sản lượng tháng (lớn → nhỏ)</option><option value="ytd">Lũy kế năm tài chính (lớn → nhỏ)</option><option value="name">Theo tên</option></select>
+      </div>
+    </div>
+    <div class="tbl-wrap" id="dimTable"></div>
+  </section>
+
+  <section class="panel" id="theo-thang" hidden>
+    <div class="section-head">
+      <h2>Theo tháng</h2>
+      <p>Biểu đồ: sản lượng TH từng tháng của năm tài chính đang xem so với năm trước. Bảng: mọi tháng có dữ liệu.</p>
+    </div>
+    <div class="chart" id="chart"></div>
+    <div class="tbl-wrap" id="monthTable"></div>
+  </section>
+
+  <section class="panel" id="theo-nam" hidden>
+    <div class="section-head">
+      <h2>Theo năm tài chính</h2>
+      <p>% đạt tính trên các tháng đã có TH. Cùng kỳ năm trước = đúng các tháng đó của năm trước, nên năm đang chạy vẫn so được.</p>
+    </div>
+    <div class="tbl-wrap" id="fyTable"></div>
+    <div class="row-tools" style="margin-top:20px">
+      <h3>Sản lượng TH theo năm tài chính</h3>
+      <div class="seg" id="fyDimSeg" role="group" aria-label="Chiều theo năm"></div>
+    </div>
+    <div class="tbl-wrap" id="fyMatrix"></div>
+  </section>
+
+  <section class="panel" id="ma-hang" hidden>
+    <div class="section-head">
+      <h2>Mã hàng trong tháng</h2>
+      <p>Mỗi dòng là một mã trên một chuyền, trong tháng báo cáo.</p>
+    </div>
+    <div class="row-tools"><div class="field"><label for="styleSearch">Tìm mã, nhãn hàng, chuyền</label><input type="text" id="styleSearch" placeholder="Ví dụ: NP12704 hoặc 4A"></div></div>
+    <div class="tbl-wrap" id="styleTable"></div>
+  </section>
+
+  <section class="panel" id="cach-tinh">
+    <div class="section-head"><h2>Cách tính</h2></div>
+    <ul class="notes">
+      <li><b>Số của mỗi tháng</b> lấy từ file chốt tháng đó: file update sớm nhất từ ngày cuối tháng trở đi (ví dụ file 20261031 chốt tháng 10). Tháng chưa có file chốt thì lấy file mới nhất, ghi "Đang chạy" (tháng đang làm) hoặc "Kế hoạch" (tháng sau).</li>
+      <li><b>KH đầu tháng</b>: KH của tháng trong file update mới nhất trước ngày 1 của tháng (ví dụ file 20260930 cho tháng 10). Cần có file của tháng trước.</li>
+      <li><b>KH, TH</b>: cộng sản lượng theo ngày ở hàng KH và TH của từng mã (hàng "dự định" lý thuyết không tính). Khớp ô 計画 / 実績 của sheet TORAY.</li>
+      <li><b>Ngày làm việc</b>: số ngày của tháng trừ ngày đánh dấu "x" (hàng ngày nghỉ trong file).</li>
+      <li><b>Lao động</b>: mỗi chuyền, mỗi ngày có sản lượng TH tính một lần số người bố trí (ライン編成人数); nếu chuyền chạy 2 mã cùng ngày thì lấy số lớn hơn và chia cho 2 mã theo sản lượng. Chuyền tách (A1, A2) tính riêng. <i>Ngày công</i> = tổng người × ngày. <i>Lao động bình quân/ngày</i> = ngày công ÷ ngày làm việc của tháng (nhiều tháng thì lấy bình quân các tháng). <i>Lao động bình quân/chuyền</i> = ngày công ÷ số chuyền-ngày. Đây là số người bố trí theo kế hoạch, không phải số có mặt thực tế.</li>
+      <li><b>Năng suất</b> = TH ÷ ngày công (sp/người/ngày). <b>Giờ chuẩn (SAH)</b> = TH × thời gian may (工程分析時間, giây) ÷ 3.600. <b>Hiệu suất</b> = giờ chuẩn ÷ (ngày công × 8 giờ).</li>
+      <li><b>Mã mới vào chuyền</b>: tháng có ngày sản lượng đầu tiên của mã. <b>Mã hoàn thành</b>: tháng có ngày kết thúc (ô END ở hàng TH, không muộn hơn ngày update).</li>
+      <li><b>Năm tài chính</b> đặt tên theo năm bắt đầu; tháng bắt đầu chọn ở bộ lọc (mặc định tháng 4: NTC 2026 = 4/2026–3/2027). <b>Cùng kỳ</b> = cùng tháng năm trước; <b>lũy kế cùng kỳ</b> = các tháng tương ứng của năm tài chính trước.</li>
+      <li>Mức tăng/giảm tô xanh/đỏ cho sản lượng, tỷ lệ đạt, năng suất, hiệu suất. Tỷ lệ đạt và hiệu suất so sánh bằng điểm phần trăm (đ).</li>
+    </ul>
+  </section>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="report.js"></script>
+<script>
+(function () {
+  'use strict';
+  var R = window.PMReport;
+  var SETTINGS = 'pm-bao-cao-settings';
+  var $ = function (id) { return document.getElementById(id); };
+
+  var state = { startMonth: 4, aliasText: '', dim: 'brand', fyDim: 'brand', sort: 'th', month: '', factory: '', brand: '' };
+  try { Object.assign(state, JSON.parse(localStorage.getItem(SETTINGS) || '{}')); } catch (e) { /* bỏ qua */ }
+  function saveSettings() { try { localStorage.setItem(SETTINGS, JSON.stringify(state)); } catch (e) { /* bỏ qua */ } }
+
+  var files = []; // dữ liệu đã đọc của từng file
+  var ds = null;
+
+  // ---------- Lưu trữ trong trình duyệt (IndexedDB) ----------
+  var DB = {
+    db: null,
+    open: function () {
+      return new Promise(function (resolve) {
+        try {
+          var req = indexedDB.open('pm-bao-cao', 1);
+          req.onupgradeneeded = function () { req.result.createObjectStore('files', { keyPath: 'id' }); };
+          req.onsuccess = function () { DB.db = req.result; resolve(); };
+          req.onerror = function () { resolve(); };
+        } catch (e) { resolve(); }
+      });
+    },
+    run: function (mode, fn) {
+      return new Promise(function (resolve) {
+        if (!DB.db) return resolve(null);
+        try {
+          var tx = DB.db.transaction('files', mode), st = tx.objectStore('files'), out = fn(st);
+          tx.oncomplete = function () { resolve(out && out.result); };
+          tx.onerror = function () { resolve(null); };
+        } catch (e) { resolve(null); }
+      });
+    },
+    all: function () { return DB.run('readonly', function (st) { return st.getAll(); }); },
+    put: function (f) { return DB.run('readwrite', function (st) { st.put(f); }); },
+    del: function (id) { return DB.run('readwrite', function (st) { st.delete(id); }); },
+    clear: function () { return DB.run('readwrite', function (st) { st.clear(); }); }
+  };
+
+  // ---------- Định dạng ----------
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function fmtN(v, d) {
+    if (v == null || !isFinite(v)) return '—';
+    d = d || 0;
+    return v.toLocaleString('vi-VN', { minimumFractionDigits: d, maximumFractionDigits: d });
+  }
+  function fmtP(v, d) { return v == null || !isFinite(v) ? '—' : fmtN(v * 100, d == null ? 1 : d) + '%'; }
+  function fmtDate(iso) { if (!iso) return '—'; var p = iso.split('-'); return +p[2] + '/' + +p[1] + '/' + p[0]; }
+  var STATUS = { chot: 'Đã chốt', dang: 'Đang chạy', kh: 'Kế hoạch' };
+  function chip(st) { return '<span class="chip ' + st + '">' + STATUS[st] + '</span>'; }
+
+  // So sánh a với b: phần trăm thay đổi, hoặc điểm phần trăm với chỉ tiêu dạng tỷ lệ
+  function delta(a, b, m) {
+    if (a == null || b == null || !isFinite(a) || !isFinite(b)) return '<span class="muted">—</span>';
+    var v, txt;
+    if (m.kind === 'pct') { v = (a - b) * 100; txt = (v > 0 ? '+' : '') + fmtN(v, 1) + ' đ'; }
+    else { if (!b) return '<span class="muted">—</span>'; v = a / b - 1; txt = (v > 0 ? '+' : '') + fmtN(v * 100, 1) + '%'; }
+    if (Math.abs(v) < 1e-9) return '<span class="muted">0</span>';
+    var arrow = v > 0 ? '▲ ' : '▼ ';
+    var cls = m.better ? (v > 0 ? 'up' : 'down') : '';
+    return '<span class="' + cls + '">' + arrow + txt + '</span>';
+  }
+
+  var M = {
+    th: { label: 'Sản lượng thực hiện (TH)', unit: 'sp', f: function (v) { return fmtN(v); }, better: 1 },
+    kh: { label: 'Kế hoạch (KH, cuối kỳ)', unit: 'sp', f: function (v) { return fmtN(v); } },
+    khOpen: { label: 'Kế hoạch đầu tháng', unit: 'sp', f: function (v) { return v ? fmtN(v) : '—'; } },
+    rate: { label: 'Tỷ lệ đạt TH/KH', f: function (v) { return fmtP(v); }, kind: 'pct', better: 1 },
+    rateOpen: { label: 'Tỷ lệ đạt so KH đầu tháng', f: function (v) { return fmtP(v); }, kind: 'pct', better: 1 },
+    styles: { label: 'Số mã hàng sản xuất', f: function (v) { return fmtN(v); } },
+    start: { label: 'Mã mới vào chuyền', f: function (v) { return fmtN(v); } },
+    end: { label: 'Mã hoàn thành', f: function (v) { return fmtN(v); } },
+    lines: { label: 'Số chuyền có sản lượng', f: function (v) { return fmtN(v); } },
+    labor: { label: 'Lao động bình quân/ngày', unit: 'người', f: function (v) { return fmtN(v); } },
+    perLine: { label: 'Lao động bình quân/chuyền', unit: 'người', f: function (v) { return fmtN(v, 1); } },
+    pdT: { label: 'Ngày công', unit: 'người × ngày', f: function (v) { return fmtN(v); } },
+    productivity: { label: 'Năng suất', unit: 'sp/người/ngày', f: function (v) { return fmtN(v, 2); }, better: 1 },
+    sah: { label: 'Giờ chuẩn làm ra (SAH)', unit: 'giờ', f: function (v) { return fmtN(v); }, better: 1 },
+    efficiency: { label: 'Hiệu suất (giờ chuẩn/giờ công)', f: function (v) { return fmtP(v); }, kind: 'pct', better: 1 },
+    avgSam: { label: 'Thời gian may bình quân', unit: 'giây/sp', f: function (v) { return fmtN(v); } }
+  };
+
+  // ---------- Đọc file ----------
+  function setStatus(msg, err) { var el = $('status'); el.textContent = msg || ''; el.className = 'status' + (err ? ' err' : ''); }
+
+  function readFile(file) {
+    return new Promise(function (resolve, reject) {
+      var fr = new FileReader();
+      fr.onload = function () { resolve(new Uint8Array(fr.result)); };
+      fr.onerror = function () { reject(new Error('Không đọc được file')); };
+      fr.readAsArrayBuffer(file);
+    });
+  }
+  function pause() { return new Promise(function (r) { setTimeout(r, 30); }); }
+
+  async function addFiles(list) {
+    if (!window.XLSX) { setStatus('Chưa tải được thư viện đọc Excel (cần mạng để tải lần đầu). Kiểm tra kết nối rồi tải lại trang.', true); return; }
+    list = Array.prototype.slice.call(list);
+    var ok = 0, errs = [];
+    for (var i = 0; i < list.length; i++) {
+      var file = list[i];
+      setStatus('Đang đọc file ' + (i + 1) + '/' + list.length + ': ' + file.name + '…');
+      await pause();
+      try {
+        var buf = await readFile(file);
+        var names = XLSX.read(buf, { type: 'array', bookSheets: true }).SheetNames;
+        var sheet = names.indexOf('XN1AB') >= 0 ? 'XN1AB' : names.filter(function (n) { return n !== 'TORAY'; })[0];
+        var wb = XLSX.read(buf, { type: 'array', sheets: [sheet], cellFormula: false, cellHTML: false, cellText: false, cellStyles: false, bookVBA: false });
+        var rows = XLSX.utils.sheet_to_json(wb.Sheets[sheet], { header: 1, raw: true, defval: null });
+        var date1904 = !!(wb.Workbook && wb.Workbook.WBProps && wb.Workbook.WBProps.date1904);
+        var p = R.parseRows(rows, { name: file.name, date1904: date1904 });
+        if (!p.facts.length) throw new Error('không thấy mã hàng nào (cặp hàng KH/TH)');
+        p.id = p.factory + '|' + p.updateDate;
+        p.sheet = sheet;
+        p.loadedAt = new Date().toISOString();
+        files = files.filter(function (f) { return f.id !== p.id; });
+        files.push(p);
+        await DB.put(p);
+        ok++;
+      } catch (e) {
+        errs.push(file.name + ': ' + (e && e.message ? e.message : e));
+      }
+    }
+    setStatus((ok ? 'Đã thêm ' + ok + ' file.' : '') + (errs.length ? ' Lỗi: ' + errs.join(' · ') : ''), errs.length > 0 && !ok);
+    rebuild();
+  }
+
+  // ---------- Dựng lại dữ liệu ----------
+  function rebuild() {
+    files.sort(function (a, b) { return a.factory < b.factory ? -1 : a.factory > b.factory ? 1 : a.updateDate < b.updateDate ? -1 : 1; });
+    ds = files.length ? R.buildDataset(files, { aliases: R.parseAliasText(state.aliasText) }) : null;
+    renderFiles();
+    var has = !!(ds && ds.months.length);
+    ['bo-loc', 'tong-quan', 'theo-chieu', 'theo-thang', 'theo-nam', 'ma-hang'].forEach(function (id) { $(id).hidden = !has; });
+    $('empty').hidden = has;
+    $('btnExport').disabled = !has; $('btnClear').disabled = !files.length;
+    if (!has) return;
+    fillFilters();
+    render();
+  }
+
+  function renderFiles() {
+    if (!files.length) { $('fileList').innerHTML = ''; return; }
+    var usedBy = {};
+    if (ds) Object.keys(ds.meta).forEach(function (k) {
+      var m = ds.meta[k];
+      var id = m.f + '|' + m.srcDate;
+      (usedBy[id] = usedBy[id] || []).push(R.monthLabel(m.m) + (m.status === 'chot' ? '' : ' (' + STATUS[m.status].toLowerCase() + ')'));
+    });
+    var html = '<div class="tbl-wrap" style="margin-top:14px"><table><thead><tr><th>Xưởng</th><th class="txt">Ngày update</th><th class="txt">Tên file</th><th>Số mã</th><th class="txt">Dữ liệu ngày</th><th class="txt">Dùng cho tháng</th><th class="txt">Ghi chú</th><th></th></tr></thead><tbody>';
+    files.forEach(function (f) {
+      var used = usedBy[f.id] || [];
+      html += '<tr><td>' + esc(f.factory) + '</td><td class="txt num">' + fmtDate(f.updateDate) + (f.updateFrom === 'data' ? ' <span class="sub">theo dữ liệu</span>' : '') + '</td>' +
+        '<td class="txt">' + esc(f.name) + '</td><td class="num">' + fmtN(f.styleCount) + '</td>' +
+        '<td class="txt num">' + fmtDate(f.firstDate) + ' → ' + fmtDate(f.lastDate) + '</td>' +
+        '<td class="txt" style="white-space:normal;min-width:180px">' + (used.length ? esc(used.join(', ')) : '<span class="muted">Không dùng (đã có file khác chốt)</span>') + '</td>' +
+        '<td class="txt warn" style="white-space:normal;min-width:160px">' + esc((f.warnings || []).join(' ')) + '</td>' +
+        '<td><button class="link" data-del="' + esc(f.id) + '">Xóa</button></td></tr>';
+    });
+    $('fileList').innerHTML = html + '</tbody></table></div>';
+  }
+
+  function brandList() {
+    var set = {};
+    ds.facts.forEach(function (x) { if (!state.factory || x.f === state.factory) set[x.brand] = 1; });
+    return Object.keys(set).sort();
+  }
+
+  function fillFilters() {
+    var scopeMeta = function (m) {
+      var st = ds.factories.filter(function (f) { return !state.factory || f === state.factory; }).map(function (f) { return ds.meta[f + '|' + m]; }).filter(Boolean);
+      if (!st.length) return 'kh';
+      if (st.every(function (s) { return s.status === 'chot'; })) return 'chot';
+      if (st.every(function (s) { return s.status === 'kh'; })) return 'kh';
+      return 'dang';
+    };
+    // Xưởng
+    var fSel = $('fFactory');
+    if (state.factory && ds.factories.indexOf(state.factory) < 0) state.factory = '';
+    fSel.innerHTML = '<option value="">Tất cả xưởng</option>' + ds.factories.map(function (f) { return '<option' + (f === state.factory ? ' selected' : '') + '>' + esc(f) + '</option>'; }).join('');
+    // Tháng: mặc định tháng chốt gần nhất
+    var months = ds.months.slice().reverse();
+    if (months.indexOf(state.month) < 0) {
+      state.month = months.filter(function (m) { return scopeMeta(m) === 'chot'; })[0] || months.filter(function (m) { return scopeMeta(m) === 'dang'; })[0] || months[0];
+    }
+    $('fMonth').innerHTML = months.map(function (m) {
+      return '<option value="' + m + '"' + (m === state.month ? ' selected' : '') + '>' + R.monthLabel(m) + ' · ' + STATUS[scopeMeta(m)] + '</option>';
+    }).join('');
+    // Nhãn hàng
+    var brands = brandList();
+    if (state.brand && brands.indexOf(state.brand) < 0) state.brand = '';
+    $('fBrand').innerHTML = '<option value="">Tất cả nhãn hàng</option>' + brands.map(function (b) { return '<option' + (b === state.brand ? ' selected' : '') + '>' + esc(b) + '</option>'; }).join('');
+    // Năm tài chính
+    var fy = '';
+    for (var i = 1; i <= 12; i++) fy += '<option value="' + i + '"' + (i === state.startMonth ? ' selected' : '') + '>Tháng ' + i + (i === 1 ? ' (theo năm dương lịch)' : '') + '</option>';
+    $('fFy').innerHTML = fy;
+    $('aliases').value = state.aliasText || '';
+    // Tên nhãn hàng gốc đã gộp
+    var raw = {};
+    files.forEach(function (f) { f.facts.forEach(function (x) { var b = R.normBrand(x.brandRaw, R.parseAliasText(state.aliasText)); (raw[b] = raw[b] || {})[x.brandRaw || '(trống)'] = 1; }); });
+    var merged = Object.keys(raw).filter(function (b) { return Object.keys(raw[b]).length > 1; }).sort();
+    $('brandRaw').innerHTML = merged.length ? 'Đang gộp: ' + merged.map(function (b) { return '<b>' + esc(b) + '</b> ← ' + esc(Object.keys(raw[b]).join(', ')); }).join(' · ') : '';
+  }
+
+  function opts(extra) { return Object.assign({ month: state.month, factory: state.factory || null, brand: state.brand || null, startMonth: state.startMonth }, extra || {}); }
+  function scopeText() {
+    return (state.factory || 'Tất cả xưởng') + ' · ' + (state.brand || 'tất cả nhãn hàng') + ' · ' + R.fiscalLabel(R.fiscalYear(state.month, state.startMonth), state.startMonth);
+  }
+
+  // ---------- Hiển thị ----------
+  function render() {
+    renderOverview();
+    renderDim();
+    renderMonthly();
+    renderFiscal();
+    renderStyles();
+  }
+
+  function renderOverview() {
+    var s = R.summarize(ds, opts());
+    var T = s.totals, P = s.periods;
+    $('ovTitle').textContent = 'Tổng quan tháng ' + R.monthLabel(state.month);
+    $('ovScope').textContent = scopeText();
+    var metas = ds.factories.filter(function (f) { return !state.factory || f === state.factory; }).map(function (f) { return ds.meta[f + '|' + state.month]; }).filter(Boolean);
+    $('ovMeta').innerHTML = metas.map(function (m) {
+      return '<b>' + esc(m.f) + '</b> ' + chip(m.status) + ' số theo file update ' + fmtDate(m.srcDate) + ' · ' + m.wd + ' ngày làm việc' +
+        (m.openDate ? ' · KH đầu tháng theo file ' + fmtDate(m.openDate) : ' · chưa có file trước tháng để lấy KH đầu tháng');
+    }).join('<br>');
+
+    var cards = [['th', T.cur.th], ['rate', T.cur.rate], ['labor', T.cur.labor], ['productivity', T.cur.productivity], ['efficiency', T.cur.efficiency], ['styles', T.cur.styles]];
+    $('kpis').innerHTML = cards.map(function (c) {
+      var m = M[c[0]];
+      return '<div class="kpi"><span class="lbl">' + m.label + '</span><span class="val">' + m.f(c[1]) + (m.unit ? '<small>' + m.unit + '</small>' : '') + '</span>' +
+        '<span class="cmp"><span>So tháng trước</span>' + delta(c[1], P.prev.length ? T.prev[c[0]] : null, m) + '</span>' +
+        '<span class="cmp"><span>So cùng kỳ</span>' + delta(c[1], P.yoy.length ? T.yoy[c[0]] : null, m) + '</span></div>';
+    }).join('');
+
+    // Kỳ chưa có dữ liệu thì hiện "—" thay vì 0
+    var V = function (p, k) { return P[p].length ? T[p][k] : null; };
+    var rowsK = ['th', 'kh', 'khOpen', 'rate', 'rateOpen', 'styles', 'start', 'end', 'lines', 'labor', 'perLine', 'pdT', 'productivity', 'sah', 'efficiency', 'avgSam'];
+    var lbl = function (list, one) { return list.length ? (one ? R.monthLabel(list[0]) : R.monthLabel(list[0]) + '–' + R.monthLabel(list[list.length - 1])) : 'chưa có dữ liệu'; };
+    var h = '<table><thead><tr><th>Chỉ tiêu</th>' +
+      '<th>Tháng này<span class="sub">' + R.monthLabel(state.month) + '</span></th>' +
+      '<th class="bl">Tháng trước<span class="sub">' + lbl(P.prev, 1) + '</span></th><th>±</th>' +
+      '<th class="bl">Cùng kỳ năm trước<span class="sub">' + lbl(P.yoy, 1) + '</span></th><th>±</th>' +
+      '<th class="bl">Lũy kế NTC<span class="sub">' + lbl(P.ytd) + '</span></th>' +
+      '<th>Lũy kế cùng kỳ<span class="sub">' + lbl(P.ytdPrev) + '</span></th><th>±</th></tr></thead><tbody>';
+    rowsK.forEach(function (k) {
+      var m = M[k];
+      h += '<tr><td>' + m.label + (m.unit ? ' <span class="muted">(' + m.unit + ')</span>' : '') + '</td>' +
+        '<td class="num">' + m.f(T.cur[k]) + '</td>' +
+        '<td class="num bl">' + m.f(V('prev', k)) + '</td><td>' + delta(T.cur[k], V('prev', k), m) + '</td>' +
+        '<td class="num bl">' + m.f(V('yoy', k)) + '</td><td>' + delta(T.cur[k], V('yoy', k), m) + '</td>' +
+        '<td class="num bl">' + m.f(V('ytd', k)) + '</td><td class="num">' + m.f(V('ytdPrev', k)) + '</td><td>' + delta(V('ytd', k), V('ytdPrev', k), m) + '</td></tr>';
+    });
+    $('cmpTable').innerHTML = h + '</tbody></table>';
+  }
+
+  var DIM_TABS = [['brand', 'Nhãn hàng'], ['line', 'Chuyền'], ['group', 'Cụm chuyền'], ['item', 'Chủng loại'], ['factory', 'Xưởng']];
+  function segHtml(cur, attr) {
+    return DIM_TABS.map(function (d) { return '<button type="button" ' + attr + '="' + d[0] + '" aria-pressed="' + (d[0] === cur) + '">' + d[1] + '</button>'; }).join('');
+  }
+
+  function sortRows(rows, by, keyName) {
+    var natural = function (a, b) { return a.localeCompare(b, 'vi', { numeric: true }); };
+    rows.sort(function (a, b) {
+      if (by === 'name') return natural(a[keyName], b[keyName]);
+      if (by === 'ytd') return (b.ytd.th - a.ytd.th) || natural(a[keyName], b[keyName]);
+      return (b.cur.th - a.cur.th) || (b.ytd.th - a.ytd.th) || natural(a[keyName], b[keyName]);
+    });
+    return rows;
+  }
+
+  function renderDim() {
+    $('dimSeg').innerHTML = segHtml(state.dim, 'data-dim');
+    $('dimSort').value = state.sort;
+    var s = R.summarize(ds, opts({ dim: state.dim }));
+    var rows = sortRows(s.rows, state.sort, 'key');
+    var T = s.totals, P = s.periods, lab = R.DIMS[state.dim].label;
+    var th = function (r, p) { return P[p].length ? r[p].th : null; };
+    if (!rows.length) { $('dimTable').innerHTML = '<div class="empty">Không có số liệu.</div>'; return; }
+    var head = '<table><thead><tr><th>' + lab + '</th><th>TH tháng</th><th>KH tháng</th><th>% đạt</th><th>Tỷ trọng</th>' +
+      '<th class="bl">TH tháng trước</th><th>±</th><th class="bl">TH cùng kỳ</th><th>±</th>' +
+      '<th class="bl">Lũy kế NTC</th><th>Lũy kế cùng kỳ</th><th>±</th>' +
+      '<th class="bl">LĐ bq/ngày</th><th>LĐ/chuyền</th><th>Năng suất</th><th>Hiệu suất</th><th>Số mã</th></tr></thead><tbody>';
+    var line = function (name, r, cls) {
+      return '<tr' + (cls ? ' class="' + cls + '"' : '') + '><td>' + esc(name) + '</td>' +
+        '<td class="num">' + fmtN(r.cur.th) + '</td><td class="num">' + fmtN(r.cur.kh) + '</td><td class="num">' + fmtP(r.cur.rate) + '</td><td class="num">' + (r.share == null ? '—' : fmtP(r.share)) + '</td>' +
+        '<td class="num bl">' + fmtN(th(r, 'prev')) + '</td><td>' + delta(r.cur.th, th(r, 'prev'), M.th) + '</td>' +
+        '<td class="num bl">' + fmtN(th(r, 'yoy')) + '</td><td>' + delta(r.cur.th, th(r, 'yoy'), M.th) + '</td>' +
+        '<td class="num bl">' + fmtN(r.ytd.th) + '</td><td class="num">' + fmtN(th(r, 'ytdPrev')) + '</td><td>' + delta(r.ytd.th, th(r, 'ytdPrev'), M.th) + '</td>' +
+        '<td class="num bl">' + fmtN(r.cur.labor) + '</td><td class="num">' + fmtN(r.cur.perLine, 1) + '</td><td class="num">' + fmtN(r.cur.productivity, 2) + '</td><td class="num">' + fmtP(r.cur.efficiency) + '</td><td class="num">' + fmtN(r.cur.styles) + '</td></tr>';
+    };
+    var body = rows.map(function (r) { return line(r.key, r); }).join('');
+    var tot = { cur: T.cur, prev: T.prev, yoy: T.yoy, ytd: T.ytd, ytdPrev: T.ytdPrev, share: T.cur.th ? 1 : null };
+    $('dimTable').innerHTML = head + body + line('Tổng', tot, 'total') + '</tbody></table>';
+  }
+
+  function renderMonthly() {
+    var list = R.monthly(ds, opts());
+    var byM = {};
+    list.forEach(function (r) { byM[r.month] = r; });
+    // Biểu đồ
+    var fy = R.fiscalYear(state.month, state.startMonth);
+    var cur = R.fiscalMonths(fy, state.startMonth), prev = R.fiscalMonths(fy - 1, state.startMonth);
+    drawChart({
+      labels: cur.map(function (m) { return 'T' + (+m.slice(5)); }),
+      months: [cur, prev],
+      series: [
+        { name: R.fiscalLabel(fy, state.startMonth), color: 'var(--series-1)', values: cur.map(function (m) { return byM[m] ? byM[m].v.th : null; }) },
+        { name: R.fiscalLabel(fy - 1, state.startMonth), color: 'var(--series-2)', values: prev.map(function (m) { return byM[m] ? byM[m].v.th : null; }) }
+      ]
+    });
+    // Bảng
+    var h = '<table><thead><tr><th>Tháng</th><th class="txt">NTC</th><th class="txt">Trạng thái</th><th>KH</th><th>TH</th><th>% đạt</th><th class="bl">± tháng trước</th><th>± cùng kỳ</th>' +
+      '<th class="bl">LĐ bq/ngày</th><th>LĐ/chuyền</th><th>Năng suất</th><th>Hiệu suất</th><th>Số mã</th><th>Mã mới</th></tr></thead><tbody>';
+    list.slice().reverse().forEach(function (r) {
+      var p = byM[R.addMonths(r.month, -1)], y = byM[R.addMonths(r.month, -12)], v = r.v;
+      var plan = r.status === 'kh'; // tháng kế hoạch chưa có TH
+      var thOf = function (x) { return x && x.status !== 'kh' ? x.v.th : null; };
+      h += '<tr' + (r.month === state.month ? ' class="sel"' : '') + '><td>' + R.monthLabel(r.month) + '</td><td class="txt">' + r.fy + '</td><td class="txt">' + chip(r.status) + '</td>' +
+        '<td class="num">' + fmtN(v.kh) + '</td><td class="num">' + (plan ? '—' : fmtN(v.th)) + '</td><td class="num">' + (plan ? '—' : fmtP(v.rate)) + '</td>' +
+        '<td class="bl">' + delta(thOf(r), thOf(p), M.th) + '</td><td>' + delta(thOf(r), thOf(y), M.th) + '</td>' +
+        '<td class="num bl">' + fmtN(v.labor) + '</td><td class="num">' + fmtN(v.perLine, 1) + '</td><td class="num">' + fmtN(v.productivity, 2) + '</td><td class="num">' + fmtP(v.efficiency) + '</td>' +
+        '<td class="num">' + fmtN(v.styles) + '</td><td class="num">' + fmtN(v.start) + '</td></tr>';
+    });
+    $('monthTable').innerHTML = h + '</tbody></table>';
+  }
+
+  // Biểu đồ cột nhóm: 12 tháng của năm tài chính, 2 năm cạnh nhau
+  var chartData = null;
+  function drawChart(data) {
+    chartData = data;
+    var box = $('chart');
+    var any = data.series.some(function (s) { return s.values.some(function (v) { return v > 0; }); });
+    if (!any) { box.innerHTML = '<div class="empty">Năm tài chính này chưa có sản lượng thực hiện.</div>'; return; }
+    var W = Math.max(320, box.clientWidth || 800), H = 260, padL = 48, padR = 8, padT = 10, padB = 26;
+    var max = 0;
+    data.series.forEach(function (s) { s.values.forEach(function (v) { if (v > max) max = v; }); });
+    var step = niceStep(max / 4), top = Math.ceil(max / step) * step || 1;
+    var n = data.labels.length, gw = (W - padL - padR) / n, bw = Math.max(3, Math.min(26, (gw - 10) / 2 - 1));
+    var y = function (v) { return padT + (H - padT - padB) * (1 - v / top); };
+    var svg = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Sản lượng TH theo tháng, so sánh hai năm tài chính">';
+    for (var t = 0; t <= top + 1e-9; t += step) {
+      svg += '<line class="gridl" x1="' + padL + '" x2="' + (W - padR) + '" y1="' + y(t) + '" y2="' + y(t) + '"/>' +
+        '<text class="axis" x="' + (padL - 6) + '" y="' + (y(t) + 4) + '" text-anchor="end">' + shortNum(t) + '</text>';
+    }
+    for (var i = 0; i < n; i++) {
+      var cx = padL + gw * i + gw / 2;
+      data.series.forEach(function (s, k) {
+        var v = s.values[i];
+        if (!(v > 0)) return;
+        var x = cx + (k === 0 ? -bw - 1 : 1), yy = y(v), h = H - padB - yy, r = Math.min(4, h, bw / 2);
+        svg += '<path fill="' + s.color + '" d="M' + x + ',' + (H - padB) + 'V' + (yy + r) + 'Q' + x + ',' + yy + ' ' + (x + r) + ',' + yy + 'H' + (x + bw - r) + 'Q' + (x + bw) + ',' + yy + ' ' + (x + bw) + ',' + (yy + r) + 'V' + (H - padB) + 'Z"/>';
+      });
+      svg += '<text class="axis" x="' + cx + '" y="' + (H - 8) + '" text-anchor="middle">' + data.labels[i] + '</text>';
+      svg += '<rect class="hit" data-i="' + i + '" x="' + (padL + gw * i) + '" y="' + padT + '" width="' + gw + '" height="' + (H - padT - padB) + '"/>';
+    }
+    svg += '<line class="gridl" x1="' + padL + '" x2="' + (W - padR) + '" y1="' + (H - padB) + '" y2="' + (H - padB) + '" style="stroke:var(--muted)"/></svg>';
+    var legend = '<div class="legend">' + data.series.map(function (s) { return '<span><i style="background:' + s.color + '"></i>' + esc(s.name) + '</span>'; }).join('') + '</div>';
+    box.innerHTML = legend + svg + '<div class="tip" hidden></div>';
+  }
+  function niceStep(raw) {
+    if (!(raw > 0)) return 1;
+    var p = Math.pow(10, Math.floor(Math.log10(raw))), f = raw / p;
+    return (f <= 1 ? 1 : f <= 2 ? 2 : f <= 2.5 ? 2.5 : f <= 5 ? 5 : 10) * p;
+  }
+  function shortNum(v) { return v >= 1000 ? fmtN(v / 1000, v % 1000 ? 1 : 0) + 'k' : fmtN(v); }
+
+  $('chart').addEventListener('mousemove', function (e) {
+    var hit = e.target.closest && e.target.closest('.hit');
+    var tip = this.querySelector('.tip');
+    if (!tip) return;
+    if (!hit || !chartData) { tip.hidden = true; return; }
+    var i = +hit.getAttribute('data-i'), d = chartData;
+    var a = d.series[0].values[i], b = d.series[1].values[i];
+    tip.innerHTML = '<b>Tháng ' + d.labels[i].slice(1) + '</b>' +
+      d.series.map(function (s, k) { return '<div><span>' + R.monthLabel(d.months[k][i]) + '</span><span class="num">' + fmtN(s.values[i]) + '</span></div>'; }).join('') +
+      '<div><span>So năm trước</span><span>' + delta(a, b, M.th) + '</span></div>';
+    tip.hidden = false;
+    var rect = this.getBoundingClientRect(), x = e.clientX - rect.left + 14, yv = e.clientY - rect.top + 10;
+    if (x + tip.offsetWidth > rect.width) x = e.clientX - rect.left - tip.offsetWidth - 14;
+    tip.style.left = Math.max(0, x) + 'px'; tip.style.top = yv + 'px';
+  });
+  $('chart').addEventListener('mouseleave', function () { var tip = this.querySelector('.tip'); if (tip) tip.hidden = true; });
+  var resizeTimer = null;
+  window.addEventListener('resize', function () { clearTimeout(resizeTimer); resizeTimer = setTimeout(function () { if (chartData) drawChart(chartData); }, 150); });
+
+  function renderFiscal() {
+    var r = R.fiscal(ds, opts({ dim: state.fyDim }));
+    var span = function (ms) { return ms.length ? R.monthLabel(ms[0]) + '–' + R.monthLabel(ms[ms.length - 1]) : ''; };
+    var h = '<table><thead><tr><th>Năm tài chính</th><th>Tháng có TH</th><th>KH cả năm</th><th>KH các tháng có TH</th><th>TH</th><th>% đạt</th>' +
+      '<th class="bl">TH cùng kỳ năm trước</th><th>±</th><th class="bl">LĐ bq/ngày</th><th>LĐ/chuyền</th><th>Năng suất</th><th>Hiệu suất</th><th>Số mã</th></tr></thead><tbody>';
+    r.years.slice().reverse().forEach(function (y) {
+      var v = y.v, hasTh = v.th > 0;
+      h += '<tr><td>' + esc(y.label) + '</td><td class="num">' + (y.thMonths.length ? y.thMonths.length + '<span class="sub">' + span(y.thMonths) + '</span>' : '0') + '</td>' +
+        '<td class="num">' + fmtN(v.kh) + '</td><td class="num">' + (hasTh ? fmtN(y.done.kh) : '—') + '</td><td class="num">' + (hasTh ? fmtN(v.th) : '—') + '</td><td class="num">' + (hasTh ? fmtP(y.done.rate) : '—') + '</td>' +
+        '<td class="num bl">' + (y.same ? fmtN(y.same.th) + '<span class="sub">' + span(y.sameMonths) + '</span>' : '—') + '</td><td>' + delta(hasTh ? v.th : null, y.same && y.same.th, M.th) + '</td>' +
+        '<td class="num bl">' + fmtN(v.labor) + '</td><td class="num">' + fmtN(v.perLine, 1) + '</td><td class="num">' + fmtN(v.productivity, 2) + '</td><td class="num">' + fmtP(v.efficiency) + '</td><td class="num">' + fmtN(v.styles) + '</td></tr>';
+    });
+    $('fyTable').innerHTML = h + '</tbody></table>';
+    $('fyDimSeg').innerHTML = segHtml(state.fyDim, 'data-fydim');
+    if (!r.matrix || !r.matrix.length) { $('fyMatrix').innerHTML = '<div class="empty">Chưa có sản lượng thực hiện.</div>'; return; }
+    var yrs = r.years, ly = r.lastTh >= 0 ? yrs[r.lastTh] : null, cmp = !!(ly && ly.same);
+    var m = '<table><thead><tr><th>' + R.DIMS[state.fyDim].label + '</th>' + yrs.map(function (y) { return '<th>NTC ' + y.fy + '</th>'; }).join('') +
+      (cmp ? '<th class="bl">NTC ' + (ly.fy - 1) + ' cùng kỳ<span class="sub">' + span(ly.sameMonths) + '</span></th><th>NTC ' + ly.fy + ' so cùng kỳ</th>' : '') + '</tr></thead><tbody>';
+    var row = function (name, cells, last, same, cls) {
+      return '<tr' + (cls ? ' class="' + cls + '"' : '') + '><td>' + esc(name) + '</td>' + cells.map(function (c) { return '<td class="num">' + (c.th ? fmtN(c.th) : '—') + '</td>'; }).join('') +
+        (cmp ? '<td class="num bl">' + (same && same.th ? fmtN(same.th) : '—') + '</td><td>' + delta(last && last.th, same && same.th, M.th) + '</td>' : '') + '</tr>';
+    };
+    r.matrix.forEach(function (x) { m += row(x.key, x.cells, x.last, x.same); });
+    m += row('Tổng', yrs.map(function (y) { return y.v; }), ly && ly.v, ly && ly.same, 'total');
+    $('fyMatrix').innerHTML = m + '</tbody></table>';
+  }
+  function renderStyles() {
+    var q = ($('styleSearch').value || '').trim().toLowerCase();
+    var list = R.filterFacts(ds.facts, { factory: state.factory || null, brand: state.brand || null, months: [state.month] })
+      .filter(function (x) { return !x.open; })
+      .filter(function (x) { return !q || [x.style, x.brand, x.line, x.item, x.f, x.po].join(' ').toLowerCase().indexOf(q) >= 0; })
+      .sort(function (a, b) { return a.f.localeCompare(b.f) || a.line.localeCompare(b.line, 'vi', { numeric: true }) || b.th - a.th; });
+    if (!list.length) { $('styleTable').innerHTML = '<div class="empty">Không có mã hàng.</div>'; return; }
+    var h = '<table><thead><tr><th>Mã hàng</th><th class="txt">Xưởng</th><th class="txt">Chuyền</th><th class="txt">Nhãn hàng</th><th class="txt">Chủng loại</th><th>Thời gian may (giây)</th><th>LĐ chuyền</th><th>KH</th><th>TH</th><th>% đạt</th><th>Ngày chạy</th><th>Ngày công</th><th>Năng suất</th><th>Hiệu suất</th><th class="txt">Ghi chú</th></tr></thead><tbody>';
+    list.forEach(function (x) {
+      var v = R.derive(R.aggregate([x]), 1), note = [];
+      if (x.start) note.push('mới vào chuyền'); if (x.end) note.push('hoàn thành');
+      h += '<tr><td>' + esc(x.style) + '</td><td class="txt">' + esc(x.f) + '</td><td class="txt">' + esc(x.line) + '</td><td class="txt">' + esc(x.brand) + '</td><td class="txt">' + esc(x.item) + '</td>' +
+        '<td class="num">' + fmtN(x.sam) + '</td><td class="num">' + fmtN(x.hc) + '</td><td class="num">' + fmtN(x.kh) + '</td><td class="num">' + fmtN(x.th) + '</td><td class="num">' + fmtP(v.rate) + '</td>' +
+        '<td class="num">' + fmtN(x.thDays) + '</td><td class="num">' + fmtN(x.pdT, 1) + '</td><td class="num">' + fmtN(v.productivity, 2) + '</td><td class="num">' + fmtP(v.efficiency) + '</td><td class="txt">' + note.join(', ') + '</td></tr>';
+    });
+    $('styleTable').innerHTML = h + '</tbody></table>';
+  }
+
+  // ---------- Xuất Excel ----------
+  function exportExcel() {
+    var wb = XLSX.utils.book_new();
+    var r2 = function (v, d) { return v == null || !isFinite(v) ? null : Math.round(v * Math.pow(10, d || 0)) / Math.pow(10, d || 0); };
+    var add = function (name, aoa) { XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(aoa), name.slice(0, 31)); };
+    var metricRow = function (v) { return [r2(v.kh), r2(v.khOpen) || null, r2(v.th), r2(v.rate, 4), v.styles, v.start, v.end, r2(v.labor, 1), r2(v.perLine, 1), r2(v.pdT, 1), r2(v.productivity, 3), r2(v.sah, 1), r2(v.efficiency, 4)]; };
+    var metricHead = ['KH', 'KH đầu tháng', 'TH', 'Tỷ lệ đạt', 'Số mã', 'Mã mới', 'Mã hoàn thành', 'LĐ bq/ngày', 'LĐ/chuyền', 'Ngày công', 'Năng suất (sp/người/ngày)', 'Giờ chuẩn', 'Hiệu suất'];
+
+    // So sánh kỳ
+    var s = R.summarize(ds, opts());
+    var cmp = [['Báo cáo tháng ' + R.monthLabel(state.month) + ' · ' + scopeText()], [], ['Kỳ', 'Tháng'].concat(metricHead)];
+    [['Tháng này', 'cur'], ['Tháng trước', 'prev'], ['Cùng kỳ năm trước', 'yoy'], ['Lũy kế NTC', 'ytd'], ['Lũy kế cùng kỳ', 'ytdPrev']].forEach(function (p) {
+      var ms = s.periods[p[1]];
+      cmp.push([p[0], ms.length ? ms.map(R.monthLabel).join(', ') : 'chưa có'].concat(metricRow(s.totals[p[1]])));
+    });
+    add('So sanh ' + R.monthLabel(state.month).replace('/', '-'), cmp);
+
+    // Theo chiều cho tháng báo cáo
+    ['brand', 'line', 'item'].forEach(function (dim) {
+      var r = R.summarize(ds, opts({ dim: dim }));
+      var aoa = [[R.DIMS[dim].label, 'TH tháng', 'KH tháng', 'Tỷ lệ đạt', 'Tỷ trọng', 'TH tháng trước', 'TH cùng kỳ', 'Lũy kế NTC', 'Lũy kế cùng kỳ', 'LĐ bq/ngày', 'LĐ/chuyền', 'Năng suất', 'Hiệu suất', 'Số mã']];
+      sortRows(r.rows, 'th', 'key').forEach(function (x) {
+        aoa.push([x.key, r2(x.cur.th), r2(x.cur.kh), r2(x.cur.rate, 4), r2(x.share, 4), r2(x.prev.th), r2(x.yoy.th), r2(x.ytd.th), r2(x.ytdPrev.th), r2(x.cur.labor, 1), r2(x.cur.perLine, 1), r2(x.cur.productivity, 3), r2(x.cur.efficiency, 4), x.cur.styles]);
+      });
+      add({ brand: 'Nhan hang', line: 'Chuyen', item: 'Chung loai' }[dim] + ' ' + R.monthLabel(state.month).replace('/', '-'), aoa);
+    });
+
+    // Theo tháng, từng xưởng và tổng
+    var mon = [['Tháng', 'NTC', 'Xưởng', 'Trạng thái'].concat(metricHead)];
+    ds.factories.concat(['Tất cả']).forEach(function (f) {
+      R.monthly(ds, { factory: f === 'Tất cả' ? null : f, brand: state.brand || null, startMonth: state.startMonth }).forEach(function (r) {
+        mon.push([r.month, r.fy, f, STATUS[r.status]].concat(metricRow(r.v)));
+      });
+    });
+    add('Theo thang', mon);
+
+    // Năm tài chính × nhãn hàng
+    var fyr = R.fiscal(ds, opts({ dim: 'brand' }));
+    var fya = [['Năm tài chính', 'Phạm vi', 'Số tháng'].concat(metricHead)];
+    fyr.years.forEach(function (y) {
+      fya.push([y.label, 'Cả năm (gồm tháng kế hoạch)', y.months.length].concat(metricRow(y.v)));
+      if (y.thMonths.length) fya.push([y.label, 'Các tháng có TH', y.thMonths.length].concat(metricRow(y.done)));
+      if (y.same) fya.push([y.label, 'Cùng kỳ năm trước (' + y.sameMonths.map(R.monthLabel).join(', ') + ')', y.sameMonths.length].concat(metricRow(y.same)));
+    });
+    fya.push([]); fya.push(['Nhãn hàng'].concat(fyr.years.map(function (y) { return 'TH NTC ' + y.fy; })));
+    (fyr.matrix || []).forEach(function (row) { fya.push([row.key].concat(row.cells.map(function (c) { return r2(c.th); }))); });
+    add('Nam tai chinh', fya);
+
+    // Dữ liệu chi tiết (để tự làm pivot)
+    var raw = [['Tháng', 'NTC', 'Xưởng', 'Trạng thái', 'Nguồn', 'Chuyền', 'Cụm chuyền', 'Nhãn hàng', 'Nhãn hàng (gốc)', 'Mã hàng', 'Chủng loại', 'PO', 'Thời gian may (giây)', 'LĐ chuyền', 'KH', 'KH đầu tháng', 'TH', 'Ngày chạy', 'Ngày công TH', 'Ngày công KH', 'Giờ chuẩn TH', 'Ngày làm việc tháng', 'Mã mới', 'Hoàn thành']];
+    ds.facts.forEach(function (x) {
+      raw.push([x.m, R.fiscalYear(x.m, state.startMonth), x.f, STATUS[x.status], x.open ? 'KH đầu tháng' : 'Số tháng', x.line, x.group, x.brand, x.brandRaw, x.style, x.item, x.po, x.sam, x.hc,
+        r2(x.kh), r2(x.khOpen), r2(x.th), x.thDays, r2(x.pdT, 2), r2(x.pdK, 2), r2(x.sah, 2), x.wd, x.start, x.end]);
+    });
+    add('Du lieu', raw);
+
+    var srcs = [['Xưởng', 'Ngày update', 'Tên file', 'Số mã', 'Từ ngày', 'Đến ngày', 'Ghi chú']];
+    files.forEach(function (f) { srcs.push([f.factory, f.updateDate, f.name, f.styleCount, f.firstDate, f.lastDate, (f.warnings || []).join(' ')]); });
+    add('File nguon', srcs);
+
+    XLSX.writeFile(wb, 'Bao-cao-san-xuat-' + state.month + '.xlsx');
+  }
+
+  // ---------- Sự kiện ----------
+  var drop = $('drop');
+  $('fileInput').addEventListener('change', function () { if (this.files.length) addFiles(this.files); this.value = ''; });
+  ['dragenter', 'dragover'].forEach(function (ev) { drop.addEventListener(ev, function (e) { e.preventDefault(); drop.classList.add('over'); }); });
+  ['dragleave', 'drop'].forEach(function (ev) { drop.addEventListener(ev, function (e) { e.preventDefault(); drop.classList.remove('over'); }); });
+  drop.addEventListener('drop', function (e) { if (e.dataTransfer && e.dataTransfer.files.length) addFiles(e.dataTransfer.files); });
+
+  $('fileList').addEventListener('click', async function (e) {
+    var b = e.target.closest('[data-del]');
+    if (!b) return;
+    var id = b.getAttribute('data-del');
+    files = files.filter(function (f) { return f.id !== id; });
+    await DB.del(id);
+    setStatus('Đã xóa 1 file.');
+    rebuild();
+  });
+  $('btnClear').addEventListener('click', async function () {
+    if (!confirm('Xóa toàn bộ dữ liệu đã nạp trong trình duyệt này?')) return;
+    files = []; await DB.clear(); setStatus('Đã xóa toàn bộ dữ liệu.'); rebuild();
+  });
+  $('btnExport').addEventListener('click', function () {
+    try { exportExcel(); } catch (e) { setStatus('Không xuất được Excel: ' + e.message, true); }
+  });
+
+  function onFilter() {
+    state.month = $('fMonth').value; state.factory = $('fFactory').value; state.brand = $('fBrand').value;
+    state.startMonth = +$('fFy').value || 4;
+    saveSettings(); fillFilters(); render(); renderFiles();
+  }
+  ['fMonth', 'fFactory', 'fBrand', 'fFy'].forEach(function (id) { $(id).addEventListener('change', onFilter); });
+  $('btnAliases').addEventListener('click', function () { state.aliasText = $('aliases').value; saveSettings(); rebuild(); });
+  $('dimSeg').addEventListener('click', function (e) { var b = e.target.closest('[data-dim]'); if (!b) return; state.dim = b.getAttribute('data-dim'); saveSettings(); renderDim(); });
+  $('fyDimSeg').addEventListener('click', function (e) { var b = e.target.closest('[data-fydim]'); if (!b) return; state.fyDim = b.getAttribute('data-fydim'); saveSettings(); renderFiscal(); });
+  $('dimSort').addEventListener('change', function () { state.sort = this.value; saveSettings(); renderDim(); });
+  var searchTimer = null;
+  $('styleSearch').addEventListener('input', function () { clearTimeout(searchTimer); searchTimer = setTimeout(renderStyles, 150); });
+
+  // ---------- Khởi động ----------
+  DB.open().then(DB.all).then(function (saved) {
+    files = (saved || []).filter(function (f) { return f && f.facts; });
+    if (files.length) setStatus('Đã mở lại ' + files.length + ' file đã nạp trước đây.');
+    rebuild();
+  });
+})();
+</script>
+</html>
