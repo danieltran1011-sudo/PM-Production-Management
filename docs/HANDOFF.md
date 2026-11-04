@@ -1,6 +1,6 @@
 # Bàn giao: phân tích khối lượng và phân công nhóm MD APIC
 
-Cập nhật: 28/10/2026. Nhánh: `claude/vigilant-fermi-3p4gcx` (đã push, chưa mở PR).
+Cập nhật: 4/11/2026. Nhánh: `claude/vigilant-fermi-3p4gcx` (đã push, chưa mở PR).
 
 ## 1. Tóm tắt
 
@@ -12,14 +12,14 @@ Cập nhật: 28/10/2026. Nhánh: `claude/vigilant-fermi-3p4gcx` (đã push, ch�
 
 | Tên trong file | Người | Ghi chú |
 |---|---|---|
-| Cuong | Cường | HELLY HANSEN (chủ lực); điều phối xuất hàng chung, quản lý chung may mẫu |
-| Luan | Luân | TNF 富山企画 (TNF(GTC企画)), PPS~đại trà; nhận thêm một phần việc quản lý |
-| Khanh | Khánh | Đi làm lại từ giữa 10/2026 sau nghỉ thai sản; làm đến 16h, tăng ca được đến 17h |
+| Cuong | Cường | HELLY HANSEN (chủ lực); điều phối xuất hàng chung, quản lý chung may mẫu; hỗ trợ quản lý xây kế hoạch (từ 11/2026) |
+| Luan | Luân | TNF 富山企画 (TNF(GTC企画)) phần HSY, NKO, PPS~đại trà; hỗ trợ quản lý xây kế hoạch (từ 11/2026) |
+| Khanh | Khánh | Đi làm lại từ giữa 10/2026 sau nghỉ thai sản; làm đến 16h, tăng ca được đến 17h. NEUTRALWORKS, TNF 東京企画, 141, TNF 富山企画 phần SGM |
 | B.Trang / Bich Trang / "B Trang" | Bích Trang | Nhân viên mới; TNF (ALL) mẫu 1st–SMS từ 27SS, Premium Snow 別注, FOXFIRE, TATRAS, Kasco, YONEX từ S27 |
-| Q.Huy / Huy | Huy | Goldwin (xuyên suốt), TNF 別注 HOSOYA, 141 (hỗ trợ), CANTERBURY, NANGA |
+| Q.Huy / Huy | Huy | Goldwin (xuyên suốt), TNF 別注 HOSOYA, CANTERBURY, NANGA (141 chuyển cho Khánh 11/2026) |
 | Hien | Hiền | Teton Bros, ALLTERRAIN (+81), Mont-Bell, DESCENTE (GOLF, SKI), Snowpeak |
 | Nhu / Như | Như | TNF 別注 SHIGEMOTO/NAKAO, UTMF, TOKYO MARATHON + việc văn phòng (~30%: báo cáo tháng, hóa đơn…) |
-| H.Trang / "Trang" (trong file mẫu) | Huyền Trang | **Nhóm CAD**, chỉ phụ TNF HAT&CAP, 141 → không tính trong phân tích MD |
+| H.Trang / "Trang" (trong file mẫu) | Huyền Trang | **Nhóm CAD**, chỉ phụ TNF HAT&CAP (141 chuyển cho Khánh 11/2026) → không tính trong phân tích MD |
 
 Viết tắt brand: HH = HELLY HANSEN, NW = NEUTRALWORKS, DCC = DESCENTE (TI: WTNB). Viết tắt người phía TI: SGM = Shigemoto, HSY = Hosoya, NKO = Nakao, WTNB/WTB = Watanabe/Watabe, KBR = Kobori.
 
@@ -38,6 +38,10 @@ Viết tắt brand: HH = HELLY HANSEN, NW = NEUTRALWORKS, DCC = DESCENTE (TI: WT
 | 28/10/2026 | **TNF 東京企画: Cường → Khánh từ 11/2026** |
 | 28/10/2026 | Hỗ trợ tạm theo tháng (Huy, Như hỗ trợ Cường tháng 12; Bích Trang hỗ trợ Huy tháng 1): **chưa cần**, giữ làm phương án dự phòng |
 | 28/10/2026 | Snowpeak do Hiền theo dõi |
+| 11/2026 | **Luân và Cường hỗ trợ quản lý xây kế hoạch** (tạm tính ~20% thời gian mỗi người) |
+| 11/2026 | **Khánh nhận thêm 141 và phần TNF 富山企画 do Shigemoto (SGM) phụ trách** (tách TNF 富山企画 theo người phụ trách TIJ; Luân giữ HSY, NKO); giữ NW, TNF 東京企画. Thay cho cách Khánh hỗ trợ Luân theo % |
+| 11/2026 | **Khánh không nhận 1/3 mẫu TNF**: Bích Trang giữ toàn bộ mẫu TNF |
+| 11/2026 | Thời điểm Khánh nhận hẳn phần SGM: **chưa chốt** (đề xuất theo cùng Luân hết 27SS, nhận từ PPS 27FW) |
 
 ## 4. Kết quả chính (tải 12 tháng, theo các quyết định đã chốt)
 
@@ -45,20 +49,20 @@ Viết tắt brand: HH = HELLY HANSEN, NW = NEUTRALWORKS, DCC = DESCENTE (TI: WT
 
 | Tháng | Cường | Luân | Khánh | Bích Trang | Huy | Hiền | Như (chỉ phần brand) |
 |---|---|---|---|---|---|---|---|
-| 11/2026 | 1,72 | 1,85 | 0,97 | 1,42 | 1,69 | 1,46 | 1,13 |
-| 12/2026 | 1,94 | 1,54 | 1,21 | 0,55 | 0,41 | 1,31 | 0,31 |
-| 1/2027 | 1,37 | 1,30 | 0,88 | 0,16 | 1,57 | 0,87 | 1,21 |
-| 2/2027 | 2,04 | 0,87 | 0,96 | 0,17 | 0,68 | 0,93 | 1,20 |
-| 3/2027 | 0,80 | 1,30 | 0,93 | 0,10 | 0,43 | 0,60 | 1,12 |
-| 4/2027 | 0,96 | 1,69 | 1,12 | 0,41 | 1,03 | 0,55 | 2,56 |
-| 5/2027 | 0,85 | 1,52 | 1,04 | 0,40 | 1,69 | 0,89 | 0,86 |
-| 6/2027 | 0,97 | 1,11 | 1,22 | 0,77 | 1,30 | 1,34 | 0,27 |
-| 7/2027 | 2,88 | 0,70 | 0,74 | 0,73 | 1,51 | 0,61 | 0,86 |
-| 8/2027 | 0,90 | 0,75 | 0,60 | 0,42 | 1,33 | 0,56 | 0,82 |
-| 9/2027 | 1,01 | 0,65 | 0,46 | 0,41 | 0,89 | 0,48 | 0,55 |
-| 10/2027 | 1,56 | 0,88 | 1,01 | 0,65 | 1,14 | 1,27 | 0,84 |
+| 11/2026 | 1,85 | 1,76 | 1,41 | 1,35 | 1,62 | 1,40 | 1,08 |
+| 12/2026 | 2,10 | 1,30 | 1,25 | 0,78 | 0,39 | 1,26 | 0,30 |
+| 1/2027 | 1,48 | 1,67 | 0,56 | 0,19 | 1,51 | 0,83 | 1,16 |
+| 2/2027 | 2,20 | 0,61 | 1,14 | 0,24 | 0,65 | 0,89 | 1,15 |
+| 3/2027 | 0,87 | 0,78 | 1,42 | 0,13 | 0,41 | 0,57 | 1,08 |
+| 4/2027 | 1,04 | 2,19 | 0,59 | 0,54 | 0,98 | 0,52 | 2,47 |
+| 5/2027 | 0,92 | 2,03 | 0,53 | 0,52 | 1,61 | 0,85 | 0,83 |
+| 6/2027 | 1,05 | 1,72 | 0,43 | 1,04 | 1,26 | 1,29 | 0,26 |
+| 7/2027 | 3,09 | 1,03 | 0,24 | 0,92 | 1,45 | 0,59 | 0,83 |
+| 8/2027 | 0,97 | 0,89 | 0,55 | 0,44 | 1,29 | 0,54 | 0,79 |
+| 9/2027 | 1,10 | 0,48 | 0,72 | 0,42 | 0,86 | 0,46 | 0,53 |
+| 10/2027 | 1,67 | 0,82 | 1,06 | 0,88 | 1,09 | 1,21 | 0,81 |
 
-Điểm cần theo dõi: tháng 11 nặng nhất cả nhóm; Cường cao điểm 12, 2 (Tết ít ngày làm, 2,04), **7** (mẫu 1st FW HELLY HANSEN), 10; Luân 11–12 và **3–5** (hàng FW vào chuyền); Huy 11, 1, **5**; **Như tháng 4** (40 mã TNF 別注 FW vào chuyền); Hiền 11–12, 6. Bích Trang thấp có thể do thiếu dữ liệu các brand mới.
+Điểm cần theo dõi: tháng 11 nặng nhất cả nhóm; Cường cao điểm 12, 2 (Tết ít ngày làm, 2,20), **7** (mẫu 1st FW HELLY HANSEN), 10; Luân 11, 1 và **4–6** (hàng FW phía HSY vào chuyền); Khánh cao 11 và 3 (hàng SS của SGM), thấp 4–7 → có thể hỗ trợ Luân; Huy 11, 1, **5**; **Như tháng 4** (40 mã TNF 別注 FW vào chuyền); Hiền 11–12, 6. Bích Trang thấp có thể do thiếu dữ liệu các brand mới.
 
 ## 5. Dữ liệu nguồn và các điểm dễ sai
 
@@ -82,7 +86,8 @@ Tất cả file gốc ở `data/nguon/`.
 
 - **Chỉ số tải** = trung bình 4 yếu tố (mỗi yếu tố so với mức trung bình): số mã, ngày chuyền, ngày may mẫu / đơn mẫu, giờ dịch. Trọng số đều 25% (đã thử 4 cách đặt trọng số: Cường cao nhất, Như thấp nhất không đổi; chỉ vị trí Luân phụ thuộc trọng số).
 - **Hệ số độ khó**: ALLTERRAIN, DESCENTE (DCC) × 1,3 (quản lý đánh giá: tài liệu, rập không rõ, TIJ hay thiếu NPL).
-- **Công suất**: 9 giờ/ngày, Khánh 8 giờ. Việc giao thêm: Cường, Luân mỗi người ~1 giờ/ngày (10%) – **chưa có số thật**.
+- **Công suất**: 9 giờ/ngày, Khánh 8 giờ. Việc kế hoạch, điều phối: Cường, Luân mỗi người ~20% thời gian (từ 11/2026) – **chưa có số thật**.
+- **Phần TNF SGM của Khánh**: lô sản xuất TNF có cột TIJ = SGM (Plantable) gán Khánh; mẫu TNF của Luân chia ~30% cho Khánh (tỷ lệ mã SGM 26SS–27SS).
 - **Tải 12 tháng** (`ke-hoach-nam.py`, dùng chính): sản xuất mùa đến 27SS lấy lịch thật trong Plantable; 27FW, 28SS lấy lịch của 26FW, 27SS năm trước dời 52 tuần; mẫu = đơn tồn (dồn vào 11/2026) + cùng tháng năm trước; công suất = ngày làm việc thực từng người (`lich_lam_viec.py`: thứ 2–7, nghỉ thứ 7 theo nhóm, trừ lễ; lễ theo lịch công ty: 24/11/2026, 1/1/2027, **Tết dự kiến 4–14/2/2027**, 30/4–1/5/2027; Giỗ Tổ 16/4 và Quốc khánh 2–3/9/2027 tạm theo luật) × giờ/ngày; mốc 1,0 = trung bình 1 ngày công cả 12 tháng.
 - **Tải 4 tháng** (`ke-hoach-thang.py`, bản trước, không còn trong tài liệu): mã vào chuyền (mỗi mã tính 1 lần dù nhiều lô), ngày chuyền đang chạy (theo lô), đơn mẫu = đơn tồn (hạn ≤ 10/2026, chưa xong, dồn vào tháng 11) + số đơn cùng tháng năm trước theo brand; trọng số loại mẫu: 1st/0次 1,0; 2nd 0,8; PPS/mockup 0,6; SMS 0,5; khác 0,3. Mốc 1,0 chung cho cả 4 tháng.
 - **Mùa vừa qua** (`build.py`): bulk 26FW + 27SS, mẫu 27SS; Khánh (nghỉ) và H.Trang (CAD) không tính vào mức trung bình.
@@ -112,7 +117,7 @@ npm test                                              # test workflow lead time 
 
 1. **Kế hoạch mẫu 1st 28SS** (số mã theo brand): hiện ước theo cùng kỳ năm trước, nên Bích Trang, Huy tháng 12–2 có thể thấp hơn thực tế.
 2. **Đại trà 27SS của FOXFIRE, TATRAS, Kasco, YONEX** (Bích Trang) gần như chưa có trong Plantable/BULK.
-3. **Giờ thực tế** của việc điều phối (Cường) và việc quản lý giao cho Luân (đang tạm 1 giờ/ngày).
+3. **Giờ thực tế** của việc kế hoạch, điều phối của Cường và Luân (đang tạm ~20% thời gian). Cách chia 11/2026 chưa giảm tải đủ cho hai bạn (TB 12 tháng Cường 1,53, Luân 1,27): cân nhắc Bích Trang hỗ trợ mẫu HELLY HANSEN tháng 7 / theo dõi xuất hàng, Khánh hỗ trợ Luân tháng 4–6.
 4. **Mẫu 26FW của Hiền** (sheet Hiền trong file SPL thiếu); YONEX chưa có giây TB (tạm 1 ngày/cái).
 5. **Plantable dòng 1976–1996**: đã báo quản lý nên sửa; khi Plantable mới đã sửa thì không cần lọc thủ công.
 6. Mẫu TNF别注 富山 (Như) và 東京 (Huy) mùa 25FW, 26SS có số giống hệt nhau trong file SPL – có thể nhập trùng.

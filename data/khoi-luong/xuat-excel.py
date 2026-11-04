@@ -32,13 +32,13 @@ def widths(ws, ws_):
 
 # 1. Phân công dự kiến
 ws = sheet('Phân công dự kiến', True)
-title(ws, 'Phân công dự kiến nhóm MD APIC (quyết định 10/2026, cập nhật theo Plantable 26/10/2026)', 'Cột 2: 11–12/2026 (mẫu triển lãm 27FW, PPS 27SS, đại trà 27SS bắt đầu). Cột 3: từ mẫu 1st 28SS (1–2/2027). Hỗ trợ tạm theo tháng: chưa áp dụng.')
+title(ws, 'Phân công dự kiến nhóm MD APIC (quyết định 10–11/2026, cập nhật theo Plantable 26/10/2026)', 'Cột 2: 11–12/2026 (mẫu triển lãm 27FW, PPS 27SS, đại trà 27SS bắt đầu). Cột 3: từ mẫu 1st 28SS (1–2/2027). Hỗ trợ tạm theo tháng: chưa áp dụng.')
 rows = [
- ('Cuong', 'HELLY HANSEN (chủ lực); TNF 東京企画 bàn giao cho Khanh từ 11/2026; điều phối xuất hàng chung cả nhóm; quản lý chung may mẫu', 'HELLY HANSEN; điều phối xuất hàng chung; quản lý chung may mẫu', 'Cao điểm 12/2026 (21 mã HH vào chuyền). Hỗ trợ tạm: chưa cần, theo dõi'),
- ('Luan', 'TNF 富山企画 (đầu mối duy nhất với TIJ); một phần việc quản lý (~1 giờ/ngày)', 'Như GĐ1', 'Khanh hỗ trợ ~1/4 việc ở GĐ1, ~1/3 ở GĐ2'),
- ('Khanh', 'NEUTRALWORKS; TNF 東京企画 (nhận từ Cuong từ 11/2026); hỗ trợ TNF 富山企画 (~25%): báo cáo mã ngoài quy tắc 2 tuần, tiến độ NPL, BL/P/L (cc Luan), dịch một phần tài liệu', 'NEUTRALWORKS; TNF 東京企画 (PPS~đại trà); 1/3 mẫu TNF cùng B.Trang; hỗ trợ TNF 富山企画 (~1/3 việc Luan)', 'Làm đến 16h, có thể tăng ca đến 17h. Tháng 12 giữ hỗ trợ Luan ~25%'),
- ('Bich Trang', 'TNF (ALL) mẫu (làm tiếp mẫu triển lãm 27FW); Premium Snow 別注, FOXFIRE, TATRAS, Kasco, YONEX', 'Như trên, chia 1/3 mẫu TNF cho Khanh', 'Gánh đợt mẫu triển lãm 27FW lớn nhất nhóm (611 cái, gồm YONEX 244)'),
- ('Huy', 'Goldwin (xuyên suốt mẫu và đại trà), TNF 別注 HOSOYA, 141 (hỗ trợ), CANTERBURY, NANGA', 'Giữ nguyên', 'Cao điểm 1/2027 (25 mã 別注 vào chuyền). Hỗ trợ tạm: chưa cần, theo dõi'),
+ ('Cuong', 'HELLY HANSEN (chủ lực); TNF 東京企画 bàn giao cho Khanh từ 11/2026; điều phối xuất hàng chung cả nhóm; quản lý chung may mẫu; hỗ trợ quản lý xây kế hoạch (~20%)', 'Như GĐ1', 'Cao điểm 12/2026, 2/2027 (Tết), 7/2027 (mẫu 1st HELLY HANSEN). Cân nhắc B.Trang hỗ trợ tháng 7'),
+ ('Luan', 'TNF 富山企画 phần HSY, NKO; theo cùng Khanh phần SGM trong thời gian bàn giao; hỗ trợ quản lý xây kế hoạch (~20%)', 'TNF 富山企画 phần HSY, NKO; hỗ trợ xây kế hoạch', 'Cao điểm 4–6/2027 (hàng FW phía HSY): Khanh có thể hỗ trợ'),
+ ('Khanh', 'NEUTRALWORKS; TNF 東京企画 (từ Cuong); 141 (từ Huyen Trang/Huy); TNF 富山企画 phần SGM (từ Luan, theo cùng Luan hết 27SS)', 'NEUTRALWORKS; TNF 東京企画; 141; TNF 富山企画 phần SGM (đề xuất nhận hẳn từ PPS 27FW)', 'Làm đến 16h, có thể tăng ca đến 17h. Không nhận 1/3 mẫu TNF. Cao 11/2026 và 3/2027, thấp 4–7/2027'),
+ ('Bich Trang', 'TNF (ALL) mẫu (giữ toàn bộ); Premium Snow 別注, FOXFIRE, TATRAS, Kasco, YONEX', 'Như GĐ1', 'Gánh đợt mẫu triển lãm 27FW lớn nhất nhóm (611 cái, gồm YONEX 244)'),
+ ('Huy', 'Goldwin (xuyên suốt mẫu và đại trà), TNF 別注 HOSOYA, CANTERBURY, NANGA (141 chuyển cho Khanh)', 'Giữ nguyên', 'Cao điểm 1/2027 (25 mã 別注 vào chuyền). Hỗ trợ tạm: chưa cần, theo dõi'),
  ('Hien', 'Teton Bros, ALLTERRAIN, Mont-Bell, DESCENTE GOLF, Snowpeak', 'Giữ nguyên', 'Không giao thêm. Tháng 11–12 khá cao (mẫu SKI, 12 mã vào chuyền tháng 12)'),
  ('Nhu', 'TNF 別注 SHIGEMOTO/NAKAO, UTMF, TOKYO MARATHON; việc văn phòng, báo cáo tháng, hóa đơn', 'Giữ nguyên', 'Theo dõi thêm'),
 ]
@@ -109,7 +109,7 @@ for lab, key_ in (('Mã vào chuyền', 'ma_vao_chuyen'), ('Ngày chuyền đang
 r += 1
 for t_ in ['Tô đỏ: chỉ số ≥ 1,4 (vượt mức tăng ca 1 giờ/ngày).',
            'Công suất = ngày làm việc thực (thứ 2–7, nghỉ thứ 7 theo nhóm A/B, trừ lễ) × giờ/ngày (9; Khanh 8). Lễ: 24/11/2026, 1/1/2027, Tết dự kiến 4–14/2/2027, 30/4–1/5/2027; Giỗ Tổ, Quốc khánh 2027 tạm theo luật.',
-           'Đã áp dụng: NW và TNF 東京企画 → Khanh từ 11/2026; Khanh hỗ trợ Luan ~25% (11–12/2026), ~35% từ 1/2027; 1/3 mẫu TNF → Khanh từ 12/2026.',
+           'Đã áp dụng quyết định 11/2026: Khanh nhận NW, TNF 東京企画, 141 và TNF 富山企画 phần SGM (tính từ 11/2026); Khanh không nhận mẫu TNF; Cuong, Luan ~20% thời gian cho kế hoạch, điều phối.',
            'Nhu: chỉ tính phần brand (~30% thời gian là việc văn phòng). B.Trang có thể thấp do thiếu dữ liệu các brand mới.']:
     ws.cell(r, 1, t_).font = Font(name=F, size=9, italic=True); r += 1
 widths(ws, [9, 52, 12] + [10] * 7); ws.freeze_panes = 'D5'

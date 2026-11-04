@@ -4,6 +4,8 @@
 #   - Sản xuất mùa đã có kế hoạch (đến 27SS): lịch thật trong Plantable 26/10/2026.
 #   - Sản xuất mùa chưa có kế hoạch (27FW, 28SS): lịch của mùa tương ứng năm trước (26FW, 27SS) dời +1 năm, gán người đang phụ trách.
 #   - Mẫu: đơn còn tồn dồn vào 11/2026 + số đơn cùng tháng năm trước (file mẫu 2025–2026), gán người đang phụ trách.
+#   - Phân công theo quyết định 11/2026: Khánh nhận NW, TNF 東京企画, 141 và phần TNF 富山企画 do Shigemoto (SGM) phụ trách bên TIJ;
+#     Khánh không nhận mẫu TNF của Bích Trang, không còn hỗ trợ Luân theo %. Cường, Luân dành ~20% thời gian hỗ trợ quản lý làm kế hoạch.
 #   - Công suất: số ngày làm việc thực của từng người (thứ 2–7, nghỉ thứ 7 theo nhóm, nghỉ lễ) × giờ/ngày.
 # Chạy: python3 data/khoi-luong/ke-hoach-nam.py  → data/khoi-luong/ke-hoach-nam.json
 import json, collections, datetime as dt, re, sys, os
@@ -47,9 +49,10 @@ def mua_so(m):
     m = str(m or '').replace('"', '').strip()
     return (int(m[:2]), 0 if m.endswith('SS') else 1) if m[:2].isdigit() else (0, 0)
 
-def chu_san_xuat(p, b, mua):
-    """Người đang phụ trách (sau các quyết định 10/2026) cho một lô sản xuất."""
-    if b == 'NW': return 'Khanh'
+def chu_san_xuat(p, b, mua, tij=None, sgm=True):
+    """Người đang phụ trách (sau các quyết định 10–11/2026) cho một lô sản xuất."""
+    if b in ('NW', '141'): return 'Khanh'
+    if sgm and b == 'TNF' and tij == 'SGM' and p in ('Luan', 'Khanh', 'B.Trang', '?'): return 'Khanh'   # TNF 富山企画 phần SGM → Khanh
     if b == 'GOLDWIN': return 'Q.Huy'
     if b == 'YONEX': return 'B.Trang' if mua_so(mua) >= (27, 0) else 'Cuong'
     if b == 'TNF' and p == 'Cuong': return 'Khanh'          # TNF 東京企画 → Khanh từ 11/2026
@@ -59,6 +62,7 @@ def chu_san_xuat(p, b, mua):
     return p
 
 def chu_mau(p, b, thang, khanh_mau_tnf_tu):
+    if b == '141': return 'Khanh'
     if p == 'Khanh': return 'Q.Huy' if b == 'GOLDWIN' else 'B.Trang'   # mẫu Khanh năm trước: TNF → B.Trang, Goldwin → Huy
     if b == 'NW': return 'Khanh'
     if b == 'YONEX': return 'B.Trang'
@@ -73,8 +77,10 @@ def trong_so_mau(loai):
     if 'PPS' in l or 'MOCK' in l: return 0.6, 0.2
     return 0.3, 0.1
 
-def tai(khanh_mau_tnf=1/3, khanh_mau_tnf_tu='2026-12', giao_them={'Cuong': 0.1, 'Luan': 0.1},
-        ho_tro_luan={'2026-11': 0.25, '2026-12': 0.25}, ho_tro_luan_sau=0.35, he_so_kho=True):
+MAU_SGM = 0.3   # phần mẫu TNF (PPS, re-PPS…) của Luân thuộc SGM: theo tỷ lệ mã SGM trong Plantable 26SS–27SS (~28%)
+
+def tai(khanh_mau_tnf=0, khanh_mau_tnf_tu='2026-12', giao_them={'Cuong': 0.2, 'Luan': 0.2},
+        ho_tro_luan={}, ho_tro_luan_sau=0, sgm=True, he_so_kho=True):
     pt = json.load(open('data/khoi-luong/plantable-11-2025-4-2027.json'))['rows']
     mau = json.load(open('data/khoi-luong/mau-2025-2026.json'))
     P = {m: collections.defaultdict(lambda: collections.defaultdict(float)) for m in THANG}
@@ -93,7 +99,7 @@ def tai(khanh_mau_tnf=1/3, khanh_mau_tnf_tu='2026-12', giao_them={'Cuong': 0.1, 
                 lich.append((x, b, s1, e1, mua1, 'năm trước'))
     da_vao = set()
     for (x, b, s, e, mua, nguon) in sorted(lich, key=lambda t: t[2]):
-        p = chu_san_xuat(x['nguoi'], b, mua)
+        p = chu_san_xuat(x['nguoi'], b, mua, x.get('tij'), sgm)
         if p not in MD: continue
         for m in THANG:
             y, mo = map(int, m.split('-')); a = dt.date(y, mo, 1); z = dt.date(y + (mo == 12), mo % 12 + 1, 1) - dt.timedelta(days=1)
@@ -108,13 +114,16 @@ def tai(khanh_mau_tnf=1/3, khanh_mau_tnf_tu='2026-12', giao_them={'Cuong': 0.1, 
     # mẫu
     def them_mau(m, p, b, loai):
         w, wd = trong_so_mau(loai); n = 1.0
+        if sgm and p == 'Luan' and b == 'TNF':
+            P[m]['Khanh']['mau'] += MAU_SGM * w; P[m]['Khanh']['dich'] += MAU_SGM * wd * GIO_DICH['TNF']; P[m]['Khanh']['don_mau'] += MAU_SGM
+            n = 1 - MAU_SGM
         if p == 'B.Trang' and b == 'TNF' and khanh_mau_tnf and m >= khanh_mau_tnf_tu:
             P[m]['Khanh']['mau'] += n * khanh_mau_tnf * w; P[m]['Khanh']['dich'] += n * khanh_mau_tnf * wd * GIO_DICH['TNF']; P[m]['Khanh']['don_mau'] += khanh_mau_tnf
             n = 1 - khanh_mau_tnf
         P[m][p]['mau'] += n * w * k_(b); P[m][p]['dich'] += n * wd * GIO_DICH.get(b, 2.5) * k_(b); P[m][p]['don_mau'] += n
     for x in mau:
         b = nhom_brand(x['brand'])
-        if x['nguoi'] == 'H.Trang': continue
+        if x['nguoi'] == 'H.Trang' and b != '141': continue   # H.Trang thuộc CAD; riêng 141 chuyển cho Khanh
         if x['sheet'] == 'サンプル表2026' and not x['xong'] and '2026-06-01' <= x['due'] < '2026-11-01':
             them_mau('2026-11', chu_mau(x['nguoi'], b, '2026-11', khanh_mau_tnf_tu), b, x['loai'])
         for m in THANG:

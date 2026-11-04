@@ -36,6 +36,8 @@ Trong thời gian Khanh nghỉ: mẫu TNF từ 27SS do Bich Trang làm, Goldwin 
 
 Quyết định 10/2026 (sau khi Khanh đi làm lại): Hien, Huy, Nhu giữ nguyên. Cuong chuyển NEUTRALWORKS sang Khanh (ngay) và TNF 東京企画 sang Khanh (từ 11/2026), giữ HELLY HANSEN (chủ lực), nhận thêm điều phối chung (theo dõi xuất hàng cả nhóm, quản lý chung may mẫu). Khanh nhận NEUTRALWORKS, 1/3 mẫu TNF của Bich Trang từ mẫu 1st 28SS (mẫu triển lãm 27FW đã vào may, người đang làm làm tiếp) và một phần việc của Luan (tách theo chức năng, Luan giữ TNF 富山企画). Luan nhận một phần việc quản lý. Snowpeak do Hien theo dõi. Phân chia chi tiết Luan – Khanh: xem `docs/phan-tich-khoi-luong.md`.
 
+Quyết định 11/2026: Luan và Cuong hỗ trợ quản lý xây kế hoạch. Khanh nhận thêm 141 (từ Huyen Trang/Huy) và phần TNF 富山企画 do Shigemoto (SGM) phụ trách bên TIJ (Luan giữ phần HSY, NKO); giữ NEUTRALWORKS, TNF 東京企画. Khanh không nhận 1/3 mẫu TNF (Bich Trang giữ toàn bộ), không hỗ trợ Luan theo % nữa. Thời điểm Khanh nhận hẳn phần SGM chưa chốt.
+
 Lịch sử (sheet ẩn, 2017–2018): trước đây có Phong, Ngan, Thuan, Nhung làm merchandiser, phụ trách các brand như MARMOT, MILLET, SNOW PEAK, UMBRO, WOOLRICH, SCHOFFEL. Nhóm kỹ thuật khi đó: Cau dịch/phiên dịch tiếng Nhật, Boken, đặt xe; Quyen quản lý xưởng 1-A/B; Vy, Hong nghiệp vụ mẫu; Phung (email trucphuong, có lẽ là Phuong hiện nay) xưởng 1-A, hỗ trợ mẫu.
 
 ## Nhân sự APIC – 2026 上期 (dữ liệu mới nhất)
