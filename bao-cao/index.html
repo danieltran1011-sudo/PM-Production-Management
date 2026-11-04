@@ -3,6 +3,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Báo cáo sản xuất tháng</title>
+<meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Be+Vietnam+Pro:wght@400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap">
@@ -866,7 +867,27 @@ td .sub, th .sub { display: block; font-size: 11px; font-weight: 400; color: var
     files.forEach(function (f) { srcs.push([f.factory, f.updateDate, f.name, f.styleCount, f.firstDate, f.lastDate, (f.warnings || []).join(' ')]); });
     add('File nguon', srcs);
 
-    XLSX.writeFile(wb, 'Bao-cao-san-xuat-' + state.month + '.xlsx');
+    return saveWorkbook(wb, 'Bao-cao-san-xuat-' + state.month + '.xlsx');
+  }
+
+  // Lưu file: trên claude.ai dùng khả năng "downloads" (người xem xác nhận), mở trên máy thì tải thẳng
+  async function saveWorkbook(wb, filename) {
+    if (window.claude && window.claude.use) {
+      var dl = null;
+      try { dl = await window.claude.use('downloads'); } catch (e) { dl = null; }
+      if (!dl) { setStatus('Trang này chưa được phép lưu file. Tải trang về máy để xuất Excel.', true); return; }
+      var data = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+      try {
+        await dl.save({ filename: filename, data: new Blob([data]) });
+        setStatus('Đã lưu ' + filename + '.');
+      } catch (e) {
+        if (e && e.code === 'declined') setStatus('Đã hủy lưu file.');
+        else if (e && e.code === 'rate_limited') setStatus('Đang có một yêu cầu lưu file chờ xác nhận. Xác nhận hoặc đóng nó rồi bấm lại.', true);
+        else setStatus('Không lưu được file: ' + (e && e.message ? e.message : e), true);
+      }
+      return;
+    }
+    XLSX.writeFile(wb, filename);
   }
 
   // ---------- Sự kiện ----------
@@ -885,12 +906,21 @@ td .sub, th .sub { display: block; font-size: 11px; font-weight: 400; color: var
     setStatus('Đã xóa 1 file.');
     rebuild();
   });
+  // Xóa: bấm 2 lần để xác nhận (không dùng hộp thoại confirm)
+  var clearTimer = null;
   $('btnClear').addEventListener('click', async function () {
-    if (!confirm('Xóa toàn bộ dữ liệu đã nạp trong trình duyệt này?')) return;
+    var b = this;
+    if (!b.dataset.armed) {
+      b.dataset.armed = '1'; b.textContent = 'Bấm lần nữa để xóa hết';
+      clearTimeout(clearTimer);
+      clearTimer = setTimeout(function () { delete b.dataset.armed; b.textContent = 'Xóa toàn bộ dữ liệu'; }, 4000);
+      return;
+    }
+    clearTimeout(clearTimer); delete b.dataset.armed; b.textContent = 'Xóa toàn bộ dữ liệu';
     files = []; await DB.clear(); setStatus('Đã xóa toàn bộ dữ liệu.'); rebuild();
   });
-  $('btnExport').addEventListener('click', function () {
-    try { exportExcel(); } catch (e) { setStatus('Không xuất được Excel: ' + e.message, true); }
+  $('btnExport').addEventListener('click', async function () {
+    try { await exportExcel(); } catch (e) { setStatus('Không xuất được Excel: ' + e.message, true); }
   });
 
   function onFilter() {
