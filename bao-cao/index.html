@@ -272,7 +272,7 @@ td .sub, th .sub { display: block; font-size: 11px; font-weight: 400; color: var
   <section class="panel" id="ma-hang" hidden>
     <div class="section-head">
       <h2>Mã hàng trong tháng</h2>
-      <p>Mỗi dòng là một mã trên một chuyền, trong tháng báo cáo.</p>
+      <p>Mỗi dòng là một mã trên một chuyền gốc, trong tháng báo cáo; trong ngoặc là chuyền tách ghi trong file.</p>
     </div>
     <div class="row-tools"><div class="field"><label for="styleSearch">Tìm mã, nhãn hàng, chuyền</label><input type="text" id="styleSearch" placeholder="Ví dụ: NP12704 hoặc 4A"></div></div>
     <div class="tbl-wrap" id="styleTable"></div>
@@ -281,11 +281,11 @@ td .sub, th .sub { display: block; font-size: 11px; font-weight: 400; color: var
   <section class="panel" id="cach-tinh">
     <div class="section-head"><h2>Cách tính</h2></div>
     <ul class="notes">
-      <li><b>Số của mỗi tháng</b> lấy từ file chốt tháng đó: file update sớm nhất từ ngày cuối tháng trở đi (ví dụ file 20261031 chốt tháng 10). Tháng chưa có file chốt thì lấy file mới nhất, ghi "Đang chạy" (tháng đang làm) hoặc "Kế hoạch" (tháng sau).</li>
-      <li><b>KH đầu tháng</b>: KH của tháng trong file update mới nhất trước ngày 1 của tháng (ví dụ file 20260930 cho tháng 10). Cần có file của tháng trước.</li>
+      <li><b>Số của mỗi tháng</b> lấy từ file chốt tháng đó: file update sớm nhất từ ngày làm việc cuối cùng của tháng trở đi, theo lịch nghỉ trong file (ví dụ file 20261031 chốt tháng 10; file 20230428 chốt tháng 4/2023 nếu 29–30/4 nghỉ). Tháng chưa có file chốt thì lấy file mới nhất, ghi "Đang chạy" (tháng đang làm) hoặc "Kế hoạch" (tháng sau).</li>
+      <li><b>KH đầu tháng</b>: KH của tháng trong file update mới nhất trước ngày 1 của tháng (ví dụ file 20260930 cho tháng 10). Cần có file của tháng trước. Trong file update, KH của các tháng đã qua thường được sửa bằng đúng số TH, nên <b>tỷ lệ đạt nên xem theo KH đầu tháng</b>; thẻ "Tỷ lệ đạt" tự dùng KH đầu tháng khi có.</li>
       <li><b>KH, TH</b>: cộng sản lượng theo ngày ở hàng KH và TH của từng mã (hàng "dự định" lý thuyết không tính). Khớp ô 計画 / 実績 của sheet TORAY.</li>
       <li><b>Ngày làm việc</b>: số ngày của tháng trừ ngày đánh dấu "x" (hàng ngày nghỉ trong file).</li>
-      <li><b>Lao động</b>: mỗi chuyền, mỗi ngày có sản lượng TH tính một lần số người bố trí (ライン編成人数); nếu chuyền chạy 2 mã cùng ngày thì lấy số lớn hơn và chia cho 2 mã theo sản lượng. Chuyền tách (A1, A2) tính riêng. <i>Ngày công</i> = tổng người × ngày. <i>Lao động bình quân/ngày</i> = ngày công ÷ ngày làm việc của tháng (nhiều tháng thì lấy bình quân các tháng). <i>Lao động bình quân/chuyền</i> = ngày công ÷ số chuyền-ngày. Đây là số người bố trí theo kế hoạch, không phải số có mặt thực tế.</li>
+      <li><b>Lao động</b>: mỗi chuyền, mỗi ngày có sản lượng TH tính một lần số người bố trí (ライン編成人数); nếu chuyền chạy 2 mã cùng ngày thì lấy số lớn hơn và chia cho 2 mã theo sản lượng. Chuyền tách (4A1, 4A2…) gộp về chuyền gốc (4A): ngày chuyền tách đôi thì cộng số người hai nửa, ngày vừa có chuyền chính vừa có chuyền tách (chuyển mã) thì lấy số lớn hơn để không đếm trùng. <i>Ngày công</i> = tổng người × ngày. <i>Lao động bình quân/ngày</i> = ngày công ÷ ngày làm việc của tháng (nhiều tháng thì lấy bình quân các tháng). <i>Lao động bình quân/chuyền</i> = ngày công ÷ số chuyền-ngày. Đây là số người bố trí theo kế hoạch, không phải số có mặt thực tế.</li>
       <li><b>Năng suất</b> = TH ÷ ngày công (sp/người/ngày). <b>Giờ chuẩn (SAH)</b> = TH × thời gian may (工程分析時間, giây) ÷ 3.600. <b>Hiệu suất</b> = giờ chuẩn ÷ (ngày công × 8 giờ).</li>
       <li><b>Mã mới vào chuyền</b>: tháng có ngày sản lượng đầu tiên của mã. <b>Mã hoàn thành</b>: tháng có ngày kết thúc (ô END ở hàng TH, không muộn hơn ngày update).</li>
       <li><b>Năm tài chính</b> đặt tên theo năm bắt đầu; tháng bắt đầu chọn ở bộ lọc (mặc định tháng 4: NTC 2026 = 4/2026–3/2027). <b>Cùng kỳ</b> = cùng tháng năm trước; <b>lũy kế cùng kỳ</b> = các tháng tương ứng của năm tài chính trước.</li>
@@ -529,7 +529,9 @@ td .sub, th .sub { display: block; font-size: 11px; font-weight: 400; color: var
         (m.openDate ? ' · KH đầu tháng theo file ' + fmtDate(m.openDate) : ' · chưa có file trước tháng để lấy KH đầu tháng');
     }).join('<br>');
 
-    var cards = [['th', T.cur.th], ['rate', T.cur.rate], ['labor', T.cur.labor], ['productivity', T.cur.productivity], ['efficiency', T.cur.efficiency], ['styles', T.cur.styles]];
+    // KH các tháng đã qua thường bị ghi đè bằng TH, nên tỷ lệ đạt ưu tiên so với KH đầu tháng
+    var rk = T.cur.khOpen > 0 ? 'rateOpen' : 'rate';
+    var cards = [['th', T.cur.th], [rk, T.cur[rk]], ['labor', T.cur.labor], ['productivity', T.cur.productivity], ['efficiency', T.cur.efficiency], ['styles', T.cur.styles]];
     $('kpis').innerHTML = cards.map(function (c) {
       var m = M[c[0]];
       return '<div class="kpi"><span class="lbl">' + m.label + '</span><span class="val">' + m.f(c[1]) + (m.unit ? '<small>' + m.unit + '</small>' : '') + '</span>' +
@@ -614,14 +616,15 @@ td .sub, th .sub { display: block; font-size: 11px; font-weight: 400; color: var
       ]
     });
     // Bảng
-    var h = '<table><thead><tr><th>Tháng</th><th class="txt">NTC</th><th class="txt">Trạng thái</th><th>KH</th><th>TH</th><th>% đạt</th><th class="bl">± tháng trước</th><th>± cùng kỳ</th>' +
+    var h = '<table><thead><tr><th>Tháng</th><th class="txt">NTC</th><th class="txt">Trạng thái</th><th>KH đầu tháng</th><th>KH cuối kỳ</th><th>TH</th><th>% đạt KH đầu tháng</th><th>% đạt KH cuối kỳ</th><th class="bl">± tháng trước</th><th>± cùng kỳ</th>' +
       '<th class="bl">LĐ bq/ngày</th><th>LĐ/chuyền</th><th>Năng suất</th><th>Hiệu suất</th><th>Số mã</th><th>Mã mới</th></tr></thead><tbody>';
     list.slice().reverse().forEach(function (r) {
       var p = byM[R.addMonths(r.month, -1)], y = byM[R.addMonths(r.month, -12)], v = r.v;
       var plan = r.status === 'kh'; // tháng kế hoạch chưa có TH
       var thOf = function (x) { return x && x.status !== 'kh' ? x.v.th : null; };
       h += '<tr' + (r.month === state.month ? ' class="sel"' : '') + '><td>' + R.monthLabel(r.month) + '</td><td class="txt">' + r.fy + '</td><td class="txt">' + chip(r.status) + '</td>' +
-        '<td class="num">' + fmtN(v.kh) + '</td><td class="num">' + (plan ? '—' : fmtN(v.th)) + '</td><td class="num">' + (plan ? '—' : fmtP(v.rate)) + '</td>' +
+        '<td class="num">' + (v.khOpen ? fmtN(v.khOpen) : '—') + '</td><td class="num">' + fmtN(v.kh) + '</td><td class="num">' + (plan ? '—' : fmtN(v.th)) + '</td>' +
+        '<td class="num">' + (plan ? '—' : fmtP(v.rateOpen)) + '</td><td class="num">' + (plan ? '—' : fmtP(v.rate)) + '</td>' +
         '<td class="bl">' + delta(thOf(r), thOf(p), M.th) + '</td><td>' + delta(thOf(r), thOf(y), M.th) + '</td>' +
         '<td class="num bl">' + fmtN(v.labor) + '</td><td class="num">' + fmtN(v.perLine, 1) + '</td><td class="num">' + fmtN(v.productivity, 2) + '</td><td class="num">' + fmtP(v.efficiency) + '</td>' +
         '<td class="num">' + fmtN(v.styles) + '</td><td class="num">' + fmtN(v.start) + '</td></tr>';
@@ -718,14 +721,14 @@ td .sub, th .sub { display: block; font-size: 11px; font-weight: 400; color: var
     var q = ($('styleSearch').value || '').trim().toLowerCase();
     var list = R.filterFacts(ds.facts, { factory: state.factory || null, brand: state.brand || null, months: [state.month] })
       .filter(function (x) { return !x.open; })
-      .filter(function (x) { return !q || [x.style, x.brand, x.line, x.item, x.f, x.po].join(' ').toLowerCase().indexOf(q) >= 0; })
+      .filter(function (x) { return !q || [x.style, x.brand, x.line, x.lineRaw, x.item, x.f, x.po].join(' ').toLowerCase().indexOf(q) >= 0; })
       .sort(function (a, b) { return a.f.localeCompare(b.f) || a.line.localeCompare(b.line, 'vi', { numeric: true }) || b.th - a.th; });
     if (!list.length) { $('styleTable').innerHTML = '<div class="empty">Không có mã hàng.</div>'; return; }
     var h = '<table><thead><tr><th>Mã hàng</th><th class="txt">Xưởng</th><th class="txt">Chuyền</th><th class="txt">Nhãn hàng</th><th class="txt">Chủng loại</th><th>Thời gian may (giây)</th><th>LĐ chuyền</th><th>KH</th><th>TH</th><th>% đạt</th><th>Ngày chạy</th><th>Ngày công</th><th>Năng suất</th><th>Hiệu suất</th><th class="txt">Ghi chú</th></tr></thead><tbody>';
     list.forEach(function (x) {
       var v = R.derive(R.aggregate([x]), 1), note = [];
       if (x.start) note.push('mới vào chuyền'); if (x.end) note.push('hoàn thành');
-      h += '<tr><td>' + esc(x.style) + '</td><td class="txt">' + esc(x.f) + '</td><td class="txt">' + esc(x.line) + '</td><td class="txt">' + esc(x.brand) + '</td><td class="txt">' + esc(x.item) + '</td>' +
+      h += '<tr><td>' + esc(x.style) + '</td><td class="txt">' + esc(x.f) + '</td><td class="txt">' + esc(x.line) + (x.lineRaw && x.lineRaw.toUpperCase() !== x.line ? ' <span class="muted">(' + esc(x.lineRaw) + ')</span>' : '') + '</td><td class="txt">' + esc(x.brand) + '</td><td class="txt">' + esc(x.item) + '</td>' +
         '<td class="num">' + fmtN(x.sam) + '</td><td class="num">' + fmtN(x.hc) + '</td><td class="num">' + fmtN(x.kh) + '</td><td class="num">' + fmtN(x.th) + '</td><td class="num">' + fmtP(v.rate) + '</td>' +
         '<td class="num">' + fmtN(x.thDays) + '</td><td class="num">' + fmtN(x.pdT, 1) + '</td><td class="num">' + fmtN(v.productivity, 2) + '</td><td class="num">' + fmtP(v.efficiency) + '</td><td class="txt">' + note.join(', ') + '</td></tr>';
     });
@@ -781,9 +784,9 @@ td .sub, th .sub { display: block; font-size: 11px; font-weight: 400; color: var
     add('Nam tai chinh', fya);
 
     // Dữ liệu chi tiết (để tự làm pivot)
-    var raw = [['Tháng', 'NTC', 'Xưởng', 'Trạng thái', 'Nguồn', 'Chuyền', 'Cụm chuyền', 'Nhãn hàng', 'Nhãn hàng (gốc)', 'Mã hàng', 'Chủng loại', 'PO', 'Thời gian may (giây)', 'LĐ chuyền', 'KH', 'KH đầu tháng', 'TH', 'Ngày chạy', 'Ngày công TH', 'Ngày công KH', 'Giờ chuẩn TH', 'Ngày làm việc tháng', 'Mã mới', 'Hoàn thành']];
+    var raw = [['Tháng', 'NTC', 'Xưởng', 'Trạng thái', 'Nguồn', 'Chuyền', 'Chuyền trong file', 'Cụm chuyền', 'Nhãn hàng', 'Nhãn hàng (gốc)', 'Mã hàng', 'Chủng loại', 'PO', 'Thời gian may (giây)', 'LĐ chuyền', 'KH', 'KH đầu tháng', 'TH', 'Ngày chạy', 'Ngày công TH', 'Ngày công KH', 'Giờ chuẩn TH', 'Ngày làm việc tháng', 'Mã mới', 'Hoàn thành']];
     ds.facts.forEach(function (x) {
-      raw.push([x.m, R.fiscalYear(x.m, state.startMonth), x.f, STATUS[x.status], x.open ? 'KH đầu tháng' : 'Số tháng', x.line, x.group, x.brand, x.brandRaw, x.style, x.item, x.po, x.sam, x.hc,
+      raw.push([x.m, R.fiscalYear(x.m, state.startMonth), x.f, STATUS[x.status], x.open ? 'KH đầu tháng' : 'Số tháng', x.line, x.lineRaw || x.line, x.group, x.brand, x.brandRaw, x.style, x.item, x.po, x.sam, x.hc,
         r2(x.kh), r2(x.khOpen), r2(x.th), x.thDays, r2(x.pdT, 2), r2(x.pdK, 2), r2(x.sah, 2), x.wd, x.start, x.end]);
     });
     add('Du lieu', raw);

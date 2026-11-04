@@ -94,23 +94,38 @@ test('Đọc sheet: KH/TH theo tháng, ngày làm việc, bỏ hàng lý thuyế
   assert.strictEqual(p.months['2026-10'].full, false);
 });
 
-test('Lao động: chuyền chạy 2 mã cùng ngày chỉ tính 1 lần (số người lớn nhất), chia theo sản lượng', () => {
+test('Chuyền tách A1, A2 gộp về chuyền gốc', () => {
+  assert.strictEqual(R.baseLine('4A1'), '4A');
+  assert.strictEqual(R.baseLine('4a2'), '4A');
+  assert.strictEqual(R.baseLine('12B3'), '12B');
+  assert.strictEqual(R.baseLine('4AB2'), '4AB');
+  assert.strictEqual(R.baseLine('15A'), '15A');
+});
+
+test('Lao động: chuyền gốc tính 1 lần mỗi ngày; chuyền tách cộng lại; ngày chuyển mã không đếm trùng', () => {
   const rows = makeSheet({
-    from: '2026-10-01', to: '2026-10-02',
+    from: '2026-10-01', to: '2026-10-03',
     styles: [
-      { factory: 'APIC1A', line: '2A', brand: 'TNF', style: 'A', sam: 3600, hc: 30, kh: { '2026-10-01': 30 }, th: { '2026-10-01': 30, '2026-10-02': 40 } },
-      { factory: 'APIC1A', line: '2A', brand: 'GOLDWIN', style: 'B', sam: 3600, hc: 32, kh: { '2026-10-01': 10 }, th: { '2026-10-02': 40 } },
-      { factory: 'APIC1A', line: '2A1', brand: 'TNF', style: 'C', sam: 3600, hc: 16, th: { '2026-10-02': 20 } }
+      { factory: 'APIC1A', line: '2A', brand: 'TNF', style: 'A', sam: 3600, hc: 32,
+        kh: { '2026-10-01': 30 }, th: { '2026-10-01': 30, '2026-10-02': 10 } },
+      { factory: 'APIC1A', line: '2A', brand: 'GOLDWIN', style: 'B', sam: 3600, hc: 30, kh: { '2026-10-01': 10 } },
+      { factory: 'APIC1A', line: '2A1', brand: 'TNF', style: 'C', sam: 3600, hc: 16, th: { '2026-10-02': 20, '2026-10-03': 20 } },
+      { factory: 'APIC1A', line: '2A2', brand: 'TNF', style: 'D', sam: 3600, hc: 16, th: { '2026-10-03': 20 } }
     ]
   });
   const p = R.parseRows(rows, { name: 'x.20261031.xlsm' });
   const by = (s) => p.facts.find((f) => f.style === s);
-  // Ngày 1: chỉ A trên 2A → 30. Ngày 2: A và B trên 2A, 32 người chia đôi; C trên 2A1 16 người.
-  assert.strictEqual(by('A').pdT, 30 + 16);
-  assert.strictEqual(by('B').pdT, 16);
-  assert.strictEqual(by('C').pdT, 16);
-  assert.strictEqual(by('A').ldT + by('B').ldT, 2); // 2 chuyền-ngày trên 2A
-  // KH ngày 1: A 30 sp, B 10 sp trên 2A → 32 người chia 3:1
+  assert.deepStrictEqual([...new Set(p.facts.map((f) => f.line))], ['2A']);
+  assert.strictEqual(by('C').lineRaw, '2A1');
+  // Ngày 1: chỉ A → 32 người. Ngày 2: A (2A) và C (2A1) cùng chạy → vẫn 32 người, chia 10:20.
+  // Ngày 3: C (2A1) và D (2A2) → 16 + 16 = 32 người.
+  assert.ok(Math.abs(by('A').pdT - (32 + 32 * 10 / 30)) < 1e-9);
+  assert.ok(Math.abs(by('C').pdT - (32 * 20 / 30 + 16)) < 1e-9);
+  assert.strictEqual(by('D').pdT, 16);
+  const total = p.facts.reduce((t, f) => t + f.pdT, 0), lineDays = p.facts.reduce((t, f) => t + f.ldT, 0);
+  assert.ok(Math.abs(total - 96) < 1e-9);
+  assert.ok(Math.abs(lineDays - 3) < 1e-9); // 3 ngày × 1 chuyền gốc
+  // KH ngày 1: A 30 sp và B 10 sp cùng trên 2A → 32 người chia 3:1
   assert.strictEqual(by('A').pdK, 24);
   assert.strictEqual(by('B').pdK, 8);
 });
@@ -208,4 +223,21 @@ test('Gộp hai xưởng: lao động bình quân/ngày cộng theo xưởng', (
   assert.strictEqual(all.totals.cur.styles, 2);
   const one = R.summarize(ds, { month: '2026-10', startMonth: 4, factory: 'APIC1B' });
   assert.strictEqual(one.totals.cur.th, 10);
+});
+
+test('File update vào ngày làm việc cuối tháng (cuối tháng nghỉ lễ / Chủ nhật) vẫn chốt được tháng đó', () => {
+  const st = (kh, th) => ({ factory: 'APIC1A', line: '1A', brand: 'TNF', style: 'S1', sam: 3600, hc: 30, kh, th });
+  // 29/4–30/4/2023 nghỉ (đánh dấu x) → ngày làm việc cuối tháng 4 là 28/4
+  const off = ['2023-04-29', '2023-04-30', '2023-05-01'];
+  const fApr = R.parseRows(makeSheet({ from: '2023-04-01', to: '2023-06-30', off, styles: [st({ '2023-04-10': 100, '2023-05-10': 200 }, { '2023-04-10': 90 })] }), { name: 'KH UPDATE _APA1.20230428.xlsm' });
+  const fMay = R.parseRows(makeSheet({ from: '2023-04-01', to: '2023-06-30', off, styles: [st({ '2023-04-10': 90, '2023-05-10': 200 }, { '2023-04-10': 90, '2023-05-10': 210 })] }), { name: 'KH UPDATE _APA1.20230531.xlsm' });
+  assert.strictEqual(fApr.months['2023-04'].lastWork, '2023-04-28');
+  const ds = R.buildDataset([fMay, fApr]);
+  assert.strictEqual(ds.meta['APIC1A|2023-04'].srcDate, '2023-04-28');
+  assert.strictEqual(ds.meta['APIC1A|2023-04'].status, 'chot');
+  assert.strictEqual(ds.meta['APIC1A|2023-05'].srcDate, '2023-05-31');
+  assert.strictEqual(ds.meta['APIC1A|2023-05'].openDate, '2023-04-28');
+  const s = R.summarize(ds, { month: '2023-05', startMonth: 4 });
+  assert.strictEqual(s.totals.cur.khOpen, 200);
+  assert.strictEqual(s.totals.cur.th, 210);
 });

@@ -110,6 +110,11 @@
   function normItem(raw) { return norm(raw) || '(chưa ghi)'; }
   // Cụm chuyền theo số: 4A, 4B, 4AB, 4A1 → "4"
   function lineGroup(line) { var m = norm(line).match(/^(\d+)/); return m ? m[1] : norm(line) || '(chưa ghi)'; }
+  // Chuyền gốc: chuyền tách gộp về chuyền chính (4A1, 4A2 → 4A; 4B1 → 4B; 4AB2 → 4AB)
+  function baseLine(line) {
+    var t = norm(line), m = t.match(/^(\d+)([A-Za-z]+)\d*$/);
+    return m ? m[1] + m[2].toUpperCase() : t || '(chưa ghi)';
+  }
 
   // ---------- Đọc sheet ----------
   var HEADERS = {
@@ -215,7 +220,7 @@
       var style = norm(get('style')), brandRaw = norm(get('brand'));
       if (!style || /^master$/i.test(style) || /^master$/i.test(brandRaw)) continue;
       var s = {
-        factory: norm(get('factory')) || opts.factory || '', line: norm(get('line')) || '(chưa ghi)',
+        factory: norm(get('factory')) || opts.factory || '', lineRaw: norm(get('line')) || '(chưa ghi)',
         brandRaw: brandRaw, brand: normBrand(brandRaw, opts.aliases), item: normItem(get('item')), style: style,
         po: norm(get('po')), sam: numOrNull(get('sam')), hc: numOrNull(get('hc')), qty: numOrNull(get('qty')),
         kh: new Array(nd), th: new Array(nd), endTH: -1
@@ -239,7 +244,7 @@
       factory = fm ? fm[1] : '(chưa rõ xưởng)';
       warnings.push('Không có tên xưởng trong cột 工場: dùng "' + factory + '".');
     }
-    styles.forEach(function (st) { if (!st.factory) st.factory = factory; });
+    styles.forEach(function (st) { if (!st.factory) st.factory = factory; st.line = baseLine(st.lineRaw); });
 
     // Ngày update: theo tên file; không có thì lấy ngày cuối cùng có số TH
     var updateDate = opts.updateDate || updateDateFromName(opts.name), updateFrom = 'name';
@@ -253,21 +258,29 @@
       warnings.push('Tên file không có ngày update: lấy ngày cuối có số TH (' + updateDate + ').');
     }
 
-    // Lao động: mỗi chuyền, mỗi ngày có sản lượng tính 1 lần số người bố trí (lấy số lớn nhất nếu
-    // chuyền chạy 2 mã cùng ngày), chia cho các mã theo tỷ lệ sản lượng ngày đó.
+    // Lao động: mỗi chuyền gốc, mỗi ngày có sản lượng tính số người 1 lần rồi chia cho các mã theo
+    // tỷ lệ sản lượng ngày đó. Số người của chuyền tách (A1, A2) lấy số lớn nhất trong ngày của
+    // từng chuyền tách; chuyền gốc = max(số người chuyền chính, tổng các chuyền tách) để ngày
+    // chuyển mã không bị đếm trùng.
     function allocate(key) {
       var pd = styles.map(function () { return new Array(nd).fill(0); });
       var ld = styles.map(function () { return new Array(nd).fill(0); });
       for (var j = 0; j < nd; j++) {
-        var byLine = {};
+        var byBase = {};
         styles.forEach(function (st, idx) {
-          if (st[key][j] > 0 && st.hc > 0) (byLine[st.factory + '|' + st.line] = byLine[st.factory + '|' + st.line] || []).push(idx);
+          if (!(st[key][j] > 0 && st.hc > 0)) return;
+          var bk = st.factory + '|' + st.line;
+          var b = byBase[bk] || (byBase[bk] = { ids: [], tot: 0, main: 0, subs: {} });
+          b.ids.push(idx); b.tot += st[key][j];
+          if (st.lineRaw.toUpperCase() === st.line) b.main = Math.max(b.main, st.hc);
+          else b.subs[st.lineRaw] = Math.max(b.subs[st.lineRaw] || 0, st.hc);
         });
-        Object.keys(byLine).forEach(function (lk) {
-          var ids = byLine[lk], tot = 0, h = 0;
-          ids.forEach(function (idx) { tot += styles[idx][key][j]; h = Math.max(h, styles[idx].hc); });
-          ids.forEach(function (idx) {
-            var share = styles[idx][key][j] / tot;
+        Object.keys(byBase).forEach(function (bk) {
+          var b = byBase[bk], subSum = 0;
+          Object.keys(b.subs).forEach(function (k) { subSum += b.subs[k]; });
+          var h = Math.max(b.main, subSum);
+          b.ids.forEach(function (idx) {
+            var share = styles[idx][key][j] / b.tot;
             pd[idx][j] = h * share; ld[idx][j] = share;
           });
         });
@@ -280,8 +293,8 @@
     var months = {};
     for (var j5 = 0; j5 < nd; j5++) {
       var ym = dates[j5].slice(0, 7);
-      var mo = months[ym] || (months[ym] = { days: 0, off: 0 });
-      mo.days++; if (off[j5]) mo.off++;
+      var mo = months[ym] || (months[ym] = { days: 0, off: 0, lastWork: null });
+      mo.days++; if (off[j5]) mo.off++; else mo.lastWork = dates[j5];
     }
     Object.keys(months).forEach(function (ym) {
       var mo = months[ym], total = daysInMonth(ym), work = mo.days - mo.off;
@@ -314,7 +327,7 @@
       Object.keys(byM).forEach(function (m) {
         var f = byM[m], sam = st.sam || 0;
         facts.push({
-          f: st.factory, m: m, line: st.line, group: lineGroup(st.line), brand: st.brand, brandRaw: st.brandRaw,
+          f: st.factory, m: m, line: st.line, lineRaw: st.lineRaw, group: lineGroup(st.line), brand: st.brand, brandRaw: st.brandRaw,
           item: st.item, style: st.style, po: st.po, sam: st.sam, hc: st.hc, qty: st.qty,
           kh: f.kh, th: f.th, pdK: f.pdK, pdT: f.pdT, ldK: f.ldK, ldT: f.ldT, thDays: f.thDays,
           sah: f.th * sam / 3600, sahK: f.kh * sam / 3600,
@@ -334,7 +347,8 @@
   // ---------- Gộp nhiều file ----------
   /*
    * Mỗi tháng của mỗi xưởng lấy số từ 1 file:
-   *  - "Đã chốt": file update sớm nhất từ ngày cuối tháng trở đi (số cuối tháng, 月末実績).
+   *  - "Đã chốt": file update sớm nhất từ ngày làm việc cuối cùng của tháng trở đi (theo lịch nghỉ
+   *    trong file; ví dụ file 28/4 chốt tháng 4 khi 29/4–1/5 nghỉ lễ). Số cuối tháng, 月末実績.
    *  - "Đang chạy" / "Kế hoạch": chưa có file chốt → file update mới nhất.
    * KH đầu tháng: file update mới nhất trước ngày 1 của tháng.
    */
@@ -348,10 +362,12 @@
       var monthSet = {};
       list.forEach(function (fl) { fl.facts.forEach(function (x) { monthSet[x.m] = 1; }); });
       Object.keys(monthSet).sort().forEach(function (ym) {
-        var end = monthEnd(ym), start = monthStart(ym);
+        var start = monthStart(ym);
+        // Ngày chốt: ngày làm việc cuối tháng theo lịch của file (tháng đủ ngày), không thì ngày cuối tháng
+        var closeDate = function (fl) { var mo = fl.months[ym]; return mo && mo.full && mo.lastWork ? mo.lastWork : monthEnd(ym); };
         var has = function (fl) { return fl.months[ym] && fl.facts.some(function (x) { return x.m === ym; }); };
         var src = null, status;
-        for (var i = 0; i < list.length; i++) if (list[i].updateDate >= end && has(list[i])) { src = list[i]; break; }
+        for (var i = 0; i < list.length; i++) if (list[i].updateDate >= closeDate(list[i]) && has(list[i])) { src = list[i]; break; }
         if (src) status = 'chot';
         else {
           for (var i2 = list.length - 1; i2 >= 0; i2--) if (has(list[i2])) { src = list[i2]; break; }
@@ -555,7 +571,7 @@
     HOURS_PER_DAY: HOURS_PER_DAY, BRAND_ALIASES: BRAND_ALIASES, DIMS: DIMS,
     toISO: toISO, serialToISO: serialToISO, addDays: addDays, addMonths: addMonths, monthEnd: monthEnd, monthLabel: monthLabel,
     fiscalYear: fiscalYear, fiscalMonths: fiscalMonths, fiscalLabel: fiscalLabel, updateDateFromName: updateDateFromName,
-    parseAliasText: parseAliasText, normBrand: normBrand, lineGroup: lineGroup,
+    parseAliasText: parseAliasText, normBrand: normBrand, lineGroup: lineGroup, baseLine: baseLine,
     parseRows: parseRows, buildDataset: buildDataset, aggregate: aggregate, derive: derive,
     filterFacts: filterFacts, groupBy: groupBy, periods: periods, summarize: summarize, monthly: monthly, fiscal: fiscal, pct: pct
   };
