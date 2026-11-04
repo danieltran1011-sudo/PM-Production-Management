@@ -1,5 +1,6 @@
 # Xuất tài liệu Markdown ra Word (A4 ngang). Chạy từ thư mục gốc repo:
 #   python3 data/khoi-luong/xuat-word.py docs/phan-tich-khoi-luong.md docs/tai-ve/Phan-tich-khoi-luong-MD-APIC.docx x
+#   Thêm tham số thứ 4 'doc' để xuất A4 dọc (vd. dàn ý họp để in).
 # Chuyển Markdown → Word: pandoc rồi chỉnh định dạng (A4 ngang, font, kẻ bảng, tô dòng tiêu đề).
 import subprocess, sys
 from docx import Document
@@ -9,6 +10,8 @@ from docx.oxml.ns import qn
 from docx.oxml import OxmlElement
 
 src, out, title = sys.argv[1], sys.argv[2], sys.argv[3]
+doc_doc = len(sys.argv) > 4 and sys.argv[4] == 'doc'
+TOTAL = 9865 if doc_doc else 14798  # bề rộng vùng in (dxa): A4 dọc / A4 ngang, lề 1,8 cm
 tmp = out + '.tmp.docx'; tmpmd = out + '.tmp.md'
 # bỏ các dòng hướng dẫn chạy script (chỉ có ý nghĩa trong repo)
 lines = [l for l in open(src, encoding='utf-8') if not l.startswith(('Tính lại:', 'Tạo lại JSON'))]
@@ -17,8 +20,12 @@ subprocess.run(['pandoc', tmpmd, '-f', 'gfm', '-o', tmp], check=True)
 d = Document(tmp)
 
 for sec in d.sections:
-    sec.orientation = WD_ORIENT.LANDSCAPE
-    sec.page_width, sec.page_height = Cm(29.7), Cm(21.0)
+    if doc_doc:
+        sec.orientation = WD_ORIENT.PORTRAIT
+        sec.page_width, sec.page_height = Cm(21.0), Cm(29.7)
+    else:
+        sec.orientation = WD_ORIENT.LANDSCAPE
+        sec.page_width, sec.page_height = Cm(29.7), Cm(21.0)
     for m in ('left_margin', 'right_margin'): setattr(sec, m, Cm(1.8))
     for m in ('top_margin', 'bottom_margin'): setattr(sec, m, Cm(1.6))
 
@@ -52,9 +59,8 @@ def border(tbl):
     tblPr.append(b)
     w = tblPr.find(qn('w:tblW'))
     if w is None: w = OxmlElement('w:tblW'); tblPr.append(w)
-    w.set(qn('w:type'), 'dxa'); w.set(qn('w:w'), '14798')
+    w.set(qn('w:type'), 'dxa'); w.set(qn('w:w'), str(TOTAL))
 
-TOTAL = 14798  # bề rộng vùng in (dxa) khi A4 ngang, lề 1,8 cm
 def widths(tbl):
     ncol = len(tbl.columns)
     wt = [0] * ncol
