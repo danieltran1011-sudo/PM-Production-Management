@@ -483,10 +483,13 @@
   function closeDateOf(fl, ym) { var mo = fl.months && fl.months[ym]; return mo && mo.full && mo.lastWork ? mo.lastWork : monthEnd(ym); }
   var CLOSE_GRACE_DAYS = 10; // file update đầu tháng sau (đến ngày 10) vẫn là file cuối tháng trước
 
-  // Tháng mà file này là "file cuối tháng", hoặc null nếu là file giữa tháng
+  // Tháng mà file này là "file cuối tháng", hoặc null nếu là file giữa tháng.
+  // Lịch nghỉ trong các file không phải lúc nào cũng đánh dấu đủ ngày lễ (30/4, 31/8…), nên file
+  // update trong 3 ngày cuối tháng cũng được tính là file cuối tháng.
+  var CLOSE_EARLY_DAYS = 3;
   function closesMonth(fl) {
     var u = fl.updateDate, ym = u.slice(0, 7);
-    if (u >= closeDateOf(fl, ym)) return ym;
+    if (u >= closeDateOf(fl, ym) || u >= addDays(monthEnd(ym), -CLOSE_EARLY_DAYS)) return ym;
     var prev = addMonths(ym, -1);
     if (u <= addDays(monthEnd(prev), CLOSE_GRACE_DAYS)) return prev;
     return null;

@@ -295,6 +295,9 @@ test('Báo thiếu file cuối tháng của từng xưởng', () => {
   assert.strictEqual(R.closesMonth(a[0]), '2023-04'); // 28/4: ngày làm việc cuối tháng 4
   assert.strictEqual(R.closesMonth(a[3]), null); // 15/8: file giữa tháng
   assert.strictEqual(R.closesMonth(a[4]), '2023-09'); // 3/10: file cuối tháng 9
+  // 29/8 khi lịch trong file coi 31/8 là ngày làm việc: vẫn là file cuối tháng 8 (trong 3 ngày cuối tháng)
+  assert.strictEqual(R.closesMonth({ updateDate: '2026-08-29', months: { '2026-08': { full: true, lastWork: '2026-08-31' } } }), '2026-08');
+  assert.strictEqual(R.closesMonth({ updateDate: '2026-08-27', months: { '2026-08': { full: true, lastWork: '2026-08-31' } } }), null);
   const cov = R.coverage(a.concat(b));
   const A = cov.find((x) => x.factory === 'APIC1A'), B = cov.find((x) => x.factory === 'APIC1B');
   assert.deepStrictEqual(A.missing.map((x) => x.m), ['2023-06', '2023-08']);
