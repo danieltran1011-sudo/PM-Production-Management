@@ -241,3 +241,33 @@ test('File update vào ngày làm việc cuối tháng (cuối tháng nghỉ l�
   assert.strictEqual(s.totals.cur.khOpen, 200);
   assert.strictEqual(s.totals.cur.th, 210);
 });
+
+test('Kiểm tra công thức tổng: phát hiện vùng dừng trước hàng dữ liệu cuối và tính lại đủ hàng', () => {
+  const W = 20, rows = [];
+  for (let i = 0; i < 12; i++) rows.push(new Array(W).fill(null));
+  rows[0][1] = 'dự định '; rows[1][1] = 'KH'; rows[2][1] = 'TH';
+  rows[4][1] = 2024; rows[5][1] = 3; rows[5][3] = 'TH';
+  // 3 mã: KH/TH tháng chọn ở cột C, cờ chuyển mã ở cột M (chỉ số 12)
+  [[100, 90], [200, 210], [50, 50]].forEach(([kh, th]) => {
+    const p = new Array(W).fill(null), k = new Array(W).fill(null), t = new Array(W).fill(null);
+    p[1] = 'dự định '; k[1] = 'KH'; t[1] = 'TH';
+    p[2] = 0; k[2] = kh; t[2] = th; k[12] = 1; t[12] = 1;
+    rows.push(p, k, t);
+  });
+  // giá trị đã lưu trong file: chỉ tính 2 mã đầu (hàng 13–18)
+  rows[1][2] = 300; rows[2][2] = 300; rows[0][12] = 2;
+  const formulas = {
+    C2: 'SUMIF($B$13:$B$18,$B2,$C$13:$C$15)', C3: 'SUMIF($B$13:$B$21,$B3,$C$13:$C$21)',
+    M1: 'SUMIF($B$13:$B$18,$D$6,M$13:M$18)'
+  };
+  const c = R.checkSummary(rows, formulas);
+  assert.strictEqual(c.lastRow, 21);
+  assert.strictEqual(c.month, '2024-03');
+  assert.deepStrictEqual(c.issues.map((i) => i.cell + '@' + i.end), ['C2@18', 'M1@18']);
+  assert.strictEqual(c.full.kh, 350);
+  assert.strictEqual(c.full.th, 350);
+  assert.strictEqual(c.full.changes, 3);
+  assert.strictEqual(c.file.kh, 300);
+  const ok = R.checkSummary(rows, { C2: 'SUMIF($B$13:$B$14871,$B2,$C$13:$C$14871)' });
+  assert.strictEqual(ok.issues.length, 0);
+});

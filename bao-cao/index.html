@@ -407,13 +407,17 @@ td .sub, th .sub { display: block; font-size: 11px; font-weight: 400; color: var
         var buf = await readFile(file);
         var names = XLSX.read(buf, { type: 'array', bookSheets: true }).SheetNames;
         var sheet = names.indexOf('XN1AB') >= 0 ? 'XN1AB' : names.filter(function (n) { return n !== 'TORAY'; })[0];
-        var wb = XLSX.read(buf, { type: 'array', sheets: [sheet], cellFormula: false, cellHTML: false, cellText: false, cellStyles: false, bookVBA: false });
-        var rows = XLSX.utils.sheet_to_json(wb.Sheets[sheet], { header: 1, raw: true, defval: null });
+        var wb = XLSX.read(buf, { type: 'array', sheets: [sheet], cellFormula: true, cellHTML: false, cellText: false, cellStyles: false, bookVBA: false });
+        var ws = wb.Sheets[sheet];
+        var rows = XLSX.utils.sheet_to_json(ws, { header: 1, raw: true, defval: null });
+        var formulas = {};
+        R.SUMMARY_CELLS.forEach(function (sc) { if (ws[sc.cell] && ws[sc.cell].f) formulas[sc.cell] = ws[sc.cell].f; });
         var date1904 = !!(wb.Workbook && wb.Workbook.WBProps && wb.Workbook.WBProps.date1904);
         var p = R.parseRows(rows, { name: file.name, date1904: date1904 });
         if (!p.facts.length) throw new Error('không thấy mã hàng nào (cặp hàng KH/TH)');
         p.id = p.factory + '|' + p.updateDate;
         p.sheet = sheet;
+        p.check = R.checkSummary(rows, formulas);
         p.loadedAt = new Date().toISOString();
         files = files.filter(function (f) { return f.id !== p.id; });
         files.push(p);
@@ -456,10 +460,42 @@ td .sub, th .sub { display: block; font-size: 11px; font-weight: 400; color: var
         '<td class="txt">' + esc(f.name) + '</td><td class="num">' + fmtN(f.styleCount) + '</td>' +
         '<td class="txt num">' + fmtDate(f.firstDate) + ' → ' + fmtDate(f.lastDate) + '</td>' +
         '<td class="txt" style="white-space:normal;min-width:180px">' + (used.length ? esc(used.join(', ')) : '<span class="muted">Không dùng (đã có file khác chốt)</span>') + '</td>' +
-        '<td class="txt warn" style="white-space:normal;min-width:160px">' + esc((f.warnings || []).join(' ')) + '</td>' +
+        '<td class="txt warn" style="white-space:normal;min-width:160px">' + checkNote(f) + esc((f.warnings || []).join(' ')) + '</td>' +
         '<td><button class="link" data-del="' + esc(f.id) + '">Xóa</button></td></tr>';
     });
-    $('fileList').innerHTML = html + '</tbody></table></div>';
+    $('fileList').innerHTML = html + '</tbody></table></div>' + checkTable();
+  }
+
+  // ---------- Kiểm tra công thức tổng (sheet TORAY) của từng file ----------
+  var CHECK_FMT = { kh: 0, th: 0, changes: 0, lot: 0, people: 1, sam: 0 };
+  function checkNote(f) {
+    if (!f.check) return '<span class="muted">Chưa kiểm tra công thức (nạp lại file để kiểm tra).</span> ';
+    if (!f.check.issues.length) return '<span class="up">✓ Công thức TORAY đủ vùng.</span> ';
+    return '<span class="down">⚠ Công thức TORAY chỉ tính đến hàng ' + Math.min.apply(null, f.check.issues.map(function (i) { return i.end; })) + ', dữ liệu đến hàng ' + f.check.lastRow + '.</span> ';
+  }
+  function checkTable() {
+    var bad = files.filter(function (f) { return f.check && f.check.issues.length; });
+    var checked = files.filter(function (f) { return f.check; }).length;
+    if (!checked) return '';
+    var h = '<h3 style="margin:20px 0 6px">Kiểm tra công thức sheet TORAY</h3><p class="muted" style="margin-bottom:10px">' +
+      (bad.length ? bad.length + '/' + checked + ' file có công thức tổng không phủ hết hàng dữ liệu, nên số ở sheet TORAY của file đó bị thiếu. Bảng dưới so số trong file với số tính đủ mọi hàng. Báo cáo trên trang này không bị ảnh hưởng (tính từ số từng ngày).'
+        : 'Đã kiểm tra ' + checked + ' file: công thức tổng đều phủ hết hàng dữ liệu.') + '</p>';
+    if (!bad.length) return h;
+    h += '<div class="tbl-wrap"><table><thead><tr><th>Xưởng</th><th class="txt">Ngày update</th><th class="txt">Tháng ở TORAY</th><th>Công thức đến hàng</th><th>Dữ liệu đến hàng</th>' +
+      R.SUMMARY_CELLS.map(function (sc) { return '<th class="bl">' + sc.label + '<span class="sub">trong file → đúng</span></th>'; }).join('') + '</tr></thead><tbody>';
+    bad.forEach(function (f) {
+      var c = f.check, wrong = {};
+      c.issues.forEach(function (i) { wrong[i.key] = i; });
+      h += '<tr><td>' + esc(f.factory) + '</td><td class="txt num">' + fmtDate(f.updateDate) + '</td><td class="txt">' + (c.month ? R.monthLabel(c.month) : '—') + '</td>' +
+        '<td class="num">' + fmtN(Math.min.apply(null, c.issues.map(function (i) { return i.end; }))) + '</td><td class="num">' + fmtN(c.lastRow) + '</td>' +
+        R.SUMMARY_CELLS.map(function (sc) {
+          var a = c.file[sc.key], b = c.full[sc.key], d = CHECK_FMT[sc.key];
+          if (!wrong[sc.key]) return '<td class="num bl muted">' + fmtN(a, d) + ' ✓</td>';
+          var same = a != null && b != null && Math.abs(a - b) < Math.pow(10, -d) / 2;
+          return '<td class="num bl">' + fmtN(a, d) + ' → <b>' + fmtN(b, d) + '</b>' + (same ? '' : ' ' + delta(b, a, { better: 0 })) + '</td>';
+        }).join('') + '</tr>';
+    });
+    return h + '</tbody></table></div>';
   }
 
   function brandList() {
@@ -790,6 +826,18 @@ td .sub, th .sub { display: block; font-size: 11px; font-weight: 400; color: var
         r2(x.kh), r2(x.khOpen), r2(x.th), x.thDays, r2(x.pdT, 2), r2(x.pdK, 2), r2(x.sah, 2), x.wd, x.start, x.end]);
     });
     add('Du lieu', raw);
+
+    var chk = [['Xưởng', 'Ngày update', 'Tên file', 'Tháng ở TORAY', 'Kết quả', 'Công thức đến hàng', 'Dữ liệu đến hàng']];
+    R.SUMMARY_CELLS.forEach(function (sc) { chk[0].push(sc.label + ' – trong file', sc.label + ' – đúng'); });
+    files.forEach(function (f) {
+      var c = f.check;
+      if (!c) { chk.push([f.factory, f.updateDate, f.name, '', 'Chưa kiểm tra']); return; }
+      var row = [f.factory, f.updateDate, f.name, c.month, c.issues.length ? 'Thiếu vùng' : 'Đủ vùng',
+        c.issues.length ? Math.min.apply(null, c.issues.map(function (i) { return i.end; })) : null, c.lastRow];
+      R.SUMMARY_CELLS.forEach(function (sc) { row.push(r2(c.file[sc.key], 2), r2(c.full[sc.key], 2)); });
+      chk.push(row);
+    });
+    add('Kiem tra TORAY', chk);
 
     var srcs = [['Xưởng', 'Ngày update', 'Tên file', 'Số mã', 'Từ ngày', 'Đến ngày', 'Ghi chú']];
     files.forEach(function (f) { srcs.push([f.factory, f.updateDate, f.name, f.styleCount, f.firstDate, f.lastDate, (f.warnings || []).join(' ')]); });
