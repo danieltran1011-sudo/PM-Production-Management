@@ -169,6 +169,11 @@ td .sub, th .sub { display: block; font-size: 11px; font-weight: 400; color: var
 .tip div { display: flex; justify-content: space-between; gap: 12px; }
 .empty { padding: 28px 16px; text-align: center; color: var(--muted); border: 1px dashed var(--line); border-radius: 8px; }
 .notes { display: grid; gap: 8px; max-width: 85ch; }
+.coverage { margin-top: 14px; padding: 14px 16px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface-2); display: grid; gap: 8px; }
+.coverage h3 { font-size: 16px; }
+.coverage ul { margin: 0; padding-left: 18px; display: grid; gap: 8px; }
+.coverage .miss-list { display: flex; flex-wrap: wrap; gap: 4px 14px; margin-top: 4px; font-size: 13px; }
+.coverage p { font-size: 12px; }
 .notes li { margin-bottom: 4px; }
 .warn { font-size: 12px; color: var(--muted); }
 </style>
@@ -471,7 +476,37 @@ td .sub, th .sub { display: block; font-size: 11px; font-weight: 400; color: var
         '<td class="txt warn" style="white-space:normal;min-width:160px">' + checkNote(f) + esc((f.warnings || []).join(' ')) + '</td>' +
         '<td><button class="link" data-del="' + esc(f.id) + '">Xóa</button></td></tr>';
     });
-    $('fileList').innerHTML = html + '</tbody></table></div>' + checkTable();
+    $('fileList').innerHTML = coverageBox() + html + '</tbody></table></div>' + checkTable();
+  }
+
+  // Ô báo còn thiếu file cuối tháng nào, từng xưởng
+  function coverageBox() {
+    var cov = R.coverage(files, ds);
+    var rows = cov.map(function (c) {
+      if (!c.first) return '<li><b>' + esc(c.factory) + '</b>: chưa có file cuối tháng nào.</li>';
+      var head = '<b>' + esc(c.factory) + '</b>: ' + c.have + '/' + c.expected + ' tháng (' + R.monthLabel(c.first) + ' → ' + R.monthLabel(c.last) + ')';
+      if (!c.missing.length) return '<li class="ok">' + head + ' <span class="up">✓ đủ file cuối tháng</span></li>';
+      // gộp các tháng liền nhau có cùng ghi chú thành một khoảng
+      var groups = [];
+      c.missing.forEach(function (x) {
+        var note = x.status === 'chot' ? 'số chốt lấy từ file ' + fmtDate(x.srcDate) : 'chưa có số chốt';
+        var g = groups[groups.length - 1];
+        if (g && g.note === note && R.addMonths(g.to, 1) === x.m) g.to = x.m;
+        else groups.push({ from: x.m, to: x.m, note: note });
+      });
+      var list = groups.map(function (g) {
+        var label = g.from === g.to ? R.monthLabel(g.from) : R.monthLabel(g.from) + '–' + R.monthLabel(g.to);
+        return '<span class="miss"><b>' + label + '</b> <span class="muted">(' + g.note + ')</span></span>';
+      }).join('');
+      return '<li>' + head + ' <span class="down">⚠ thiếu ' + c.missing.length + ' tháng:</span><div class="miss-list">' + list + '</div></li>';
+    }).join('');
+    var mid = cov.filter(function (c) { return c.mid.length; }).map(function (c) {
+      return esc(c.factory) + ': ' + c.mid.map(fmtDate).join(', ');
+    });
+    var allOk = cov.every(function (c) { return c.first && !c.missing.length; });
+    return '<div class="coverage' + (allOk ? ' all-ok' : '') + '"><h3>Kiểm tra đủ file cuối tháng</h3><ul>' + rows + '</ul>' +
+      (mid.length ? '<p class="muted">File update giữa tháng (không dùng để chốt tháng, vẫn được giữ): ' + mid.join(' · ') + '</p>' : '') +
+      '<p class="muted">Mỗi tháng cần một file update từ ngày làm việc cuối tháng đến ngày 10 tháng sau. Thiếu file thì tháng đó lấy số từ file sau (nếu có) và tháng kế tiếp không có KH đầu tháng.</p></div>';
   }
 
   // ---------- Kiểm tra công thức tổng (sheet TORAY) của từng file ----------

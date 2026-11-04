@@ -478,6 +478,46 @@
     };
   }
 
+  // ---------- Kiểm tra thiếu file cuối tháng ----------
+  // Ngày chốt của tháng theo lịch của file: ngày làm việc cuối tháng (tháng đủ ngày), không thì ngày cuối tháng
+  function closeDateOf(fl, ym) { var mo = fl.months && fl.months[ym]; return mo && mo.full && mo.lastWork ? mo.lastWork : monthEnd(ym); }
+  var CLOSE_GRACE_DAYS = 10; // file update đầu tháng sau (đến ngày 10) vẫn là file cuối tháng trước
+
+  // Tháng mà file này là "file cuối tháng", hoặc null nếu là file giữa tháng
+  function closesMonth(fl) {
+    var u = fl.updateDate, ym = u.slice(0, 7);
+    if (u >= closeDateOf(fl, ym)) return ym;
+    var prev = addMonths(ym, -1);
+    if (u <= addDays(monthEnd(prev), CLOSE_GRACE_DAYS)) return prev;
+    return null;
+  }
+
+  /*
+   * Mỗi xưởng: các tháng từ tháng chốt đầu tiên đến tháng chốt gần nhất (của mọi xưởng)
+   * mà không có file cuối tháng. ds (tùy chọn) để biết tháng thiếu đã có số chốt từ file khác chưa.
+   */
+  function coverage(files, ds) {
+    var byF = {}, due = null;
+    files.forEach(function (fl) {
+      var c = closesMonth(fl);
+      var g = byF[fl.factory] || (byF[fl.factory] = { factory: fl.factory, closed: {}, mid: [] });
+      if (c) { g.closed[c] = true; if (!due || c > due) due = c; }
+      else g.mid.push(fl.updateDate);
+    });
+    return Object.keys(byF).sort().map(function (fac) {
+      var g = byF[fac], months = Object.keys(g.closed).sort(), missing = [];
+      if (!months.length) return { factory: fac, first: null, last: null, expected: 0, have: 0, missing: [], mid: g.mid.sort() };
+      for (var m = months[0]; m <= due; m = addMonths(m, 1)) {
+        if (g.closed[m]) continue;
+        var meta = ds && ds.meta[fac + '|' + m];
+        missing.push({ m: m, status: meta ? meta.status : null, srcDate: meta ? meta.srcDate : null });
+      }
+      var expected = 0;
+      for (var m2 = months[0]; m2 <= due; m2 = addMonths(m2, 1)) expected++;
+      return { factory: fac, first: months[0], last: due, expected: expected, have: expected - missing.length, missing: missing, mid: g.mid.sort() };
+    });
+  }
+
   // ---------- Tổng hợp ----------
   var SUM_FIELDS = ['kh', 'th', 'khOpen', 'pdK', 'pdT', 'ldK', 'ldT', 'sah', 'sahK', 'start', 'end'];
 
@@ -653,7 +693,7 @@
     toISO: toISO, serialToISO: serialToISO, addDays: addDays, addMonths: addMonths, monthEnd: monthEnd, monthLabel: monthLabel,
     fiscalYear: fiscalYear, fiscalMonths: fiscalMonths, fiscalLabel: fiscalLabel, updateDateFromName: updateDateFromName,
     parseAliasText: parseAliasText, normBrand: normBrand, lineGroup: lineGroup, baseLine: baseLine,
-    SUMMARY_CELLS: SUMMARY_CELLS, checkSummary: checkSummary,
+    SUMMARY_CELLS: SUMMARY_CELLS, checkSummary: checkSummary, closesMonth: closesMonth, coverage: coverage,
     parseRows: parseRows, buildDataset: buildDataset, aggregate: aggregate, derive: derive,
     filterFacts: filterFacts, groupBy: groupBy, periods: periods, summarize: summarize, monthly: monthly, fiscal: fiscal, pct: pct
   };

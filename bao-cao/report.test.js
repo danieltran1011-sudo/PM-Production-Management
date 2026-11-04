@@ -285,3 +285,21 @@ test('Kiểm tra công thức tổng: SUMPRODUCT có vùng khác số hàng và 
   assert.match(c.cells[0].text, /#VALUE!/);
   assert.strictEqual(c.issues.length, 0); // không phải ô chỉ tiêu chính của TORAY
 });
+
+test('Báo thiếu file cuối tháng của từng xưởng', () => {
+  const st = (f) => ({ factory: f, line: '1A', brand: 'TNF', style: 'S', sam: 3600, hc: 30, kh: { '2023-05-10': 10 }, th: { '2023-05-10': 10 } });
+  const off = ['2023-04-29', '2023-04-30'];
+  const mk = (name, f) => R.parseRows(makeSheet({ from: '2023-04-01', to: '2023-10-31', off, styles: [st(f)] }), { name });
+  const a = ['20230428', '20230531', '20230731', '20230815', '20231003'].map((d) => mk('KH UPDATE _APA1.' + d + '.xlsm', 'APIC1A'));
+  const b = ['20230428', '20230531'].map((d) => mk('KH UPDATE _APA2.' + d + '.xlsm', 'APIC1B'));
+  assert.strictEqual(R.closesMonth(a[0]), '2023-04'); // 28/4: ngày làm việc cuối tháng 4
+  assert.strictEqual(R.closesMonth(a[3]), null); // 15/8: file giữa tháng
+  assert.strictEqual(R.closesMonth(a[4]), '2023-09'); // 3/10: file cuối tháng 9
+  const cov = R.coverage(a.concat(b));
+  const A = cov.find((x) => x.factory === 'APIC1A'), B = cov.find((x) => x.factory === 'APIC1B');
+  assert.deepStrictEqual(A.missing.map((x) => x.m), ['2023-06', '2023-08']);
+  assert.deepStrictEqual(A.mid, ['2023-08-15']);
+  assert.deepStrictEqual([A.first, A.last, A.expected, A.have], ['2023-04', '2023-09', 6, 4]);
+  // APIC1B dừng ở tháng 5 → thiếu 6, 7, 8, 9 (so với tháng gần nhất của mọi xưởng)
+  assert.deepStrictEqual(B.missing.map((x) => x.m), ['2023-06', '2023-07', '2023-08', '2023-09']);
+});
