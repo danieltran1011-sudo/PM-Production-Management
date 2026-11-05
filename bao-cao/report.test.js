@@ -37,6 +37,8 @@ function makeSheet({ from, to, off = [], styles }) {
     for (const [d, v] of Object.entries(s.kh || {})) k[D0 + dates.indexOf(d)] = v;
     for (const [d, v] of Object.entries(s.th || {})) t[D0 + dates.indexOf(d)] = v;
     if (s.endTH) t[D0 + dates.indexOf(s.endTH)] = 'END';
+    if (s.aggLot != null) p[37] = s.aggLot; // 集約ロット (cột AL, hàng lý thuyết)
+    for (const [d, v] of Object.entries(s.theo || {})) p[D0 + dates.indexOf(d)] = v;
     p[D0 + 1] = 99; // hàng lý thuyết không được tính
     rows.push(p, k, t);
   }
@@ -305,4 +307,22 @@ test('Báo thiếu file cuối tháng của từng xưởng', () => {
   assert.deepStrictEqual([A.first, A.last, A.expected, A.have], ['2023-04', '2023-09', 6, 4]);
   // APIC1B dừng ở tháng 5 → thiếu 6, 7, 8, 9 (so với tháng gần nhất của mọi xưởng)
   assert.deepStrictEqual(B.missing.map((x) => x.m), ['2023-06', '2023-07', '2023-08', '2023-09']);
+});
+
+test('工程分析時間 và 生産ロット bình quân tính như sheet TORAY', () => {
+  const st = (style, qty, sam, aggLot, th, theo) => ({ factory: 'APIC1A', line: '1A', brand: 'TNF', style, qty, sam, hc: 30, aggLot, th, theo });
+  const rows = makeSheet({
+    from: '2026-10-01', to: '2026-10-31',
+    styles: [
+      st('A', 1000, 10000, 1200, { '2026-10-05': 50 }, { '2026-10-05': 40 }),
+      st('B', 3000, 6000, 3000, { '2026-10-06': 80 }, { '2026-10-06': 70 }),
+      // C: có lịch lý thuyết nhưng chưa có TH trong tháng → tính vào lot, không tính vào 工程分析時間
+      st('C', 500, 20000, 600, {}, { '2026-10-20': 10 })
+    ]
+  });
+  const p = R.parseRows(rows, { name: 'x.20261031.xlsm' });
+  const v = R.derive(R.aggregate(p.facts.filter((f) => f.m === '2026-10')), 1);
+  assert.strictEqual(v.avgSam, (1000 * 10000 + 3000 * 6000) / 4000);
+  assert.strictEqual(v.avgLot, (1200 + 3000 + 600) / 3);
+  assert.strictEqual(v.styles, 2); // mã chỉ có lịch lý thuyết không tính là mã sản xuất
 });

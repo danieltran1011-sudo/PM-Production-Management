@@ -119,11 +119,11 @@
   // ---------- Đọc sheet ----------
   var HEADERS = {
     factory: ['工場'], line: ['ライン'], brand: ['ブランド'], style: ['品番'], item: ['アイテム'],
-    po: ['PO'], lot: ['集約ロット(pcs)'], qty: ['生産数(pcs)'], sam: ['工程分析時間(sec)'],
+    po: ['PO'], lot: ['集約ロット(pcs)'], aggLot: ['集約ロット'], qty: ['生産数(pcs)'], sam: ['工程分析時間(sec)'],
     hc: ['ライン編成人数(人/line)']
   };
   // Vị trí cột của mẫu file hiện tại (T..AC), dùng khi không tìm thấy tiêu đề
-  var DEFAULT_COLS = { factory: 19, line: 20, brand: 21, style: 22, item: 23, po: 24, lot: 25, qty: 26, sam: 27, hc: 28 };
+  var DEFAULT_COLS = { factory: 19, line: 20, brand: 21, style: 22, item: 23, po: 24, lot: 25, qty: 26, sam: 27, hc: 28, aggLot: 37 };
 
   function findColumns(rows) {
     var limit = Math.min(rows.length, 40);
@@ -223,10 +223,14 @@
         factory: norm(get('factory')) || opts.factory || '', lineRaw: norm(get('line')) || '(chưa ghi)',
         brandRaw: brandRaw, brand: normBrand(brandRaw, opts.aliases), item: normItem(get('item')), style: style,
         po: norm(get('po')), sam: numOrNull(get('sam')), hc: numOrNull(get('hc')), qty: numOrNull(get('qty')),
-        kh: new Array(nd), th: new Array(nd), endTH: -1
+        aggLot: numOrNull(get('aggLot')),
+        kh: new Array(nd), th: new Array(nd), theo: new Array(nd), endTH: -1
       };
+      // Hàng lý thuyết ("dự định") ngay trên hàng KH: lịch may theo năng lực lý thuyết
+      var hasTheo = rowType(pr[typeCol]) === '' && norm(pr[typeCol]) !== '';
       for (var j3 = 0; j3 < nd; j3++) {
         s.kh[j3] = Math.max(0, num(kr[d0 + j3]));
+        s.theo[j3] = hasTheo ? Math.max(0, num(pr[d0 + j3])) : 0;
         var tv = tr[d0 + j3];
         s.th[j3] = Math.max(0, num(tv));
         if (s.endTH < 0 && norm(tv).toUpperCase() === 'END') s.endTH = j3;
@@ -316,10 +320,10 @@
       var endISO = st.endTH > 0 ? addDays(dates[st.endTH], -1) : null;
       var byM = {};
       for (var j6 = 0; j6 < nd; j6++) {
-        if (!(st.kh[j6] > 0 || st.th[j6] > 0)) continue;
+        if (!(st.kh[j6] > 0 || st.th[j6] > 0 || st.theo[j6] > 0)) continue;
         var m = dates[j6].slice(0, 7);
-        var f = byM[m] || (byM[m] = { kh: 0, th: 0, pdK: 0, pdT: 0, ldK: 0, ldT: 0, thDays: 0 });
-        f.kh += st.kh[j6]; f.th += st.th[j6];
+        var f = byM[m] || (byM[m] = { kh: 0, th: 0, theo: 0, pdK: 0, pdT: 0, ldK: 0, ldT: 0, thDays: 0 });
+        f.kh += st.kh[j6]; f.th += st.th[j6]; f.theo += st.theo[j6];
         f.pdK += aK.pd[idx][j6]; f.pdT += aT.pd[idx][j6];
         f.ldK += aK.ld[idx][j6]; f.ldT += aT.ld[idx][j6];
         if (st.th[j6] > 0) f.thDays++;
@@ -328,7 +332,8 @@
         var f = byM[m], sam = st.sam || 0;
         facts.push({
           f: st.factory, m: m, line: st.line, lineRaw: st.lineRaw, group: lineGroup(st.line), brand: st.brand, brandRaw: st.brandRaw,
-          item: st.item, style: st.style, po: st.po, sam: st.sam, hc: st.hc, qty: st.qty,
+          item: st.item, style: st.style, po: st.po, sam: st.sam, hc: st.hc, qty: st.qty, aggLot: st.aggLot,
+          theo: f.theo > 0 ? 1 : 0,
           kh: f.kh, th: f.th, pdK: f.pdK, pdT: f.pdT, ldK: f.ldK, ldT: f.ldT, thDays: f.thDays,
           sah: f.th * sam / 3600, sahK: f.kh * sam / 3600,
           start: first >= 0 && dates[first].slice(0, 7) === m ? 1 : 0,
@@ -467,7 +472,7 @@
           if (x.m !== ym) return;
           facts.push(Object.assign({}, x, {
             brand: normBrand(x.brandRaw, aliases), wd: wd, status: status, khOpen: x.kh, open: true,
-            kh: 0, th: 0, pdK: 0, pdT: 0, ldK: 0, ldT: 0, thDays: 0, sah: 0, sahK: 0, start: 0, end: 0
+            kh: 0, th: 0, theo: 0, pdK: 0, pdT: 0, ldK: 0, ldT: 0, thDays: 0, sah: 0, sahK: 0, start: 0, end: 0
           }));
         });
       });
@@ -525,7 +530,8 @@
   var SUM_FIELDS = ['kh', 'th', 'khOpen', 'pdK', 'pdT', 'ldK', 'ldT', 'sah', 'sahK', 'start', 'end'];
 
   function aggregate(facts) {
-    var a = { kh: 0, th: 0, khOpen: 0, pdK: 0, pdT: 0, ldK: 0, ldT: 0, sah: 0, sahK: 0, start: 0, end: 0, laborSum: 0, laborSumK: 0, n: 0 };
+    var a = { kh: 0, th: 0, khOpen: 0, pdK: 0, pdT: 0, ldK: 0, ldT: 0, sah: 0, sahK: 0, start: 0, end: 0, laborSum: 0, laborSumK: 0, n: 0,
+      lotSum: 0, lotN: 0, samQty: 0, qtyW: 0 };
     var styles = {}, months = {}, lines = {};
     facts.forEach(function (x) {
       SUM_FIELDS.forEach(function (k) { a[k] += x[k] || 0; });
@@ -533,6 +539,10 @@
       a.laborSumK += (x.pdK || 0) / (x.wd || 1);
       if (!x.open && (x.kh > 0 || x.th > 0)) { styles[x.f + '|' + x.style] = 1; months[x.m] = 1; }
       if (!x.open && x.th > 0) lines[x.f + '|' + x.line] = 1;
+      // 生産ロット bình quân (như TORAY 平均ロット): lot sau gộp đơn (集約ロット) của các mã có lịch lý thuyết trong tháng
+      if (!x.open && x.theo && x.aggLot != null) { a.lotSum += x.aggLot; a.lotN++; }
+      // 工程分析時間 bình quân (như TORAY): giây/sp, trọng số theo số lượng đơn (生産数) của các mã có TH trong tháng
+      if (!x.open && x.th > 0 && x.qty > 0 && x.sam != null) { a.samQty += x.qty * x.sam; a.qtyW += x.qty; }
       a.n++;
     });
     a.styles = Object.keys(styles).length;
@@ -552,7 +562,8 @@
       perLine: a.ldT > 0 ? a.pdT / a.ldT : null,         // người/chuyền bình quân
       productivity: a.pdT > 0 ? a.th / a.pdT : null,     // sp/người/ngày
       efficiency: a.pdT > 0 ? a.sah / (a.pdT * HOURS_PER_DAY) : null, // giờ chuẩn / giờ công
-      avgSam: a.th > 0 ? a.sah * 3600 / a.th : null
+      avgSam: a.qtyW > 0 ? a.samQty / a.qtyW : null,       // 工程分析時間 bình quân (giây)
+      avgLot: a.lotN > 0 ? a.lotSum / a.lotN : null          // 生産ロット bình quân (枚)
     });
   }
 
