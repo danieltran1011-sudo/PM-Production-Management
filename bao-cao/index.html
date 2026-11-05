@@ -169,6 +169,18 @@ td .sub, th .sub { display: block; font-size: 11px; font-weight: 400; color: var
 .tip div { display: flex; justify-content: space-between; gap: 12px; }
 .empty { padding: 28px 16px; text-align: center; color: var(--muted); border: 1px dashed var(--line); border-radius: 8px; }
 .notes { display: grid; gap: 8px; max-width: 85ch; }
+.an-body { display: grid; gap: 16px; }
+.headline { font-size: 15px; font-weight: 600; padding: 12px 14px; border-left: 4px solid var(--accent); background: var(--accent-soft); border-radius: 6px; max-width: 95ch; }
+.an-body h3 { margin-top: 4px; }
+.an-note { font-size: 12px; color: var(--muted); max-width: 95ch; }
+.bar { display: inline-flex; align-items: center; gap: 8px; justify-content: flex-end; width: 100%; }
+.bar i { display: inline-block; height: 8px; border-radius: 4px; background: var(--series-1); min-width: 2px; }
+.bar.warnbar i { background: var(--series-2); }
+.bar-track { display: inline-block; width: 90px; height: 8px; border-radius: 4px; background: var(--line); position: relative; overflow: hidden; }
+.bar-track i { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 4px; }
+.chip.qua-tai { background: var(--bad-soft); color: var(--bad); }
+.chip.vua { background: var(--good-soft); color: var(--good); }
+.chip.thieu-hang { background: var(--warn-soft); color: var(--ink); }
 .coverage { margin-top: 14px; padding: 14px 16px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface-2); display: grid; gap: 8px; }
 .coverage h3 { font-size: 16px; }
 .coverage ul { margin: 0; padding-left: 18px; display: grid; gap: 8px; }
@@ -185,7 +197,7 @@ td .sub, th .sub { display: block; font-size: 11px; font-weight: 400; color: var
     <p>Chọn các file KH_UPDATE (mỗi xưởng, mỗi lần update một file; càng nhiều tháng, nhiều năm càng tốt). Trang tự gộp, lấy số chốt của từng tháng và so sánh với tháng trước, cùng kỳ năm trước, lũy kế năm tài chính. Dữ liệu chỉ lưu trong trình duyệt này, không gửi đi đâu.</p>
     <nav class="jump" aria-label="Mục">
       <a href="#du-lieu">Dữ liệu</a><a href="#tong-quan">Tổng quan tháng</a><a href="#theo-chieu">Nhãn hàng · chuyền · chủng loại</a>
-      <a href="#theo-thang">Theo tháng</a><a href="#theo-nam">Năm tài chính</a><a href="#ma-hang">Mã hàng</a><a href="#cach-tinh">Cách tính</a>
+      <a href="#theo-thang">Theo tháng</a><a href="#theo-nam">Năm tài chính</a><a href="#phan-tich">Phân tích</a><a href="#ma-hang">Mã hàng</a><a href="#cach-tinh">Cách tính</a>
     </nav>
   </header>
 
@@ -275,6 +287,19 @@ td .sub, th .sub { display: block; font-size: 11px; font-weight: 400; color: var
     <div class="tbl-wrap" id="fyMatrix"></div>
   </section>
 
+  <section class="panel" id="phan-tich" hidden>
+    <div class="section-head">
+      <h2>Phân tích</h2>
+      <p>Theo xưởng và nhãn hàng đang chọn ở bộ lọc. Chọn kỳ phân tích rồi chọn chủ đề.</p>
+    </div>
+    <div class="row-tools">
+      <div class="seg" id="anSeg" role="group" aria-label="Chủ đề phân tích"></div>
+      <div class="field"><label for="anPeriod">Kỳ phân tích</label><select id="anPeriod"></select></div>
+    </div>
+    <p class="warn" id="anOld" hidden></p>
+    <div id="anBody" class="an-body"></div>
+  </section>
+
   <section class="panel" id="ma-hang" hidden>
     <div class="section-head">
       <h2>Mã hàng trong tháng</h2>
@@ -294,6 +319,7 @@ td .sub, th .sub { display: block; font-size: 11px; font-weight: 400; color: var
       <li><b>Lao động</b>: mỗi chuyền, mỗi ngày có sản lượng TH tính một lần số người bố trí (ライン編成人数); nếu chuyền chạy 2 mã cùng ngày thì lấy số lớn hơn và chia cho 2 mã theo sản lượng. Chuyền tách (4A1, 4A2…) gộp về chuyền gốc (4A): ngày chuyền tách đôi thì cộng số người hai nửa, ngày vừa có chuyền chính vừa có chuyền tách (chuyển mã) thì lấy số lớn hơn để không đếm trùng. <i>Ngày công</i> = tổng người × ngày. <i>Lao động bình quân/ngày</i> = ngày công ÷ ngày làm việc của tháng (nhiều tháng thì lấy bình quân các tháng). <i>Lao động bình quân/chuyền</i> = ngày công ÷ số chuyền-ngày. Đây là số người bố trí theo kế hoạch, không phải số có mặt thực tế.</li>
       <li><b>Năng suất</b> = TH ÷ ngày công (sp/người/ngày). <b>Giờ chuẩn (SAH)</b> = TH × thời gian may (工程分析時間, giây) ÷ 3.600. <b>Hiệu suất</b> = giờ chuẩn ÷ (ngày công × 8 giờ).</li>
       <li><b>工程分析時間 bình quân</b> (giây/sp) = bình quân thời gian công đoạn của các mã có TH trong tháng, trọng số theo số lượng đơn (生産数). <b>生産ロット bình quân</b> (sp) = bình quân lot sau gộp đơn (集約ロット) của các mã có lịch lý thuyết (hàng "dự định") trong tháng. Cả hai tính giống sheet TORAY (平均工程分析時間, 平均ロット), đã đối chiếu khớp với các file có công thức đúng. Nhiều tháng: tính chung trên mọi mã của các tháng đó.</li>
+      <li><b>Phân tích</b>: lượt may = một mã trên một chuyền (chuyền tách tính riêng). Sản lượng ổn định = phân vị 75% sản lượng ngày, bỏ ngày cuối. Ngày lên năng suất = ngày sản xuất đầu tiên đạt 90% mức ổn định (trong 30 ngày đầu). Lead time thực tế = số ngày làm việc từ ngày may đầu đến ngày cuối. Lý thuyết lấy từ file: 習熟日数 (cột AP) và 縫製リードタイム (cột AT, hàng "dự định"). Lượt may bắt đầu ngay ngày đầu dữ liệu của file bị bỏ qua vì có thể đã may từ trước.</li>
       <li><b>Mã mới vào chuyền</b>: tháng có ngày sản lượng đầu tiên của mã. <b>Mã hoàn thành</b>: tháng có ngày kết thúc (ô END ở hàng TH, không muộn hơn ngày update).</li>
       <li><b>Năm tài chính</b> đặt tên theo năm bắt đầu; tháng bắt đầu chọn ở bộ lọc (mặc định tháng 4: NTC 2026 = 4/2026–3/2027). <b>Cùng kỳ</b> = cùng tháng năm trước; <b>lũy kế cùng kỳ</b> = các tháng tương ứng của năm tài chính trước.</li>
       <li>Mức tăng/giảm tô xanh/đỏ cho sản lượng, tỷ lệ đạt, năng suất, hiệu suất. Tỷ lệ đạt và hiệu suất so sánh bằng điểm phần trăm (đ).</li>
@@ -310,7 +336,7 @@ td .sub, th .sub { display: block; font-size: 11px; font-weight: 400; color: var
   var SETTINGS = 'pm-bao-cao-settings';
   var $ = function (id) { return document.getElementById(id); };
 
-  var state = { startMonth: 4, aliasText: '', dim: 'brand', fyDim: 'brand', sort: 'th', month: '', factory: '', brand: '' };
+  var state = { startMonth: 4, aliasText: '', dim: 'brand', fyDim: 'brand', sort: 'th', month: '', factory: '', brand: '', anTab: 'lot', anPeriod: 'ytd' };
   try { Object.assign(state, JSON.parse(localStorage.getItem(SETTINGS) || '{}')); } catch (e) { /* bỏ qua */ }
   function saveSettings() { try { localStorage.setItem(SETTINGS, JSON.stringify(state)); } catch (e) { /* bỏ qua */ } }
 
@@ -452,7 +478,7 @@ td .sub, th .sub { display: block; font-size: 11px; font-weight: 400; color: var
     ds = files.length ? R.buildDataset(files, { aliases: R.parseAliasText(state.aliasText) }) : null;
     renderFiles();
     var has = !!(ds && ds.months.length);
-    ['bo-loc', 'tong-quan', 'theo-chieu', 'theo-thang', 'theo-nam', 'ma-hang'].forEach(function (id) { $(id).hidden = !has; });
+    ['bo-loc', 'tong-quan', 'theo-chieu', 'theo-thang', 'theo-nam', 'phan-tich', 'ma-hang'].forEach(function (id) { $(id).hidden = !has; });
     $('empty').hidden = has;
     $('btnExport').disabled = !has; $('btnClear').disabled = !files.length;
     if (!has) return;
@@ -612,6 +638,7 @@ td .sub, th .sub { display: block; font-size: 11px; font-weight: 400; color: var
     renderDim();
     renderMonthly();
     renderFiscal();
+    renderAnalysis();
     renderStyles();
   }
 
@@ -814,6 +841,167 @@ td .sub, th .sub { display: block; font-size: 11px; font-weight: 400; color: var
     m += row('Tổng', yrs.map(function (y) { return y.v; }), ly && ly.v, ly && ly.same, 'total');
     $('fyMatrix').innerHTML = m + '</tbody></table>';
   }
+  // ---------- Phân tích ----------
+  var AN_TABS = [
+    ['lot', '1. Cỡ lot & hiệu suất'], ['learn', '2. Lên năng suất'], ['lt', '3. Lead time may'], ['co', '4. Chuyển mã'],
+    ['plan', '5. Ổn định kế hoạch'], ['rank', '6. Xếp hạng chuyền'], ['load', '7. Tải tháng tới']
+  ];
+  function bar(v, max, txt, cls) {
+    var w = v != null && max > 0 ? Math.max(2, Math.min(100, v / max * 100)) : 0;
+    return '<span class="bar' + (cls ? ' ' + cls : '') + '"><span class="num">' + txt + '</span><span class="bar-track"><i style="width:' + w.toFixed(1) + '%;background:var(' + (cls ? '--series-2' : '--series-1') + ')"></i></span></span>';
+  }
+  function periodText(months) {
+    if (!months.length) return 'chưa có tháng nào';
+    return months.length === 1 ? 'tháng ' + R.monthLabel(months[0]) : R.monthLabel(months[0]) + ' – ' + R.monthLabel(months[months.length - 1]) + ' (' + months.length + ' tháng)';
+  }
+  function table(head, rows) {
+    return '<div class="tbl-wrap"><table><thead><tr>' + head.map(function (h, i) { return '<th' + (i === 0 ? '' : '') + '>' + h + '</th>'; }).join('') + '</tr></thead><tbody>' + rows.join('') + '</tbody></table></div>';
+  }
+  function td(v, cls) { return '<td class="' + (cls || 'num') + '">' + v + '</td>'; }
+  function styleCell(r) { return esc(r.style) + '<span class="sub">' + esc(r.f) + ' · ' + esc(r.lineRaw || r.line) + ' · ' + esc(r.brand) + '</span>'; }
+
+  function renderAnalysis() {
+    $('anSeg').innerHTML = AN_TABS.map(function (t) { return '<button type="button" data-an="' + t[0] + '" aria-pressed="' + (t[0] === state.anTab) + '">' + t[1] + '</button>'; }).join('');
+    $('anPeriod').innerHTML = R.ANALYSIS_PERIODS.map(function (p) { return '<option value="' + p.id + '"' + (p.id === state.anPeriod ? ' selected' : '') + '>' + p.label + '</option>'; }).join('');
+    $('anPeriod').disabled = state.anTab === 'load';
+    var old = ds.oldFiles || 0;
+    $('anOld').hidden = !old;
+    $('anOld').textContent = old ? '⚠ ' + old + ' file được nạp bằng bản trang cũ, thiếu số liệu cho phân tích (lot, lên năng suất, lead time, chuyển mã). Nạp lại các file đó (kéo thả lại cả thư mục) để có đủ số.' : '';
+    var o = opts({ period: state.anPeriod });
+    var fn = { lot: anLot, learn: anLearn, lt: anLt, co: anCo, plan: anPlan, rank: anRank, load: anLoad }[state.anTab];
+    try { $('anBody').innerHTML = fn(o); } catch (e) { $('anBody').innerHTML = '<div class="empty">Không tính được: ' + esc(e.message) + '</div>'; }
+  }
+
+  function anLot(o) {
+    var r = R.lotEfficiency(ds, o);
+    if (!r.rows.length) return '<div class="empty">Không có sản lượng trong ' + periodText(r.months) + '.</div>';
+    var known = r.rows.filter(function (x) { return x.band.id != null && x.v.efficiency != null; });
+    var lo = known[0], hi = known[known.length - 1];
+    var head = lo && hi && lo !== hi ? 'Lot ' + lo.band.label.toLowerCase() + ' đạt hiệu suất ' + fmtP(lo.v.efficiency) + ', lot ' + hi.band.label.toLowerCase() + ' đạt ' + fmtP(hi.v.efficiency) +
+      ' (chênh ' + fmtN((hi.v.efficiency - lo.v.efficiency) * 100, 1) + ' điểm). ' + 'Năng suất ' + fmtN(lo.v.productivity, 2) + ' so với ' + fmtN(hi.v.productivity, 2) + ' sp/người/ngày.' : 'Chỉ có một nhóm lot trong kỳ.';
+    var maxEff = Math.max.apply(null, r.rows.map(function (x) { return x.v.efficiency || 0; }));
+    var t1 = table(['Cỡ lot (集約ロット)', 'Số mã', 'TH', 'Tỷ trọng TH', 'Ngày công', 'Năng suất<span class="sub">sp/người/ngày</span>', 'Hiệu suất', '工程分析時間<span class="sub">giây/sp</span>'],
+      r.rows.map(function (x) {
+        return '<tr><td>' + x.band.label + '</td>' + td(fmtN(x.v.styles)) + td(fmtN(x.v.th)) + td(fmtP(r.total.th ? x.v.th / r.total.th : null)) + td(fmtN(x.v.pdT)) +
+          td(fmtN(x.v.productivity, 2)) + td(bar(x.v.efficiency, maxEff, fmtP(x.v.efficiency))) + td(fmtN(x.v.avgSam)) + '</tr>';
+      }));
+    var t2 = table(['Cỡ lot / thời gian may'].concat(R.SAM_BANDS.map(function (b) { return b.label; })),
+      r.matrix.map(function (x) {
+        return '<tr><td>' + x.band.label + '</td>' + x.cells.map(function (c) { return td(c.efficiency == null ? '—' : fmtP(c.efficiency) + '<span class="sub">' + c.styles + ' mã</span>'); }).join('') + '</tr>';
+      }));
+    return '<p class="headline">' + head + '</p><p class="an-note">Kỳ: ' + periodText(r.months) + '. Mỗi mã có TH trong tháng được xếp theo lot sau gộp đơn (集約ロット).</p>' + t1 +
+      '<h3>Hiệu suất theo cỡ lot và mức thời gian may</h3><p class="an-note">So sánh trong cùng một cột (cùng độ khó sản phẩm) để thấy riêng ảnh hưởng của cỡ lot.</p>' + t2;
+  }
+
+  function anLearn(o) {
+    var r = R.learning(ds, o), t = r.total;
+    if (!t.n) return '<div class="empty">Chưa có lượt may nào xong trong ' + periodText(r.months) + ' (cần ít nhất 5 ngày may).</div>';
+    var head = 'Bình quân ' + fmtN(t.ramp, 1) + ' ngày sản xuất để đạt 90% sản lượng ổn định (lý thuyết 習熟日数 ' + fmtN(t.theo, 1) + ' ngày). ' +
+      fmtP(t.slower) + ' lượt may chậm hơn lý thuyết. Giờ chuẩn mất trong giai đoạn này khoảng ' + fmtN(t.loss) + ' giờ.';
+    var t1 = table(['Mức thời gian may', 'Số lượt may', 'Ngày lên NS<span class="sub">bình quân</span>', 'Trung vị', '習熟日数 lý thuyết', '% chậm hơn lý thuyết', 'Mã mới<span class="sub">ngày (số lượt)</span>', 'Mã lặp lại<span class="sub">ngày (số lượt)</span>', 'Giờ chuẩn mất'],
+      r.rows.concat([{ band: { label: 'Tất cả' }, v: t, total: true }]).map(function (x) {
+        var v = x.v;
+        return '<tr' + (x.total ? ' class="total"' : '') + '><td>' + x.band.label + '</td>' + td(fmtN(v.n)) + td(fmtN(v.ramp, 1)) + td(fmtN(v.rampMedian, 1)) + td(fmtN(v.theo, 1)) + td(fmtP(v.slower)) +
+          td(v.nNew ? fmtN(v.newRamp, 1) + '<span class="sub">' + v.nNew + '</span>' : '—') + td(v.nRepeat ? fmtN(v.repeatRamp, 1) + '<span class="sub">' + v.nRepeat + '</span>' : '—') + td(fmtN(v.loss)) + '</tr>';
+      }));
+    var t2 = table(['Mức thời gian may'].concat(r.curveDays.map(function (d) { return 'Ngày ' + d; })),
+      r.rows.concat([{ band: { label: 'Tất cả' }, v: t, total: true }]).map(function (x) {
+        return '<tr' + (x.total ? ' class="total"' : '') + '><td>' + x.band.label + '</td>' + x.v.curve.map(function (c) { return td(c == null ? '—' : bar(c, 1, fmtP(c, 0))); }).join('') + '</tr>';
+      }));
+    var t3 = table(['Mã hàng', 'Thời gian may', 'Lot', 'Bắt đầu', 'Ngày lên NS', 'Lý thuyết', 'Chênh'],
+      r.slowest.map(function (x) {
+        return '<tr><td>' + styleCell(x) + '</td>' + td(fmtN(x.sam)) + td(fmtN(x.aggLot)) + td(fmtDate(x.start)) + td(fmtN(x.ramp)) + td(fmtN(x.learnTheo, 1)) + td('<span class="down">+' + fmtN(x.over, 1) + '</span>') + '</tr>';
+      }));
+    return '<p class="headline">' + head + '</p><p class="an-note">Lượt may = một mã trên một chuyền (chuyền tách tính riêng), xong trong ' + periodText(r.months) + ', may ít nhất 5 ngày. Sản lượng ổn định = phân vị 75% sản lượng ngày (bỏ ngày cuối). ' +
+      (r.notReached ? r.notReached + ' lượt không đạt 90% trong ' + r.maxDays + ' ngày đầu, không tính vào bảng. ' : '') + 'Mã lặp lại = mã đã may xong trước đó trong dữ liệu đã nạp.</p>' + t1 +
+      '<h3>Sản lượng các ngày đầu so với mức ổn định</h3>' + t2 + '<h3>Lượt may lên năng suất chậm nhất so với lý thuyết</h3>' + t3;
+  }
+
+  function anLt(o) {
+    var r = R.leadTime(ds, o), t = r.total;
+    if (!t.n) return '<div class="empty">Chưa có lượt may nào xong trong ' + periodText(r.months) + '.</div>';
+    var head = 'Lead time may thực tế bình quân ' + fmtN(t.span, 1) + ' ngày làm việc, lý thuyết (縫製リードタイム) ' + fmtN(t.theo, 1) + ' ngày. ' +
+      fmtP(t.overRate) + ' lượt may chậm hơn lý thuyết quá ' + r.tolerance + ' ngày' + (t.overDays ? ', chậm bình quân ' + fmtN(t.overDays, 1) + ' ngày.' : '.');
+    var row = function (name, v, cls) {
+      return '<tr' + (cls ? ' class="' + cls + '"' : '') + '><td>' + esc(name) + '</td>' + td(fmtN(v.n)) + td(fmtN(v.theo, 1)) + td(fmtN(v.span, 1)) + td(fmtN(v.days, 1)) + td(fmtP(v.overRate)) + td(fmtN(v.overDays, 1)) + '</tr>';
+    };
+    var head1 = ['', 'Số lượt may', 'LT lý thuyết<span class="sub">ngày</span>', 'LT thực tế<span class="sub">ngày làm việc</span>', 'Số ngày có may', '% chậm', 'Chậm bình quân<span class="sub">ngày</span>'];
+    var t1 = table(['Mức thời gian may'].concat(head1.slice(1)), r.rows.map(function (x) { return row(x.band.label, x.v); }).concat([row('Tất cả', t, 'total')]));
+    var t2 = table(['Nhãn hàng'].concat(head1.slice(1)), r.byBrand.map(function (x) { return row(x.key, x.v); }));
+    var t3 = table(['Mã hàng', 'Thời gian may', 'Lot', 'Từ – đến', 'LT thực tế', 'Lý thuyết', 'Chênh'],
+      r.worst.filter(function (x) { return x.over > 0; }).map(function (x) {
+        return '<tr><td>' + styleCell(x) + '</td>' + td(fmtN(x.sam)) + td(fmtN(x.aggLot)) + td(fmtDate(x.start) + ' – ' + fmtDate(x.end), 'txt') + td(fmtN(x.span)) + td(fmtN(x.ltTheo, 1)) + td('<span class="down">+' + fmtN(x.over, 1) + '</span>') + '</tr>';
+      }));
+    return '<p class="headline">' + head + '</p><p class="an-note">Lead time thực tế = số ngày làm việc từ ngày may đầu tiên đến ngày cuối cùng của lượt may. Lượt may xong trong ' + periodText(r.months) + '.</p>' + t1 +
+      '<h3>Theo nhãn hàng</h3>' + t2 + '<h3>Lượt may chậm nhất so với lý thuyết</h3>' + t3;
+  }
+
+  function anCo(o) {
+    var r = R.changeover(ds, o), t = r.total;
+    if (!t.sah) return '<div class="empty">Không có sản lượng trong ' + periodText(r.months) + '.</div>';
+    var head = 'Có ' + fmtN(t.starts) + ' lượt mã mới vào chuyền. Giờ chuẩn mất trong giai đoạn lên năng suất khoảng ' + fmtN(t.loss) + ' giờ, bằng ' + fmtP(t.lossRate) + ' tổng giờ chuẩn có thể làm.';
+    var maxRate = Math.max.apply(null, r.lines.map(function (x) { return x.v.lossRate || 0; }).concat(r.byMonth.map(function (x) { return x.v.lossRate || 0; })));
+    var cols = ['Mã mới vào chuyền', 'Số mã chạy<span class="sub">切替数</span>', 'Lot bq mã mới', 'Giờ chuẩn mất', 'Giờ chuẩn làm ra', '% mất'];
+    var row = function (name, v, cls) {
+      return '<tr' + (cls ? ' class="' + cls + '"' : '') + '><td>' + name + '</td>' + td(fmtN(v.starts)) + td(fmtN(v.running)) + td(fmtN(v.lots)) + td(fmtN(v.loss)) + td(fmtN(v.sah)) + td(bar(v.lossRate, maxRate, fmtP(v.lossRate), 'warnbar')) + '</tr>';
+    };
+    var t1 = table(['Tháng'].concat(cols), r.byMonth.map(function (x) { return row(R.monthLabel(x.month), x.v); }).concat([row('Tổng', t, 'total')]));
+    var t2 = table(['Chuyền'].concat(cols), r.lines.map(function (x) { return row(esc(x.key), x.v); }));
+    return '<p class="headline">' + head + '</p><p class="an-note">Giờ chuẩn mất = phần sản lượng thiếu so với mức ổn định trong những ngày đầu của mỗi mã mới, nhân thời gian may. % mất = giờ chuẩn mất ÷ (giờ chuẩn làm ra + giờ chuẩn mất). Số mã chạy tính như 切替数 ở sheet TORAY (số mã có TH trong tháng).</p>' +
+      '<h3>Theo tháng</h3>' + t1 + '<h3>Theo chuyền</h3>' + t2;
+  }
+
+  function anPlan(o) {
+    var r = R.planStability(ds, o), t = r.total;
+    if (!r.byMonth.length) return '<div class="empty">Chưa có tháng nào trong kỳ có đủ file cuối tháng trước (để lấy KH đầu tháng) và file chốt tháng.</div>';
+    var head = 'TH đạt ' + fmtP(t.rate) + ' KH đầu tháng (' + fmtN(t.th) + ' / ' + fmtN(t.khOpen) + ' sp). So với KH đầu tháng: ' + t.added + ' mã được thêm vào, ' + t.dropped + ' mã không làm, tức thay đổi ' + fmtP(t.changeRate) + ' số mã trong KH.';
+    var cols = ['KH đầu tháng', 'TH', '% đạt', 'Chênh TH − KH', 'Mã trong KH đầu tháng', 'Mã thêm vào', 'Mã không làm', '% mã thay đổi'];
+    var row = function (name, v, cls) {
+      return '<tr' + (cls ? ' class="' + cls + '"' : '') + '><td>' + name + '</td>' + td(fmtN(v.khOpen)) + td(fmtN(v.th)) + td(fmtP(v.rate)) + td((v.diff > 0 ? '+' : '') + fmtN(v.diff)) +
+        td(fmtN(v.planned)) + td(fmtN(v.added)) + td(fmtN(v.dropped)) + td(fmtP(v.changeRate)) + '</tr>';
+    };
+    var t1 = table(['Tháng'].concat(cols), r.byMonth.map(function (x) { return row(R.monthLabel(x.month), x.v); }).concat([row('Tổng', t, 'total')]));
+    var t2 = table(['Nhãn hàng'].concat(cols), r.byBrand.map(function (x) { return row(esc(x.key), x.v); }));
+    var skipped = r.months.length - r.byMonth.length;
+    return '<p class="headline">' + head + '</p><p class="an-note">Chỉ tính các tháng đã chốt và có file cuối tháng trước (update trong 10 ngày trước ngày 1).' + (skipped > 0 ? ' ' + skipped + ' tháng trong kỳ bị bỏ qua vì thiếu một trong hai file.' : '') +
+      ' Mã thêm vào = có TH trong tháng nhưng không có trong KH đầu tháng; mã không làm = có trong KH đầu tháng nhưng không có TH.</p>' + '<h3>Theo tháng</h3>' + t1 + '<h3>Theo nhãn hàng</h3>' + t2;
+  }
+
+  function anRank(o) {
+    var r = R.lineRanking(ds, o);
+    if (!r.rows.length) return '<div class="empty">Không có chuyền nào đủ ' + r.minPd + ' ngày công trong ' + periodText(r.months) + '.</div>';
+    var best = r.rows[0], worst = r.rows[r.rows.length - 1];
+    var head = 'Cao nhất: ' + esc(best.key) + ' (hiệu suất ' + fmtP(best.v.efficiency) + '). Thấp nhất: ' + esc(worst.key) + ' (' + fmtP(worst.v.efficiency) + '). ' + r.rows.length + ' chuyền được xếp hạng.';
+    var maxEff = best.v.efficiency;
+    var t1 = table(['Hạng', 'Chuyền', 'TH', 'Ngày công', 'LĐ/chuyền', 'Năng suất<span class="sub">sp/người/ngày</span>', 'Hiệu suất', '工程分析時間', 'Số tháng', 'Thấp nhất – cao nhất<span class="sub">hiệu suất tháng</span>', 'Dao động<span class="sub">độ lệch chuẩn</span>'],
+      r.rows.map(function (x) {
+        return '<tr>' + td(x.rank) + td(esc(x.key), 'txt') + td(fmtN(x.v.th)) + td(fmtN(x.v.pdT)) + td(fmtN(x.v.perLine, 1)) + td(fmtN(x.v.productivity, 2)) + td(bar(x.v.efficiency, maxEff, fmtP(x.v.efficiency))) +
+          td(fmtN(x.v.avgSam)) + td(fmtN(x.monthly.length)) + td(x.min == null ? '—' : fmtP(x.min, 0) + ' – ' + fmtP(x.max, 0)) + td(x.sd == null ? '—' : fmtN(x.sd * 100, 1) + ' đ') + '</tr>';
+      }));
+    return '<p class="headline">' + head + '</p><p class="an-note">Kỳ: ' + periodText(r.months) + '. Xếp theo hiệu suất (giờ chuẩn ÷ giờ công). Chuyền dưới ' + r.minPd + ' ngày công không xếp hạng. Chuyền ghép (AB) có số người gấp đôi nên năng suất/người khác chuyền thường. Dao động lớn = hiệu suất các tháng chênh nhau nhiều.</p>' + t1;
+  }
+
+  function anLoad(o) {
+    var r = R.capacityLoad(ds, o);
+    if (!r.rows.length) return '<div class="empty">Chưa có tháng kế hoạch sau tháng đã chốt gần nhất.</div>';
+    var list = r.totals.length ? r.totals : r.rows;
+    var over = list.filter(function (x) { return x.load > 1.05; });
+    var head = over.length ? 'Quá tải: ' + over.map(function (x) { return R.monthLabel(x.month) + ' (' + fmtP(x.load, 0) + ', cần khoảng ' + fmtN(x.laborNeed) + ' người so với ' + fmtN(x.labor) + ')'; }).join('; ') + '.'
+      : 'Không có tháng nào vượt 105% năng lực.';
+    var maxLoad = Math.max.apply(null, r.rows.concat(r.totals).map(function (x) { return x.load || 0; }).concat([1.2]));
+    var LS = { 'qua-tai': 'Quá tải', 'vua': 'Vừa', 'thieu-hang': 'Thiếu hàng' };
+    var row = function (x, cls) {
+      var st = R.loadStatus(x.load);
+      return '<tr' + (cls ? ' class="' + cls + '"' : '') + '><td>' + esc(x.f) + '</td>' + td(R.monthLabel(x.month), 'txt') + td(x.wd != null ? fmtN(x.wd) : '—') + td(fmtN(x.kh)) + td(fmtN(x.sahK)) + td(fmtN(x.capSah)) +
+        td(bar(x.load, maxLoad, fmtP(x.load, 0), x.load > 1.05 ? 'warnbar' : '')) + td(st ? '<span class="chip ' + st + '">' + LS[st] + '</span>' : '—', 'txt') + td(fmtN(x.laborNeed)) + td(fmtN(x.labor)) + '</tr>';
+    };
+    var cols = ['Xưởng', 'Tháng', 'Ngày làm việc', 'KH (sp)', 'Giờ chuẩn KH', 'Năng lực<span class="sub">giờ chuẩn</span>', 'Tải', 'Đánh giá', 'LĐ cần<span class="sub">người/ngày</span>', 'LĐ hiện có<span class="sub">bq 3 tháng</span>'];
+    var t1 = table(cols, r.rows.map(function (x) { return row(x); }).concat(r.totals.map(function (x) { return row(x, 'total'); })));
+    var base = r.rows.map(function (x) { return x.f + ': ' + x.base.map(R.monthLabel).join(', ') + ' (hiệu suất ' + fmtP(x.efficiency) + ')'; })
+      .filter(function (v, i, a) { return a.indexOf(v) === i; }).join(' · ');
+    return '<p class="headline">' + head + '</p><p class="an-note">Năng lực = LĐ bình quân/ngày × ngày làm việc × 8 giờ × hiệu suất, theo ' + r.baseMonths + ' tháng đã chốt gần nhất của từng xưởng (' + esc(base) + '). Tải = giờ chuẩn của KH ÷ năng lực. Vừa: 85–105%. KH các tháng xa thường chưa nhận đủ đơn nên tải thấp. Phần này không lọc theo nhãn hàng.</p>' + t1;
+  }
+
   function renderStyles() {
     var q = ($('styleSearch').value || '').trim().toLowerCase();
     var list = R.filterFacts(ds.facts, { factory: state.factory || null, brand: state.brand || null, months: [state.month] })
@@ -887,6 +1075,41 @@ td .sub, th .sub { display: block; font-size: 11px; font-weight: 400; color: var
         r2(x.kh), r2(x.khOpen), r2(x.th), x.thDays, r2(x.pdT, 2), r2(x.pdK, 2), r2(x.sah, 2), x.wd, x.start, x.end]);
     });
     add('Du lieu', raw);
+
+    // Phân tích (theo kỳ phân tích đang chọn)
+    var ao = opts({ period: state.anPeriod });
+    var pLabel = R.ANALYSIS_PERIODS.filter(function (x) { return x.id === state.anPeriod; })[0].label;
+    var a1 = R.lotEfficiency(ds, ao), s1 = [['Cỡ lot và hiệu suất · ' + pLabel + ' · ' + periodText(a1.months)], [], ['Cỡ lot', 'Số mã', 'TH', 'Ngày công', 'Năng suất', 'Hiệu suất', '工程分析時間']];
+    a1.rows.forEach(function (x) { s1.push([x.band.label, x.v.styles, r2(x.v.th), r2(x.v.pdT, 1), r2(x.v.productivity, 3), r2(x.v.efficiency, 4), r2(x.v.avgSam, 1)]); });
+    s1.push([]); s1.push(['Hiệu suất: cỡ lot / thời gian may'].concat(R.SAM_BANDS.map(function (b) { return b.label; })));
+    a1.matrix.forEach(function (x) { s1.push([x.band.label].concat(x.cells.map(function (c) { return r2(c.efficiency, 4); }))); });
+    add('PT1 Lot', s1);
+    var a2 = R.learning(ds, ao), s2 = [['Lên năng suất · ' + pLabel + ' · ' + periodText(a2.months)], [], ['Mức thời gian may', 'Số lượt may', 'Ngày lên NS bq', 'Trung vị', '習熟日数 lý thuyết', '% chậm hơn lý thuyết', 'Mã mới (ngày)', 'Mã lặp lại (ngày)', 'Giờ chuẩn mất'].concat(a2.curveDays.map(function (d) { return 'Ngày ' + d + ' (% ổn định)'; }))];
+    a2.rows.concat([{ band: { label: 'Tất cả' }, v: a2.total }]).forEach(function (x) { var v = x.v; s2.push([x.band.label, v.n, r2(v.ramp, 2), v.rampMedian, r2(v.theo, 2), r2(v.slower, 4), r2(v.newRamp, 2), r2(v.repeatRamp, 2), r2(v.loss, 1)].concat(v.curve.map(function (c) { return r2(c, 4); }))); });
+    s2.push([]); s2.push(['Mã hàng', 'Xưởng', 'Chuyền', 'Nhãn hàng', 'Thời gian may', 'Lot', 'Bắt đầu', 'Ngày lên NS', 'Lý thuyết', 'Chênh']);
+    a2.slowest.forEach(function (x) { s2.push([x.style, x.f, x.lineRaw, x.brand, x.sam, x.aggLot, x.start, x.ramp, r2(x.learnTheo, 2), r2(x.over, 2)]); });
+    add('PT2 Len nang suat', s2);
+    var a3 = R.leadTime(ds, ao), s3 = [['Lead time may · ' + pLabel + ' · ' + periodText(a3.months)], [], ['Nhóm', 'Số lượt may', 'LT lý thuyết', 'LT thực tế (ngày làm việc)', 'Số ngày có may', '% chậm (> ' + a3.tolerance + ' ngày)', 'Chậm bq (ngày)']];
+    var l3 = function (name, v) { s3.push([name, v.n, r2(v.theo, 2), r2(v.span, 2), r2(v.days, 2), r2(v.overRate, 4), r2(v.overDays, 2)]); };
+    a3.rows.forEach(function (x) { l3(x.band.label, x.v); }); l3('Tất cả', a3.total); s3.push([]);
+    a3.byBrand.forEach(function (x) { l3(x.key, x.v); }); s3.push([]);
+    s3.push(['Mã hàng', 'Xưởng', 'Chuyền', 'Nhãn hàng', 'Thời gian may', 'Lot', 'Bắt đầu', 'Kết thúc', 'LT thực tế', 'Lý thuyết', 'Chênh']);
+    a3.worst.forEach(function (x) { s3.push([x.style, x.f, x.lineRaw, x.brand, x.sam, x.aggLot, x.start, x.end, x.span, r2(x.ltTheo, 2), r2(x.over, 2)]); });
+    add('PT3 Lead time', s3);
+    var a4 = R.changeover(ds, ao), s4 = [['Chuyển mã · ' + pLabel + ' · ' + periodText(a4.months)], [], ['Tháng / chuyền', 'Mã mới vào chuyền', 'Số mã chạy (切替数)', 'Lot bq mã mới', 'Giờ chuẩn mất', 'Giờ chuẩn làm ra', '% mất']];
+    var l4 = function (name, v) { s4.push([name, v.starts, v.running, r2(v.lots, 1), r2(v.loss, 1), r2(v.sah, 1), r2(v.lossRate, 4)]); };
+    a4.byMonth.forEach(function (x) { l4(x.month, x.v); }); l4('Tổng', a4.total); s4.push([]); a4.lines.forEach(function (x) { l4(x.key, x.v); });
+    add('PT4 Chuyen ma', s4);
+    var a5 = R.planStability(ds, ao), s5 = [['Ổn định kế hoạch · ' + pLabel + ' · ' + periodText(a5.months)], [], ['Tháng / nhãn hàng', 'KH đầu tháng', 'TH', '% đạt', 'Chênh TH − KH', 'Mã trong KH đầu tháng', 'Mã thêm vào', 'Mã không làm', '% mã thay đổi']];
+    var l5 = function (name, v) { s5.push([name, r2(v.khOpen), r2(v.th), r2(v.rate, 4), r2(v.diff), v.planned, v.added, v.dropped, r2(v.changeRate, 4)]); };
+    a5.byMonth.forEach(function (x) { l5(x.month, x.v); }); l5('Tổng', a5.total); s5.push([]); a5.byBrand.forEach(function (x) { l5(x.key, x.v); });
+    add('PT5 On dinh KH', s5);
+    var a6 = R.lineRanking(ds, ao), s6 = [['Xếp hạng chuyền · ' + pLabel + ' · ' + periodText(a6.months)], [], ['Hạng', 'Chuyền', 'TH', 'Ngày công', 'LĐ/chuyền', 'Năng suất', 'Hiệu suất', '工程分析時間', 'Số tháng', 'Hiệu suất tháng thấp nhất', 'Cao nhất', 'Độ lệch chuẩn']];
+    a6.rows.forEach(function (x) { s6.push([x.rank, x.key, r2(x.v.th), r2(x.v.pdT, 1), r2(x.v.perLine, 1), r2(x.v.productivity, 3), r2(x.v.efficiency, 4), r2(x.v.avgSam, 1), x.monthly.length, r2(x.min, 4), r2(x.max, 4), r2(x.sd, 4)]); });
+    add('PT6 Xep hang chuyen', s6);
+    var a7 = R.capacityLoad(ds, ao), s7 = [['Tải các tháng tới (năng lực theo 3 tháng đã chốt gần nhất)'], [], ['Xưởng', 'Tháng', 'Ngày làm việc', 'KH (sp)', 'Giờ chuẩn KH', 'Năng lực (giờ chuẩn)', 'Tải', 'LĐ cần', 'LĐ hiện có', 'Hiệu suất dùng tính']];
+    a7.rows.concat(a7.totals).forEach(function (x) { s7.push([x.f, x.month, x.wd, r2(x.kh), r2(x.sahK, 1), r2(x.capSah, 1), r2(x.load, 4), r2(x.laborNeed, 1), r2(x.labor, 1), r2(x.efficiency, 4)]); });
+    add('PT7 Tai thang toi', s7);
 
     var chk = [['Xưởng', 'Ngày update', 'Tên file', 'Tháng ở TORAY', 'Kết quả', 'Ô cần sửa', 'Dữ liệu đến hàng']];
     R.SUMMARY_CELLS.forEach(function (sc) { chk[0].push(sc.label + ' – trong file', sc.label + ' – đúng'); });
@@ -969,6 +1192,8 @@ td .sub, th .sub { display: block; font-size: 11px; font-weight: 400; color: var
   $('btnAliases').addEventListener('click', function () { state.aliasText = $('aliases').value; saveSettings(); rebuild(); });
   $('dimSeg').addEventListener('click', function (e) { var b = e.target.closest('[data-dim]'); if (!b) return; state.dim = b.getAttribute('data-dim'); saveSettings(); renderDim(); });
   $('fyDimSeg').addEventListener('click', function (e) { var b = e.target.closest('[data-fydim]'); if (!b) return; state.fyDim = b.getAttribute('data-fydim'); saveSettings(); renderFiscal(); });
+  $('anSeg').addEventListener('click', function (e) { var b = e.target.closest('[data-an]'); if (!b) return; state.anTab = b.getAttribute('data-an'); saveSettings(); renderAnalysis(); });
+  $('anPeriod').addEventListener('change', function () { state.anPeriod = this.value; saveSettings(); renderAnalysis(); });
   $('dimSort').addEventListener('change', function () { state.sort = this.value; saveSettings(); renderDim(); });
   var searchTimer = null;
   $('styleSearch').addEventListener('input', function () { clearTimeout(searchTimer); searchTimer = setTimeout(renderStyles, 150); });

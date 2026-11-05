@@ -123,7 +123,8 @@
     hc: ['ライン編成人数(人/line)']
   };
   // Vị trí cột của mẫu file hiện tại (T..AC), dùng khi không tìm thấy tiêu đề
-  var DEFAULT_COLS = { factory: 19, line: 20, brand: 21, style: 22, item: 23, po: 24, lot: 25, qty: 26, sam: 27, hc: 28, aggLot: 37 };
+  var DEFAULT_COLS = { factory: 19, line: 20, brand: 21, style: 22, item: 23, po: 24, lot: 25, qty: 26, sam: 27, hc: 28, aggLot: 37, learnTheo: 41, ltTheo: 45 };
+  var LATE_HEADERS = { learnTheo: ['習熟日数(day)'], ltTheo: ['縫製リードタイム(day)'] };
 
   function findColumns(rows) {
     var limit = Math.min(rows.length, 40);
@@ -140,6 +141,13 @@
       Object.keys(HEADERS).forEach(function (k) {
         for (var c = fc; c < row.length; c++) {
           if (HEADERS[k].indexOf(norm(row[c])) >= 0) { cols[k] = c; return; }
+        }
+        cols[k] = DEFAULT_COLS[k];
+      });
+      // Cột lý thuyết nằm sau cột 集約ロット (AL): 習熟日数 (AP), 縫製リードタイム (AT, hàng "dự định")
+      Object.keys(LATE_HEADERS).forEach(function (k) {
+        for (var c = (cols.aggLot || 0) + 1; c < row.length; c++) {
+          if (LATE_HEADERS[k].indexOf(norm(row[c])) >= 0) { cols[k] = c; return; }
         }
         cols[k] = DEFAULT_COLS[k];
       });
@@ -224,6 +232,7 @@
         brandRaw: brandRaw, brand: normBrand(brandRaw, opts.aliases), item: normItem(get('item')), style: style,
         po: norm(get('po')), sam: numOrNull(get('sam')), hc: numOrNull(get('hc')), qty: numOrNull(get('qty')),
         aggLot: numOrNull(get('aggLot')),
+        learnTheo: numOrNull(pr[cols.learnTheo]), ltTheo: numOrNull(pr[cols.ltTheo]),
         kh: new Array(nd), th: new Array(nd), theo: new Array(nd), endTH: -1
       };
       // Hàng lý thuyết ("dự định") ngay trên hàng KH: lịch may theo năng lực lý thuyết
@@ -342,10 +351,60 @@
       });
     });
 
+    // Từng lượt may (1 mã trên 1 chuyền): lên năng suất, lead time thực tế
+    var runs = [];
+    styles.forEach(function (st) {
+      var r = runStats(st, dates, off, updateDate);
+      if (r) runs.push(r);
+    });
+
     return {
-      name: opts.name || '', factory: factory, updateDate: updateDate, updateFrom: updateFrom,
+      v: DATA_VERSION, name: opts.name || '', factory: factory, updateDate: updateDate, updateFrom: updateFrom,
       firstDate: dates[0], lastDate: dates[nd - 1], months: months,
-      styleCount: styles.length, facts: facts, warnings: warnings
+      styleCount: styles.length, facts: facts, runs: runs, warnings: warnings
+    };
+  }
+
+  // ---------- Lượt may: lên năng suất (習熟), lead time ----------
+  var DATA_VERSION = 3; // tăng khi file đã nạp cần nạp lại để có đủ chỉ tiêu
+  var CURVE_DAYS = [1, 2, 3, 5, 7, 10];
+  var RAMP_LEVEL = 0.9; // đạt 90% sản lượng ổn định là xong giai đoạn lên năng suất
+  var RAMP_MAX_DAYS = 30;
+
+  /*
+   * Sản lượng ổn định = phân vị 75% của sản lượng các ngày (bỏ ngày cuối, thường làm dở),
+   * để vài ngày đột biến không kéo mức ổn định lên.
+   * Ngày lên năng suất = thứ tự ngày sản xuất đầu tiên đạt 90% mức ổn định, xét trong 30 ngày đầu
+   * (không đạt thì để trống).
+   * Giờ chuẩn mất = tổng (ổn định − thực tế) × thời gian may của các ngày trước đó.
+   * Lead time thực tế = số ngày làm việc từ ngày may đầu tiên đến ngày cuối cùng.
+   */
+  function runStats(st, dates, off, updateDate) {
+    var idx = [];
+    for (var j = 0; j < st.th.length; j++) if (st.th[j] > 0) idx.push(j);
+    if (!idx.length) return null;
+    var first = idx[0], last = idx[idx.length - 1];
+    var vals = idx.map(function (k) { return st.th[k]; });
+    var body = vals.length >= 3 ? vals.slice(0, -1) : vals.slice();
+    var sorted = body.slice().sort(function (a, b) { return a - b; });
+    var stable = sorted[Math.min(sorted.length - 1, Math.floor(0.75 * (sorted.length - 1) + 0.5))];
+    var ramp = null;
+    for (var k = 0; k < Math.min(vals.length, RAMP_MAX_DAYS); k++) if (vals[k] >= RAMP_LEVEL * stable) { ramp = k + 1; break; }
+    var loss = 0, sam = st.sam || 0;
+    if (ramp) for (var k2 = 0; k2 < ramp - 1; k2++) loss += Math.max(0, stable - vals[k2]) * sam / 3600;
+    var span = 0;
+    for (var j2 = first; j2 <= last; j2++) if (!off[j2]) span++;
+    var endISO = st.endTH > 0 ? addDays(dates[st.endTH], -1) : null;
+    var total = vals.reduce(function (a, b) { return a + b; }, 0);
+    return {
+      f: st.factory, line: st.line, lineRaw: st.lineRaw, group: lineGroup(st.line), brand: st.brand, brandRaw: st.brandRaw,
+      item: st.item, style: st.style, sam: st.sam, hc: st.hc, qty: st.qty, aggLot: st.aggLot,
+      learnTheo: st.learnTheo, ltTheo: st.ltTheo,
+      start: dates[first], end: dates[last], days: vals.length, span: span, th: total,
+      stable: stable, ramp: ramp, loss: loss,
+      curve: CURVE_DAYS.map(function (d) { return vals.length >= d ? Math.min(1.5, vals[d - 1] / stable) : null; }),
+      complete: !!endISO && endISO <= updateDate,
+      truncated: first < 3 // bắt đầu ngay đầu dữ liệu của file: có thể đã may từ trước
     };
   }
 
@@ -436,8 +495,9 @@
    *  - "Đã chốt": file update sớm nhất từ ngày làm việc cuối cùng của tháng trở đi (theo lịch nghỉ
    *    trong file; ví dụ file 28/4 chốt tháng 4 khi 29/4–1/5 nghỉ lễ). Số cuối tháng, 月末実績.
    *  - "Đang chạy" / "Kế hoạch": chưa có file chốt → file update mới nhất.
-   * KH đầu tháng: file update mới nhất trước ngày 1 của tháng.
+   * KH đầu tháng: file update mới nhất trước ngày 1 của tháng, trong vòng 10 ngày (file cuối tháng trước).
    */
+  var OPEN_MAX_DAYS = 10;
   function buildDataset(files, opts) {
     var aliases = (opts && opts.aliases) || null;
     var byF = {};
@@ -460,7 +520,12 @@
           status = src.updateDate >= start ? 'dang' : 'kh';
         }
         var open = null;
-        for (var i3 = list.length - 1; i3 >= 0; i3--) if (list[i3].updateDate < start && list[i3] !== src && has(list[i3])) { open = list[i3]; break; }
+        // KH đầu tháng: file update trong 10 ngày trước ngày 1 (file cuối tháng trước); file cũ hơn thì không dùng
+        var openFrom = addDays(start, -OPEN_MAX_DAYS);
+        for (var i3 = list.length - 1; i3 >= 0; i3--) {
+          var cand = list[i3];
+          if (cand.updateDate < start && cand.updateDate >= openFrom && cand !== src && has(cand)) { open = cand; break; }
+        }
         var wd = (src.months[ym] && src.months[ym].work) || 1;
         meta[fac + '|' + ym] = { f: fac, m: ym, status: status, src: src.name, srcDate: src.updateDate, open: open ? open.name : null, openDate: open ? open.updateDate : null, wd: wd };
         monthsAll[ym] = 1;
@@ -477,9 +542,26 @@
         });
       });
     });
+    // Lượt may: cùng xưởng, mã, chuyền, ngày bắt đầu → lấy bản trong file update mới nhất
+    var runMap = {};
+    files.slice().sort(function (a, b) { return a.updateDate < b.updateDate ? -1 : 1; }).forEach(function (fl) {
+      (fl.runs || []).forEach(function (r) {
+        if (r.truncated) return;
+        runMap[r.f + '|' + r.style + '|' + r.lineRaw + '|' + r.start] = Object.assign({}, r, { brand: normBrand(r.brandRaw, aliases) });
+      });
+    });
+    var runs = Object.keys(runMap).map(function (k) { return runMap[k]; });
+    // Mã lặp lại: đã có lượt may của cùng mã kết thúc trước ngày bắt đầu ít nhất 14 ngày
+    var byStyle = {};
+    runs.forEach(function (r) { (byStyle[r.style] = byStyle[r.style] || []).push(r); });
+    runs.forEach(function (r) {
+      var before = addDays(r.start, -14);
+      r.repeat = byStyle[r.style].some(function (o) { return o !== r && o.end < before; });
+    });
     return {
       facts: facts, meta: meta, months: Object.keys(monthsAll).sort(),
-      factories: Object.keys(byF).sort()
+      factories: Object.keys(byF).sort(), runs: runs,
+      oldFiles: files.filter(function (fl) { return (fl.v || 0) < DATA_VERSION; }).length
     };
   }
 
@@ -702,6 +784,257 @@
   }
 
 
+  // ---------- Phân tích ----------
+  var SAM_BANDS = [
+    { id: 0, label: 'Dưới 8.000 giây' }, { id: 1, label: '8.000–12.000 giây' }, { id: 2, label: 'Trên 12.000 giây' }
+  ];
+  function samBand(sam) { if (!(sam > 0)) return null; return sam < 8000 ? 0 : sam <= 12000 ? 1 : 2; }
+  var LOT_BANDS = [
+    { id: 0, label: 'Dưới 500 sp', max: 500 }, { id: 1, label: '500–999 sp', max: 1000 },
+    { id: 2, label: '1.000–1.999 sp', max: 2000 }, { id: 3, label: 'Từ 2.000 sp', max: Infinity }
+  ];
+  function lotBand(lot) {
+    if (!(lot > 0)) return null;
+    for (var i = 0; i < LOT_BANDS.length; i++) if (lot < LOT_BANDS[i].max) return i;
+    return LOT_BANDS.length - 1;
+  }
+  function mean(list) { return list.length ? list.reduce(function (a, b) { return a + b; }, 0) / list.length : null; }
+  function median(list) {
+    if (!list.length) return null;
+    var a = list.slice().sort(function (x, y) { return x - y; }), m = Math.floor(a.length / 2);
+    return a.length % 2 ? a[m] : (a[m - 1] + a[m]) / 2;
+  }
+  function stdev(list) {
+    if (list.length < 2) return null;
+    var m = mean(list);
+    return Math.sqrt(list.reduce(function (a, x) { return a + (x - m) * (x - m); }, 0) / (list.length - 1));
+  }
+
+  // Các tháng của kỳ phân tích: 'month' tháng chọn, 'ytd' lũy kế năm tài chính, '12m' 12 tháng gần nhất, 'all' mọi tháng đến tháng chọn
+  var ANALYSIS_PERIODS = [
+    { id: 'ytd', label: 'Lũy kế năm tài chính' }, { id: '12m', label: '12 tháng gần nhất' },
+    { id: 'month', label: 'Tháng báo cáo' }, { id: 'all', label: 'Toàn bộ dữ liệu' }
+  ];
+  function periodMonths(ds, month, kind, startMonth) {
+    var upto = ds.months.filter(function (m) { return m <= month; });
+    if (kind === 'month') return [month];
+    if (kind === 'ytd') return periods(month, startMonth || 4, ds.months).ytd;
+    if (kind === '12m') { var from = addMonths(month, -11); return upto.filter(function (m) { return m >= from; }); }
+    return upto;
+  }
+  function analysisBase(ds, opts) {
+    var months = periodMonths(ds, opts.month, opts.period || 'ytd', opts.startMonth);
+    var facts = filterFacts(ds.facts, { factory: opts.factory, brand: opts.brand, months: months })
+      .filter(function (x) { return !x.open; });
+    var runs = (ds.runs || []).filter(function (r) {
+      return (!opts.factory || r.f === opts.factory) && (!opts.brand || r.brand === opts.brand);
+    });
+    return { months: months, facts: facts, runs: runs };
+  }
+
+  // 1. Cỡ lot và hiệu suất: các mã có TH trong kỳ, chia theo lot sau gộp (集約ロット) và mức thời gian may
+  function lotEfficiency(ds, opts) {
+    var b = analysisBase(ds, opts), withTh = b.facts.filter(function (x) { return x.th > 0; });
+    var n = b.months.length || 1;
+    var rows = LOT_BANDS.concat([{ id: null, label: 'Không rõ lot' }]).map(function (band) {
+      var g = withTh.filter(function (x) { return lotBand(x.aggLot) === band.id; });
+      return { band: band, v: derive(aggregate(g), n) };
+    }).filter(function (r) { return r.v.th > 0; });
+    var matrix = LOT_BANDS.map(function (band) {
+      return {
+        band: band,
+        cells: SAM_BANDS.map(function (sb) {
+          var g = withTh.filter(function (x) { return lotBand(x.aggLot) === band.id && samBand(x.sam) === sb.id; });
+          return derive(aggregate(g), n);
+        })
+      };
+    });
+    return { months: b.months, rows: rows, matrix: matrix, total: derive(aggregate(withTh), n) };
+  }
+
+  // Lượt may đã xong trong kỳ (ngày cuối trong kỳ), đủ ngày để đo
+  function doneRuns(b, minDays) {
+    var set = {};
+    b.months.forEach(function (m) { set[m] = 1; });
+    return b.runs.filter(function (r) { return r.complete && set[r.end.slice(0, 7)] && r.days >= (minDays || 1); });
+  }
+
+  // 2. Lên năng suất (習熟): số ngày đến 90% sản lượng ổn định, so với 習熟日数 lý thuyết
+  function learning(ds, opts) {
+    var b = analysisBase(ds, opts), all5 = doneRuns(b, 5), runs = all5.filter(function (r) { return r.ramp != null; });
+    var notReached = all5.length - runs.length;
+    var summarize1 = function (list) {
+      var withTheo = list.filter(function (r) { return r.learnTheo > 0; });
+      return {
+        n: list.length,
+        ramp: mean(list.map(function (r) { return r.ramp; })),
+        rampMedian: median(list.map(function (r) { return r.ramp; })),
+        theo: mean(withTheo.map(function (r) { return r.learnTheo; })),
+        slower: withTheo.length ? withTheo.filter(function (r) { return r.ramp > Math.ceil(r.learnTheo); }).length / withTheo.length : null,
+        loss: list.reduce(function (a, r) { return a + r.loss; }, 0),
+        curve: CURVE_DAYS.map(function (d, i) {
+          var v = list.map(function (r) { return r.curve[i]; }).filter(function (x) { return x != null; });
+          return v.length ? mean(v) : null;
+        }),
+        newRamp: mean(list.filter(function (r) { return !r.repeat; }).map(function (r) { return r.ramp; })),
+        repeatRamp: mean(list.filter(function (r) { return r.repeat; }).map(function (r) { return r.ramp; })),
+        nNew: list.filter(function (r) { return !r.repeat; }).length,
+        nRepeat: list.filter(function (r) { return r.repeat; }).length
+      };
+    };
+    var rows = SAM_BANDS.map(function (sb) {
+      return { band: sb, v: summarize1(runs.filter(function (r) { return samBand(r.sam) === sb.id; })) };
+    });
+    var slowest = runs.filter(function (r) { return r.learnTheo > 0; })
+      .map(function (r) { return Object.assign({ over: r.ramp - r.learnTheo }, r); })
+      .sort(function (a, c) { return c.over - a.over; }).slice(0, 15);
+    return { months: b.months, curveDays: CURVE_DAYS, rows: rows, total: summarize1(runs), slowest: slowest, notReached: notReached, maxDays: RAMP_MAX_DAYS };
+  }
+
+  // 3. Lead time may: số ngày làm việc từ ngày may đầu đến ngày cuối, so với 縫製リードタイム lý thuyết
+  var LT_TOLERANCE = 2; // vượt quá lý thuyết hơn 2 ngày mới tính là chậm
+  function leadTime(ds, opts) {
+    var b = analysisBase(ds, opts), runs = doneRuns(b, 1);
+    var summarize1 = function (list) {
+      var withTheo = list.filter(function (r) { return r.ltTheo > 0; });
+      var over = withTheo.filter(function (r) { return r.span > r.ltTheo + LT_TOLERANCE; });
+      return {
+        n: list.length,
+        theo: mean(withTheo.map(function (r) { return r.ltTheo; })),
+        span: mean(list.map(function (r) { return r.span; })),
+        days: mean(list.map(function (r) { return r.days; })),
+        overRate: withTheo.length ? over.length / withTheo.length : null,
+        overDays: mean(over.map(function (r) { return r.span - r.ltTheo; }))
+      };
+    };
+    var rows = SAM_BANDS.map(function (sb) {
+      return { band: sb, v: summarize1(runs.filter(function (r) { return samBand(r.sam) === sb.id; })) };
+    });
+    var brands = groupBy(runs, function (r) { return r.brand; });
+    var byBrand = Object.keys(brands).map(function (k) { return { key: k, v: summarize1(brands[k]) }; })
+      .sort(function (a, c) { return c.v.n - a.v.n; });
+    var worst = runs.filter(function (r) { return r.ltTheo > 0; })
+      .map(function (r) { return Object.assign({ over: r.span - r.ltTheo }, r); })
+      .sort(function (a, c) { return c.over - a.over; }).slice(0, 15);
+    return { months: b.months, tolerance: LT_TOLERANCE, rows: rows, byBrand: byBrand, total: summarize1(runs), worst: worst };
+  }
+
+  // 4. Chuyển mã: số mã mới vào chuyền và giờ chuẩn mất trong giai đoạn lên năng suất, theo chuyền và theo tháng
+  function changeover(ds, opts) {
+    var b = analysisBase(ds, opts), set = {};
+    b.months.forEach(function (m) { set[m] = 1; });
+    var started = b.runs.filter(function (r) { return set[r.start.slice(0, 7)]; });
+    var withTh = b.facts.filter(function (x) { return x.th > 0; });
+    var mk = function (runsG, factsG) {
+      var sah = factsG.reduce(function (a, x) { return a + x.sah; }, 0);
+      var loss = runsG.reduce(function (a, r) { return a + r.loss; }, 0);
+      return {
+        starts: runsG.length, loss: loss, sah: sah, lossRate: sah + loss > 0 ? loss / (sah + loss) : null,
+        running: factsG.length, lots: mean(runsG.filter(function (r) { return r.aggLot > 0; }).map(function (r) { return r.aggLot; }))
+      };
+    };
+    var lk = function (x) { return x.f + ' · ' + x.line; };
+    var rl = groupBy(started, lk), fl = groupBy(withTh, lk);
+    var lines = Object.keys(fl).map(function (k) { return { key: k, v: mk(rl[k] || [], fl[k]) }; })
+      .sort(function (a, c) { return c.v.starts - a.v.starts || (c.v.lossRate || 0) - (a.v.lossRate || 0); });
+    var rm = groupBy(started, function (r) { return r.start.slice(0, 7); }), fm = groupBy(withTh, function (x) { return x.m; });
+    var months = b.months.filter(function (m) { return fm[m]; }).map(function (m) { return { month: m, v: mk(rm[m] || [], fm[m]) }; });
+    return { months: b.months, lines: lines, byMonth: months, total: mk(started, withTh) };
+  }
+
+  // 5. Độ ổn định kế hoạch: KH đầu tháng so với TH; mã thêm vào / bỏ ra so với KH đầu tháng
+  function planStability(ds, opts) {
+    var months = periodMonths(ds, opts.month, opts.period || 'ytd', opts.startMonth);
+    var all = filterFacts(ds.facts, { factory: opts.factory, brand: opts.brand, months: months });
+    var openMonths = {};
+    all.forEach(function (x) { if (x.open && x.khOpen > 0 && x.status === 'chot') openMonths[x.f + '|' + x.m] = 1; });
+    var fs = all.filter(function (x) { return openMonths[x.f + '|' + x.m]; });
+    var mk = function (g) {
+      var openKeys = {}, doneKeys = {}, a = { khOpen: 0, kh: 0, th: 0 };
+      g.forEach(function (x) {
+        var k = x.f + '|' + x.m + '|' + x.style;
+        if (x.open) { a.khOpen += x.khOpen; if (x.khOpen > 0) openKeys[k] = 1; }
+        else { a.kh += x.kh; a.th += x.th; if (x.th > 0) doneKeys[k] = 1; }
+      });
+      var added = Object.keys(doneKeys).filter(function (k) { return !openKeys[k]; }).length;
+      var dropped = Object.keys(openKeys).filter(function (k) { return !doneKeys[k]; }).length;
+      return {
+        khOpen: a.khOpen, kh: a.kh, th: a.th, rate: a.khOpen > 0 ? a.th / a.khOpen : null,
+        diff: a.th - a.khOpen, planned: Object.keys(openKeys).length, done: Object.keys(doneKeys).length,
+        added: added, dropped: dropped,
+        changeRate: Object.keys(openKeys).length ? (added + dropped) / Object.keys(openKeys).length : null
+      };
+    };
+    var brands = groupBy(fs, function (x) { return x.brand; });
+    var byBrand = Object.keys(brands).map(function (k) { return { key: k, v: mk(brands[k]) }; })
+      .filter(function (r) { return r.v.khOpen > 0 || r.v.th > 0; })
+      .sort(function (a, c) { return c.v.khOpen - a.v.khOpen; });
+    var mg = groupBy(fs, function (x) { return x.m; });
+    var byMonth = Object.keys(mg).sort().map(function (m) { return { month: m, v: mk(mg[m]) }; });
+    return { months: months, byBrand: byBrand, byMonth: byMonth, total: mk(fs) };
+  }
+
+  // 6. Xếp hạng chuyền: hiệu suất, năng suất trong kỳ; độ ổn định = độ lệch chuẩn hiệu suất các tháng
+  var RANK_MIN_PD = 20; // bỏ qua chuyền có dưới 20 ngày công trong kỳ
+  function lineRanking(ds, opts) {
+    var b = analysisBase(ds, opts), withTh = b.facts.filter(function (x) { return x.th > 0; });
+    var g = groupBy(withTh, function (x) { return x.f + ' · ' + x.line; });
+    var rows = Object.keys(g).map(function (k) {
+      var list = g[k], v = derive(aggregate(list), actualMonths(list, b.months));
+      var bm = groupBy(list, function (x) { return x.m; });
+      var effs = Object.keys(bm).sort().map(function (m) { return { month: m, eff: derive(aggregate(bm[m]), 1).efficiency }; })
+        .filter(function (e) { return e.eff != null; });
+      var vals = effs.map(function (e) { return e.eff; });
+      return { key: k, v: v, monthly: effs, sd: stdev(vals), min: vals.length ? Math.min.apply(null, vals) : null, max: vals.length ? Math.max.apply(null, vals) : null };
+    }).filter(function (r) { return r.v.pdT >= RANK_MIN_PD && r.v.efficiency != null; })
+      .sort(function (a, c) { return c.v.efficiency - a.v.efficiency; });
+    rows.forEach(function (r, i) { r.rank = i + 1; });
+    return { months: b.months, rows: rows, minPd: RANK_MIN_PD };
+  }
+
+  // 7. Tải các tháng tới: giờ chuẩn của KH so với năng lực (LĐ bình quân × ngày làm việc × 8 giờ × hiệu suất)
+  // Năng lực lấy theo 3 tháng đã chốt gần nhất của từng xưởng. Không lọc theo nhãn hàng.
+  var LOAD_BASE_MONTHS = 3, LOAD_AHEAD = 6;
+  function capacityLoad(ds, opts) {
+    var facs = ds.factories.filter(function (f) { return !opts.factory || f === opts.factory; });
+    var rows = [];
+    facs.forEach(function (f) {
+      var closed = ds.months.filter(function (m) { var me = ds.meta[f + '|' + m]; return me && me.status === 'chot'; });
+      var withTh = closed.filter(function (m) { return ds.facts.some(function (x) { return x.f === f && x.m === m && !x.open && x.th > 0; }); });
+      var base = withTh.slice(-LOAD_BASE_MONTHS);
+      if (!base.length) return;
+      var baseFacts = filterFacts(ds.facts, { factory: f, months: base }).filter(function (x) { return !x.open; });
+      var bv = derive(aggregate(baseFacts), base.length);
+      var lastClosed = closed[closed.length - 1];
+      var ahead = ds.months.filter(function (m) { return m > lastClosed && ds.meta[f + '|' + m]; }).slice(0, LOAD_AHEAD);
+      ahead.forEach(function (m) {
+        var fs = filterFacts(ds.facts, { factory: f, months: [m] }).filter(function (x) { return !x.open; });
+        var a = aggregate(fs), wd = ds.meta[f + '|' + m].wd;
+        var hours = (bv.labor || 0) * wd * HOURS_PER_DAY;
+        var capSah = hours * (bv.efficiency || 0);
+        rows.push({
+          f: f, month: m, status: ds.meta[f + '|' + m].status, wd: wd, kh: a.kh, sahK: a.sahK,
+          labor: bv.labor, efficiency: bv.efficiency, base: base, capSah: capSah,
+          load: capSah > 0 ? a.sahK / capSah : null,
+          laborNeed: bv.efficiency > 0 && wd > 0 ? a.sahK / (bv.efficiency * HOURS_PER_DAY * wd) : null
+        });
+      });
+    });
+    // Tổng các xưởng theo tháng
+    var totals = [];
+    if (facs.length > 1) {
+      var bm = groupBy(rows, function (r) { return r.month; });
+      Object.keys(bm).sort().forEach(function (m) {
+        var g = bm[m], capSah = 0, sahK = 0, kh = 0, need = 0;
+        g.forEach(function (r) { capSah += r.capSah; sahK += r.sahK; kh += r.kh; need += r.laborNeed || 0; });
+        totals.push({ f: 'Tất cả', month: m, kh: kh, sahK: sahK, capSah: capSah, load: capSah > 0 ? sahK / capSah : null, laborNeed: need,
+          labor: g.reduce(function (a, r) { return a + (r.labor || 0); }, 0), factories: g.length });
+      });
+    }
+    return { rows: rows, totals: totals, baseMonths: LOAD_BASE_MONTHS };
+  }
+  function loadStatus(load) { return load == null ? null : load > 1.05 ? 'qua-tai' : load < 0.85 ? 'thieu-hang' : 'vua'; }
+
   return {
     HOURS_PER_DAY: HOURS_PER_DAY, BRAND_ALIASES: BRAND_ALIASES, DIMS: DIMS,
     toISO: toISO, serialToISO: serialToISO, addDays: addDays, addMonths: addMonths, monthEnd: monthEnd, monthLabel: monthLabel,
@@ -709,6 +1042,10 @@
     parseAliasText: parseAliasText, normBrand: normBrand, lineGroup: lineGroup, baseLine: baseLine,
     SUMMARY_CELLS: SUMMARY_CELLS, checkSummary: checkSummary, closesMonth: closesMonth, coverage: coverage,
     parseRows: parseRows, buildDataset: buildDataset, aggregate: aggregate, derive: derive,
-    filterFacts: filterFacts, groupBy: groupBy, periods: periods, summarize: summarize, monthly: monthly, fiscal: fiscal, pct: pct
+    filterFacts: filterFacts, groupBy: groupBy,
+    SAM_BANDS: SAM_BANDS, LOT_BANDS: LOT_BANDS, ANALYSIS_PERIODS: ANALYSIS_PERIODS, CURVE_DAYS: CURVE_DAYS, DATA_VERSION: DATA_VERSION,
+    samBand: samBand, lotBand: lotBand, periodMonths: periodMonths, runStats: runStats,
+    lotEfficiency: lotEfficiency, learning: learning, leadTime: leadTime, changeover: changeover,
+    planStability: planStability, lineRanking: lineRanking, capacityLoad: capacityLoad, loadStatus: loadStatus, periods: periods, summarize: summarize, monthly: monthly, fiscal: fiscal, pct: pct
   };
 });

@@ -38,6 +38,8 @@ function makeSheet({ from, to, off = [], styles }) {
     for (const [d, v] of Object.entries(s.th || {})) t[D0 + dates.indexOf(d)] = v;
     if (s.endTH) t[D0 + dates.indexOf(s.endTH)] = 'END';
     if (s.aggLot != null) p[37] = s.aggLot; // 集約ロット (cột AL, hàng lý thuyết)
+    if (s.learnTheo != null) p[41] = s.learnTheo; // 習熟日数 lý thuyết (AP)
+    if (s.ltTheo != null) p[45] = s.ltTheo; // 縫製リードタイム lý thuyết (AT)
     for (const [d, v] of Object.entries(s.theo || {})) p[D0 + dates.indexOf(d)] = v;
     p[D0 + 1] = 99; // hàng lý thuyết không được tính
     rows.push(p, k, t);
@@ -156,7 +158,7 @@ test('Gộp file: mỗi tháng lấy file chốt sớm nhất sau cuối tháng;
   assert.strictEqual(s.totals.ytd.th, 320);
   const nov = R.summarize(ds, { month: '2026-11', startMonth: 4 });
   assert.strictEqual(nov.totals.cur.kh, 350);
-  assert.strictEqual(nov.totals.cur.khOpen, 300);
+  assert.strictEqual(nov.totals.cur.khOpen, 0); // file 15/10 cách ngày 1/11 quá 10 ngày: không dùng làm KH đầu tháng
 });
 
 test('Tháng chưa có file chốt: lấy file mới nhất, trạng thái đang chạy', () => {
@@ -325,4 +327,98 @@ test('工程分析時間 và 生産ロット bình quân tính như sheet TORAY'
   assert.strictEqual(v.avgSam, (1000 * 10000 + 3000 * 6000) / 4000);
   assert.strictEqual(v.avgLot, (1200 + 3000 + 600) / 3);
   assert.strictEqual(v.styles, 2); // mã chỉ có lịch lý thuyết không tính là mã sản xuất
+});
+
+// ---------- Phân tích ----------
+const days = (from, vals) => Object.fromEntries(vals.map((v, i) => [R.addDays(from, i), v]));
+
+test('Lượt may: mức ổn định, ngày lên năng suất, giờ chuẩn mất, lead time thực tế', () => {
+  const th = days('2026-10-05', [10, 20, 40, 50, 50, 50, 48, 30]);
+  const rows = makeSheet({
+    from: '2026-10-01', to: '2026-10-31', off: ['2026-10-11'],
+    styles: [{ factory: 'APIC1A', line: '1A', brand: 'TNF', style: 'S', sam: 3600, hc: 30, kh: th, th, endTH: '2026-10-13', learnTheo: 3.5, ltTheo: 7 }]
+  });
+  const p = R.parseRows(rows, { name: 'x.20261031.xlsm' });
+  const r = p.runs[0];
+  assert.strictEqual(r.stable, 50); // phân vị 75% của [10,20,40,50,50,50,48] (bỏ ngày cuối)
+  assert.strictEqual(r.ramp, 4); // ngày thứ 4 đạt ≥ 45
+  assert.strictEqual(r.loss, 40 + 30 + 10); // (50−10)+(50−20)+(50−40), 1 giờ chuẩn/sp
+  assert.strictEqual(r.days, 8);
+  assert.strictEqual(r.span, 7); // 5/10–12/10: 8 ngày lịch, trừ 11/10 là ngày nghỉ (dù có may) → 7 ngày làm việc
+  assert.strictEqual(r.complete, true);
+  assert.strictEqual(r.learnTheo, 3.5);
+  assert.strictEqual(r.ltTheo, 7);
+  assert.deepStrictEqual(r.curve.slice(0, 3), [0.2, 0.4, 0.8]);
+});
+
+test('Phân tích 1–3: cỡ lot, lên năng suất, lead time', () => {
+  const st = (style, lot, sam, th, endTH, extra) => Object.assign({ factory: 'APIC1A', line: '1A', brand: 'TNF', style, sam, hc: 30, aggLot: lot, kh: th, th, endTH, theo: { '2026-10-02': 1 } }, extra);
+  const rows = makeSheet({
+    from: '2026-10-01', to: '2026-10-31',
+    styles: [
+      st('SMALL', 300, 3600, days('2026-10-05', [5, 10, 10, 10, 10, 10]), '2026-10-11', { learnTheo: 2, ltTheo: 3 }),
+      st('BIG', 2500, 9000, days('2026-10-05', [20, 40, 60, 60, 60, 60, 60]), '2026-10-12', { line: '2A', learnTheo: 3, ltTheo: 10 })
+    ]
+  });
+  const ds = R.buildDataset([R.parseRows(rows, { name: 'x.20261031.xlsm' })]);
+  const o = { month: '2026-10', startMonth: 4, period: 'month' };
+  const lot = R.lotEfficiency(ds, o);
+  assert.deepStrictEqual(lot.rows.map((r) => r.band.label), ['Dưới 500 sp', 'Từ 2.000 sp']);
+  assert.ok(lot.rows[1].v.efficiency > lot.rows[0].v.efficiency);
+  const learn = R.learning(ds, o);
+  assert.strictEqual(learn.total.n, 2);
+  assert.strictEqual(learn.rows[0].v.ramp, 2); // SMALL (< 8.000 giây): ngày 2 đạt 10
+  assert.strictEqual(learn.rows[1].v.ramp, 3); // BIG (8.000–12.000 giây): ngày 3 đạt 60
+  assert.strictEqual(learn.total.slower, 0);
+  const lt = R.leadTime(ds, o);
+  // SMALL: 6 ngày may (5–10/10) so với lý thuyết 3 → chậm hơn 2 ngày cho phép
+  assert.strictEqual(lt.rows[0].v.overRate, 1);
+  assert.strictEqual(lt.rows[1].v.overRate, 0);
+  assert.strictEqual(lt.worst[0].style, 'SMALL');
+});
+
+test('Phân tích 4–6: chuyển mã, độ ổn định kế hoạch, xếp hạng chuyền', () => {
+  const mk = (name, styles) => R.parseRows(makeSheet({ from: '2026-09-01', to: '2026-11-30', styles }), { name });
+  const st = (style, line, hc, kh, th, extra) => Object.assign({ factory: 'APIC1A', line, brand: 'TNF', style, sam: 3600, hc, kh, th }, extra);
+  // File cuối tháng 9: KH tháng 10 cho A, B
+  const f9 = mk('KH UPDATE _APA1.20260930.xlsm', [
+    st('A', '1A', 30, { '2026-10-05': 100 }, {}), st('B', '1A', 30, { '2026-10-12': 100 }, {})
+  ]);
+  // File cuối tháng 10: A làm đủ, B không làm, C thêm vào; chuyền 2A chạy chậm hơn
+  const f10 = mk('KH UPDATE _APA1.20261031.xlsm', [
+    st('A', '1A', 30, { '2026-10-05': 100 }, days('2026-10-05', [60, 120, 120, 120])),
+    st('C', '2A', 30, { '2026-10-06': 100 }, days('2026-10-06', [30, 60, 60]))
+  ]);
+  const ds = R.buildDataset([f9, f10]);
+  const o = { month: '2026-10', startMonth: 4, period: 'month' };
+  const plan = R.planStability(ds, o);
+  assert.strictEqual(plan.total.khOpen, 200);
+  assert.strictEqual(plan.total.th, 570);
+  assert.strictEqual(plan.total.added, 1); // C
+  assert.strictEqual(plan.total.dropped, 1); // B
+  const co = R.changeover(ds, o);
+  assert.strictEqual(co.total.starts, 2);
+  assert.ok(co.total.loss > 0);
+  const rank = R.lineRanking(ds, Object.assign({}, o));
+  assert.deepStrictEqual(rank.rows.map((r) => r.key), ['APIC1A · 1A', 'APIC1A · 2A']);
+  assert.strictEqual(rank.rows[0].rank, 1);
+});
+
+test('Phân tích 7: tải tháng tới so với năng lực 3 tháng đã chốt gần nhất', () => {
+  const st = (kh, th) => ({ factory: 'APIC1A', line: '1A', brand: 'TNF', style: 'S', sam: 3600, hc: 10, kh, th });
+  // mọi ngày trừ Chủ nhật (file thử không có hàng ngày nghỉ "x" nên Chủ nhật là ngày nghỉ)
+  const isSun = (d) => new Date(d + 'T00:00:00Z').getUTCDay() === 0;
+  const all = (from, to, v) => { const o = {}; for (let d = from; d <= to; d = R.addDays(d, 1)) if (!isSun(d)) o[d] = v; return o; };
+  // Tháng 10: may mỗi ngày 40 sp × 1 giờ = 40 giờ chuẩn, 10 người × 8 giờ = 80 giờ công → hiệu suất 50%
+  const th10 = all('2026-10-01', '2026-10-31', 40);
+  const kh11 = all('2026-11-01', '2026-11-30', 60);
+  const fl = R.parseRows(makeSheet({ from: '2026-10-01', to: '2026-11-30', styles: [st(Object.assign({}, th10, kh11), th10)] }), { name: 'KH UPDATE _APA1.20261031.xlsm' });
+  const ds = R.buildDataset([fl]);
+  const cap = R.capacityLoad(ds, {});
+  const nov = cap.rows.find((r) => r.month === '2026-11');
+  assert.ok(Math.abs(nov.efficiency - 0.5) < 1e-9);
+  assert.ok(Math.abs(nov.labor - 10) < 1e-9); // 10 người mỗi ngày làm việc
+  // cần 60 giờ chuẩn/ngày, năng lực 10 × 8 × 50% = 40 → tải 150%
+  assert.ok(Math.abs(nov.load - 1.5) < 1e-9);
+  assert.strictEqual(R.loadStatus(nov.load), 'qua-tai');
 });

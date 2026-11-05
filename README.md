@@ -30,6 +30,8 @@ Mở `bao-cao/index.html`, kéo thả các file `KH_UPDATE__APA1.YYYYMMDD.xlsm`,
 - Mỗi tháng lấy số từ **file chốt**: file update sớm nhất từ ngày cuối tháng trở đi. Vì vậy mỗi tháng cần ít nhất một file update vào ngày cuối tháng (hoặc đầu tháng sau).
 - **KH đầu tháng** lấy từ file update trước ngày 1 của tháng.
 - Năm tài chính mặc định bắt đầu tháng 4, đổi được ở bộ lọc.
+- Mục **Phân tích** (theo kỳ: lũy kế năm tài chính, 12 tháng, tháng, toàn bộ): (1) cỡ lot và hiệu suất, (2) lên năng suất so với 習熟日数, (3) lead time may so với 縫製リードタイム, (4) chuyển mã và giờ chuẩn mất, (5) độ ổn định kế hoạch (KH đầu tháng so với TH), (6) xếp hạng chuyền, (7) tải các tháng tới so với năng lực.
+- Kiểm tra file: công thức tổng ở XN1AB!A1:R3 (sheet TORAY) và tháng còn thiếu file cuối tháng.
 - Cách tính chi tiết ở cuối trang.
 
 ## Sử dụng
