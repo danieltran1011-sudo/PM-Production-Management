@@ -1,0 +1,1696 @@
+{
+ "nha_may": "APIC",
+ "nam_tai_chinh": "2023",
+ "nguon": "data/nguon/Hop-TIVN-phi-uy-thac-APIC-BTNB-20240130.xlsx",
+ "sheet": "参考_APIC(2023年度)",
+ "don_vi_cong": "tỷ lệ thời gian của 1 người (cột mỗi người cộng lại = 1.0)",
+ "nhan_su": [
+  {
+   "ten": "Inoue",
+   "nhom": "日本人管理者"
+  },
+  {
+   "ten": "Fukuda",
+   "nhom": "日本人管理者"
+  },
+  {
+   "ten": "Chanh",
+   "nhom": "管理グループ"
+  },
+  {
+   "ten": "Cuong",
+   "nhom": "管理グループ"
+  },
+  {
+   "ten": "Hien",
+   "nhom": "管理グループ"
+  },
+  {
+   "ten": "Huy",
+   "nhom": "管理グループ"
+  },
+  {
+   "ten": "Khanh",
+   "nhom": "管理グループ"
+  },
+  {
+   "ten": "Luan",
+   "nhom": "管理グループ"
+  },
+  {
+   "ten": "Nhu",
+   "nhom": "管理グループ"
+  },
+  {
+   "ten": "Cau",
+   "nhom": "管理グループ"
+  },
+  {
+   "ten": "Vy",
+   "nhom": "技術グループ"
+  },
+  {
+   "ten": "Quyen",
+   "nhom": "技術グループ"
+  },
+  {
+   "ten": "Phuong",
+   "nhom": "技術グループ"
+  },
+  {
+   "ten": "Luu",
+   "nhom": "技術グループ"
+  },
+  {
+   "ten": "TIVN本社",
+   "nhom": "TIVN本社ﾏﾈｰｼﾞﾒﾝﾄ(出張･配車手配）"
+  }
+ ],
+ "cong_viec": [
+  {
+   "stt": 1,
+   "phan_loai": "総括",
+   "cong_doan": "契約管理・交渉",
+   "cong_viec": "Debit Note",
+   "noi_dung": "Debit Note確認、実績踏まえ更新交渉",
+   "tan_suat": "月次",
+   "phan_bo_cong": {
+    "Nhu": 0.02
+   },
+   "tong_cong": 0.02,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 2,
+   "phan_loai": "総括",
+   "cong_doan": "契約管理・交渉",
+   "cong_viec": "出勤管理",
+   "noi_dung": "月ごとの出勤状況をまとめる",
+   "tan_suat": "月次",
+   "phan_bo_cong": {},
+   "tong_cong": 0,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 3,
+   "phan_loai": "総括",
+   "cong_doan": "契約管理・交渉",
+   "cong_viec": "期中変更対応",
+   "noi_dung": "工場からの業務内容変更要請対応",
+   "tan_suat": "不定期（頻度低）",
+   "phan_bo_cong": {
+    "Inoue": 0.01,
+    "Chanh": 0.01
+   },
+   "tong_cong": 0.02,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 4,
+   "phan_loai": "総括",
+   "cong_doan": "契約管理・交渉",
+   "cong_viec": "生産計画調整",
+   "noi_dung": "工場との生産計画調整・決定",
+   "tan_suat": "週次",
+   "phan_bo_cong": {
+    "Inoue": 0.08,
+    "Chanh": 0.01
+   },
+   "tong_cong": 0.09,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 5,
+   "phan_loai": "総括",
+   "cong_doan": "契約管理・交渉",
+   "cong_viec": "残業要請",
+   "noi_dung": null,
+   "tan_suat": "不定期（頻度低）",
+   "phan_bo_cong": {
+    "Inoue": 0.01,
+    "Chanh": 0.01
+   },
+   "tong_cong": 0.02,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 6,
+   "phan_loai": "総括",
+   "cong_doan": "契約管理・交渉",
+   "cong_viec": "Air代負担交渉",
+   "noi_dung": null,
+   "tan_suat": "不定期（頻度低）",
+   "phan_bo_cong": {
+    "Inoue": 0.01,
+    "Chanh": 0.01
+   },
+   "tong_cong": 0.02,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 7,
+   "phan_loai": "総括",
+   "cong_doan": "契約管理・交渉",
+   "cong_viec": "外注工賃交渉",
+   "noi_dung": null,
+   "tan_suat": "不定期（頻度低）",
+   "phan_bo_cong": {
+    "Inoue": 0.01,
+    "Chanh": 0.01
+   },
+   "tong_cong": 0.02,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 8,
+   "phan_loai": "総括",
+   "cong_doan": "AUDIT",
+   "cong_viec": "事前準備",
+   "noi_dung": "提出書類、工場指導",
+   "tan_suat": "不定期（頻度低）",
+   "phan_bo_cong": {
+    "Nhu": 0.01
+   },
+   "tong_cong": 0.01,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 9,
+   "phan_loai": "総括",
+   "cong_doan": "AUDIT",
+   "cong_viec": "当日対応",
+   "noi_dung": null,
+   "tan_suat": "不定期（頻度低）",
+   "phan_bo_cong": {
+    "Inoue": 0.01,
+    "Nhu": 0.01
+   },
+   "tong_cong": 0.02,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 10,
+   "phan_loai": "総括",
+   "cong_doan": "来客・出張対応",
+   "cong_viec": "移動",
+   "noi_dung": "車、ホテル手配",
+   "tan_suat": "不定期（頻度高）",
+   "phan_bo_cong": {
+    "Inoue": 0.01,
+    "Cau": 0.01,
+    "TIVN本社": 0.5
+   },
+   "tong_cong": 0.52,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 11,
+   "phan_loai": "総括",
+   "cong_doan": "来客・出張対応",
+   "cong_viec": "工場アテンド",
+   "noi_dung": "案内、食事",
+   "tan_suat": "不定期（頻度低）",
+   "phan_bo_cong": {
+    "Inoue": 0.05,
+    "Fukuda": 0.03,
+    "Chanh": 0.01,
+    "Quyen": 0.05,
+    "Phuong": 0.03,
+    "Luu": 0.02,
+    "TIVN本社": 0.5
+   },
+   "tong_cong": 0.69,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 12,
+   "phan_loai": "総括",
+   "cong_doan": "来客・出張対応",
+   "cong_viec": "安全管理",
+   "noi_dung": "行程把握、緊急時対応",
+   "tan_suat": "不定期（頻度高）",
+   "phan_bo_cong": {
+    "Inoue": 0.05,
+    "Chanh": 0.01
+   },
+   "tong_cong": 0.06,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 13,
+   "phan_loai": "企画",
+   "cong_doan": "開発",
+   "cong_viec": "商品開発",
+   "noi_dung": "新規素材、加工技術調査、サンプル試作",
+   "tan_suat": "不定期（頻度中）",
+   "phan_bo_cong": {
+    "Fukuda": 0.02,
+    "Cau": 0.02
+   },
+   "tong_cong": 0.04,
+   "tinh_vao_tri_gia_thue": true
+  },
+  {
+   "stt": 14,
+   "phan_loai": "企画",
+   "cong_doan": "開発",
+   "cong_viec": "加工技術",
+   "noi_dung": "溶着縫製、パターン自動機、ダウン充填機設計",
+   "tan_suat": "不定期（頻度中）",
+   "phan_bo_cong": {
+    "Fukuda": 0.02,
+    "Cau": 0.02
+   },
+   "tong_cong": 0.04,
+   "tinh_vao_tri_gia_thue": true
+  },
+  {
+   "stt": 15,
+   "phan_loai": "企画",
+   "cong_doan": "開発",
+   "cong_viec": "生産技術",
+   "noi_dung": "IE、ライン設計",
+   "tan_suat": "不定期（頻度低）",
+   "phan_bo_cong": {
+    "Fukuda": 0.02,
+    "Cau": 0.02
+   },
+   "tong_cong": 0.04,
+   "tinh_vao_tri_gia_thue": true
+  },
+  {
+   "stt": 16,
+   "phan_loai": "企画",
+   "cong_doan": "開発",
+   "cong_viec": "管理技術",
+   "noi_dung": "工程分析、進捗ばらつき、QC管理手法",
+   "tan_suat": "不定期（頻度中）",
+   "phan_bo_cong": {
+    "Fukuda": 0.02,
+    "Cau": 0.02
+   },
+   "tong_cong": 0.04,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 17,
+   "phan_loai": "企画",
+   "cong_doan": "開発",
+   "cong_viec": "評価技術",
+   "noi_dung": "機能性評価、商品評価、物性試験等",
+   "tan_suat": "不定期（頻度中）",
+   "phan_bo_cong": {
+    "Fukuda": 0.02,
+    "Cau": 0.02
+   },
+   "tong_cong": 0.04,
+   "tinh_vao_tri_gia_thue": true
+  },
+  {
+   "stt": 18,
+   "phan_loai": "前段取り",
+   "cong_doan": "生産計画",
+   "cong_viec": "プランテーブル",
+   "noi_dung": "長期生産計画",
+   "tan_suat": "週次",
+   "phan_bo_cong": {
+    "Inoue": 0.02,
+    "Chanh": 0.05
+   },
+   "tong_cong": 0.07,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 19,
+   "phan_loai": "前段取り",
+   "cong_doan": "生産計画",
+   "cong_viec": "明細連絡",
+   "noi_dung": "SKU明細を工場へ連絡する",
+   "tan_suat": "日次",
+   "phan_bo_cong": {
+    "Chanh": 0.01,
+    "Cuong": 0.01,
+    "Hien": 0.01,
+    "Huy": 0.01,
+    "Khanh": 0.01,
+    "Luan": 0.01,
+    "Nhu": 0.01
+   },
+   "tong_cong": 0.07,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 20,
+   "phan_loai": "前段取り",
+   "cong_doan": "生産計画",
+   "cong_viec": "工場生産計画",
+   "noi_dung": "中期生産計画",
+   "tan_suat": "週次",
+   "phan_bo_cong": {
+    "Inoue": 0.02,
+    "Chanh": 0.05
+   },
+   "tong_cong": 0.07,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 21,
+   "phan_loai": "前段取り",
+   "cong_doan": "生産計画",
+   "cong_viec": "資材進捗",
+   "noi_dung": "材料の進捗状況を確認し工場へ報告する",
+   "tan_suat": "日次",
+   "phan_bo_cong": {
+    "Chanh": 0.08,
+    "Cuong": 0.02,
+    "Hien": 0.02,
+    "Huy": 0.02,
+    "Khanh": 0.02,
+    "Luan": 0.05,
+    "Nhu": 0.01
+   },
+   "tong_cong": 0.22,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 22,
+   "phan_loai": "前段取り",
+   "cong_doan": "生産計画",
+   "cong_viec": "注意連絡",
+   "noi_dung": "特別に注視する内容を工場へ連絡",
+   "tan_suat": "週次",
+   "phan_bo_cong": {
+    "Inoue": 0.01,
+    "Fukuda": 0.01,
+    "Chanh": 0.01
+   },
+   "tong_cong": 0.03,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 23,
+   "phan_loai": "前段取り",
+   "cong_doan": "サンプル",
+   "cong_viec": "受注",
+   "noi_dung": "営業オーダー受注。サンプル管理表への記入",
+   "tan_suat": "日次",
+   "phan_bo_cong": {
+    "Cuong": 0.02,
+    "Hien": 0.02,
+    "Huy": 0.02,
+    "Khanh": 0.02,
+    "Luan": 0.01,
+    "Nhu": 0.01,
+    "Vy": 0.04
+   },
+   "tong_cong": 0.14,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 24,
+   "phan_loai": "前段取り",
+   "cong_doan": "サンプル",
+   "cong_viec": "工場指示",
+   "noi_dung": "日本からのサンプル依頼を工場へ連絡",
+   "tan_suat": "日次",
+   "phan_bo_cong": {
+    "Inoue": 0.01,
+    "Cuong": 0.02,
+    "Hien": 0.02,
+    "Huy": 0.02,
+    "Khanh": 0.01,
+    "Luan": 0.01,
+    "Nhu": 0.01
+   },
+   "tong_cong": 0.1,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 25,
+   "phan_loai": "前段取り",
+   "cong_doan": "サンプル",
+   "cong_viec": "納期回答",
+   "noi_dung": "工場スケジューリング、納期回答",
+   "tan_suat": "日次",
+   "phan_bo_cong": {
+    "Inoue": 0.01,
+    "Vy": 0.04
+   },
+   "tong_cong": 0.05,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 26,
+   "phan_loai": "前段取り",
+   "cong_doan": "サンプル",
+   "cong_viec": "仕様",
+   "noi_dung": "仕様書の受領、翻訳",
+   "tan_suat": "日次",
+   "phan_bo_cong": {
+    "Cuong": 0.14,
+    "Hien": 0.15,
+    "Huy": 0.14,
+    "Khanh": 0.15,
+    "Luan": 0.15,
+    "Nhu": 0.05
+   },
+   "tong_cong": 0.78,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 27,
+   "phan_loai": "前段取り",
+   "cong_doan": "サンプル",
+   "cong_viec": "パターンチェック",
+   "noi_dung": "パターンの受領、寸法チェック",
+   "tan_suat": "日次",
+   "phan_bo_cong": {
+    "Cuong": 0.01,
+    "Hien": 0.01,
+    "Huy": 0.01,
+    "Khanh": 0.01,
+    "Luan": 0.01,
+    "Nhu": 0.01,
+    "Vy": 0.1
+   },
+   "tong_cong": 0.16,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 28,
+   "phan_loai": "前段取り",
+   "cong_doan": "サンプル",
+   "cong_viec": "用尺計算",
+   "noi_dung": "工場の作成したマーカー図のチェック、修正依頼",
+   "tan_suat": "日次",
+   "phan_bo_cong": {
+    "Cuong": 0.01,
+    "Hien": 0.01,
+    "Huy": 0.01,
+    "Khanh": 0.01,
+    "Luan": 0.01,
+    "Nhu": 0.01
+   },
+   "tong_cong": 0.06,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 29,
+   "phan_loai": "前段取り",
+   "cong_doan": "サンプル",
+   "cong_viec": "資材不足確認",
+   "noi_dung": "不足資材を確認してTIへ連絡する",
+   "tan_suat": "日次",
+   "phan_bo_cong": {
+    "Cuong": 0.05,
+    "Hien": 0.05,
+    "Huy": 0.05,
+    "Khanh": 0.05,
+    "Luan": 0.01,
+    "Nhu": 0.01
+   },
+   "tong_cong": 0.22,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 30,
+   "phan_loai": "前段取り",
+   "cong_doan": "サンプル",
+   "cong_viec": "進捗フォロー",
+   "noi_dung": "サンプルラインへの進捗フォロー",
+   "tan_suat": "週3回程度",
+   "phan_bo_cong": {
+    "Fukuda": 0.01,
+    "Vy": 0.05
+   },
+   "tong_cong": 0.06,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 31,
+   "phan_loai": "前段取り",
+   "cong_doan": "サンプル",
+   "cong_viec": "諸確認",
+   "noi_dung": "サンプル班からの問合せ・質問対応",
+   "tan_suat": "週3回程度",
+   "phan_bo_cong": {
+    "Inoue": 0.01,
+    "Fukuda": 0.02,
+    "Vy": 0.1,
+    "Quyen": 0.1
+   },
+   "tong_cong": 0.23,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 32,
+   "phan_loai": "前段取り",
+   "cong_doan": "サンプル",
+   "cong_viec": "問題抽出・改善提案",
+   "noi_dung": "仕様・素材に不具合があればアラート・改善提案する。",
+   "tan_suat": "不定期（頻度中）",
+   "phan_bo_cong": {
+    "Fukuda": 0.02,
+    "Vy": 0.03,
+    "Quyen": 0.1
+   },
+   "tong_cong": 0.15,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 33,
+   "phan_loai": "前段取り",
+   "cong_doan": "サンプル",
+   "cong_viec": "コメント連絡",
+   "noi_dung": "サンプルコメント・採寸表の記入と連絡",
+   "tan_suat": "日次",
+   "phan_bo_cong": {
+    "Vy": 0.22
+   },
+   "tong_cong": 0.22,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 34,
+   "phan_loai": "前段取り",
+   "cong_doan": "サンプル",
+   "cong_viec": "二次加工",
+   "noi_dung": "外部工場の見本に関してバルクでの問題点を確認・連絡",
+   "tan_suat": "不定期（頻度低）",
+   "phan_bo_cong": {
+    "Fukuda": 0.01,
+    "Cuong": 0.01,
+    "Hien": 0.01,
+    "Huy": 0.01,
+    "Khanh": 0.01,
+    "Luan": 0.01,
+    "Nhu": 0.01
+   },
+   "tong_cong": 0.07,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 35,
+   "phan_loai": "前段取り",
+   "cong_doan": "サンプル",
+   "cong_viec": "出荷連絡",
+   "noi_dung": "出荷明細、送り状NoをTIへ連絡する",
+   "tan_suat": "日次",
+   "phan_bo_cong": {
+    "Cau": 0.02
+   },
+   "tong_cong": 0.02,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 36,
+   "phan_loai": "前段取り",
+   "cong_doan": "サンプル",
+   "cong_viec": "発送",
+   "noi_dung": "サンプル発送",
+   "tan_suat": "日次",
+   "phan_bo_cong": {
+    "Cau": 0.02
+   },
+   "tong_cong": 0.02,
+   "tinh_vao_tri_gia_thue": true
+  },
+  {
+   "stt": 37,
+   "phan_loai": "前段取り",
+   "cong_doan": "サンプル",
+   "cong_viec": "生産条件設定",
+   "noi_dung": "接着・シーム条件検討。機能性検査・記録",
+   "tan_suat": "日次",
+   "phan_bo_cong": {
+    "Fukuda": 0.01,
+    "Vy": 0.05
+   },
+   "tong_cong": 0.06,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 38,
+   "phan_loai": "前段取り",
+   "cong_doan": "サンプル",
+   "cong_viec": "工程分析",
+   "noi_dung": "生産能力・コスト試算",
+   "tan_suat": "不定期（頻度低）",
+   "phan_bo_cong": {
+    "Inoue": 0.01,
+    "Chanh": 0.01
+   },
+   "tong_cong": 0.02,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 39,
+   "phan_loai": "前段取り",
+   "cong_doan": "サンプル",
+   "cong_viec": "元見本管理",
+   "noi_dung": "元見本台帳を作成し入出庫を管理する",
+   "tan_suat": "不定期（頻度中）",
+   "phan_bo_cong": {
+    "Cuong": 0.01,
+    "Hien": 0.01,
+    "Huy": 0.01,
+    "Khanh": 0.01,
+    "Luan": 0.01,
+    "Nhu": 0.01,
+    "Cau": 0.01,
+    "Vy": 0.02
+   },
+   "tong_cong": 0.09,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 40,
+   "phan_loai": "前段取り",
+   "cong_doan": "仕様書",
+   "cong_viec": "ファイル作成",
+   "noi_dung": "仕様書をプリントアウトしブランド・シーズン別にファイルを作成",
+   "tan_suat": "不定期（頻度中）",
+   "phan_bo_cong": {
+    "Cuong": 0.01,
+    "Hien": 0.01,
+    "Huy": 0.01,
+    "Khanh": 0.01,
+    "Luan": 0.01,
+    "Nhu": 0.01
+   },
+   "tong_cong": 0.06,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 41,
+   "phan_loai": "前段取り",
+   "cong_doan": "仕様書",
+   "cong_viec": "翻訳",
+   "noi_dung": "ベトナム語への翻訳",
+   "tan_suat": "日次",
+   "phan_bo_cong": {
+    "Cuong": 0.15,
+    "Hien": 0.15,
+    "Huy": 0.15,
+    "Khanh": 0.15,
+    "Luan": 0.15,
+    "Nhu": 0.1
+   },
+   "tong_cong": 0.85,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 42,
+   "phan_loai": "前段取り",
+   "cong_doan": "仕様書",
+   "cong_viec": "チェック",
+   "noi_dung": "パターンや元見本と違ったり問題があった場合、TIへ連絡する",
+   "tan_suat": "日次",
+   "phan_bo_cong": {
+    "Cuong": 0.03,
+    "Hien": 0.03,
+    "Huy": 0.03,
+    "Khanh": 0.02,
+    "Luan": 0.05,
+    "Nhu": 0.05
+   },
+   "tong_cong": 0.21,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 43,
+   "phan_loai": "前段取り",
+   "cong_doan": "仕様書",
+   "cong_viec": "修正連絡",
+   "noi_dung": "修正があれば修正仕様書を翻訳し工場へ連絡する",
+   "tan_suat": "不定期（頻度高）",
+   "phan_bo_cong": {
+    "Cuong": 0.01,
+    "Hien": 0.01,
+    "Huy": 0.01,
+    "Khanh": 0.01,
+    "Luan": 0.04,
+    "Nhu": 0.04
+   },
+   "tong_cong": 0.12,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 44,
+   "phan_loai": "前段取り",
+   "cong_doan": "パターン",
+   "cong_viec": "パターン連絡",
+   "noi_dung": "パターンデータを工場に転送する",
+   "tan_suat": "不定期（頻度高）",
+   "phan_bo_cong": {
+    "Cuong": 0.01,
+    "Hien": 0.01,
+    "Huy": 0.01,
+    "Khanh": 0.01,
+    "Luan": 0.01,
+    "Nhu": 0.01
+   },
+   "tong_cong": 0.06,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 45,
+   "phan_loai": "前段取り",
+   "cong_doan": "パターン",
+   "cong_viec": "チェック",
+   "noi_dung": "仕様書と違ったり問題があった場合、TIへ連絡する",
+   "tan_suat": "不定期（頻度中）",
+   "phan_bo_cong": {
+    "Fukuda": 0.02,
+    "Cuong": 0.01,
+    "Hien": 0.01,
+    "Huy": 0.01,
+    "Khanh": 0.01,
+    "Luan": 0.01,
+    "Nhu": 0.01
+   },
+   "tong_cong": 0.08,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 46,
+   "phan_loai": "前段取り",
+   "cong_doan": "パターン",
+   "cong_viec": "修正",
+   "noi_dung": "一部不具合を工場で修正するように指示",
+   "tan_suat": "不定期（頻度中）",
+   "phan_bo_cong": {
+    "Fukuda": 0.01,
+    "Cuong": 0.01,
+    "Hien": 0.01,
+    "Huy": 0.01,
+    "Khanh": 0.01,
+    "Luan": 0.01,
+    "Nhu": 0.01,
+    "Vy": 0.2
+   },
+   "tong_cong": 0.27,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 47,
+   "phan_loai": "前段取り",
+   "cong_doan": "資材管理",
+   "cong_viec": "資材着荷確認",
+   "noi_dung": "BL、P/L、DHL No などを工場へ連絡する",
+   "tan_suat": "日次",
+   "phan_bo_cong": {
+    "Cuong": 0.02,
+    "Hien": 0.02,
+    "Huy": 0.02,
+    "Khanh": 0.01,
+    "Luan": 0.01,
+    "Nhu": 0.01
+   },
+   "tong_cong": 0.09,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 48,
+   "phan_loai": "前段取り",
+   "cong_doan": "資材管理",
+   "cong_viec": "資材不足確認",
+   "noi_dung": "工場からのバランスシートをもとにTIへ不足連絡をする",
+   "tan_suat": "日次",
+   "phan_bo_cong": {
+    "Fukuda": 0.03,
+    "Cuong": 0.16,
+    "Hien": 0.16,
+    "Huy": 0.16,
+    "Khanh": 0.2,
+    "Luan": 0.01,
+    "Nhu": 0.1
+   },
+   "tong_cong": 0.82,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 49,
+   "phan_loai": "前段取り",
+   "cong_doan": "資材管理",
+   "cong_viec": "生地不良確認",
+   "noi_dung": "工場から検反報告をもらい不良内容をTIへ確認する",
+   "tan_suat": "日次",
+   "phan_bo_cong": {
+    "Fukuda": 0.03,
+    "Cuong": 0.02,
+    "Hien": 0.02,
+    "Huy": 0.02,
+    "Khanh": 0.01,
+    "Luan": 0.01,
+    "Nhu": 0.01
+   },
+   "tong_cong": 0.12,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 50,
+   "phan_loai": "本生産",
+   "cong_doan": "裁断",
+   "cong_viec": "明細確認",
+   "noi_dung": "工場が作成した裁断明細を入手しチェックする",
+   "tan_suat": "日次",
+   "phan_bo_cong": {
+    "Fukuda": 0.01,
+    "Cuong": 0.01,
+    "Hien": 0.01,
+    "Huy": 0.01,
+    "Khanh": 0.01,
+    "Luan": 0.01,
+    "Nhu": 0.01
+   },
+   "tong_cong": 0.07,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 51,
+   "phan_loai": "本生産",
+   "cong_doan": "裁断",
+   "cong_viec": "要尺確認",
+   "noi_dung": "サンプル要尺を確認してTIへ連絡する",
+   "tan_suat": "日次",
+   "phan_bo_cong": {
+    "Cuong": 0.02,
+    "Hien": 0.01,
+    "Huy": 0.02,
+    "Khanh": 0.01,
+    "Luan": 0.01,
+    "Nhu": 0.01
+   },
+   "tong_cong": 0.08,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 52,
+   "phan_loai": "本生産",
+   "cong_doan": "裁断",
+   "cong_viec": "トラブル対応",
+   "noi_dung": "色違い・収縮等のトラブル発生時の対応",
+   "tan_suat": "不定期（頻度高）",
+   "phan_bo_cong": {
+    "Inoue": 0.02,
+    "Fukuda": 0.05,
+    "Chanh": 0.02,
+    "Cuong": 0.01,
+    "Hien": 0.01,
+    "Huy": 0.01,
+    "Khanh": 0.01,
+    "Luan": 0.02,
+    "Nhu": 0.01,
+    "Cau": 0.05,
+    "Quyen": 0.18,
+    "Phuong": 0.06,
+    "Luu": 0.06
+   },
+   "tong_cong": 0.51,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 53,
+   "phan_loai": "本生産",
+   "cong_doan": "二次加工",
+   "cong_viec": "刺繍",
+   "noi_dung": "刺繍データを入手し、刺繍屋に連絡する",
+   "tan_suat": "不定期（頻度中）",
+   "phan_bo_cong": {
+    "Cuong": 0.01,
+    "Hien": 0.01,
+    "Huy": 0.01,
+    "Khanh": 0.01,
+    "Luan": 0.01,
+    "Nhu": 0.01
+   },
+   "tong_cong": 0.06,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 54,
+   "phan_loai": "本生産",
+   "cong_doan": "二次加工",
+   "cong_viec": "プリント",
+   "noi_dung": "プリントデータを入手し、プリント屋に連絡する",
+   "tan_suat": "不定期（頻度中）",
+   "phan_bo_cong": {
+    "Cuong": 0.01,
+    "Hien": 0.01,
+    "Huy": 0.01,
+    "Khanh": 0.01,
+    "Luan": 0.01,
+    "Nhu": 0.01
+   },
+   "tong_cong": 0.06,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 55,
+   "phan_loai": "本生産",
+   "cong_doan": "二次加工",
+   "cong_viec": "キルト",
+   "noi_dung": "依頼内容のバルク展開可否判断",
+   "tan_suat": "不定期（頻度低）",
+   "phan_bo_cong": {
+    "Cuong": 0.01,
+    "Hien": 0.01,
+    "Huy": 0.01,
+    "Khanh": 0.01,
+    "Luan": 0.01,
+    "Nhu": 0.01
+   },
+   "tong_cong": 0.06,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 56,
+   "phan_loai": "本生産",
+   "cong_doan": "二次加工",
+   "cong_viec": "品位確認・評価",
+   "noi_dung": "現物確認、客先個別試験",
+   "tan_suat": "不定期（頻度低）",
+   "phan_bo_cong": {
+    "Inoue": 0.01,
+    "Fukuda": 0.02,
+    "Chanh": 0.04,
+    "Cuong": 0.01,
+    "Hien": 0.01,
+    "Huy": 0.01,
+    "Khanh": 0.01,
+    "Luan": 0.01,
+    "Nhu": 0.01,
+    "Cau": 0.02
+   },
+   "tong_cong": 0.15,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 57,
+   "phan_loai": "本生産",
+   "cong_doan": "生産",
+   "cong_viec": "仕様確認",
+   "noi_dung": "TIとの量産品の仕様確認",
+   "tan_suat": "日次",
+   "phan_bo_cong": {
+    "Fukuda": 0.02,
+    "Cau": 0.03,
+    "Quyen": 0.07,
+    "Phuong": 0.1,
+    "Luu": 0.07
+   },
+   "tong_cong": 0.29,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 58,
+   "phan_loai": "本生産",
+   "cong_doan": "生産",
+   "cong_viec": "資材不足確認",
+   "noi_dung": "不足資材を確認してTIへ連絡する",
+   "tan_suat": "日次",
+   "phan_bo_cong": {
+    "Fukuda": 0.03,
+    "Cuong": 0.1,
+    "Hien": 0.1,
+    "Huy": 0.1,
+    "Khanh": 0.1,
+    "Luan": 0.15,
+    "Nhu": 0.05,
+    "Cau": 0.03
+   },
+   "tong_cong": 0.66,
+   "tinh_vao_tri_gia_thue": true
+  },
+  {
+   "stt": 59,
+   "phan_loai": "本生産",
+   "cong_doan": "生産",
+   "cong_viec": "縫製指導",
+   "noi_dung": "現場での縫製指導",
+   "tan_suat": "日次",
+   "phan_bo_cong": {
+    "Fukuda": 0.02,
+    "Cau": 0.02,
+    "Quyen": 0.05,
+    "Phuong": 0.1,
+    "Luu": 0.08
+   },
+   "tong_cong": 0.27,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 60,
+   "phan_loai": "本生産",
+   "cong_doan": "生産",
+   "cong_viec": "シーム・溶着指導",
+   "noi_dung": "現場での縫製指導",
+   "tan_suat": "日次",
+   "phan_bo_cong": {
+    "Quyen": 0.03
+   },
+   "tong_cong": 0.03,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 61,
+   "phan_loai": "本生産",
+   "cong_doan": "生産",
+   "cong_viec": "納期管理",
+   "noi_dung": "生産日報、進捗の確認",
+   "tan_suat": "日次",
+   "phan_bo_cong": {
+    "Inoue": 0.1,
+    "Chanh": 0.12
+   },
+   "tong_cong": 0.22,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 62,
+   "phan_loai": "本生産",
+   "cong_doan": "生産",
+   "cong_viec": "トラブルシュート",
+   "noi_dung": "各種トラブル対応(段取り、計画、工程、品質)",
+   "tan_suat": "不定期（頻度高）",
+   "phan_bo_cong": {
+    "Inoue": 0.02,
+    "Chanh": 0.02,
+    "Quyen": 0.05,
+    "Phuong": 0.18,
+    "Luu": 0.17
+   },
+   "tong_cong": 0.44,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 63,
+   "phan_loai": "本生産",
+   "cong_doan": "生産",
+   "cong_viec": "生産結果記録",
+   "noi_dung": "問題・対策内容の記録と類似生産への水平展開",
+   "tan_suat": "不定期（頻度中）",
+   "phan_bo_cong": {
+    "Inoue": 0.01,
+    "Fukuda": 0.02,
+    "Chanh": 0.01,
+    "Cau": 0.02,
+    "Quyen": 0.03,
+    "Phuong": 0.05,
+    "Luu": 0.06
+   },
+   "tong_cong": 0.2,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 64,
+   "phan_loai": "本生産",
+   "cong_doan": "生産",
+   "cong_viec": "技術者MTG",
+   "noi_dung": "工場の投入前MTGに参加し注意事項の確認",
+   "tan_suat": "日次",
+   "phan_bo_cong": {
+    "Quyen": 0.03,
+    "Phuong": 0.05,
+    "Luu": 0.1
+   },
+   "tong_cong": 0.18,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 65,
+   "phan_loai": "本生産",
+   "cong_doan": "検査",
+   "cong_viec": "検査目合わせ",
+   "noi_dung": "投入後、最初に上がった製品の基準目合わせ",
+   "tan_suat": "不定期（頻度高）",
+   "phan_bo_cong": {
+    "Fukuda": 0.02,
+    "Cau": 0.02,
+    "Quyen": 0.05,
+    "Phuong": 0.07,
+    "Luu": 0.05
+   },
+   "tong_cong": 0.21,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 66,
+   "phan_loai": "本生産",
+   "cong_doan": "検査",
+   "cong_viec": "一次検査",
+   "noi_dung": "ライン上がり製品の縫製検査",
+   "tan_suat": "日次",
+   "phan_bo_cong": {
+    "Fukuda": 0.02,
+    "Cau": 0.02,
+    "Quyen": 0.05,
+    "Phuong": 0.09,
+    "Luu": 0.11
+   },
+   "tong_cong": 0.29,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 67,
+   "phan_loai": "本生産",
+   "cong_doan": "検査",
+   "cong_viec": "二次検査",
+   "noi_dung": "仕上げ製品の外観検査",
+   "tan_suat": "日次",
+   "phan_bo_cong": {
+    "Fukuda": 0.02,
+    "Cau": 0.02,
+    "Quyen": 0.05,
+    "Phuong": 0.05,
+    "Luu": 0.05
+   },
+   "tong_cong": 0.19,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 68,
+   "phan_loai": "本生産",
+   "cong_doan": "検査",
+   "cong_viec": "出荷前検査",
+   "noi_dung": "工場検品後の製品の抜取チェック",
+   "tan_suat": "日次",
+   "phan_bo_cong": {
+    "Fukuda": 0.02,
+    "Cau": 0.02,
+    "Quyen": 0.05,
+    "Phuong": 0.03,
+    "Luu": 0.03
+   },
+   "tong_cong": 0.15,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 69,
+   "phan_loai": "本生産",
+   "cong_doan": "検査",
+   "cong_viec": "下札、ﾈｰﾑ確認",
+   "noi_dung": "下げ札、ネーム類の印字内容のチェック",
+   "tan_suat": "日次",
+   "phan_bo_cong": {
+    "Cuong": 0.01,
+    "Hien": 0.01,
+    "Huy": 0.01,
+    "Khanh": 0.01,
+    "Luan": 0.01,
+    "Nhu": 0.01
+   },
+   "tong_cong": 0.06,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 70,
+   "phan_loai": "本生産",
+   "cong_doan": "検査",
+   "cong_viec": "客先検査",
+   "noi_dung": "客先検査結果の工場連絡",
+   "tan_suat": "不定期（頻度高）",
+   "phan_bo_cong": {
+    "Fukuda": 0.01,
+    "Cau": 0.05,
+    "Quyen": 0.03,
+    "Phuong": 0.04,
+    "Luu": 0.04
+   },
+   "tong_cong": 0.17,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 71,
+   "phan_loai": "本生産",
+   "cong_doan": "検査",
+   "cong_viec": "機能検査",
+   "noi_dung": "耐水圧・シーム製品抜き取り検査チェック",
+   "tan_suat": "不定期（頻度中）",
+   "phan_bo_cong": {
+    "Fukuda": 0.01,
+    "Cau": 0.01,
+    "Quyen": 0.03,
+    "Phuong": 0.04,
+    "Luu": 0.04
+   },
+   "tong_cong": 0.13,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 72,
+   "phan_loai": "本生産",
+   "cong_doan": "検査",
+   "cong_viec": "第三者検品",
+   "noi_dung": "外部検査機関との品質基準・日程調整",
+   "tan_suat": "不定期（頻度中）",
+   "phan_bo_cong": {
+    "Inoue": 0.01,
+    "Cuong": 0.01,
+    "Hien": 0.01,
+    "Huy": 0.01,
+    "Khanh": 0.01,
+    "Luan": 0.01,
+    "Nhu": 0.01
+   },
+   "tong_cong": 0.07,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 73,
+   "phan_loai": "出荷",
+   "cong_doan": "出荷",
+   "cong_viec": "P/L管理",
+   "noi_dung": "出荷後のP/Lチェックし、減産していれば補充確認する",
+   "tan_suat": "日次",
+   "phan_bo_cong": {
+    "Nhu": 0.05
+   },
+   "tong_cong": 0.05,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 74,
+   "phan_loai": "出荷",
+   "cong_doan": "出荷",
+   "cong_viec": "出荷連絡",
+   "noi_dung": "出荷情報確認、P/L・C/Oを連絡(BL、IVは工場からTIへ連絡）",
+   "tan_suat": "日次",
+   "phan_bo_cong": {
+    "Nhu": 0.05
+   },
+   "tong_cong": 0.05,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 75,
+   "phan_loai": "出荷",
+   "cong_doan": "出荷",
+   "cong_viec": "日程調整",
+   "noi_dung": "出荷日・数量の変更依頼を工場と調整",
+   "tan_suat": "週次",
+   "phan_bo_cong": {
+    "Inoue": 0.01,
+    "Chanh": 0.05
+   },
+   "tong_cong": 0.06,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 76,
+   "phan_loai": "工場管理",
+   "cong_doan": "備品管理",
+   "cong_viec": "消耗品管理",
+   "noi_dung": "工場で必要な消耗品をTIへ発注し受渡伝票を作成する",
+   "tan_suat": "不定期（頻度低）",
+   "phan_bo_cong": {},
+   "tong_cong": 0,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 77,
+   "phan_loai": "工場管理",
+   "cong_doan": "労務管理",
+   "cong_viec": "出勤簿管理",
+   "noi_dung": "月ごとの出勤状況をまとめる",
+   "tan_suat": "月次",
+   "phan_bo_cong": {},
+   "tong_cong": 0,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 78,
+   "phan_loai": "その他",
+   "cong_doan": "日次作業",
+   "cong_viec": "業務日報",
+   "noi_dung": "当日の行内容をTI東京へ報告",
+   "tan_suat": "日次",
+   "phan_bo_cong": {
+    "Inoue": 0.05,
+    "Chanh": 0.01,
+    "Cuong": 0.01,
+    "Hien": 0.01,
+    "Huy": 0.01,
+    "Khanh": 0.01,
+    "Luan": 0.01,
+    "Nhu": 0.01
+   },
+   "tong_cong": 0.12,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 79,
+   "phan_loai": "その他",
+   "cong_doan": "日次作業",
+   "cong_viec": "進捗報告会",
+   "noi_dung": "前日の生産進捗・工員出欠を各工場長より確認",
+   "tan_suat": "日次",
+   "phan_bo_cong": {
+    "Inoue": 0.02,
+    "Fukuda": 0.01,
+    "Chanh": 0.05,
+    "Cuong": 0.01,
+    "Hien": 0.01,
+    "Huy": 0.01,
+    "Khanh": 0.01,
+    "Luan": 0.01,
+    "Nhu": 0.01,
+    "Cau": 0.01,
+    "Vy": 0.05,
+    "Quyen": 0.02,
+    "Phuong": 0.06,
+    "Luu": 0.05
+   },
+   "tong_cong": 0.33,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 80,
+   "phan_loai": "その他",
+   "cong_doan": "日次作業",
+   "cong_viec": "技術MTG",
+   "noi_dung": "工場技術・品管リーダーより前日のトピックスを確認",
+   "tan_suat": "日次",
+   "phan_bo_cong": {
+    "Fukuda": 0.05,
+    "Cau": 0.15,
+    "Vy": 0.05,
+    "Quyen": 0.02,
+    "Phuong": 0.04,
+    "Luu": 0.06
+   },
+   "tong_cong": 0.37,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 81,
+   "phan_loai": "その他",
+   "cong_doan": "日次作業",
+   "cong_viec": "工場ラウンド",
+   "noi_dung": "工場報告内容確認",
+   "tan_suat": "日次",
+   "phan_bo_cong": {
+    "Inoue": 0.01,
+    "Fukuda": 0.3,
+    "Cau": 0.3
+   },
+   "tong_cong": 0.61,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 82,
+   "phan_loai": "その他",
+   "cong_doan": "日次作業",
+   "cong_viec": "HCMより材料引き取り",
+   "noi_dung": "材料引き取り方法確認",
+   "tan_suat": "日次",
+   "phan_bo_cong": {
+    "Nhu": 0.06
+   },
+   "tong_cong": 0.06,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 83,
+   "phan_loai": "その他",
+   "cong_doan": "週次作業",
+   "cong_viec": "生産MTG",
+   "noi_dung": "次週以降の生産計画を工場と調整・確認",
+   "tan_suat": "週次",
+   "phan_bo_cong": {
+    "Inoue": 0.15,
+    "Chanh": 0.18,
+    "Cuong": 0.01,
+    "Hien": 0.01,
+    "Huy": 0.01,
+    "Khanh": 0.01,
+    "Luan": 0.01,
+    "Nhu": 0.01
+   },
+   "tong_cong": 0.39,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 84,
+   "phan_loai": "その他",
+   "cong_doan": "週次作業",
+   "cong_viec": "サンプルMTG",
+   "noi_dung": "2府先までのサンプル班計画を調整・確認",
+   "tan_suat": "週次",
+   "phan_bo_cong": {
+    "Cuong": 0.01,
+    "Hien": 0.01,
+    "Huy": 0.01,
+    "Khanh": 0.01,
+    "Luan": 0.01,
+    "Nhu": 0.01,
+    "Vy": 0.05
+   },
+   "tong_cong": 0.11,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 85,
+   "phan_loai": "その他",
+   "cong_doan": "週次作業",
+   "cong_viec": "業務週報",
+   "noi_dung": "当週の行内容をTI東京へ報告",
+   "tan_suat": null,
+   "phan_bo_cong": {
+    "Chanh": 0.01,
+    "Cuong": 0.01,
+    "Hien": 0.01,
+    "Huy": 0.01,
+    "Khanh": 0.01,
+    "Luan": 0.01,
+    "Nhu": 0.01
+   },
+   "tong_cong": 0.07,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 86,
+   "phan_loai": "その他",
+   "cong_doan": "週次作業",
+   "cong_viec": "計画修正連絡",
+   "noi_dung": "生産管理課へ計画修正案・空きライン・問題点を連絡",
+   "tan_suat": "週次",
+   "phan_bo_cong": {
+    "Inoue": 0.05,
+    "Chanh": 0.05
+   },
+   "tong_cong": 0.1,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 87,
+   "phan_loai": "その他",
+   "cong_doan": "週次作業",
+   "cong_viec": "プランテーブル修正",
+   "noi_dung": "生産管理課へ修正計画を盛り込んだプランテーブルを送付",
+   "tan_suat": "週次",
+   "phan_bo_cong": {
+    "Inoue": 0.05,
+    "Chanh": 0.05
+   },
+   "tong_cong": 0.1,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 88,
+   "phan_loai": "その他",
+   "cong_doan": "週次作業",
+   "cong_viec": "Update修正内容確認",
+   "noi_dung": "計画修正されたUpdateとプランテーブルの照合",
+   "tan_suat": "週次",
+   "phan_bo_cong": {
+    "Inoue": 0.05,
+    "Chanh": 0.04
+   },
+   "tong_cong": 0.09,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 89,
+   "phan_loai": "その他",
+   "cong_doan": "週次作業",
+   "cong_viec": "出勤名簿の抜き打ち確認",
+   "noi_dung": "工場工員の出勤名簿とラインの抜き打ち照合",
+   "tan_suat": "週次",
+   "phan_bo_cong": {
+    "Nhu": 0.1
+   },
+   "tong_cong": 0.1,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 90,
+   "phan_loai": "その他",
+   "cong_doan": "月次作業",
+   "cong_viec": "業務月報",
+   "noi_dung": "毎月のトピックス・生産実績・要員情報を報告",
+   "tan_suat": "月次",
+   "phan_bo_cong": {
+    "Inoue": 0.02,
+    "Chanh": 0.01
+   },
+   "tong_cong": 0.03,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 91,
+   "phan_loai": "その他",
+   "cong_doan": "月次作業",
+   "cong_viec": "材料在庫管理",
+   "noi_dung": "工場算出の材料在庫数をまとめて報告",
+   "tan_suat": "月次",
+   "phan_bo_cong": {
+    "Inoue": 0.01,
+    "Chanh": 0.01
+   },
+   "tong_cong": 0.02,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 92,
+   "phan_loai": "その他",
+   "cong_doan": "月次作業",
+   "cong_viec": "製品在庫管理",
+   "noi_dung": "工場算出の生産実績日報を必要項目毎に計算して報告",
+   "tan_suat": "月次",
+   "phan_bo_cong": {
+    "Inoue": 0.01,
+    "Chanh": 0.01
+   },
+   "tong_cong": 0.02,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 93,
+   "phan_loai": "その他",
+   "cong_doan": "月次作業",
+   "cong_viec": "生産計画・実績報告",
+   "noi_dung": "前月の生産実績と翌月の生産計画を報告",
+   "tan_suat": "月次",
+   "phan_bo_cong": {
+    "Inoue": 0.01,
+    "Chanh": 0.01
+   },
+   "tong_cong": 0.02,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 94,
+   "phan_loai": "その他",
+   "cong_doan": "月次作業",
+   "cong_viec": "機材管理報告",
+   "noi_dung": "工場へ貸し出している機材明細の報告",
+   "tan_suat": "月次",
+   "phan_bo_cong": {
+    "Inoue": 0.01,
+    "Chanh": 0.01
+   },
+   "tong_cong": 0.02,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 95,
+   "phan_loai": "その他",
+   "cong_doan": "月次作業",
+   "cong_viec": "計画・実績情報報告",
+   "noi_dung": "品番毎の計画・実績及び早見表計画日数との比較を報告",
+   "tan_suat": "月次",
+   "phan_bo_cong": {
+    "Inoue": 0.01,
+    "Cuong": 0.01,
+    "Hien": 0.01,
+    "Huy": 0.01,
+    "Khanh": 0.01,
+    "Luan": 0.01,
+    "Nhu": 0.01
+   },
+   "tong_cong": 0.07,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 96,
+   "phan_loai": "その他",
+   "cong_doan": "月次作業",
+   "cong_viec": "2週間ルール外品番報告",
+   "noi_dung": "工場算出の2週間ルール外品番リストを報告",
+   "tan_suat": "月次",
+   "phan_bo_cong": {
+    "Inoue": 0.01,
+    "Chanh": 0.01,
+    "Cuong": 0.01,
+    "Hien": 0.01,
+    "Huy": 0.01,
+    "Khanh": 0.01,
+    "Luan": 0.1,
+    "Nhu": 0.01
+   },
+   "tong_cong": 0.17,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 97,
+   "phan_loai": "その他",
+   "cong_doan": "月次作業",
+   "cong_viec": "品質改善報告会議",
+   "noi_dung": "会議資料作成",
+   "tan_suat": "月次",
+   "phan_bo_cong": {
+    "Fukuda": 0.05,
+    "Cau": 0.05
+   },
+   "tong_cong": 0.1,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 98,
+   "phan_loai": "その他",
+   "cong_doan": "月次作業",
+   "cong_viec": "品質改善報告会議",
+   "noi_dung": "会議",
+   "tan_suat": "月次",
+   "phan_bo_cong": {
+    "Inoue": 0.01,
+    "Fukuda": 0.02,
+    "Cau": 0.02,
+    "Quyen": 0.01,
+    "Phuong": 0.01,
+    "Luu": 0.01
+   },
+   "tong_cong": 0.08,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 99,
+   "phan_loai": "その他",
+   "cong_doan": "月次作業",
+   "cong_viec": "出勤名簿・D/N照合",
+   "noi_dung": "工員出勤名簿人数とD/N記載人数の照合",
+   "tan_suat": "月次",
+   "phan_bo_cong": {
+    "Inoue": 0.01
+   },
+   "tong_cong": 0.01,
+   "tinh_vao_tri_gia_thue": false
+  },
+  {
+   "stt": 100,
+   "phan_loai": "その他",
+   "cong_doan": "月次作業",
+   "cong_viec": "TIVNスタッフ労務管理",
+   "noi_dung": "TIVNスタッフのタイムカード確認及び残業時間確認",
+   "tan_suat": "月次",
+   "phan_bo_cong": {
+    "Inoue": 0.01,
+    "Chanh": 0.01
+   },
+   "tong_cong": 0.02,
+   "tinh_vao_tri_gia_thue": false
+  }
+ ]
+}
