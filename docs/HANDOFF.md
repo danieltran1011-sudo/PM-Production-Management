@@ -42,6 +42,7 @@ Viết tắt brand: HH = HELLY HANSEN, NW = NEUTRALWORKS, DCC = DESCENTE (TI: WT
 | 11/2026 | **Khánh nhận thêm 141 và phần TNF 富山企画 do Shigemoto (SGM) phụ trách** (tách TNF 富山企画 theo người phụ trách TIJ; Luân giữ HSY, NKO); giữ NW, TNF 東京企画. Thay cho cách Khánh hỗ trợ Luân theo % |
 | 11/2026 | **Khánh không nhận 1/3 mẫu TNF**: Bích Trang giữ toàn bộ mẫu TNF |
 | 11/2026 | Thời điểm Khánh nhận hẳn phần SGM: **chưa chốt** (đề xuất theo cùng Luân hết 27SS, nhận từ PPS 27FW) |
+| 5/11/2026 | Họp nhóm MD (biên bản: `docs/bien-ban-hop-md-20261105.md`): cả nhóm chấp nhận số liệu tải; mức chuẩn không tăng ca ~100 mã/mùa (đại trà ~40, mẫu ~60), ~200 mã/năm; Khánh nhận khoảng 34–35 mã (chỉnh theo đơn thực tế); Cường, Luân nhận dần việc kế hoạch; thử dịch tự động (Copilot) |
 
 ## 4. Kết quả chính (tải 12 tháng, theo các quyết định đã chốt)
 

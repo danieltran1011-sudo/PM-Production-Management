@@ -20,6 +20,8 @@ Số ngày chuẩn lấy từ file rà soát 20260722, cập nhật theo cuộc 
 | `docs/phan-cong-cong-viec.md` | Dữ liệu phân công công việc TIVN tại APIC, BTNB: nhân sự và việc chính từng người, danh mục ~100 việc kèm người làm và % thời gian, các việc tính vào trị giá hải quan, mã hàng cố vấn 天方 phụ trách. |
 | `docs/phan-tich-khoi-luong.md` | Phân tích khối lượng công việc hiện tại của nhóm merchandiser APIC (bulk, mẫu, giờ dịch, chỉ số tải), nhận xét, dữ liệu cần xác nhận, cách theo dõi theo sổ tay MD. |
 | `docs/HANDOFF.md` | **Bàn giao**: tóm tắt, quyết định đã chốt, kết quả chính, dữ liệu nguồn và điểm dễ sai, mô hình, cách chạy lại, việc còn mở. |
+| `docs/hop-nhom-md-20261105.md` | Dàn ý họp nhóm MD 5/11/2026 (bản in: `docs/tai-ve/Dan-y-hop-nhom-MD-20261105.docx`). |
+| `docs/bien-ban-hop-md-20261105.md` | Biên bản họp nhóm MD 5/11/2026: số liệu tải, phân công lại, tình hình nhà máy, việc kế hoạch, AI (bản Word: `docs/tai-ve/Bien-ban-hop-MD-20261105.docx`). |
 | `docs/tai-ve/` | Bản tải về: Word (phân tích khối lượng, phân công công việc, bàn giao) và Excel (bảng số liệu, chỉ số tải có công thức). Tạo lại bằng `data/khoi-luong/xuat-word.py` và `xuat-excel.py`. |
 | `data/khoi-luong/` | Số liệu thực tế BULK/mẫu đã gom tải hiện tại và dự báo theo người (JSON); script `build.py` (tính tải mùa vừa qua), `trich-ke-hoach.py` (trích Plantable và file mẫu), `ke-hoach-nam.py` (tải 12 tháng, mẫu và sản xuất chồng theo vòng mùa), `lich_lam_viec.py` (ngày làm việc), `ke-hoach-thang.py` (bản 4 tháng trước), `du-bao.py` (bản ước cũ theo 2 giai đoạn), `mo-phong.py` (thử chuyển brand). |
 | `data/phan-cong/` | Dữ liệu phân công dạng JSON (APIC 2026 上期, APIC/BTNB 2023–2024, bảng 2018, phân công brand MD 22/7/2026) và script `build.py` tạo lại từ Excel. |
