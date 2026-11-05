@@ -138,9 +138,9 @@ Nhận xét về mẫu 27FW:
 ### Quyết định 11/2026 (thay một phần quyết định 10/2026)
 
 - **Luân và Cường hỗ trợ quản lý xây kế hoạch** (kế hoạch sản xuất, NPL, năng lực chuyền). Tạm tính mỗi người dành ~20% thời gian (thay cho ~10% trước đây).
-- **Khánh nhận**: NEUTRALWORKS, TNF 東京企画 (giữ như 10/2026), **141** (từ Huyền Trang/Huy) và **phần TNF 富山企画 do Shigemoto (SGM) phụ trách bên TIJ** (từ Luân). TNF 富山企画 được tách theo người phụ trách bên TIJ: Luân giữ phần HSY, NKO.
+- **Khánh nhận** (theo bảng chốt 5/11/2026): **141** (hỗ trợ, từ Huy) và **phần TNF 富山企画 do Shigemoto (SGM) phụ trách bên TIJ** (từ Luân) ngay; **TNF 東京企画 và NEUTRALWORKS từ mùa 27FW** (Cường theo hết 27SS). TNF 富山企画 được tách theo người phụ trách bên TIJ: Luân giữ phần HSY, NKO.
 - **Khánh không nhận 1/3 mẫu TNF**: Bích Trang giữ toàn bộ mẫu TNF. **Bỏ phần Khánh hỗ trợ Luân theo %** (thay bằng phần SGM).
-- Phần SGM: khoảng 1/4 số mã nhưng khoảng 1/2 số lượng TNF 富山企画 của Luân (27SS: 12 mã, ~105.000 cái; 26FW: 12 mã, ~91.000 cái). Hàng 27SS của SGM đang sản xuất, nên đề xuất Khánh theo cùng Luân hết 27SS rồi nhận hẳn từ PPS 27FW (~2–3/2027); **thời điểm bàn giao chờ quản lý chốt**. Mô hình đang tính Khánh nhận từ 11/2026.
+- Phần SGM: khoảng 1/4 số mã nhưng khoảng 1/2 số lượng TNF 富山企画 của Luân (27SS: 12 mã, ~105.000 cái; 26FW: 12 mã, ~91.000 cái). Theo bảng chốt, Khánh nhận phần SGM ngay (mô hình tính từ 11/2026); hàng 27SS của SGM đang sản xuất nên Luân hỗ trợ trong thời gian đầu.
 - **Tình hình hiện tại (28/10/2026)**: sản xuất 26FW đã xong trên 95% (còn vài mã), đang sản xuất 27SS. Phòng mẫu đang may mẫu triển lãm 27FW và **mẫu PPS 27SS** (mỗi mã có đơn sản xuất may 1 cái, tái PPS/tái mockup khoảng 5%). Sau triển lãm là mẫu phát triển, mẫu 1st 28SS, cũng khá nhiều.
 
 ## Tải theo tháng cả vòng 12 tháng (11/2026 – 10/2027)
@@ -153,7 +153,7 @@ Tính lại: `python3 data/khoi-luong/ke-hoach-nam.py` → `data/khoi-luong/ke-h
 - **Sản xuất**: mùa đã có kế hoạch (đến 27SS) dùng lịch thật trong Plantable 26/10/2026; mùa chưa có kế hoạch (27FW, 28SS) dùng lịch thật của mùa tương ứng năm trước (26FW, 27SS) dời 52 tuần. Người phụ trách theo các quyết định 10/2026 (NW, TNF 東京企画 → Khanh; Goldwin → Huy; YONEX từ 27SS → B.Trang).
 - **Mẫu**: đơn còn tồn dồn vào 11/2026 + số đơn cùng tháng năm trước theo brand (file mẫu 2025–2026), trọng số theo loại mẫu như trước. Mẫu TNF của Luân (PPS, re-PPS…) chia ~30% cho Khanh theo tỷ lệ mã SGM; mẫu 141 tính cho Khanh.
 - **Công suất theo ngày làm việc thực**: thứ 2 – thứ 7, nghỉ thứ 7 theo nhóm (file lịch nghỉ thứ 7 2026, đến 3/2027; sau đó giả định mỗi nhóm nghỉ 2 thứ 7/tháng), trừ ngày lễ theo lịch công ty: **24/11/2026 (Ngày Văn hóa Việt Nam, nghỉ từ 2026), 1/1/2027, Tết 4–14/2/2027 (dự kiến), 30/4–1/5/2027**. Giỗ Tổ 16/4/2027 và Quốc khánh 2–3/9/2027 chưa có trong lịch công ty, tạm tính theo luật. Giờ/ngày: 9 (8 + 1 tăng ca), Khanh 8.
-- Phân công theo quyết định 11/2026: Khanh nhận NW, TNF 東京企画, 141 và phần TNF SGM (tính từ 11/2026); Cuong, Luan mỗi người ~20% thời gian cho việc kế hoạch, điều phối (giả định). Hệ số độ khó ALLTERRAIN/DESCENTE ×1,3.
+- Phân công theo bảng chốt 5/11/2026: Khanh nhận 141 và phần TNF SGM từ 11/2026, TNF 東京企画 và NW từ mùa 27FW (Cuong theo hết 27SS); Cuong, Luan mỗi người ~20% thời gian cho việc kế hoạch, điều phối (giả định). Hệ số độ khó ALLTERRAIN/DESCENTE ×1,3.
 - **1,0 = khối lượng trung bình cho 1 ngày công trong cả 12 tháng.** Tháng ít ngày làm (tháng 2 có Tết) thì cùng khối lượng sẽ ra chỉ số cao hơn.
 
 **Lịch giai đoạn và ngày làm việc**
@@ -177,10 +177,10 @@ Tính lại: `python3 data/khoi-luong/ke-hoach-nam.py` → `data/khoi-luong/ke-h
 
 | Tháng | Cuong | Luan | Khanh | B.Trang | Huy | Hien | Nhu |
 |---|---|---|---|---|---|---|---|
-| 11/26 | **1,85** | **1,76** | **1,41** | 1,35 | **1,62** | **1,40** | 1,08 |
-| 12/26 | **2,10** | 1,30 | 1,25 | 0,78 | 0,39 | 1,26 | 0,30 |
-| 1/27 | **1,48** | **1,67** | 0,56 | 0,19 | **1,51** | 0,83 | 1,16 |
-| 2/27 | **2,20** | 0,61 | 1,14 | 0,24 | 0,65 | 0,89 | 1,15 |
+| 11/26 | **2,12** | **1,76** | 1,17 | 1,35 | **1,62** | **1,40** | 1,08 |
+| 12/26 | **2,44** | 1,30 | 0,95 | 0,78 | 0,39 | 1,26 | 0,30 |
+| 1/27 | **1,61** | **1,67** | 0,45 | 0,19 | **1,51** | 0,83 | 1,16 |
+| 2/27 | **2,30** | 0,61 | 1,05 | 0,24 | 0,65 | 0,89 | 1,15 |
 | 3/27 | 0,87 | 0,78 | **1,42** | 0,13 | 0,41 | 0,57 | 1,08 |
 | 4/27 | 1,04 | **2,19** | 0,59 | 0,54 | 0,98 | 0,52 | **2,47** |
 | 5/27 | 0,92 | **2,03** | 0,53 | 0,52 | **1,61** | 0,85 | 0,83 |
@@ -196,9 +196,9 @@ Như: chỉ số chỉ tính phần brand; Như còn ~30% thời gian cho việc
 
 | Tháng | Cuong | Luan | Khanh | B.Trang | Huy | Hien | Nhu |
 |---|---|---|---|---|---|---|---|
-| 11/26 | 4 / 100 | 13 / 5 | 7 / 29 | 1 / 121 | 9 / 65 | 8 / 41 | 4 / 35 |
-| 12/26 | 21 / 15 | 10 / 9 | 8 / 7 | 0 / 41 | 1 / 25 | 12 / 26 | 2 / 24 |
-| 1/27 | 11 / 12 | 7 / 24 | 1 / 10 | 1 / 7 | 25 / 8 | 10 / 14 | 12 / 21 |
+| 11/26 | 5 / 105 | 13 / 5 | 6 / 24 | 1 / 121 | 9 / 65 | 8 / 41 | 4 / 35 |
+| 12/26 | 24 / 15 | 10 / 9 | 5 / 7 | 0 / 41 | 1 / 25 | 12 / 26 | 2 / 24 |
+| 1/27 | 12 / 12 | 7 / 24 | 0 / 10 | 1 / 7 | 25 / 8 | 10 / 14 | 12 / 21 |
 | 2/27 | 9 / 15 | 1 / 9 | 1 / 13 | 0 / 7 | 2 / 15 | 8 / 4 | 8 / 4 |
 | 3/27 | 6 / 19 | 6 / 19 | 6 / 20 | 0 / 9 | 3 / 20 | 2 / 21 | 10 / 11 |
 | 4/27 | 2 / 44 | 21 / 9 | 1 / 6 | 0 / 46 | 0 / 46 | 0 / 30 | 40 / 10 |
@@ -213,9 +213,9 @@ Như: chỉ số chỉ tính phần brand; Như còn ~30% thời gian cho việc
 
 | Người | Tháng cao điểm |
 |---|---|
-| Cuong | 12/26 (2,10), 2/27 (2,20), 7/27 (3,09) |
+| Cuong | 12/26 (2,44), 2/27 (2,30), 7/27 (3,09) |
 | Luan | 11/26 (1,76), 4/27 (2,19), 5/27 (2,03) |
-| Khanh | 11/26 (1,41), 12/26 (1,25), 3/27 (1,42) |
+| Khanh | 11/26 (1,17), 3/27 (1,42), 10/27 (1,06) |
 | B.Trang | 11/26 (1,35), 6/27 (1,04), 7/27 (0,92) |
 | Huy | 11/26 (1,62), 1/27 (1,51), 5/27 (1,61) |
 | Hien | 11/26 (1,40), 12/26 (1,26), 6/27 (1,29) |
@@ -223,16 +223,16 @@ Như: chỉ số chỉ tính phần brand; Như còn ~30% thời gian cho việc
 
 Nhận xét:
 1. **Mỗi người có chu kỳ cao điểm riêng, lặp lại theo mùa**:
-   - **Cuong**: 11–12 (mẫu triển lãm FW, 21 mã HELLY HANSEN vào chuyền tháng 12), tháng 2 (Tết, ít ngày làm), **tháng 7 (mẫu 1st FW của HELLY HANSEN, ~71 đơn mẫu)** và tháng 10 (mẫu triển lãm FW).
+   - **Cuong**: **11/2026 – 2/2027 rất cao (1,6–2,4)** vì vẫn theo TNF 東京企画 và NW hết 27SS cùng HELLY HANSEN (21 mã vào chuyền tháng 12) và mẫu triển lãm FW; tháng 2 (Tết, ít ngày làm); **tháng 7 (mẫu 1st FW của HELLY HANSEN, ~71 đơn mẫu)** và tháng 10 (mẫu triển lãm FW).
    - **Luan**: 11, 1 và **4–6** (hàng FW TNF 富山企画 phía HSY vào chuyền). Phần SGM chuyển cho Khanh chủ yếu nặng vào mùa SS, nên tháng 4–6 Luan vẫn 1,7–2,2.
    - **Huy**: 11, 1 (25 mã TNF 別注 vào chuyền), **5 (mẫu Goldwin, ~62 đơn)**, 7.
    - **Nhu**: **tháng 4 rất cao** (40 mã TNF 別注 富山 mùa FW vào chuyền cùng tháng), cộng thêm việc văn phòng.
    - **Hien**: 11–12, 6 (mẫu ~50 đơn), 10.
 2. **Tháng 11 vẫn là tháng nặng nhất của cả nhóm** (mẫu triển lãm FW + đại trà SS bắt đầu + đơn mẫu tồn), lại có thêm ngày nghỉ 24/11 nên chỉ còn 22 ngày làm: 5/7 người ở mức ≥ 1,4. Tháng 3 và tháng 8–9 nhẹ hơn.
-3. **Tháng 2/2027 chỉ có 14 ngày làm** (Tết dự kiến 4–14/2, nghỉ 9 ngày làm việc): ai có mã vào chuyền hoặc mẫu trong tháng 2 (Cuong 2,20, Nhu 1,15) sẽ bị dồn. Nên kéo bớt việc lên tháng 1 hoặc lùi sang tháng 3.
+3. **Tháng 2/2027 chỉ có 14 ngày làm** (Tết dự kiến 4–14/2, nghỉ 9 ngày làm việc): ai có mã vào chuyền hoặc mẫu trong tháng 2 (Cuong 2,30, Nhu 1,15) sẽ bị dồn. Nên kéo bớt việc lên tháng 1 hoặc lùi sang tháng 3.
 4. **Cần lên kế hoạch trước cho tháng 4/2027 (Nhu)** và **tháng 7/2027 (Cuong)**: hai đỉnh này đến từ lịch năm trước nên gần như chắc sẽ lặp lại. Khanh và B.Trang đang thấp trong các tháng này (theo số liệu), là người có thể hỗ trợ tạm.
-5. **Khanh** trung bình 0,83 sau khi nhận NW, TNF 東京企画, 141 và phần TNF SGM; cao vào tháng 11, 3 (~1,4, hàng SS của SGM) và thấp vào tháng 4–7 (0,2–0,6). **Khanh có thể hỗ trợ Luan vào tháng 4–6** (cao điểm hàng FW) mà không quá tải.
-6. **Cách chia 11/2026 chưa giảm tải đủ cho Luan, Cuong** để có thời gian làm kế hoạch: trung bình 12 tháng Cuong 1,53, Luan 1,27 (đã tính ~20% thời gian cho kế hoạch). Cuong gần như không bớt việc vì HELLY HANSEN là phần nặng nhất (cao điểm 12, 2, 7). Phương án cân nhắc: Bích Trang (đang thấp) hỗ trợ mẫu HELLY HANSEN tháng 7 hoặc một phần theo dõi xuất hàng; Khanh hỗ trợ Luan tháng 4–6.
+5. **Khanh** trung bình 0,76 (141, phần TNF SGM; TNF 東京企画, NW từ 27FW); thấp vào tháng 12–1 (0,45–0,95) và tháng 4–7 (0,2–0,6), cao nhất tháng 3 (1,42, hàng SS của SGM). **Khanh còn sức hỗ trợ Cuong vào 11/2026 – 2/2027** (các lô TNF 東京企画, NW 27SS, cũng là cách nhận bàn giao trước 27FW) và **hỗ trợ Luan vào tháng 4–6** (cao điểm hàng FW).
+6. **Cách chia 11/2026 chưa giảm tải đủ cho Luan, Cuong** để có thời gian làm kế hoạch: trung bình 12 tháng Cuong 1,60, Luan 1,27 (đã tính ~20% thời gian cho kế hoạch). Cuong gần như không bớt việc vì HELLY HANSEN là phần nặng nhất (cao điểm 12, 2, 7). Phương án cân nhắc: Bích Trang (đang thấp) hỗ trợ mẫu HELLY HANSEN tháng 7 hoặc một phần theo dõi xuất hàng; Khanh hỗ trợ Luan tháng 4–6.
 7. **B.Trang thấp gần như cả năm** theo số liệu (trung bình 0,62, đã giữ toàn bộ mẫu TNF), nhưng **có thể do thiếu dữ liệu**: các brand mới (FOXFIRE, TATRAS, Kasco, YONEX) gần như chưa có lịch sản xuất năm trước. Cần số liệu thật trước khi kết luận B.Trang còn dư sức.
 8. Số liệu 4–10/2027 là **ước theo năm trước**; khi có kế hoạch 27FW/28SS thật thì chạy lại.
 
@@ -244,12 +244,12 @@ TNF 富山企画 được tách theo người phụ trách bên TIJ, mỗi phầ
 
 | | Luan | Khanh |
 |---|---|---|
-| Brand phụ trách | **TNF 富山企画 phần HSY, NKO** (PPS~đại trà), đầu mối với TIJ cho phần này | **TNF 富山企画 phần SGM** (từ Luan); **NEUTRALWORKS**, **TNF 東京企画** (từ Cuong); **141** (từ Huyền Trang/Huy) |
+| Brand phụ trách | **TNF 富山企画 phần HSY, NKO** (PPS~đại trà), đầu mối với TIJ cho phần này | **TNF 富山企画 phần SGM** (từ Luan); **141** (từ Huy); **NEUTRALWORKS**, **TNF 東京企画** từ 27FW (từ Cuong) |
 | Việc khác | Hỗ trợ quản lý xây kế hoạch (~20% thời gian, giả định) | Hỗ trợ Luan vào tháng 4–6 nếu cần (cao điểm hàng FW phía HSY) |
 
-**Bàn giao phần SGM (Luan → Khanh)**: hàng 27SS của SGM đang sản xuất (12 mã, ~105.000 cái). Đề xuất Khanh theo cùng Luan các lô 27SS để nắm tài liệu, NPL, liên lạc với Shigemoto, rồi làm đầu mối từ PPS 27FW (~2–3/2027); Luan hỗ trợ khi cần. Báo TIJ và nhà máy người phụ trách mới trước khi chuyển.
+**Bàn giao phần SGM (Luan → Khanh)**: nhận ngay theo bảng chốt 5/11/2026. Hàng 27SS của SGM đang sản xuất (12 mã, ~105.000 cái), Luan hỗ trợ khi cần trong thời gian đầu. Báo TIJ và nhà máy người phụ trách mới trước khi chuyển.
 
-**Bàn giao TNF 東京企画 (Cuong → Khanh)**: Khanh theo cùng Cuong các lô bulk 27SS đang chạy và mẫu PPS để nắm tài liệu, NPL, liên lạc TIJ, rồi làm đầu mối từ 11/2026; Cuong hỗ trợ khi cần.
+**Bàn giao TNF 東京企画, NEUTRALWORKS (Cuong → Khanh)**: Cuong theo hết 27SS; Khanh làm đầu mối từ 27FW (PPS ~2–3/2027). Trong 27SS, Khanh nên theo cùng các lô đang chạy để nắm tài liệu, NPL, liên lạc TIJ, đồng thời giảm tải cho Cuong.
 
 Quy tắc bàn giao (theo sổ tay MD, chương 7): danh sách bàn giao ghi rõ mã, tình trạng, NPL còn thiếu, đầu mối TIJ, hạn và ngày theo dõi tiếp; trong thời gian theo cùng, liên lạc với nhà máy và TIJ luôn cc người bàn giao.
 
@@ -257,11 +257,11 @@ Quy tắc bàn giao (theo sổ tay MD, chương 7): danh sách bàn giao ghi rõ
 
 | Người | Brand / việc |
 |---|---|
-| Cuong | HELLY HANSEN (chủ lực); điều phối xuất hàng chung cả nhóm; quản lý chung may mẫu (kiểm kế hoạch sản xuất mẫu mọi brand); hỗ trợ quản lý xây kế hoạch |
+| Cuong | HELLY HANSEN (chủ lực); TNF 東京企画, NEUTRALWORKS đến 27SS; điều phối xuất hàng chung cả nhóm; quản lý chung may mẫu; hỗ trợ quản lý xây kế hoạch |
 | Luan | TNF 富山企画 phần HSY, NKO; hỗ trợ quản lý xây kế hoạch |
-| Khanh | TNF 富山企画 phần SGM; NEUTRALWORKS; TNF 東京企画 (PPS~đại trà); 141 |
-| Hien | Giữ nguyên (Teton Bros, ALLTERRAIN, Mont-Bell, DESCENTE GOLF, Snowpeak) |
-| Huy | Goldwin, TNF 別注 HOSOYA, CANTERBURY, NANGA (141 chuyển cho Khanh) |
+| Khanh | TNF 富山企画 phần SGM; 141; TNF 東京企画 (PPS~đại trà), NEUTRALWORKS từ 27FW |
+| Hien | Giữ nguyên (Teton Bros, Montbell, ALLTERRAIN, DESCENTE GOLF/DCC/SKI) |
+| Huy | Goldwin, TNF 別注 HOSOYA, CANTERBURY, NANGA (hỗ trợ 141 chuyển cho Khanh) |
 | B.Trang | TNF (ALL) mẫu (giữ toàn bộ), Premium Snow 別注, FOXFIRE, TATRAS, Kasco, YONEX |
 | Nhu | Giữ nguyên (TNF 別注 SHIGEMOTO/NAKAO, UTMF, TOKYO MARATHON) + việc văn phòng |
 

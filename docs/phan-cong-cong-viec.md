@@ -15,7 +15,24 @@ Tạo lại JSON từ Excel: `python3 data/phan-cong/build.py . data/phan-cong`
 
 **Cách đọc số liệu:** mỗi người có tổng thời gian = 1,0 (100%). Ví dụ "Cuong 16%" nghĩa là Cuong dành khoảng 16% thời gian làm việc cho việc đó. Riêng file 2018 chỉ đánh dấu ● (phụ trách chính), ○ (phía Nhật hỗ trợ), (●) (phụ trách khi cần).
 
-## Phân công brand nhóm MD APIC (22/7/2026)
+## Phân công brand nhóm MD APIC – bảng chốt 5/11/2026
+
+Nguồn: `data/nguon/Phan-cong-brand-MD-APIC-20261105.xlsx`, sheet "2026.11.05" (dữ liệu: `data/phan-cong/brand-md-apic-2026-11-05.json`). Các sheet ẩn trong file là bảng phân công cũ từ 2017–2018.
+
+| Người | Brand / phạm vi |
+|---|---|
+| Hien | Teton Bros, Montbell, ALLTERRAIN, DESCENTE GOLF, DESCENTE DCC, DESCENTE SKI |
+| Nhu | TNF 別注 SHIGEMOTO (từ 26SS), TNF 別注 NAKAO (từ 27SS), UTMF フィニッシャーズ, TOKYO MARATHON |
+| Luan | TNF 富山企画 phần HOSOYA & NAKAO, từ PPS đến đại trà |
+| Cuong | TNF 東京企画 từ PPS đến đại trà (**đến 27SS**), HELLY HANSEN, NEUTRALWORKS (**đến 27SS**) |
+| Khanh | TNF 東京企画 từ PPS đến đại trà (**từ 27FW**), TNF 富山企画 phần SHIGEMOTO từ PPS đến đại trà, NEUTRALWORKS (**từ 27FW**), 141 |
+| Huy | Goldwin, TNF 別注 HOSOYA (từ 26SS), CANTERBURY (từ 26FW), NANGA |
+| Huyen Trang (CAD) | TNF HAT&CAP, 141 |
+| Bich Trang | TNF (ALL) mẫu 1st–SMS (từ 27SS), TNF Premium Snow 別注 26FW, FOXFIRE, TATRAS, Kasco, YONEX (từ S27) |
+
+Ngoài brand: Cuong, Luan hỗ trợ quản lý xây kế hoạch; Cuong điều phối xuất hàng chung, quản lý chung may mẫu. Snowpeak không có trong bảng chốt (4 lô trên Plantable là dòng cũ).
+
+## Phân công brand nhóm MD APIC (22/7/2026, trước khi Khanh quay lại)
 
 (1) = brand do phòng 1 (1課) phía TI Nhật quản lý, (2) = phòng 2 (2課).
 
@@ -36,7 +53,7 @@ Trong thời gian Khanh nghỉ: mẫu TNF từ 27SS do Bich Trang làm, Goldwin 
 
 Quyết định 10/2026 (sau khi Khanh đi làm lại): Hien, Huy, Nhu giữ nguyên. Cuong chuyển NEUTRALWORKS sang Khanh (ngay) và TNF 東京企画 sang Khanh (từ 11/2026), giữ HELLY HANSEN (chủ lực), nhận thêm điều phối chung (theo dõi xuất hàng cả nhóm, quản lý chung may mẫu). Khanh nhận NEUTRALWORKS, 1/3 mẫu TNF của Bich Trang từ mẫu 1st 28SS (mẫu triển lãm 27FW đã vào may, người đang làm làm tiếp) và một phần việc của Luan (tách theo chức năng, Luan giữ TNF 富山企画). Luan nhận một phần việc quản lý. Snowpeak do Hien theo dõi. Phân chia chi tiết Luan – Khanh: xem `docs/phan-tich-khoi-luong.md`.
 
-Quyết định 11/2026: Luan và Cuong hỗ trợ quản lý xây kế hoạch. Khanh nhận thêm 141 (từ Huyen Trang/Huy) và phần TNF 富山企画 do Shigemoto (SGM) phụ trách bên TIJ (Luan giữ phần HSY, NKO); giữ NEUTRALWORKS, TNF 東京企画. Khanh không nhận 1/3 mẫu TNF (Bich Trang giữ toàn bộ), không hỗ trợ Luan theo % nữa. Thời điểm Khanh nhận hẳn phần SGM chưa chốt.
+Quyết định 11/2026: Luan và Cuong hỗ trợ quản lý xây kế hoạch. Khanh nhận thêm 141 (từ Huyen Trang/Huy) và phần TNF 富山企画 do Shigemoto (SGM) phụ trách bên TIJ (Luan giữ phần HSY, NKO); giữ NEUTRALWORKS, TNF 東京企画. Khanh không nhận 1/3 mẫu TNF (Bich Trang giữ toàn bộ), không hỗ trợ Luan theo % nữa. Bảng chốt 5/11/2026 (ở trên): Khanh nhận phần SGM và 141 ngay; TNF 東京企画 và NEUTRALWORKS Cuong theo hết 27SS, Khanh nhận từ 27FW.
 
 Lịch sử (sheet ẩn, 2017–2018): trước đây có Phong, Ngan, Thuan, Nhung làm merchandiser, phụ trách các brand như MARMOT, MILLET, SNOW PEAK, UMBRO, WOOLRICH, SCHOFFEL. Nhóm kỹ thuật khi đó: Cau dịch/phiên dịch tiếng Nhật, Boken, đặt xe; Quyen quản lý xưởng 1-A/B; Vy, Hong nghiệp vụ mẫu; Phung (email trucphuong, có lẽ là Phuong hiện nay) xưởng 1-A, hỗ trợ mẫu.
 

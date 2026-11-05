@@ -1,12 +1,12 @@
 {
  "2026-11": {
   "Cuong": {
-   "chi_so": 1.85,
+   "chi_so": 2.12,
    "ngay_lam": 22,
-   "ma_vao_chuyen": 4,
-   "ngay_chuyen": 81,
-   "don_mau": 100,
-   "gio_dich": 102
+   "ma_vao_chuyen": 5,
+   "ngay_chuyen": 141,
+   "don_mau": 105,
+   "gio_dich": 110
   },
   "Luan": {
    "chi_so": 1.76,
@@ -17,12 +17,12 @@
    "gio_dich": 64
   },
   "Khanh": {
-   "chi_so": 1.41,
+   "chi_so": 1.17,
    "ngay_lam": 22,
-   "ma_vao_chuyen": 7,
-   "ngay_chuyen": 266,
-   "don_mau": 29,
-   "gio_dich": 63
+   "ma_vao_chuyen": 6,
+   "ngay_chuyen": 206,
+   "don_mau": 24,
+   "gio_dich": 56
   },
   "B.Trang": {
    "chi_so": 1.35,
@@ -60,12 +60,12 @@
  },
  "2026-12": {
   "Cuong": {
-   "chi_so": 2.1,
+   "chi_so": 2.44,
    "ngay_lam": 25,
-   "ma_vao_chuyen": 21,
-   "ngay_chuyen": 212,
+   "ma_vao_chuyen": 24,
+   "ngay_chuyen": 295,
    "don_mau": 15,
-   "gio_dich": 145
+   "gio_dich": 157
   },
   "Luan": {
    "chi_so": 1.3,
@@ -76,12 +76,12 @@
    "gio_dich": 46
   },
   "Khanh": {
-   "chi_so": 1.25,
+   "chi_so": 0.95,
    "ngay_lam": 25,
-   "ma_vao_chuyen": 8,
-   "ngay_chuyen": 397,
+   "ma_vao_chuyen": 5,
+   "ngay_chuyen": 314,
    "don_mau": 7,
-   "gio_dich": 43
+   "gio_dich": 31
   },
   "B.Trang": {
    "chi_so": 0.78,
@@ -119,12 +119,12 @@
  },
  "2027-01": {
   "Cuong": {
-   "chi_so": 1.48,
+   "chi_so": 1.61,
    "ngay_lam": 22,
-   "ma_vao_chuyen": 11,
-   "ngay_chuyen": 137,
+   "ma_vao_chuyen": 12,
+   "ngay_chuyen": 166,
    "don_mau": 12,
-   "gio_dich": 96
+   "gio_dich": 100
   },
   "Luan": {
    "chi_so": 1.67,
@@ -135,12 +135,12 @@
    "gio_dich": 55
   },
   "Khanh": {
-   "chi_so": 0.56,
+   "chi_so": 0.45,
    "ngay_lam": 22,
-   "ma_vao_chuyen": 1,
-   "ngay_chuyen": 161,
+   "ma_vao_chuyen": 0,
+   "ngay_chuyen": 132,
    "don_mau": 10,
-   "gio_dich": 16
+   "gio_dich": 12
   },
   "B.Trang": {
    "chi_so": 0.19,
@@ -178,10 +178,10 @@
  },
  "2027-02": {
   "Cuong": {
-   "chi_so": 2.2,
+   "chi_so": 2.3,
    "ngay_lam": 14,
    "ma_vao_chuyen": 9,
-   "ngay_chuyen": 114,
+   "ngay_chuyen": 141,
    "don_mau": 15,
    "gio_dich": 97
   },
@@ -194,10 +194,10 @@
    "gio_dich": 16
   },
   "Khanh": {
-   "chi_so": 1.14,
+   "chi_so": 1.05,
    "ngay_lam": 14,
    "ma_vao_chuyen": 1,
-   "ngay_chuyen": 200,
+   "ngay_chuyen": 173,
    "don_mau": 13,
    "gio_dich": 25
   },
@@ -240,7 +240,7 @@
    "chi_so": 0.87,
    "ngay_lam": 25,
    "ma_vao_chuyen": 6,
-   "ngay_chuyen": 109,
+   "ngay_chuyen": 112,
    "don_mau": 19,
    "gio_dich": 49
   },
@@ -256,7 +256,7 @@
    "chi_so": 1.42,
    "ngay_lam": 25,
    "ma_vao_chuyen": 6,
-   "ngay_chuyen": 438,
+   "ngay_chuyen": 435,
    "don_mau": 20,
    "gio_dich": 51
   },

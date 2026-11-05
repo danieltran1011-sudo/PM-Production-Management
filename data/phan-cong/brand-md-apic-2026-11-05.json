@@ -1,0 +1,52 @@
+{
+ "nguon": "data/nguon/Phan-cong-brand-MD-APIC-20261105.xlsx (sheet 2026.11.05)",
+ "ngay": "2026-11-05",
+ "phan_cong": {
+  "Hien": [
+   "Teton Bros",
+   "Montbell",
+   "ALLTERRAIN",
+   "DESCENTE GOLF",
+   "DESCENTE DCC",
+   "DESCENTE SKI"
+  ],
+  "Nhu": [
+   "TNF 別注 SHIGEMOTO 26SS~",
+   "TNF 別注 NAKAO 27SS~",
+   "UTMF フィニッシャーズ",
+   "TOKYO MARATHON"
+  ],
+  "Luan": [
+   "TNF 富山企画_HOSOYA&NAKAO  PPS~量産"
+  ],
+  "Cuong": [
+   "TNF 東京企画  PPS~量産~27SS",
+   "HELLY HANSEN",
+   "NEUTRALWORKS ~27SS"
+  ],
+  "Khanh": [
+   "TNF 東京企画 PPS~量産 27FW~",
+   "TNF 富山企画_SHIGEMOTO  PPS~量産",
+   "NEUTRALWORKS  27FW~",
+   "141"
+  ],
+  "Huy": [
+   "Goldwin",
+   "TNF 別注 HOSOYA 26SS~",
+   "CANTERBURY  26FW~",
+   "NANGA"
+  ],
+  "H.Trang": [
+   "TNF HAT&CAP",
+   "141"
+  ],
+  "B.Trang": [
+   "TNF (ALL) 27SS~1st~SMS sample)",
+   "TNF Premium Snow別注 26FW",
+   "FOXFIRE",
+   "TATRAS",
+   "Kasco",
+   "Yonex S27~"
+  ]
+ }
+}

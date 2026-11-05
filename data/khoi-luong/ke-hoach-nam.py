@@ -4,7 +4,8 @@
 #   - Sản xuất mùa đã có kế hoạch (đến 27SS): lịch thật trong Plantable 26/10/2026.
 #   - Sản xuất mùa chưa có kế hoạch (27FW, 28SS): lịch của mùa tương ứng năm trước (26FW, 27SS) dời +1 năm, gán người đang phụ trách.
 #   - Mẫu: đơn còn tồn dồn vào 11/2026 + số đơn cùng tháng năm trước (file mẫu 2025–2026), gán người đang phụ trách.
-#   - Phân công theo quyết định 11/2026: Khánh nhận NW, TNF 東京企画, 141 và phần TNF 富山企画 do Shigemoto (SGM) phụ trách bên TIJ;
+#   - Phân công theo bảng chốt 5/11/2026 (data/nguon/Phan-cong-brand-MD-APIC-20261105.xlsx): Khánh nhận 141 và phần TNF 富山企画
+#     do Shigemoto (SGM) phụ trách bên TIJ (ngay); TNF 東京企画 và NW từ mùa 27FW (Cường theo hết 27SS);
 #     Khánh không nhận mẫu TNF của Bích Trang, không còn hỗ trợ Luân theo %. Cường, Luân dành ~20% thời gian hỗ trợ quản lý làm kế hoạch.
 #   - Công suất: số ngày làm việc thực của từng người (thứ 2–7, nghỉ thứ 7 theo nhóm, nghỉ lễ) × giờ/ngày.
 # Chạy: python3 data/khoi-luong/ke-hoach-nam.py  → data/khoi-luong/ke-hoach-nam.json
@@ -51,22 +52,24 @@ def mua_so(m):
 
 def chu_san_xuat(p, b, mua, tij=None, sgm=True):
     """Người đang phụ trách (sau các quyết định 10–11/2026) cho một lô sản xuất."""
-    if b in ('NW', '141'): return 'Khanh'
+    if b == '141': return 'Khanh'
+    if b == 'NW' or (b == 'TNF' and p == 'Cuong'):           # NW, TNF 東京企画: Cường đến 27SS, Khánh từ 27FW
+        return 'Khanh' if mua_so(mua) >= (27, 1) else 'Cuong'
     if sgm and b == 'TNF' and tij == 'SGM' and p in ('Luan', 'Khanh', 'B.Trang', '?'): return 'Khanh'   # TNF 富山企画 phần SGM → Khanh
     if b == 'GOLDWIN': return 'Q.Huy'
     if b == 'YONEX': return 'B.Trang' if mua_so(mua) >= (27, 0) else 'Cuong'
-    if b == 'TNF' and p == 'Cuong': return 'Khanh'          # TNF 東京企画 → Khanh từ 11/2026
     if b == 'TNF' and p in ('Khanh', 'B.Trang', '?'): return 'Luan'
     if p == '?' and b in ('DCC', 'SNOWPEAK', 'ALLTERRAIN', 'DESCENT', 'TETON', 'MONTBELL'): return 'Hien'
     if p == 'Khanh': return 'Luan'
     return p
 
-def chu_mau(p, b, thang, khanh_mau_tnf_tu):
+def chu_mau(p, b, thang, khanh_mau_tnf_tu, mua=None):
+    """mua=None: đơn mẫu đang mở (người đang làm làm tiếp); có mua: mùa của đơn mẫu."""
     if b == '141': return 'Khanh'
+    if b == 'NW' or (p == 'Cuong' and b == 'TNF'):
+        return 'Khanh' if mua is not None and mua_so(mua) >= (27, 1) else 'Cuong'
     if p == 'Khanh': return 'Q.Huy' if b == 'GOLDWIN' else 'B.Trang'   # mẫu Khanh năm trước: TNF → B.Trang, Goldwin → Huy
-    if b == 'NW': return 'Khanh'
     if b == 'YONEX': return 'B.Trang'
-    if p == 'Cuong' and b == 'TNF': return 'Khanh'
     return p
 
 def trong_so_mau(loai):
@@ -129,7 +132,8 @@ def tai(khanh_mau_tnf=0, khanh_mau_tnf_tu='2026-12', giao_them={'Cuong': 0.2, 'L
         for m in THANG:
             y, mo = map(int, m.split('-'))
             if x['due'][:7] == f'{y - 1}-{mo:02d}':
-                p = chu_mau(x['nguoi'], b, m, khanh_mau_tnf_tu)
+                ms = mua_so(x['mua'])                                   # đơn năm trước → mùa năm nay
+                p = chu_mau(x['nguoi'], b, m, khanh_mau_tnf_tu, f"{ms[0] + 1}{'FW' if ms[1] else 'SS'}" if ms[0] else None)
                 if p in MD: them_mau(m, p, b, x['loai'])
     # công suất: ngày làm việc × giờ/ngày (đơn vị: ngày của người làm 9 giờ)
     cs = {m: {p: ngay_lam(m, p) * GIO.get(p, GIO_CHUAN) / GIO_CHUAN for p in MD} for m in THANG}
