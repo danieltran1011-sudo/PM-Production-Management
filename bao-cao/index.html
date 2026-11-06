@@ -170,6 +170,11 @@ td .sub, th .sub { display: block; font-size: 11px; font-weight: 400; color: var
 .empty { padding: 28px 16px; text-align: center; color: var(--muted); border: 1px dashed var(--line); border-radius: 8px; }
 .notes { display: grid; gap: 8px; max-width: 85ch; }
 .an-body { display: grid; gap: 16px; }
+#thTable th, #thTable td { padding: 5px 8px; }
+#thTable tr.grp td { background: var(--surface-2); font-family: var(--f-display); font-size: 15px; font-weight: 700; color: var(--accent); text-align: left; position: static; }
+#thTable td.lbl { white-space: normal; min-width: 230px; max-width: 300px; }
+#thTable td.lbl .sub { display: inline; margin-left: 4px; }
+#thTable .yr { background: var(--accent-soft); font-weight: 600; }
 .headline { font-size: 15px; font-weight: 600; padding: 12px 14px; border-left: 4px solid var(--accent); background: var(--accent-soft); border-radius: 6px; max-width: 95ch; }
 .an-body h3 { margin-top: 4px; }
 .an-note { font-size: 12px; color: var(--muted); max-width: 95ch; }
@@ -200,7 +205,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
     <h1>Báo cáo tháng từ file KH_UPDATE</h1>
     <p>Chọn các file KH_UPDATE (mỗi xưởng, mỗi lần update một file; càng nhiều tháng, nhiều năm càng tốt). Trang tự gộp, lấy số chốt của từng tháng và so sánh với tháng trước, cùng kỳ năm trước, lũy kế năm tài chính. Dữ liệu chỉ lưu trong trình duyệt này, không gửi đi đâu.</p>
     <nav class="jump" aria-label="Mục">
-      <a href="#du-lieu">Dữ liệu</a><a href="#tong-quan">Tổng quan tháng</a><a href="#theo-chieu">Nhãn hàng · chuyền · chủng loại</a>
+      <a href="#du-lieu">Dữ liệu</a><a href="#tong-quan">Tổng quan tháng</a><a href="#tong-hop">Tổng hợp toàn xưởng</a><a href="#theo-chieu">Nhãn hàng · chuyền · chủng loại</a>
       <a href="#theo-thang">Theo tháng</a><a href="#theo-nam">Năm tài chính</a><a href="#phan-tich">Phân tích</a><a href="#ma-hang">Mã hàng</a><a href="#cach-tinh">Cách tính</a>
     </nav>
   </header>
@@ -255,6 +260,22 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
     <div class="kpis" id="kpis"></div>
     <h3 style="margin:20px 0 10px">So sánh các kỳ</h3>
     <div class="tbl-wrap" id="cmpTable"></div>
+  </section>
+
+  <section class="panel" id="tong-hop" hidden>
+    <div class="section-head">
+      <h2>Tổng hợp toàn xưởng</h2>
+      <p id="thScope"></p>
+    </div>
+    <div class="row-tools">
+      <div class="seg" id="thSeg" role="group" aria-label="Cách xem">
+        <button type="button" data-th="year" aria-pressed="true">Từng tháng trong năm</button>
+        <button type="button" data-th="years" aria-pressed="false">Các năm tài chính</button>
+      </div>
+      <div class="field" id="thFyField"><label for="thFy">Năm tài chính</label><select id="thFy"></select></div>
+    </div>
+    <div class="tbl-wrap" id="thTable"></div>
+    <p class="an-note" style="margin-top:10px">Cột "Cả năm" chỉ gồm các tháng đã có TH; "Cùng kỳ" là đúng các tháng đó của năm trước. Tháng kế hoạch chỉ hiện KH. Lên năng suất và lead time tính cho các lượt may xong trong tháng. Cách tính từng chỉ tiêu xem ở cuối trang.</p>
   </section>
 
   <section class="panel" id="theo-chieu" hidden>
@@ -325,6 +346,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
       <li><b>Lao động</b>: mỗi chuyền, mỗi ngày có sản lượng TH tính một lần số người bố trí (ライン編成人数); nếu chuyền chạy 2 mã cùng ngày thì lấy số lớn hơn và chia cho 2 mã theo sản lượng. Chuyền tách (4A1, 4A2…) gộp về chuyền gốc (4A): ngày chuyền tách đôi thì cộng số người hai nửa, ngày vừa có chuyền chính vừa có chuyền tách (chuyển mã) thì lấy số lớn hơn để không đếm trùng. <i>Ngày công</i> = tổng người × ngày. <i>Lao động bình quân/ngày</i> = ngày công ÷ ngày làm việc của tháng (nhiều tháng thì lấy bình quân các tháng). <i>Lao động bình quân/chuyền</i> = ngày công ÷ số chuyền-ngày. Đây là số người bố trí theo kế hoạch, không phải số có mặt thực tế.</li>
       <li><b>Năng suất</b> = TH ÷ ngày công (sp/người/ngày). <b>Giờ chuẩn (SAH)</b> = TH × thời gian may (工程分析時間, giây) ÷ 3.600. <b>Hiệu suất</b> = giờ chuẩn ÷ (ngày công × 8 giờ).</li>
       <li><b>工程分析時間 bình quân</b> (giây/sp) = bình quân thời gian công đoạn của các mã có TH trong tháng, trọng số theo số lượng đơn (生産数). <b>生産ロット bình quân</b> (sp) = bình quân lot sau gộp đơn (集約ロット) của các mã có lịch lý thuyết (hàng "dự định") trong tháng. Cả hai tính giống sheet TORAY (平均工程分析時間, 平均ロット), đã đối chiếu khớp với các file có công thức đúng. Nhiều tháng: tính chung trên mọi mã của các tháng đó.</li>
+      <li><b>Tổng hợp toàn xưởng</b>: gộp các xưởng (hoặc theo xưởng, nhãn hàng ở bộ lọc). Số chuyền = chuyền gốc có sản lượng (đã gộp A1, A2). Số mã chạy trên chuyền (切替数) = số dòng mã × chuyền có TH, như sheet TORAY. Mã mới vào chuyền = số lượt mã bắt đầu may trên một chuyền trong tháng. Ngày làm việc = bình quân các xưởng. Tỷ lệ đạt KH đầu tháng của cả năm chỉ tính các tháng có KH đầu tháng.</li>
       <li><b>Phân tích</b>: lượt may = một mã trên một chuyền (chuyền tách tính riêng). Sản lượng ổn định = phân vị 75% sản lượng ngày, bỏ ngày cuối. Ngày lên năng suất = ngày sản xuất đầu tiên đạt 90% mức ổn định (trong 30 ngày đầu). Lead time thực tế = số ngày làm việc từ ngày may đầu đến ngày cuối. Lý thuyết lấy từ file: 習熟日数 (cột AP) và 縫製リードタイム (cột AT, hàng "dự định"). Lượt may bắt đầu ngay ngày đầu dữ liệu của file bị bỏ qua vì có thể đã may từ trước.</li>
       <li><b>Mã mới vào chuyền</b>: tháng có ngày sản lượng đầu tiên của mã. <b>Mã hoàn thành</b>: tháng có ngày kết thúc (ô END ở hàng TH, không muộn hơn ngày update).</li>
       <li><b>Năm tài chính</b> đặt tên theo năm bắt đầu; tháng bắt đầu chọn ở bộ lọc (mặc định tháng 4: NTC 2026 = 4/2026–3/2027). <b>Cùng kỳ</b> = cùng tháng năm trước; <b>lũy kế cùng kỳ</b> = các tháng tương ứng của năm tài chính trước.</li>
@@ -342,7 +364,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
   var SETTINGS = 'pm-bao-cao-settings';
   var $ = function (id) { return document.getElementById(id); };
 
-  var state = { startMonth: 4, aliasText: '', dim: 'brand', fyDim: 'brand', sort: 'th', month: '', factory: '', brand: '', anTab: 'lot', anPeriod: 'ytd' };
+  var state = { startMonth: 4, aliasText: '', dim: 'brand', fyDim: 'brand', sort: 'th', month: '', factory: '', brand: '', anTab: 'lot', anPeriod: 'ytd', thMode: 'year', thFy: null };
   try { Object.assign(state, JSON.parse(localStorage.getItem(SETTINGS) || '{}')); } catch (e) { /* bỏ qua */ }
   function saveSettings() { try { localStorage.setItem(SETTINGS, JSON.stringify(state)); } catch (e) { /* bỏ qua */ } }
 
@@ -490,7 +512,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
     ds = files.length ? R.buildDataset(files, { aliases: R.parseAliasText(state.aliasText) }) : null;
     renderFiles();
     var has = !!(ds && ds.months.length);
-    ['bo-loc', 'tong-quan', 'theo-chieu', 'theo-thang', 'theo-nam', 'phan-tich', 'ma-hang'].forEach(function (id) { $(id).hidden = !has; });
+    ['bo-loc', 'tong-quan', 'tong-hop', 'theo-chieu', 'theo-thang', 'theo-nam', 'phan-tich', 'ma-hang'].forEach(function (id) { $(id).hidden = !has; });
     $('empty').hidden = has;
     $('btnExport').disabled = !has; $('btnExport2').disabled = !has; $('btnClear').disabled = !files.length;
     if (!has) return;
@@ -652,6 +674,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
   // ---------- Hiển thị ----------
   function render() {
     renderOverview();
+    renderSummary();
     renderDim();
     renderMonthly();
     renderFiscal();
@@ -858,6 +881,103 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
     m += row('Tổng', yrs.map(function (y) { return y.v; }), ly && ly.v, ly && ly.same, 'total');
     $('fyMatrix').innerHTML = m + '</tbody></table>';
   }
+  // ---------- Tổng hợp toàn xưởng ----------
+  var n0 = function (v) { return fmtN(v); }, n1 = function (v) { return fmtN(v, 1); }, n2 = function (v) { return fmtN(v, 2); }, pc = function (v) { return fmtP(v); };
+  // [nhóm] hoặc [khóa, nhãn, đơn vị, định dạng, kiểu so sánh ('pct' = điểm %), cần TH]
+  var TH_ROWS = [
+    ['Sản lượng và kế hoạch'],
+    ['th', 'Sản lượng thực hiện (TH)', 'sp', n0, '', 1],
+    ['khOpen', 'Kế hoạch đầu tháng', 'sp', n0, '', 0],
+    ['kh', 'Kế hoạch cuối kỳ', 'sp', n0, '', 0],
+    ['rateOpen', 'Tỷ lệ đạt KH đầu tháng', '', pc, 'pct', 1],
+    ['rate', 'Tỷ lệ đạt KH cuối kỳ', '', pc, 'pct', 1],
+    ['wd', 'Ngày làm việc', 'ngày', n1, '', 1],
+    ['thPerDay', 'Sản lượng bình quân/ngày', 'sp', n0, '', 1],
+    ['sah', 'Giờ chuẩn làm ra (SAH)', 'giờ', n0, '', 1],
+    ['Mã hàng và chuyển mã'],
+    ['styles', 'Số mã hàng sản xuất', 'mã', n0, '', 1],
+    ['brands', 'Số nhãn hàng', '', n0, '', 1],
+    ['rows', 'Số mã chạy trên chuyền (切替数)', 'lượt', n0, '', 1],
+    ['starts', 'Mã mới vào chuyền (chuyển mã)', 'lượt', n0, '', 1],
+    ['ends', 'Mã hoàn thành', 'mã', n0, '', 1],
+    ['avgLot', 'Lot bình quân (生産ロット 平均)', 'sp', n0, '', 0],
+    ['newLot', 'Lot bình quân của mã mới vào chuyền', 'sp', n0, '', 1],
+    ['lotSmallShare', 'Tỷ trọng TH của lot dưới 500 sp', '', pc, 'pct', 1],
+    ['avgSam', 'Thời gian công đoạn bình quân (工程分析時間)', 'giây/sp', n0, '', 1],
+    ['samHighShare', 'Tỷ trọng TH mã trên 12.000 giây', '', pc, 'pct', 1],
+    ['Chuyền và lao động'],
+    ['lines', 'Số chuyền có sản lượng', 'chuyền', n0, '', 1],
+    ['lineDays', 'Chuyền-ngày', '', n0, '', 1],
+    ['labor', 'Lao động bình quân/ngày', 'người', n0, '', 1],
+    ['perLine', 'Lao động bình quân/chuyền', 'người', n1, '', 1],
+    ['pdT', 'Ngày công', 'người × ngày', n0, '', 1],
+    ['Hiệu quả'],
+    ['productivity', 'Năng suất', 'sp/người/ngày', n2, '', 1],
+    ['outPerLineDay', 'Sản lượng bình quân/chuyền/ngày', 'sp', n1, '', 1],
+    ['efficiency', 'Hiệu suất (giờ chuẩn/giờ công)', '', pc, 'pct', 1],
+    ['rampLoss', 'Giờ chuẩn mất khi lên năng suất', 'giờ', n0, '', 1],
+    ['rampLossRate', 'Tỷ lệ giờ chuẩn mất', '', pc, 'pct', 1],
+    ['Lên năng suất và lead time'],
+    ['runsDone', 'Lượt may hoàn thành', 'lượt', n0, '', 1],
+    ['rampDays', 'Ngày lên năng suất bình quân', 'ngày', n1, '', 1],
+    ['rampTheo', '習熟日数 lý thuyết bình quân', 'ngày', n1, '', 1],
+    ['rampSlower', 'Lượt may lên năng suất chậm hơn lý thuyết', '', pc, 'pct', 1],
+    ['ltSpan', 'Lead time may thực tế bình quân', 'ngày', n1, '', 1],
+    ['ltTheo', 'Lead time lý thuyết bình quân (縫製リードタイム)', 'ngày', n1, '', 1],
+    ['ltOver', 'Lượt may chậm hơn lead time lý thuyết (> 2 ngày)', '', pc, 'pct', 1],
+    ['Ổn định kế hoạch'],
+    ['planned', 'Mã trong KH đầu tháng', 'mã', n0, '', 1],
+    ['added', 'Mã thêm vào so với KH đầu tháng', 'mã', n0, '', 1],
+    ['dropped', 'Mã trong KH đầu tháng không làm', 'mã', n0, '', 1],
+    ['planChange', 'Tỷ lệ mã thay đổi', '', pc, 'pct', 1]
+  ];
+  function thCell(v, r) {
+    if (!v) return '—';
+    if (r[5] && !v.hasTh) return '—';
+    return r[3](v[r[0]]);
+  }
+  function renderSummary() {
+    var startMonth = state.startMonth;
+    $('thScope').textContent = (state.factory ? 'Xưởng ' + state.factory : 'Toàn xưởng (gộp tất cả xưởng)') + (state.brand ? ' · nhãn hàng ' + state.brand : '') + '. Đổi xưởng, nhãn hàng ở thanh bộ lọc.';
+    var years = {};
+    ds.months.forEach(function (m) { years[R.fiscalYear(m, startMonth)] = 1; });
+    var fys = Object.keys(years).map(Number).sort();
+    var cur = R.fiscalYear(state.month, startMonth);
+    if (fys.indexOf(state.thFy) < 0) state.thFy = cur;
+    $('thFy').innerHTML = fys.slice().reverse().map(function (fy) { return '<option value="' + fy + '"' + (fy === state.thFy ? ' selected' : '') + '>' + esc(R.fiscalLabel(fy, startMonth)) + '</option>'; }).join('');
+    Array.prototype.forEach.call(document.querySelectorAll('#thSeg [data-th]'), function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-th') === state.thMode)); });
+    $('thFyField').hidden = state.thMode !== 'year';
+    var o = { factory: state.factory || null, brand: state.brand || null, startMonth: startMonth };
+    var head, body = [];
+    var span = function (ms) { return ms.length ? R.monthLabel(ms[0]) + '–' + R.monthLabel(ms[ms.length - 1]) : ''; };
+    if (state.thMode === 'year') {
+      var y = R.overviewYear(ds, o, state.thFy);
+      head = '<tr><th>Chỉ tiêu</th>' + y.cols.map(function (c) {
+        return '<th>' + R.monthLabel(c.month) + '<span class="sub">' + (c.v ? STATUS[c.v.status] : 'chưa có') + '</span></th>';
+      }).join('') + '<th class="bl yr">Cả năm<span class="sub">' + span(y.doneMonths) + '</span></th><th>Cùng kỳ năm trước<span class="sub">' + (y.same ? span(y.sameMonths) : 'chưa có') + '</span></th><th>±</th></tr>';
+      TH_ROWS.forEach(function (r) {
+        if (r.length === 1) { body.push('<tr class="grp"><td colspan="' + (y.cols.length + 4) + '">' + r[0] + '</td></tr>'); return; }
+        var M = { kind: r[4], better: 0 };
+        body.push('<tr><td class="lbl">' + r[1] + (r[2] ? '<span class="sub">(' + r[2] + ')</span>' : '') + '</td>' +
+          y.cols.map(function (c) { return '<td class="num">' + thCell(c.v, r) + '</td>'; }).join('') +
+          '<td class="num bl yr">' + thCell(y.done.hasTh ? y.done : y.total, r) + '</td><td class="num">' + thCell(y.same, r) + '</td>' +
+          '<td>' + (y.same && y.done.hasTh ? delta(y.done[r[0]], y.same[r[0]], M) : '—') + '</td></tr>');
+        if (r[0] === 'kh') body.push('<tr><td class="lbl">Kế hoạch cả năm<span class="sub">(gồm tháng kế hoạch, sp)</span></td>' + y.cols.map(function () { return '<td></td>'; }).join('') + '<td class="num bl yr">' + fmtN(y.total.kh) + '</td><td></td><td></td></tr>');
+      });
+    } else {
+      var ys = R.overviewYears(ds, o).filter(function (x) { return x.v.hasTh; }), last = ys[ys.length - 1];
+      head = '<tr><th>Chỉ tiêu</th>' + ys.map(function (x) { return '<th>NTC ' + x.fy + '<span class="sub">' + (x.doneMonths.length ? span(x.doneMonths) + ' (' + x.doneMonths.length + ' th.)' : 'chỉ có KH') + '</span></th>'; }).join('') +
+        (last && last.same ? '<th class="bl yr">NTC ' + (last.fy - 1) + ' cùng kỳ<span class="sub">' + span(last.sameMonths) + '</span></th><th>NTC ' + last.fy + ' so cùng kỳ</th>' : '') + '</tr>';
+      TH_ROWS.forEach(function (r) {
+        if (r.length === 1) { body.push('<tr class="grp"><td colspan="' + (ys.length + 3) + '">' + r[0] + '</td></tr>'); return; }
+        var M = { kind: r[4], better: 0 };
+        body.push('<tr><td class="lbl">' + r[1] + (r[2] ? '<span class="sub">(' + r[2] + ')</span>' : '') + '</td>' + ys.map(function (x) { return '<td class="num">' + thCell(x.v, r) + '</td>'; }).join('') +
+          (last && last.same ? '<td class="num bl yr">' + thCell(last.same, r) + '</td><td>' + delta(last.v[r[0]], last.same[r[0]], M) + '</td>' : '') + '</tr>');
+      });
+    }
+    $('thTable').innerHTML = '<table><thead>' + head + '</thead><tbody>' + body.join('') + '</tbody></table>';
+  }
+
   // ---------- Phân tích ----------
   var AN_TABS = [
     ['lot', '1. Cỡ lot & hiệu suất'], ['learn', '2. Lên năng suất'], ['lt', '3. Lead time may'], ['co', '4. Chuyển mã'],
@@ -1093,6 +1213,23 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
     });
     add('Du lieu', raw);
 
+    // Tổng hợp toàn xưởng: từng tháng của mỗi năm tài chính, rồi các năm
+    var so = { factory: state.factory || null, brand: state.brand || null, startMonth: state.startMonth };
+    var rowsDef = TH_ROWS.filter(function (r) { return r.length > 1; });
+    var raw1 = function (v, r) { if (!v || (r[5] && !v.hasTh)) return null; var x = v[r[0]]; return x == null || !isFinite(x) ? null : r[4] === 'pct' ? r2(x, 4) : r2(x, 2); };
+    var sh = [['Tổng hợp ' + (state.factory || 'toàn xưởng') + (state.brand ? ' · ' + state.brand : '')]];
+    var yrs = R.overviewYears(ds, so);
+    yrs.forEach(function (yy) {
+      var y = R.overviewYear(ds, so, yy.fy);
+      sh.push([]); sh.push([y.label]);
+      sh.push(['Chỉ tiêu', 'Đơn vị'].concat(y.cols.map(function (c) { return R.monthLabel(c.month); }), ['Cả năm (tháng có TH)', 'Cùng kỳ năm trước']));
+      rowsDef.forEach(function (r) { sh.push([r[1], r[2] || (r[4] === 'pct' ? '%' : '')].concat(y.cols.map(function (c) { return raw1(c.v, r); }), [raw1(y.done.hasTh ? y.done : y.total, r), raw1(y.same, r)])); });
+    });
+    sh.push([]); sh.push(['Các năm tài chính']);
+    sh.push(['Chỉ tiêu', 'Đơn vị'].concat(yrs.map(function (x) { return x.label; })));
+    rowsDef.forEach(function (r) { sh.push([r[1], r[2] || (r[4] === 'pct' ? '%' : '')].concat(yrs.map(function (x) { return raw1(x.v, r); }))); });
+    add('Tong hop toan xuong', sh);
+
     // Phân tích (theo kỳ phân tích đang chọn)
     var ao = opts({ period: state.anPeriod });
     var pLabel = R.ANALYSIS_PERIODS.filter(function (x) { return x.id === state.anPeriod; })[0].label;
@@ -1213,6 +1350,8 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
   $('btnAliases').addEventListener('click', function () { state.aliasText = $('aliases').value; saveSettings(); rebuild(); });
   $('dimSeg').addEventListener('click', function (e) { var b = e.target.closest('[data-dim]'); if (!b) return; state.dim = b.getAttribute('data-dim'); saveSettings(); renderDim(); });
   $('fyDimSeg').addEventListener('click', function (e) { var b = e.target.closest('[data-fydim]'); if (!b) return; state.fyDim = b.getAttribute('data-fydim'); saveSettings(); renderFiscal(); });
+  $('thSeg').addEventListener('click', function (e) { var b = e.target.closest('[data-th]'); if (!b) return; state.thMode = b.getAttribute('data-th'); saveSettings(); renderSummary(); });
+  $('thFy').addEventListener('change', function () { state.thFy = +this.value; saveSettings(); renderSummary(); });
   $('anSeg').addEventListener('click', function (e) { var b = e.target.closest('[data-an]'); if (!b) return; state.anTab = b.getAttribute('data-an'); saveSettings(); renderAnalysis(); });
   $('anPeriod').addEventListener('change', function () { state.anPeriod = this.value; saveSettings(); renderAnalysis(); });
   $('dimSort').addEventListener('change', function () { state.sort = this.value; saveSettings(); renderDim(); });

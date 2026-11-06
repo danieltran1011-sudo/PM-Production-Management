@@ -422,3 +422,29 @@ test('Phân tích 7: tải tháng tới so với năng lực 3 tháng đã chố
   assert.ok(Math.abs(nov.load - 1.5) < 1e-9);
   assert.strictEqual(R.loadStatus(nov.load), 'qua-tai');
 });
+
+test('Tổng hợp toàn xưởng: chỉ tiêu theo tháng, cả năm và cùng kỳ năm trước', () => {
+  const st = (factory, style, kh, th) => ({ factory, line: '1A', brand: 'TNF', style, sam: 3600, hc: 10, aggLot: 1000, kh, th });
+  const mk = (name, factory, from, to, styles) => R.parseRows(makeSheet({ from, to, styles }), { name });
+  const files = [
+    mk('KH UPDATE _APA1.20251031.xlsm', 'APIC1A', '2025-10-01', '2025-10-31', [st('APIC1A', 'O', { '2025-10-06': 100 }, { '2025-10-06': 100 })]),
+    mk('KH UPDATE _APA1.20261031.xlsm', 'APIC1A', '2026-10-01', '2026-10-31', [st('APIC1A', 'A', { '2026-10-06': 200 }, { '2026-10-06': 150 })]),
+    mk('KH UPDATE _APA2.20261031.xlsm', 'APIC1B', '2026-10-01', '2026-10-31', [st('APIC1B', 'B', { '2026-10-07': 100 }, { '2026-10-07': 90 })])
+  ];
+  const ds = R.buildDataset(files);
+  const y = R.overviewYear(ds, { startMonth: 4 }, 2026);
+  const oct = y.cols.find((c) => c.month === '2026-10').v;
+  assert.strictEqual(oct.th, 240); // gộp 2 xưởng
+  assert.strictEqual(oct.kh, 300);
+  assert.strictEqual(oct.styles, 2);
+  assert.strictEqual(oct.lines, 2); // 1A của mỗi xưởng
+  assert.strictEqual(oct.rows, 2);
+  assert.strictEqual(y.cols.find((c) => c.month === '2026-04').v, null); // tháng chưa có dữ liệu
+  assert.deepStrictEqual(y.doneMonths, ['2026-10']);
+  assert.deepStrictEqual(y.sameMonths, ['2025-10']);
+  assert.strictEqual(y.same.th, 100);
+  const one = R.overviewYear(ds, { startMonth: 4, factory: 'APIC1B' }, 2026);
+  assert.strictEqual(one.done.th, 90);
+  const ys = R.overviewYears(ds, { startMonth: 4 });
+  assert.deepStrictEqual(ys.map((x) => [x.fy, x.v.th]), [[2025, 100], [2026, 240]]);
+});

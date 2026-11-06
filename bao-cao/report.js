@@ -823,7 +823,7 @@
     return upto;
   }
   function analysisBase(ds, opts) {
-    var months = periodMonths(ds, opts.month, opts.period || 'ytd', opts.startMonth);
+    var months = opts.months || periodMonths(ds, opts.month, opts.period || 'ytd', opts.startMonth);
     var facts = filterFacts(ds.facts, { factory: opts.factory, brand: opts.brand, months: months })
       .filter(function (x) { return !x.open; });
     var runs = (ds.runs || []).filter(function (r) {
@@ -944,7 +944,7 @@
 
   // 5. Độ ổn định kế hoạch: KH đầu tháng so với TH; mã thêm vào / bỏ ra so với KH đầu tháng
   function planStability(ds, opts) {
-    var months = periodMonths(ds, opts.month, opts.period || 'ytd', opts.startMonth);
+    var months = opts.months || periodMonths(ds, opts.month, opts.period || 'ytd', opts.startMonth);
     var all = filterFacts(ds.facts, { factory: opts.factory, brand: opts.brand, months: months });
     var openMonths = {};
     all.forEach(function (x) { if (x.open && x.khOpen > 0 && x.status === 'chot') openMonths[x.f + '|' + x.m] = 1; });
@@ -1035,6 +1035,83 @@
   }
   function loadStatus(load) { return load == null ? null : load > 1.05 ? 'qua-tai' : load < 0.85 ? 'thieu-hang' : 'vua'; }
 
+  // ---------- Tổng hợp toàn xưởng: mọi chỉ tiêu cho một nhóm tháng ----------
+  /*
+   * opts: { factory, brand } (để trống = toàn xưởng, mọi nhãn hàng); months: danh sách tháng.
+   * Chỉ tiêu cộng dồn (sản lượng, ngày công…) cộng qua các tháng; chỉ tiêu tỷ lệ tính lại trên cả nhóm.
+   */
+  function overviewMetrics(ds, opts, months) {
+    var o = { factory: opts.factory, brand: opts.brand, months: months };
+    var base = filterFacts(ds.facts, { factory: opts.factory, brand: opts.brand });
+    var main = filterFacts(base, { months: months }).filter(function (x) { return !x.open; });
+    var withTh = main.filter(function (x) { return x.th > 0; });
+    var nAct = actualMonths(base, months);
+    var v = derive(aggregate(filterFacts(base, { months: months })), nAct);
+    var facs = ds.factories.filter(function (f) { return !opts.factory || f === opts.factory; });
+    // ngày làm việc: bình quân các xưởng mỗi tháng, cộng qua các tháng có TH
+    var wd = 0, statuses = {};
+    months.forEach(function (m) {
+      var ws = facs.map(function (f) { return ds.meta[f + '|' + m]; }).filter(Boolean);
+      ws.forEach(function (me) { statuses[me.status] = 1; });
+      if (ws.length && withTh.some(function (x) { return x.m === m; })) wd += mean(ws.map(function (me) { return me.wd; }));
+    });
+    var brands = {}, lotSmall = 0, samHigh = 0;
+    withTh.forEach(function (x) {
+      brands[x.brand] = 1;
+      if (lotBand(x.aggLot) === 0) lotSmall += x.th;
+      if (samBand(x.sam) === 2) samHigh += x.th;
+    });
+    var co = changeover(ds, o).total, learn = learning(ds, o).total, lt = leadTime(ds, o).total, plan = planStability(ds, o).total;
+    // % đạt KH đầu tháng: chỉ trên các tháng có KH đầu tháng (có file cuối tháng trước)
+    var openM = {};
+    filterFacts(base, { months: months }).forEach(function (x) { if (x.open && x.khOpen > 0) openM[x.f + '|' + x.m] = 1; });
+    var thOpen = main.reduce(function (a, x) { return a + (openM[x.f + '|' + x.m] ? x.th : 0); }, 0);
+    var status = statuses.chot && !statuses.dang && !statuses.kh ? 'chot' : statuses.dang ? 'dang' : statuses.kh && !statuses.chot ? 'kh' : 'dang';
+    return {
+      months: months, monthsWithTh: nAct, status: status, hasTh: v.th > 0,
+      khOpen: v.khOpen || null, kh: v.kh, th: v.th, rateOpen: v.khOpen > 0 ? thOpen / v.khOpen : null, rate: v.rate,
+      openMonths: Object.keys(openM).length,
+      wd: wd || null, thPerDay: wd > 0 ? v.th / wd : null, sah: v.sah,
+      styles: v.styles, brands: Object.keys(brands).length, rows: withTh.length, starts: co.starts, ends: v.end,
+      avgSam: v.avgSam, avgLot: v.avgLot, newLot: co.lots,
+      lotSmallShare: v.th > 0 ? lotSmall / v.th : null, samHighShare: v.th > 0 ? samHigh / v.th : null,
+      lines: v.lines, lineDays: v.ldT, labor: v.labor, perLine: v.perLine, pdT: v.pdT,
+      productivity: v.productivity, efficiency: v.efficiency, outPerLineDay: v.ldT > 0 ? v.th / v.ldT : null,
+      rampLoss: co.loss, rampLossRate: co.lossRate,
+      rampDays: learn.ramp, rampTheo: learn.theo, rampSlower: learn.slower, runsDone: lt.n,
+      ltSpan: lt.span, ltTheo: lt.theo, ltOver: lt.overRate,
+      planned: plan.planned || null, added: plan.planned ? plan.added : null, dropped: plan.planned ? plan.dropped : null,
+      planChange: plan.changeRate
+    };
+  }
+
+  // Theo tháng trong một năm tài chính: 12 tháng + cả năm + cùng kỳ năm trước
+  function overviewYear(ds, opts, fy) {
+    var startMonth = opts.startMonth || 4;
+    var months = fiscalMonths(fy, startMonth);
+    var cols = months.map(function (m) { return { month: m, v: ds.months.indexOf(m) >= 0 ? overviewMetrics(ds, opts, [m]) : null }; });
+    var avail = months.filter(function (m) { return ds.months.indexOf(m) >= 0; });
+    var base = filterFacts(ds.facts, { factory: opts.factory, brand: opts.brand });
+    var withTh = avail.filter(function (m) { return base.some(function (x) { return !x.open && x.m === m && x.th > 0; }); });
+    var same = withTh.map(function (m) { return addMonths(m, -12); }).filter(function (m) { return ds.months.indexOf(m) >= 0; });
+    return {
+      fy: fy, label: fiscalLabel(fy, startMonth), cols: cols,
+      total: overviewMetrics(ds, opts, avail),
+      done: overviewMetrics(ds, opts, withTh), doneMonths: withTh,
+      same: same.length ? overviewMetrics(ds, opts, same) : null, sameMonths: same
+    };
+  }
+
+  // Theo năm: mỗi năm tài chính có dữ liệu; năm gần nhất có thêm cùng kỳ năm trước
+  function overviewYears(ds, opts) {
+    var startMonth = opts.startMonth || 4, years = {};
+    ds.months.forEach(function (m) { years[fiscalYear(m, startMonth)] = 1; });
+    return Object.keys(years).map(Number).sort().map(function (fy) {
+      var y = overviewYear(ds, opts, fy);
+      return { fy: fy, label: y.label, v: y.done.hasTh ? y.done : y.total, doneMonths: y.doneMonths, same: y.same, sameMonths: y.sameMonths };
+    });
+  }
+
   return {
     HOURS_PER_DAY: HOURS_PER_DAY, BRAND_ALIASES: BRAND_ALIASES, DIMS: DIMS,
     toISO: toISO, serialToISO: serialToISO, addDays: addDays, addMonths: addMonths, monthEnd: monthEnd, monthLabel: monthLabel,
@@ -1046,6 +1123,7 @@
     SAM_BANDS: SAM_BANDS, LOT_BANDS: LOT_BANDS, ANALYSIS_PERIODS: ANALYSIS_PERIODS, CURVE_DAYS: CURVE_DAYS, DATA_VERSION: DATA_VERSION,
     samBand: samBand, lotBand: lotBand, periodMonths: periodMonths, runStats: runStats,
     lotEfficiency: lotEfficiency, learning: learning, leadTime: leadTime, changeover: changeover,
-    planStability: planStability, lineRanking: lineRanking, capacityLoad: capacityLoad, loadStatus: loadStatus, periods: periods, summarize: summarize, monthly: monthly, fiscal: fiscal, pct: pct
+    planStability: planStability, lineRanking: lineRanking, capacityLoad: capacityLoad, loadStatus: loadStatus,
+    overviewMetrics: overviewMetrics, overviewYear: overviewYear, overviewYears: overviewYears, periods: periods, summarize: summarize, monthly: monthly, fiscal: fiscal, pct: pct
   };
 });
