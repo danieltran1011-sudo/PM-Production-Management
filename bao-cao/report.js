@@ -511,7 +511,9 @@
         var start = monthStart(ym);
         // Ngày chốt: ngày làm việc cuối tháng theo lịch của file (tháng đủ ngày), không thì ngày cuối tháng
         var closeDate = function (fl) { var mo = fl.months[ym]; return mo && mo.full && mo.lastWork ? mo.lastWork : monthEnd(ym); };
-        var has = function (fl) { return fl.months[ym] && fl.facts.some(function (x) { return x.m === ym; }); };
+        // File phải có dữ liệu từ đầu tháng (tháng ở đầu dữ liệu của file chỉ có vài ngày thì không dùng)
+        var has = function (fl) { return fl.months[ym] && fl.firstDate <= start && fl.facts.some(function (x) { return x.m === ym; }); };
+        if (!list.some(has)) return; // không có file nào đủ tháng này
         var src = null, status;
         for (var i = 0; i < list.length; i++) if (list[i].updateDate >= closeDate(list[i]) && has(list[i])) { src = list[i]; break; }
         if (src) status = 'chot';
