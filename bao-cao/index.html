@@ -695,7 +695,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
 
     // KH các tháng đã qua thường bị ghi đè bằng TH, nên tỷ lệ đạt ưu tiên so với KH đầu tháng
     var rk = T.cur.khOpen > 0 ? 'rateOpen' : 'rate';
-    var cards = [['th', T.cur.th], [rk, T.cur[rk]], ['labor', T.cur.labor], ['productivity', T.cur.productivity], ['efficiency', T.cur.efficiency], ['styles', T.cur.styles]];
+    var cards = [['th', T.cur.th], [rk, T.cur[rk]], ['labor', T.cur.labor], ['productivity', T.cur.productivity], ['efficiency', T.cur.efficiency], ['styles', T.cur.styles], ['avgLot', T.cur.avgLot]];
     $('kpis').innerHTML = cards.map(function (c) {
       var m = M[c[0]];
       return '<div class="kpi"><span class="lbl">' + m.label + '</span><span class="val">' + m.f(c[1]) + (m.unit ? '<small>' + m.unit + '</small>' : '') + '</span>' +
