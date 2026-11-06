@@ -1114,6 +1114,102 @@
     });
   }
 
+  // ---------- Cam kết hợp đồng với TI (4/2026–3/2029) ----------
+  /*
+   * - Năng suất: tăng 5%/năm so với năm chuẩn (25年度生産実績, NTC 2025).
+   *   Chỉ tiêu: 'efficiency' (giờ chuẩn/giờ công) hoặc 'productivity' (sp/người/ngày).
+   *   Mục tiêu năm thứ k: chuẩn × 1,05^k (lũy tiến) hoặc chuẩn × (1 + 5% × k) (tuyến tính).
+   * - Hàng khó: 工程時間 > 20.000 giây, tối đa 2% tổng số lượng sản xuất trong năm.
+   * - Lot nhỏ: số lượng sản xuất của mã trên từng chuyền (集約ロット) ≤ 500 sp, tối đa 10%.
+   * Thực tế: tháng đã chốt (TH). Dự báo cả năm: tháng đã chốt lấy TH, tháng còn lại lấy KH.
+   */
+  var CONTRACT = { baseFy: 2025, firstFy: 2026, years: 3, growth: 0.05, compound: true, metric: 'efficiency',
+    hardSam: 20000, hardMax: 0.02, smallLot: 500, smallMax: 0.10 };
+  function isHard(x, c) { return x.sam > c.hardSam; }
+  function isSmall(x, c) { var lot = x.aggLot > 0 ? x.aggLot : x.qty; return lot > 0 && lot <= c.smallLot; }
+  function contractTarget(base, fy, c) {
+    if (base == null) return null;
+    var k = fy - c.baseFy;
+    return c.compound ? base * Math.pow(1 + c.growth, k) : base * (1 + c.growth * k);
+  }
+  function contractShares(list, qtyKey, c) {
+    var tot = 0, hard = 0, small = 0;
+    list.forEach(function (x) {
+      var q = x[qtyKey] || 0;
+      tot += q; if (isHard(x, c)) hard += q; if (isSmall(x, c)) small += q;
+    });
+    return { qty: tot, hard: hard, small: small, hardShare: tot > 0 ? hard / tot : null, smallShare: tot > 0 ? small / tot : null };
+  }
+  function contractYear(ds, opts, fy, c, base) {
+    var startMonth = opts.startMonth || 4;
+    var months = fiscalMonths(fy, startMonth);
+    var facs = ds.factories.filter(function (f) { return !opts.factory || f === opts.factory; });
+    var all = filterFacts(ds.facts, { factory: opts.factory, brand: opts.brand, months: months }).filter(function (x) { return !x.open; });
+    var closed = function (m) {
+      var ms = facs.map(function (f) { return ds.meta[f + '|' + m]; }).filter(Boolean);
+      return ms.length > 0 && ms.every(function (me) { return me.status === 'chot'; });
+    };
+    var doneMonths = months.filter(function (m) { return closed(m) && all.some(function (x) { return x.m === m && x.th > 0; }); });
+    var planMonths = months.filter(function (m) { return doneMonths.indexOf(m) < 0; });
+    var done = all.filter(function (x) { return doneMonths.indexOf(x.m) >= 0; });
+    var v = derive(aggregate(done), doneMonths.length || 1);
+    var actual = doneMonths.length ? v[c.metric] : null;
+    var target = contractTarget(base, fy, c);
+    var act = contractShares(done.filter(function (x) { return x.th > 0; }), 'th', c);
+    // Dự báo: TH của tháng đã chốt + KH của tháng còn lại
+    var fc = contractShares(done.filter(function (x) { return x.th > 0; }), 'th', c);
+    var planFacts = all.filter(function (x) { return planMonths.indexOf(x.m) >= 0 && x.kh > 0; });
+    var pl = contractShares(planFacts, 'kh', c);
+    var fq = fc.qty + pl.qty, fh = fc.hard + pl.hard, fs = fc.small + pl.small;
+    var monthly = months.map(function (m) {
+      var g = all.filter(function (x) { return x.m === m; }), isDone = doneMonths.indexOf(m) >= 0;
+      var mv = derive(aggregate(g), 1);
+      var sh = isDone ? contractShares(g.filter(function (x) { return x.th > 0; }), 'th', c) : contractShares(g.filter(function (x) { return x.kh > 0; }), 'kh', c);
+      return { month: m, done: isDone, value: isDone ? mv[c.metric] : null, th: isDone ? mv.th : null, kh: mv.kh,
+        hardShare: sh.hardShare, smallShare: sh.smallShare, basis: isDone ? 'TH' : (sh.qty > 0 ? 'KH' : null) };
+    });
+    return {
+      fy: fy, months: months, doneMonths: doneMonths, planMonths: planMonths, target: target, actual: actual,
+      vsBase: actual != null && base ? actual / base - 1 : null, vsTarget: actual != null && target ? actual / target - 1 : null,
+      metrics: v, th: act.qty, hardTh: act.hard, smallTh: act.small, hardShare: act.hardShare, smallShare: act.smallShare,
+      // Dự báo chỉ khi năm đã có tháng chốt. Hạn mức còn lại = số sp hàng khó / lot nhỏ các tháng còn lại
+      // được phép làm để cả năm không vượt giới hạn (âm = đã vượt dù các tháng sau không làm thêm).
+      forecast: doneMonths.length ? {
+        qty: fq, hardShare: fq > 0 ? fh / fq : null, smallShare: fq > 0 ? fs / fq : null, planQty: pl.qty,
+        hardRoom: c.hardMax * fq - fc.hard, smallRoom: c.smallMax * fq - fc.small,
+        planHard: pl.hard, planSmall: pl.small
+      } : { qty: null, hardShare: null, smallShare: null, planQty: pl.qty, hardRoom: null, smallRoom: null },
+      monthly: monthly, facts: done
+    };
+  }
+  function contractTracking(ds, opts, cfg) {
+    var c = Object.assign({}, CONTRACT, cfg || {});
+    var startMonth = opts.startMonth || 4;
+    var baseMonths = fiscalMonths(c.baseFy, startMonth);
+    var bAll = filterFacts(ds.facts, { factory: opts.factory, brand: opts.brand, months: baseMonths }).filter(function (x) { return !x.open; });
+    var bMonths = baseMonths.filter(function (m) { return bAll.some(function (x) { return x.m === m && x.th > 0; }); });
+    var bv = derive(aggregate(bAll), bMonths.length || 1);
+    var base = bMonths.length ? bv[c.metric] : null;
+    var bSh = contractShares(bAll.filter(function (x) { return x.th > 0; }), 'th', c);
+    var benchmark = { fy: c.baseFy, months: bMonths, full: bMonths.length === 12, value: base, metrics: bv, hardShare: bSh.hardShare, smallShare: bSh.smallShare,
+      monthly: baseMonths.map(function (m) { var g = bAll.filter(function (x) { return x.m === m; }); var mv = derive(aggregate(g), 1); return { month: m, value: g.some(function (x) { return x.th > 0; }) ? mv[c.metric] : null }; }) };
+    var years = [];
+    for (var k = 0; k < c.years; k++) years.push(contractYear(ds, opts, c.firstFy + k, c, base));
+    return { cfg: c, benchmark: benchmark, years: years };
+  }
+  // Danh sách mã gây tỷ lệ hàng khó / lot nhỏ trong năm (tháng đã chốt)
+  function contractLists(year, cfg) {
+    var c = Object.assign({}, CONTRACT, cfg || {});
+    var hard = {}, small = {};
+    year.facts.forEach(function (x) {
+      if (!(x.th > 0)) return;
+      if (isHard(x, c)) { var k = x.f + '|' + x.style; var h = hard[k] || (hard[k] = { f: x.f, style: x.style, brand: x.brand, item: x.item, sam: x.sam, th: 0, lines: {} }); h.th += x.th; h.lines[x.line] = 1; }
+      if (isSmall(x, c)) { var k2 = x.f + '|' + x.style + '|' + x.lineRaw; var s2 = small[k2] || (small[k2] = { f: x.f, style: x.style, line: x.lineRaw, brand: x.brand, item: x.item, lot: x.aggLot > 0 ? x.aggLot : x.qty, sam: x.sam, th: 0 }); s2.th += x.th; }
+    });
+    var sort = function (o) { return Object.keys(o).map(function (k) { return o[k]; }).sort(function (a, b) { return b.th - a.th; }); };
+    return { hard: sort(hard).map(function (h) { h.lines = Object.keys(h.lines).join(', '); return h; }), small: sort(small) };
+  }
+
   return {
     HOURS_PER_DAY: HOURS_PER_DAY, BRAND_ALIASES: BRAND_ALIASES, DIMS: DIMS,
     toISO: toISO, serialToISO: serialToISO, addDays: addDays, addMonths: addMonths, monthEnd: monthEnd, monthLabel: monthLabel,
@@ -1126,6 +1222,7 @@
     samBand: samBand, lotBand: lotBand, periodMonths: periodMonths, runStats: runStats,
     lotEfficiency: lotEfficiency, learning: learning, leadTime: leadTime, changeover: changeover,
     planStability: planStability, lineRanking: lineRanking, capacityLoad: capacityLoad, loadStatus: loadStatus,
-    overviewMetrics: overviewMetrics, overviewYear: overviewYear, overviewYears: overviewYears, periods: periods, summarize: summarize, monthly: monthly, fiscal: fiscal, pct: pct
+    overviewMetrics: overviewMetrics, overviewYear: overviewYear, overviewYears: overviewYears,
+    CONTRACT: CONTRACT, contractTracking: contractTracking, contractLists: contractLists, contractTarget: contractTarget, periods: periods, summarize: summarize, monthly: monthly, fiscal: fiscal, pct: pct
   };
 });

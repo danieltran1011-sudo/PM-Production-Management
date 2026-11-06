@@ -448,3 +448,37 @@ test('Tổng hợp toàn xưởng: chỉ tiêu theo tháng, cả năm và cùng 
   const ys = R.overviewYears(ds, { startMonth: 4 });
   assert.deepStrictEqual(ys.map((x) => [x.fy, x.v.th]), [[2025, 100], [2026, 240]]);
 });
+
+test('Cam kết TI: mục tiêu năng suất +5%/năm so với NTC 2025, tỷ lệ hàng khó và lot nhỏ', () => {
+  const isSun = (d) => new Date(d + 'T00:00:00Z').getUTCDay() === 0;
+  const all = (from, to, v) => { const o = {}; for (let d = from; d <= to; d = R.addDays(d, 1)) if (!isSun(d)) o[d] = v; return o; };
+  const st = (style, sam, aggLot, line, th, kh) => ({ factory: 'APIC1A', line, brand: 'TNF', style, sam, hc: 10, aggLot, qty: aggLot, th, kh: kh || th });
+  // NTC 2025 (tháng 10/2025): 1 mã 3.600 giây, 40 sp/ngày, 10 người → hiệu suất 50%
+  const f25 = R.parseRows(makeSheet({ from: '2025-10-01', to: '2025-10-31', styles: [st('B', 3600, 1000, '1A', all('2025-10-01', '2025-10-31', 40))] }), { name: 'KH UPDATE _APA1.20251031.xlsm' });
+  // NTC 2026 (tháng 10/2026): mã thường 900 sp (lot 2.000), mã khó 25.000 giây 50 sp, mã lot nhỏ 50 sp (lot 400 trên chuyền 2A)
+  const f26 = R.parseRows(makeSheet({ from: '2026-10-01', to: '2026-11-30', styles: [
+    st('N', 3600, 2000, '1A', { '2026-10-05': 900 }, { '2026-10-05': 900, '2026-11-05': 1000 }),
+    st('H', 25000, 1000, '3A', { '2026-10-06': 50 }),
+    st('S', 3600, 400, '2A', { '2026-10-07': 50 })
+  ] }), { name: 'KH UPDATE _APA1.20261031.xlsm' });
+  const ds = R.buildDataset([f25, f26]);
+  const t = R.contractTracking(ds, { startMonth: 4 }, {});
+  assert.ok(Math.abs(t.benchmark.value - 0.5) < 1e-9);
+  assert.deepStrictEqual(t.years.map((y) => y.fy), [2026, 2027, 2028]);
+  assert.ok(Math.abs(t.years[0].target - 0.525) < 1e-9); // 0,5 × 1,05
+  assert.ok(Math.abs(t.years[2].target - 0.5 * 1.05 ** 3) < 1e-9);
+  const lin = R.contractTracking(ds, { startMonth: 4 }, { compound: false });
+  assert.ok(Math.abs(lin.years[2].target - 0.5 * 1.15) < 1e-9);
+  const y = t.years[0];
+  assert.deepStrictEqual(y.doneMonths, ['2026-10']);
+  assert.strictEqual(y.th, 1000);
+  assert.strictEqual(y.hardShare, 0.05); // 50 / 1.000
+  assert.strictEqual(y.smallShare, 0.05);
+  // Dự báo: 1.000 TH tháng 10 + 1.000 KH tháng 11 (mã thường) → hàng khó 50 / 2.000
+  assert.strictEqual(y.forecast.hardShare, 0.025);
+  assert.strictEqual(y.forecast.hardRoom, 0.02 * 2000 - 50); // −10: đã vượt dù tháng 11 không làm hàng khó
+  assert.strictEqual(t.years[1].forecast.hardShare, null); // NTC 2027 chưa bắt đầu
+  const L = R.contractLists(y);
+  assert.deepStrictEqual(L.hard.map((h) => h.style), ['H']);
+  assert.deepStrictEqual(L.small.map((h) => h.style + '@' + h.line), ['S@2A']);
+});

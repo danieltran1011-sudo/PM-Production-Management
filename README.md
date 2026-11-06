@@ -31,6 +31,7 @@ Mở `bao-cao/index.html`, kéo thả các file `KH_UPDATE__APA1.YYYYMMDD.xlsm`,
 - **KH đầu tháng** lấy từ file update trước ngày 1 của tháng.
 - Năm tài chính mặc định bắt đầu tháng 4, đổi được ở bộ lọc.
 - Mục **Tổng hợp toàn xưởng**: gộp mọi xưởng (hoặc theo bộ lọc), xem từng tháng trong năm tài chính (kèm cả năm, cùng kỳ năm trước) hoặc các năm tài chính: sản lượng, kế hoạch, mã hàng, chuyển mã, lot, thời gian công đoạn, chuyền, lao động, năng suất, hiệu suất, lên năng suất, lead time, ổn định kế hoạch.
+- Mục **Cam kết với TI** (hợp đồng 4/2026–3/2029): năng suất +5%/năm so với năm chuẩn NTC 2025, hàng khó (工程時間 > 20.000 giây) ≤ 2% và lot nhỏ (≤ 500 sp trên chuyền) ≤ 10% tổng số lượng sản xuất năm; thực tế, dự báo cả năm, hạn mức còn lại, danh sách mã.
 - Mục **Phân tích** (theo kỳ: lũy kế năm tài chính, 12 tháng, tháng, toàn bộ): (1) cỡ lot và hiệu suất, (2) lên năng suất so với 習熟日数, (3) lead time may so với 縫製リードタイム, (4) chuyển mã và giờ chuẩn mất, (5) độ ổn định kế hoạch (KH đầu tháng so với TH), (6) xếp hạng chuyền, (7) tải các tháng tới so với năng lực.
 - Kiểm tra file: công thức tổng ở XN1AB!A1:R3 (sheet TORAY) và tháng còn thiếu file cuối tháng.
 - Cách tính chi tiết ở cuối trang.
