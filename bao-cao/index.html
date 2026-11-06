@@ -181,6 +181,10 @@ td .sub, th .sub { display: block; font-size: 11px; font-weight: 400; color: var
 .chip.qua-tai { background: var(--bad-soft); color: var(--bad); }
 .chip.vua { background: var(--good-soft); color: var(--good); }
 .chip.thieu-hang { background: var(--warn-soft); color: var(--ink); }
+.export-field { align-self: end; }
+.export-field button { width: 100%; padding: 9px 12px; font-size: 14px; }
+details.filelist { margin-top: 14px; }
+details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px; color: var(--accent); padding: 6px 0; }
 .coverage { margin-top: 14px; padding: 14px 16px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface-2); display: grid; gap: 8px; }
 .coverage h3 { font-size: 16px; }
 .coverage ul { margin: 0; padding-left: 18px; display: grid; gap: 8px; }
@@ -212,12 +216,12 @@ td .sub, th .sub { display: block; font-size: 11px; font-weight: 400; color: var
       <span class="muted">Chọn được nhiều file một lúc. Mỗi file mất vài giây để đọc.</span>
     </label>
     <p class="status" id="status" role="status" aria-live="polite"></p>
-    <div id="fileList"></div>
     <div class="toolbar">
       <button class="primary" id="btnExport" disabled>Xuất Excel</button>
       <span class="spacer"></span>
       <button id="btnClear" disabled>Xóa toàn bộ dữ liệu</button>
     </div>
+    <div id="fileList"></div>
   </section>
 
   <section class="panel" id="bo-loc" hidden>
@@ -226,7 +230,9 @@ td .sub, th .sub { display: block; font-size: 11px; font-weight: 400; color: var
       <div class="field"><label for="fFactory">Xưởng</label><select id="fFactory"></select></div>
       <div class="field"><label for="fBrand">Nhãn hàng</label><select id="fBrand"></select></div>
       <div class="field"><label for="fFy">Năm tài chính bắt đầu</label><select id="fFy"></select></div>
+      <div class="field export-field"><button class="primary" id="btnExport2" type="button">Xuất Excel</button></div>
     </div>
+    <p class="status" id="exportStatus" role="status" aria-live="polite"></p>
     <details class="settings">
       <summary>Gộp tên nhãn hàng viết khác nhau</summary>
       <div class="inner">
@@ -341,6 +347,7 @@ td .sub, th .sub { display: block; font-size: 11px; font-weight: 400; color: var
   function saveSettings() { try { localStorage.setItem(SETTINGS, JSON.stringify(state)); } catch (e) { /* bỏ qua */ } }
 
   var files = []; // dữ liệu đã đọc của từng file
+  var fileListOpen = false;
   var ds = null;
 
   // ---------- Lưu trữ trong trình duyệt (IndexedDB) ----------
@@ -418,6 +425,11 @@ td .sub, th .sub { display: block; font-size: 11px; font-weight: 400; color: var
 
   // ---------- Đọc file ----------
   function setStatus(msg, err) { var el = $('status'); el.textContent = msg || ''; el.className = 'status' + (err ? ' err' : ''); }
+  // Thông báo khi xuất Excel: hiện cả ở phần Dữ liệu và ngay dưới nút ở thanh bộ lọc
+  function exportMsg(msg, err) {
+    setStatus(msg, err);
+    var el = $('exportStatus'); el.textContent = msg || ''; el.className = 'status' + (err ? ' err' : '');
+  }
 
   var XL_ERR = { 0: '#NULL!', 7: '#DIV/0!', 15: '#VALUE!', 23: '#REF!', 29: '#NAME?', 36: '#NUM!', 42: '#N/A' };
   function readFile(file) {
@@ -480,7 +492,7 @@ td .sub, th .sub { display: block; font-size: 11px; font-weight: 400; color: var
     var has = !!(ds && ds.months.length);
     ['bo-loc', 'tong-quan', 'theo-chieu', 'theo-thang', 'theo-nam', 'phan-tich', 'ma-hang'].forEach(function (id) { $(id).hidden = !has; });
     $('empty').hidden = has;
-    $('btnExport').disabled = !has; $('btnClear').disabled = !files.length;
+    $('btnExport').disabled = !has; $('btnExport2').disabled = !has; $('btnClear').disabled = !files.length;
     if (!has) return;
     fillFilters();
     render();
@@ -504,7 +516,12 @@ td .sub, th .sub { display: block; font-size: 11px; font-weight: 400; color: var
         '<td class="txt warn" style="white-space:normal;min-width:160px">' + checkNote(f) + esc((f.warnings || []).join(' ')) + '</td>' +
         '<td><button class="link" data-del="' + esc(f.id) + '">Xóa</button></td></tr>';
     });
-    $('fileList').innerHTML = coverageBox() + html + '</tbody></table></div>' + checkTable();
+    var bad = files.filter(hasProblem).length;
+    $('fileList').innerHTML = coverageBox() + checkTable() +
+      '<details class="filelist"' + (fileListOpen ? ' open' : '') + '><summary>Danh sách ' + files.length + ' file đã nạp' + (bad ? ' (' + bad + ' file cần sửa công thức)' : '') + ' — bấm để xem</summary>' +
+      html.replace('style="margin-top:14px"', 'style="margin-top:8px"') + '</tbody></table></div></details>';
+    var det = $('fileList').querySelector('details.filelist');
+    if (det) det.addEventListener('toggle', function () { fileListOpen = det.open; });
   }
 
   // Ô báo còn thiếu file cuối tháng nào, từng xưởng
@@ -1135,15 +1152,15 @@ td .sub, th .sub { display: block; font-size: 11px; font-weight: 400; color: var
     if (window.claude && window.claude.use) {
       var dl = null;
       try { dl = await window.claude.use('downloads'); } catch (e) { dl = null; }
-      if (!dl) { setStatus('Trang này chưa được phép lưu file. Tải trang về máy để xuất Excel.', true); return; }
+      if (!dl) { exportMsg('Trang này chưa được phép lưu file. Tải trang về máy để xuất Excel.', true); return; }
       var data = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
       try {
         await dl.save({ filename: filename, data: new Blob([data]) });
-        setStatus('Đã lưu ' + filename + '.');
+        exportMsg('Đã lưu ' + filename + '.');
       } catch (e) {
-        if (e && e.code === 'declined') setStatus('Đã hủy lưu file.');
-        else if (e && e.code === 'rate_limited') setStatus('Đang có một yêu cầu lưu file chờ xác nhận. Xác nhận hoặc đóng nó rồi bấm lại.', true);
-        else setStatus('Không lưu được file: ' + (e && e.message ? e.message : e), true);
+        if (e && e.code === 'declined') exportMsg('Đã hủy lưu file.');
+        else if (e && e.code === 'rate_limited') exportMsg('Đang có một yêu cầu lưu file chờ xác nhận. Xác nhận hoặc đóng nó rồi bấm lại.', true);
+        else exportMsg('Không lưu được file: ' + (e && e.message ? e.message : e), true);
       }
       return;
     }
@@ -1179,9 +1196,13 @@ td .sub, th .sub { display: block; font-size: 11px; font-weight: 400; color: var
     clearTimeout(clearTimer); delete b.dataset.armed; b.textContent = 'Xóa toàn bộ dữ liệu';
     files = []; await DB.clear(); setStatus('Đã xóa toàn bộ dữ liệu.'); rebuild();
   });
-  $('btnExport').addEventListener('click', async function () {
-    try { await exportExcel(); } catch (e) { setStatus('Không xuất được Excel: ' + e.message, true); }
-  });
+  async function onExport() {
+    exportMsg('Đang tạo file Excel…');
+    try { await exportExcel(); if (!(window.claude && window.claude.use)) exportMsg('Đã tạo file Excel, xem thư mục Tải xuống (Downloads).'); }
+    catch (e) { exportMsg('Không xuất được Excel: ' + e.message, true); }
+  }
+  $('btnExport').addEventListener('click', onExport);
+  $('btnExport2').addEventListener('click', onExport);
 
   function onFilter() {
     state.month = $('fMonth').value; state.factory = $('fFactory').value; state.brand = $('fBrand').value;
