@@ -439,6 +439,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
 <script src="report.js"></script>
 <script src="i18n-ja.js"></script>
 <script src="xlsx-charts.js"></script>
+<script src="xlsx-style.js"></script>
 <script>
 (function () {
   'use strict';
@@ -1698,13 +1699,140 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
     $('styleTable').innerHTML = h + '</tbody></table>';
   }
 
+  // ---------- Định dạng Excel: tiêu đề, bảng có màu, viền, định dạng số ----------
+  var XF = { n0: '#,##0', n1: '#,##0.0', n2: '#,##0.00', p1: '0.0%', d: '+0.0%;-0.0%;0.0%', dn: '+#,##0;-#,##0;0', d1: '+#,##0.0;-#,##0.0;0.0', g: 'General' };
+  var XS = {
+    title: { b: 1, sz: 15, color: '1F3B63' },
+    note: { i: 1, sz: 10, color: '5B6482' },
+    section: { b: 1, sz: 12, color: '2A78D6' },
+    head: { b: 1, sz: 10, color: 'FFFFFF', fill: '2A78D6', border: 'all', borderColor: '7FA9E6', h: 'center', v: 'center', wrap: 1 },
+    zebra: 'F4F7FB', total: 'E3ECF8', group: 'EAEFF5',
+    good: { b: 1, color: '15803D' }, bad: { b: 1, color: 'C2410C' }
+  };
+  // Một hàng có kiểu: title, note, section, head (fmts: định dạng từng cột), data / total / group / delta (fmt: định dạng mọi số trong hàng, cs: định dạng riêng từng ô)
+  function xr(kind, v, o) { var r = { kind: kind, v: v }; for (var k in o || {}) r[k] = o[k]; return r; }
+  // Định dạng số đoán theo tên cột
+  function inferFmt(h) {
+    h = String(h || '');
+    if (/Tỷ lệ|Hiệu suất|Tỷ trọng|^%|\(%|% |^Tải$|Hàng khó|Lot nhỏ|Giới hạn|Thực tế \(TH\)|Theo kế hoạch|Độ lệch chuẩn|^Cao nhất$|năng lực$/.test(h)) return 'p1';
+    if (/^Chênh TH/.test(h)) return 'dn';
+    if (/^Lệch$/.test(h)) return 'd1';
+    if (/Năng suất|SL\/chuyền-ngày|Giờ hành chính/.test(h)) return 'n2';
+    if (/LĐ|Ngày công|Chuyền-ngày|Ngày lên NS|lý thuyết|Lý thuyết|^LT |Chậm bq|Lot bq|^Chênh|Ngày làm việc|Số ngày có may|^Trống$|^Hàng TI$|Hàng APIC|May ngày nghỉ|Trong đó|^Trang:|TI tính|\(ngày\)/.test(h)) return 'n1';
+    if (/^NTC$|^Năm|Ngày update|^Từ|^Đến|Bắt đầu|Kết thúc|Dữ liệu đến hàng|^Hạng$|^PO$|^Mã hàng$|^Chuyền|^Part$|^Tháng|trong file|– đúng/.test(h)) return 'g';
+    return 'n0';
+  }
+  function biHead(v) {
+    if (state.lang !== 'bi' || typeof v !== 'string') return v;
+    var j = jaOf(v);
+    return j ? v + '\n' + j : v;
+  }
+  // Tiêu đề "A · B · C": chỉ dịch phần đầu, tránh lẫn tiếng Việt trong phần tiếng Nhật
+  function biTitle(v) {
+    if (state.lang !== 'bi' || typeof v !== 'string') return v;
+    var parts = v.split(' · ');
+    if (parts.length < 2) return biText(v);
+    var j = jaOf(parts[0]);
+    return j ? v + ' / ' + j : v;
+  }
+  function vlen(t) { t = String(t); var n = 0; for (var i = 0; i < t.length; i++) n += t.charCodeAt(i) > 0x2e80 ? 1.9 : 1; return n; }
+  // rows → { ws, spec } (spec dùng cho PMXlsxStyle.applyStyles)
+  function sheetFromRows(rows, opt) {
+    opt = opt || {};
+    var aoa = [], cells = {}, heights = {}, widths = [], headW = [], fmts = null, ncol = 0, zebra = 0, prev = 'blank', heads = [], firstNcol = 0;
+    var enc = XLSX.utils.encode_cell;
+    var fit = function (arr, c, n) { if (!(arr[c] >= n)) arr[c] = n; };
+    var numLen = function (v, f) {
+      if (f === 'p1' || f === 'd') return 7;
+      if (f === 'g') return String(v).length;
+      return Math.round(Math.abs(v)).toLocaleString('en-US').length + (v < 0 || f === 'dn' || f === 'd1' ? 1 : 0) + (f === 'n1' || f === 'd1' ? 2 : f === 'n2' ? 3 : 0);
+    };
+    rows.forEach(function (row, ri) {
+      var r = Array.isArray(row) ? { v: row } : (row || { v: [] });
+      var v = r.v || [], kind = r.kind;
+      if (!kind) {
+        var filled = v.filter(function (c) { return c != null && c !== ''; });
+        if (!filled.length) kind = 'blank';
+        else if (v.length === 1 && typeof v[0] === 'string') kind = ri === 0 ? 'title' : prev === 'title' ? 'note' : 'section';
+        else if (v.length >= 2 && v.every(function (c) { return typeof c === 'string'; }) && /^(blank|title|note|section)$/.test(prev)) kind = 'head';
+        else kind = /^(Tất cả|Tổng)$/.test(v[0]) ? 'total' : 'data';
+      }
+      prev = kind;
+      if (kind === 'blank') { aoa.push([]); return; }
+      if (kind === 'title' || kind === 'note' || kind === 'section') {
+        aoa.push([kind === 'note' ? biText(v[0]) : biTitle(v[0])]);
+        cells[enc({ r: ri, c: 0 })] = XS[kind];
+        if (kind !== 'note') heights[ri + 1] = kind === 'title' ? 24 : 20;
+        return;
+      }
+      if (kind === 'head') {
+        fmts = r.fmts || v.map(function (h, i) { return i === 0 ? 'g' : inferFmt(h); });
+        ncol = v.length; zebra = 0;
+        if (!heads.length) firstNcol = ncol;
+        heads.push(ri);
+        var hv = v.map(biHead);
+        aoa.push(hv);
+        hv.forEach(function (t, c) {
+          cells[enc({ r: ri, c: c })] = XS.head;
+          String(t == null ? '' : t).split('\n').forEach(function (part) { fit(headW, c, Math.min(vlen(part), 14) + 2); });
+        });
+        return;
+      }
+      var out = v.map(function (c) { return typeof c === 'string' ? biText(c) : c; });
+      aoa.push(out);
+      if (opt.plain && kind === 'data') { if (ri < 300) out.forEach(function (c, ci) { if (c != null) fit(widths, ci, Math.min(typeof c === 'number' ? numLen(c, 'g') : vlen(c), 40) + 2); }); return; }
+      var n = Math.max(ncol, out.length);
+      var fill = kind === 'total' ? XS.total : kind === 'group' ? XS.group : zebra % 2 ? XS.zebra : null;
+      for (var c = 0; c < n; c++) {
+        var val = out[c];
+        var f = kind === 'delta' && c >= 2 ? 'd' : r.fmt && c >= (r.fmtFrom || 1) ? r.fmt : (fmts && fmts[c]) || 'n0';
+        var st = { border: 'all', v: 'center' };
+        if (fill) st.fill = fill;
+        if (kind === 'total' || kind === 'group') st.b = 1;
+        if (kind === 'delta') st.i = 1;
+        if (typeof val === 'number') {
+          st.fmt = XF[f] || f; fit(widths, c, numLen(val, f) + 2);
+          if (/^d/.test(f) && val) st.color = val > 0 ? '15803D' : 'C2410C'; // tăng xanh, giảm đỏ
+        }
+        else if (val != null && val !== '' && kind !== 'group') fit(widths, c, Math.min(vlen(val), 70) + 2);
+        if (r.cs && r.cs[c]) for (var k in r.cs[c]) st[k] = r.cs[c][k];
+        cells[enc({ r: ri, c: c })] = st;
+      }
+      zebra++;
+    });
+    var nc = Math.max(widths.length, headW.length);
+    var w = [];
+    for (var c = 0; c < nc; c++) w[c] = opt.widths && opt.widths[c] ? opt.widths[c] : Math.max(Math.min(Math.max(widths[c] || 0, headW[c] || 0), 72), opt.minW || 8);
+    // chiều cao hàng tiêu đề theo số dòng chữ khi xuống dòng
+    heads.forEach(function (ri) {
+      var lines = 1;
+      (aoa[ri] || []).forEach(function (t, c) {
+        var ln = 0;
+        String(t == null ? '' : t).split('\n').forEach(function (part) { ln += Math.max(1, Math.ceil(vlen(part) / Math.max((w[c] || 8) - 1.5, 3))); });
+        if (ln > lines) lines = ln;
+      });
+      heights[ri + 1] = Math.min(lines, 6) * 13 + 5;
+    });
+    var ws = XLSX.utils.aoa_to_sheet(aoa);
+    ws['!cols'] = w.map(function (x) { return { wch: x }; });
+    if (opt.autofilter && heads.length) ws['!autofilter'] = { ref: XLSX.utils.encode_range({ s: { r: heads[0], c: 0 }, e: { r: aoa.length - 1, c: firstNcol - 1 } }) };
+    var freeze = null;
+    if (opt.freeze !== false) {
+      var fr = opt.freezeRow != null ? opt.freezeRow : heads.length === 1 ? heads[0] + 1 : 0;
+      if (fr || opt.freezeCol) freeze = { row: fr, col: opt.freezeCol || 0 };
+    }
+    return { ws: ws, spec: { cells: cells, rowHeights: heights, freeze: freeze, gridlines: opt.gridlines } };
+  }
+
   // ---------- Xuất Excel ----------
   function exportExcel() {
-    var wb = XLSX.utils.book_new();
+    var wb = XLSX.utils.book_new(), specs = [];
     var r2 = function (v, d) { return v == null || !isFinite(v) ? null : Math.round(v * Math.pow(10, d || 0)) / Math.pow(10, d || 0); };
-    var add = function (name, aoa) {
-      aoa = aoa.map(function (row) { return (row || []).map(biText); });
-      XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(aoa), name.slice(0, 31));
+    var add = function (name, rows, opt) {
+      var sh = sheetFromRows(rows, opt);
+      name = name.slice(0, 31);
+      XLSX.utils.book_append_sheet(wb, sh.ws, name);
+      sh.spec.name = name; specs.push(sh.spec);
     };
     var metricRow = function (v) { return [r2(v.kh), r2(v.khOpen) || null, r2(v.th), r2(v.rate, 4), v.styles, v.start, v.end, r2(v.labor, 1), r2(v.perLine, 1), r2(v.pdT, 1), r2(v.productivity, 3), r2(v.sah, 1), r2(v.efficiency, 4), r2(v.avgSam, 1), r2(v.avgLot, 1)]; };
     var metricHead = ['KH', 'KH đầu tháng', 'TH', 'Tỷ lệ đạt', 'Số mã', 'Mã mới', 'Mã hoàn thành', 'LĐ bq/ngày', 'LĐ/chuyền', 'Ngày công', 'Năng suất (sp/người/ngày)', 'Giờ chuẩn', 'Hiệu suất', '工程分析時間 bình quân (giây/sp)', '生産ロット bình quân (sp)'];
@@ -1712,11 +1840,23 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
     // So sánh kỳ
     var s = R.summarize(ds, opts());
     var cmp = [['Báo cáo tháng ' + R.monthLabel(state.month) + ' · ' + scopeText()], [], ['Kỳ', 'Tháng'].concat(metricHead)];
-    [['Tháng này', 'cur'], ['Tháng trước', 'prev'], ['Cùng kỳ năm trước', 'yoy'], ['Lũy kế NTC', 'ytd'], ['Lũy kế cùng kỳ', 'ytdPrev']].forEach(function (p) {
+    var PCT_IDX = [3, 12]; // Tỷ lệ đạt, Hiệu suất: chênh lệch điểm %
+    var deltaRow = function (label, a, b) {
+      if (!s.periods[a].length || !s.periods[b].length) return;
+      var ra = metricRow(s.totals[a]), rb = metricRow(s.totals[b]);
+      cmp.push(xr('delta', [label, ''].concat(ra.map(function (x, i) {
+        if (typeof x !== 'number' || typeof rb[i] !== 'number') return null;
+        return PCT_IDX.indexOf(i) >= 0 ? r2(x - rb[i], 4) : rb[i] ? r2(x / rb[i] - 1, 4) : null;
+      }))));
+    };
+    [['Tháng này', 'cur'], ['Tháng trước', 'prev', '± so tháng trước', 'cur'], ['Cùng kỳ năm trước', 'yoy', '± so cùng kỳ năm trước', 'cur'], ['Lũy kế NTC', 'ytd'], ['Lũy kế cùng kỳ', 'ytdPrev', '± lũy kế so cùng kỳ', 'ytd']].forEach(function (p) {
       var ms = s.periods[p[1]];
-      cmp.push([p[0], ms.length ? ms.map(R.monthLabel).join(', ') : 'chưa có'].concat(metricRow(s.totals[p[1]])));
+      cmp.push(xr(p[1] === 'cur' || p[1] === 'ytd' ? 'total' : 'data', [p[0], ms.length ? ms.map(R.monthLabel).join(', ') : 'chưa có'].concat(metricRow(s.totals[p[1]]))));
+      if (p[2]) deltaRow(p[2], p[3], p[1]);
     });
-    add('So sanh ' + R.monthLabel(state.month).replace('/', '-'), cmp);
+    cmp.push([]);
+    cmp.push(xr('note', ['Hàng ±: % thay đổi so với kỳ so sánh (xanh tăng, đỏ giảm); riêng Tỷ lệ đạt và Hiệu suất là chênh lệch điểm %.']));
+    add('So sanh ' + R.monthLabel(state.month).replace('/', '-'), cmp, { freezeCol: 1 });
 
     // Theo chiều cho tháng báo cáo
     ['brand', 'line', 'item'].forEach(function (dim) {
@@ -1735,7 +1875,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
         mon.push([r.month, r.fy, f, STATUS[r.status]].concat(metricRow(r.v)));
       });
     });
-    add('Theo thang', mon);
+    add('Theo thang', mon, { autofilter: true, freezeCol: 1 });
 
     // Năm tài chính × nhãn hàng
     var fyr = R.fiscal(ds, opts({ dim: 'brand' }));
@@ -1755,11 +1895,13 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
       raw.push([x.m, R.fiscalYear(x.m, state.startMonth), x.f, STATUS[x.status], x.open ? 'KH đầu tháng' : 'Số tháng', x.line, x.lineRaw || x.line, x.group, x.brand, x.brandRaw, x.style, x.item, x.po, x.sam, x.aggLot, x.theo, x.qty, x.hc,
         r2(x.kh), r2(x.khOpen), r2(x.th), x.thDays, r2(x.pdT, 2), r2(x.pdK, 2), r2(x.sah, 2), x.wd, x.start, x.end]);
     });
-    add('Du lieu', raw);
+    add('Du lieu', raw, { plain: true, autofilter: true });
 
     // Tổng hợp toàn xưởng: từng tháng của mỗi năm tài chính, rồi các năm
     var so = { factory: state.factory || null, brand: state.brand || null, owner: state.owner || null, startMonth: state.startMonth };
     var rowsDef = TH_ROWS.filter(function (r) { return r.length > 1; });
+    var rowFmt = function (r) { return r[4] === 'pct' ? 'p1' : r[3] === n1 ? 'n1' : r[3] === n2 ? 'n2' : 'n0'; };
+    var thRow = function (r, vals) { return r.length === 1 ? xr('group', [r[0]]) : xr('data', [r[1], r[2] || (r[4] === 'pct' ? '%' : '')].concat(vals), { fmt: rowFmt(r), fmtFrom: 2 }); };
     var raw1 = function (v, r) { if (!v || (r[5] && !v.hasTh)) return null; var x = v[r[0]]; return x == null || !isFinite(x) ? null : r[4] === 'pct' ? r2(x, 4) : r2(x, 2); };
     var sh = [['Tổng hợp ' + (state.factory || 'toàn xưởng') + (state.brand ? ' · ' + state.brand : '')]];
     var yrs = R.overviewYears(ds, so);
@@ -1767,32 +1909,47 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
       var y = R.overviewYear(ds, so, yy.fy);
       sh.push([]); sh.push([y.label]);
       sh.push(['Chỉ tiêu', 'Đơn vị'].concat(y.cols.map(function (c) { return R.monthLabel(c.month); }), ['Cả năm (tháng có TH)', 'Cùng kỳ năm trước']));
-      rowsDef.forEach(function (r) { sh.push([r[1], r[2] || (r[4] === 'pct' ? '%' : '')].concat(y.cols.map(function (c) { return raw1(c.v, r); }), [raw1(y.done.hasTh ? y.done : y.total, r), raw1(y.same, r)])); });
+      TH_ROWS.forEach(function (r) { sh.push(thRow(r, r.length === 1 ? [] : y.cols.map(function (c) { return raw1(c.v, r); }).concat([raw1(y.done.hasTh ? y.done : y.total, r), raw1(y.same, r)]))); });
     });
     sh.push([]); sh.push(['Các năm tài chính']);
     sh.push(['Chỉ tiêu', 'Đơn vị'].concat(yrs.map(function (x) { return x.label; })));
-    rowsDef.forEach(function (r) { sh.push([r[1], r[2] || (r[4] === 'pct' ? '%' : '')].concat(yrs.map(function (x) { return raw1(x.v, r); }))); });
-    add('Tong hop toan xuong', sh);
+    TH_ROWS.forEach(function (r) { sh.push(thRow(r, r.length === 1 ? [] : yrs.map(function (x) { return raw1(x.v, r); }))); });
+    add('Tong hop toan xuong', sh, { freezeCol: 2 });
 
     // Cam kết với TI
     var ct = R.contractTracking(ds, so, { metric: state.ctMetric, compound: !!state.ctCompound });
     var mName = state.ctMetric === 'efficiency' ? 'Hiệu suất' : 'Năng suất (sp/người/ngày)';
+    var mf = state.ctMetric === 'efficiency' ? 'p1' : 'n2';
+    var okSt = function (good) { return good == null ? null : good ? XS.good : XS.bad; };
+    var vsT = function (v, t) { return v == null || t == null ? null : v >= t; };
+    var vsMax = function (v, lim) { return v == null ? null : v <= lim; };
     var sc = [['Cam kết với TI · hợp đồng 4/2026–3/2029 · ' + (state.factory || 'toàn xưởng')], ['Chỉ tiêu năng suất: ' + mName + ' · tăng 5%/năm ' + (state.ctCompound ? 'lũy tiến' : 'tuyến tính') + ' so với NTC 2025'], [],
-      ['Năm', 'Mục tiêu', 'Thực tế (lũy kế)', 'Số tháng đã chốt', 'Hàng khó thực tế', 'Hàng khó dự báo cả năm', 'Lot nhỏ thực tế', 'Lot nhỏ dự báo cả năm'],
-      ['NTC 2025 (chuẩn)', null, r2(ct.benchmark.value, 4), ct.benchmark.months.length, r2(ct.benchmark.hardShare, 4), null, r2(ct.benchmark.smallShare, 4), null]];
-    ct.years.forEach(function (x) { sc.push(['NTC ' + x.fy, r2(x.target, 4), r2(x.actual, 4), x.doneMonths.length, r2(x.hardShare, 4), r2(x.forecast.hardShare, 4), r2(x.smallShare, 4), r2(x.forecast.smallShare, 4)]); });
+      xr('head', ['Năm', 'Mục tiêu', 'Thực tế (lũy kế)', 'Số tháng đã chốt', 'Hàng khó thực tế', 'Hàng khó dự báo cả năm', 'Lot nhỏ thực tế', 'Lot nhỏ dự báo cả năm'], { fmts: ['g', mf, mf, 'n0', 'p1', 'p1', 'p1', 'p1'] }),
+      xr('group', ['NTC 2025 (chuẩn)', null, r2(ct.benchmark.value, 4), ct.benchmark.months.length, r2(ct.benchmark.hardShare, 4), null, r2(ct.benchmark.smallShare, 4), null])];
+    var HM = ct.cfg.hardMax, SM = ct.cfg.smallMax;
     ct.years.forEach(function (x) {
-      sc.push([]); sc.push(['NTC ' + x.fy + ' theo tháng']); sc.push(['Tháng', 'Số liệu', 'Sản lượng', mName, 'Mục tiêu', 'Hàng khó', 'Lot nhỏ']);
-      x.monthly.forEach(function (m) { sc.push([m.month, m.basis === 'TH' ? 'Thực tế' : m.basis === 'KH' ? 'Kế hoạch' : '', m.basis === 'TH' ? r2(m.th) : r2(m.kh), r2(m.value, 4), r2(x.target, 4), r2(m.hardShare, 4), r2(m.smallShare, 4)]); });
+      sc.push(xr('data', ['NTC ' + x.fy, r2(x.target, 4), r2(x.actual, 4), x.doneMonths.length, r2(x.hardShare, 4), r2(x.forecast.hardShare, 4), r2(x.smallShare, 4), r2(x.forecast.smallShare, 4)],
+        { cs: { 2: okSt(vsT(x.actual, x.target)), 4: okSt(vsMax(x.hardShare, HM)), 5: okSt(vsMax(x.forecast.hardShare, HM)), 6: okSt(vsMax(x.smallShare, SM)), 7: okSt(vsMax(x.forecast.smallShare, SM)) } }));
+    });
+    sc.push(xr('note', ['Xanh: đạt cam kết · Đỏ: chưa đạt (năng suất dưới mục tiêu, hàng khó > ' + fmtP(HM) + ', lot nhỏ > ' + fmtP(SM) + ').']));
+    ct.years.forEach(function (x) {
+      sc.push([]); sc.push(['NTC ' + x.fy + ' theo tháng']); sc.push(xr('head', ['Tháng', 'Số liệu', 'Sản lượng', mName, 'Mục tiêu', 'Hàng khó', 'Lot nhỏ'], { fmts: ['g', 'g', 'n0', mf, mf, 'p1', 'p1'] }));
+      x.monthly.forEach(function (m) {
+        sc.push(xr('data', [m.month, m.basis === 'TH' ? 'Thực tế' : m.basis === 'KH' ? 'Kế hoạch' : '', m.basis === 'TH' ? r2(m.th) : r2(m.kh), r2(m.value, 4), r2(x.target, 4), r2(m.hardShare, 4), r2(m.smallShare, 4)],
+          { cs: { 3: okSt(vsT(m.value, x.target)), 5: okSt(vsMax(m.hardShare, HM)), 6: okSt(vsMax(m.smallShare, SM)) } }));
+      });
       var LL = R.contractLists(x, { metric: state.ctMetric });
       if (LL.hard.length) { sc.push([]); sc.push(['Mã hàng khó > 20.000 giây · NTC ' + x.fy]); sc.push(['Mã hàng', 'Xưởng', 'Nhãn hàng', 'Chủng loại', '工程時間', 'Chuyền', 'TH']); LL.hard.forEach(function (h) { sc.push([h.style, h.f, h.brand, h.item, h.sam, h.lines, r2(h.th)]); }); }
       if (LL.small.length) { sc.push([]); sc.push(['Lot nhỏ ≤ 500 sp trên chuyền · NTC ' + x.fy]); sc.push(['Mã hàng', 'Xưởng', 'Chuyền', 'Nhãn hàng', 'Chủng loại', 'Lot', '工程時間', 'TH']); LL.small.forEach(function (h) { sc.push([h.style, h.f, h.line, h.brand, h.item, h.lot, h.sam, r2(h.th)]); }); }
     });
     sc.push([]); sc.push(['Theo cách tính của TI (năm chuẩn 647.091 sp = 29 chuyền × 297 ngày, trừ 5,9% tăng ca)']);
-    sc.push(['Năm', 'SL hàng TI', 'Chuyền-ngày TI', 'Chuyền-ngày APIC', 'Chuyền-ngày trống', 'SL/chuyền-ngày', 'Giờ hành chính', 'Mục tiêu', 'Quy đổi năm', 'Mục tiêu năm']);
-    sc.push(['NTC 2025 (dữ liệu)', r2(ct.benchmark.ti.th), r2(ct.benchmark.ti.tiLineDays, 1), r2(ct.benchmark.ti.apicLineDays, 1), r2(ct.benchmark.ti.idleLineDays, 1), r2(ct.benchmark.ti.perLineDay, 2), r2(ct.benchmark.ti.per8h, 2), null, r2(ct.benchmark.ti.annualEq), 647091]);
-    ct.years.forEach(function (x) { sc.push(['NTC ' + x.fy, r2(x.ti.th), r2(x.ti.tiLineDays, 1), r2(x.ti.apicLineDays, 1), r2(x.ti.idleLineDays, 1), r2(x.ti.perLineDay, 2), r2(x.ti.per8h, 2), r2(x.tiTarget, 2), r2(x.ti.annualEq), r2(x.tiTargetQty)]); });
-    add('Cam ket TI', sc);
+    sc.push(xr('head', ['Năm', 'SL hàng TI', 'Chuyền-ngày TI', 'Chuyền-ngày APIC', 'Chuyền-ngày trống', 'SL/chuyền-ngày', 'Giờ hành chính', 'Mục tiêu', 'Quy đổi năm', 'Mục tiêu năm'], { fmts: ['g', 'n0', 'n1', 'n1', 'n1', 'n2', 'n2', 'n2', 'n0', 'n0'] }));
+    sc.push(xr('group', ['NTC 2025 (dữ liệu)', r2(ct.benchmark.ti.th), r2(ct.benchmark.ti.tiLineDays, 1), r2(ct.benchmark.ti.apicLineDays, 1), r2(ct.benchmark.ti.idleLineDays, 1), r2(ct.benchmark.ti.perLineDay, 2), r2(ct.benchmark.ti.per8h, 2), null, r2(ct.benchmark.ti.annualEq), 647091]));
+    ct.years.forEach(function (x) {
+      sc.push(xr('data', ['NTC ' + x.fy, r2(x.ti.th), r2(x.ti.tiLineDays, 1), r2(x.ti.apicLineDays, 1), r2(x.ti.idleLineDays, 1), r2(x.ti.perLineDay, 2), r2(x.ti.per8h, 2), r2(x.tiTarget, 2), r2(x.ti.annualEq), r2(x.tiTargetQty)],
+        { cs: { 5: okSt(vsT(x.ti.perLineDay, x.tiTarget)), 8: okSt(vsT(x.ti.annualEq, x.tiTargetQty)) } }));
+    });
+    add('Cam ket TI', sc, { freezeCol: 1 });
 
     // Sử dụng chuyền: từng tháng mọi năm + giai đoạn tháng đang chọn
     var su = [['Sử dụng chuyền (nửa chuyền A/B × ngày làm việc)'], [], ['Tháng', 'Ngày làm việc', 'Nửa chuyền', 'Chuyền-ngày', 'Hàng TI', 'Hàng APIC tự bán', 'Trống', 'May ngày nghỉ']];
@@ -1818,7 +1975,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
     var pLabel = R.ANALYSIS_PERIODS.filter(function (x) { return x.id === state.anPeriod; })[0].label;
     var a1 = R.lotEfficiency(ds, ao), s1 = [['Cỡ lot và hiệu suất · ' + pLabel + ' · ' + periodText(a1.months)], [], ['Cỡ lot', 'Số mã', 'TH', 'Ngày công', 'Năng suất', 'Hiệu suất', '工程分析時間']];
     a1.rows.forEach(function (x) { s1.push([x.band.label, x.v.styles, r2(x.v.th), r2(x.v.pdT, 1), r2(x.v.productivity, 3), r2(x.v.efficiency, 4), r2(x.v.avgSam, 1)]); });
-    s1.push([]); s1.push(['Hiệu suất: cỡ lot / thời gian may'].concat(R.SAM_BANDS.map(function (b) { return b.label; })));
+    s1.push([]); s1.push(xr('head', ['Hiệu suất: cỡ lot / thời gian may'].concat(R.SAM_BANDS.map(function (b) { return b.label; })), { fmts: ['g'].concat(R.SAM_BANDS.map(function () { return 'p1'; })) }));
     a1.matrix.forEach(function (x) { s1.push([x.band.label].concat(x.cells.map(function (c) { return r2(c.efficiency, 4); }))); });
     add('PT1 Lot', s1);
     var a2 = R.learning(ds, ao), s2 = [['Lên năng suất · ' + pLabel + ' · ' + periodText(a2.months)], [], ['Mức thời gian may', 'Số lượt may', 'Ngày lên NS bq', 'Trung vị', '習熟日数 lý thuyết', '% chậm hơn lý thuyết', 'Mã mới (ngày)', 'Mã lặp lại (ngày)', 'Giờ chuẩn mất'].concat(a2.curveDays.map(function (d) { return 'Ngày ' + d + ' (% ổn định)'; }))];
@@ -1843,7 +2000,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
     add('PT5 On dinh KH', s5);
     var a6 = R.lineRanking(ds, ao), s6 = [['Xếp hạng chuyền · ' + pLabel + ' · ' + periodText(a6.months)], [], ['Hạng', 'Chuyền', 'TH', 'Ngày công', 'LĐ/chuyền', 'Năng suất', 'Hiệu suất', '工程分析時間', 'Số tháng', 'Hiệu suất tháng thấp nhất', 'Cao nhất', 'Độ lệch chuẩn']];
     a6.rows.forEach(function (x) { s6.push([x.rank, x.key, r2(x.v.th), r2(x.v.pdT, 1), r2(x.v.perLine, 1), r2(x.v.productivity, 3), r2(x.v.efficiency, 4), r2(x.v.avgSam, 1), x.monthly.length, r2(x.min, 4), r2(x.max, 4), r2(x.sd, 4)]); });
-    add('PT6 Xep hang chuyen', s6);
+    add('PT6 Xep hang chuyen', s6, { freezeCol: 2 });
     var a7 = R.capacityLoad(ds, ao), s7 = [['Tải các tháng tới (năng lực theo 3 tháng đã chốt gần nhất)'], [], ['Xưởng', 'Tháng', 'Ngày làm việc', 'KH (sp)', 'Giờ chuẩn KH', 'Năng lực (giờ chuẩn)', 'Tải', 'LĐ cần', 'LĐ hiện có', 'Hiệu suất dùng tính']];
     a7.rows.concat(a7.totals).forEach(function (x) { s7.push([x.f, x.month, x.wd, r2(x.kh), r2(x.sahK, 1), r2(x.capSah, 1), r2(x.load, 4), r2(x.laborNeed, 1), r2(x.labor, 1), r2(x.efficiency, 4)]); });
     add('PT7 Tai thang toi', s7);
@@ -1858,24 +2015,34 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
       R.SUMMARY_CELLS.forEach(function (sc) { row.push(r2(c.file[sc.key], 2), r2(c.full[sc.key], 2)); });
       chk.push(row);
     });
-    add('Kiem tra TORAY', chk);
+    add('Kiem tra TORAY', chk, { freezeCol: 3, autofilter: true });
 
     var srcs = [['Xưởng', 'Ngày update', 'Tên file', 'Số mã', 'Từ ngày', 'Đến ngày', 'Ghi chú']];
     files.forEach(function (f) { srcs.push([f.factory, f.updateDate, f.name, f.styleCount, f.firstDate, f.lastDate, (f.warnings || []).join(' ')]); });
-    add('File nguon', srcs);
+    add('File nguon', srcs, { autofilter: true });
 
     var cs = buildChartSheet();
     if (cs) {
       XLSX.utils.book_append_sheet(wb, cs.ws, 'Bieu do');
+      cs.spec.name = 'Bieu do'; specs.unshift(cs.spec);
       // đưa sheet biểu đồ lên đầu
       wb.SheetNames.unshift(wb.SheetNames.pop());
     }
-    return saveWorkbook(wb, 'Bao-cao-san-xuat-' + state.month + '.xlsx', cs ? cs.charts : []);
+    if (specs[0]) specs[0].selected = true;
+    return saveWorkbook(wb, 'Bao-cao-san-xuat-' + state.month + '.xlsx', cs ? cs.charts : [], specs);
   }
 
   // Lưu file: trên claude.ai dùng khả năng "downloads" (người xem xác nhận), mở trên máy thì tải thẳng
-  async function saveWorkbook(wb, filename, charts) {
+  async function saveWorkbook(wb, filename, charts, specs) {
     var data = XLSX.write(wb, { bookType: 'xlsx', type: 'array' }), chartNote = '';
+    // Màu, viền, định dạng số cho các bảng
+    if (specs && specs.length && window.JSZip && window.PMXlsxStyle) {
+      try {
+        var zs = await window.JSZip.loadAsync(data);
+        await window.PMXlsxStyle.applyStyles(zs, specs);
+        data = await zs.generateAsync({ type: 'uint8array', compression: 'DEFLATE' });
+      } catch (e) { chartNote += ' (không định dạng được bảng: ' + (e && e.message ? e.message : e) + ')'; }
+    }
     // Thêm biểu đồ Excel vào sheet "Bieu do"
     if (charts && charts.length) {
       if (window.JSZip && window.PMXlsxCharts) {
@@ -1883,9 +2050,9 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
           var zip = await window.JSZip.loadAsync(data);
           await window.PMXlsxCharts.addCharts(zip, 'Bieu do', charts);
           data = await zip.generateAsync({ type: 'uint8array', compression: 'DEFLATE' });
-          chartNote = ' (kèm ' + charts.length + ' biểu đồ ở sheet "Bieu do")';
-        } catch (e) { chartNote = ' (không thêm được biểu đồ: ' + (e && e.message ? e.message : e) + ')'; }
-      } else chartNote = ' (chưa tải được thư viện vẽ biểu đồ, file chỉ có bảng số)';
+          chartNote += ' (kèm ' + charts.length + ' biểu đồ ở sheet "Bieu do")';
+        } catch (e) { chartNote += ' (không thêm được biểu đồ: ' + (e && e.message ? e.message : e) + ')'; }
+      } else chartNote += ' (chưa tải được thư viện vẽ biểu đồ, file chỉ có bảng số)';
     }
     if (window.claude && window.claude.use) {
       var dl = null;
@@ -1911,18 +2078,19 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
   // ---------- Sheet "Bieu do": bảng số + biểu đồ Excel ----------
   var XC = { blue: '2A78D6', orange: 'EB6834', aqua: '1BAF7A', gray: '5B6482' };
   function buildChartSheet() {
-    var aoa = [['Biểu đồ · ' + scopeText() + ' · dữ liệu đến ' + R.monthLabel(state.month)], ['Mỗi biểu đồ lấy số từ bảng bên trái; sửa số trong bảng thì biểu đồ đổi theo.']];
-    var charts = [], BLOCK = 19, pctCells = [];
-    var add = function (title, header, rows, spec) {
+    var aoa = [xr('title', ['Biểu đồ · ' + scopeText() + ' · dữ liệu đến ' + R.monthLabel(state.month)]), xr('note', ['Mỗi biểu đồ lấy số từ bảng bên trái; sửa số trong bảng thì biểu đồ đổi theo.'])];
+    var charts = [], BLOCK = 19;
+    var add = function (title, rawHeader, rows, spec) {
       if (!rows.length) return;
-      title = biText(title); header = header.map(biText);
+      var rawTitle = title;
+      title = biText(title); var header = rawHeader.map(biText);
       rows = rows.map(function (r) { return [biText(r[0])].concat(r.slice(1)); });
       var r0 = aoa.length + 1; // để trống 1 hàng
       while (aoa.length < r0) aoa.push([]);
-      aoa.push([title]); aoa.push(header);
-      rows.forEach(function (r) { aoa.push(r); });
+      var cf = { '0%': 'p1', '#,##0': 'n0', '0.0': 'n1', '0.00': 'n2' }[spec.yFmt || '#,##0'] || 'n0';
+      aoa.push(xr('section', [rawTitle])); aoa.push(xr('head', rawHeader, { fmts: rawHeader.map(function (_, i) { return i ? cf : 'g'; }) }));
+      rows.forEach(function (r) { aoa.push(xr('data', r)); });
       var first = r0 + 3, last = r0 + 2 + rows.length; // số hàng Excel (1-based)
-      if (spec.yFmt === '0%') spec.series.forEach(function (sr) { for (var rr = first; rr <= last; rr++) pctCells.push(XLSX.utils.encode_cell({ r: rr - 1, c: sr.col })); });
       var ref = function (ci) { var c = XLSX.utils.encode_col(ci); return "'Bieu do'!$" + c + '$' + first + ':$' + c + '$' + last; };
       var colVals = function (ci) { return rows.map(function (r) { var v = r[ci]; return typeof v === 'number' && isFinite(v) ? v : null; }); };
       charts.push({
@@ -1986,11 +2154,8 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
       lm.map(function (m) { return [R.monthLabel(m)].concat(lf.slice(0, 3).map(function (f) { var x = cap.rows.filter(function (q) { return q.f === f && q.month === m; })[0]; return x ? num(x.load, 4) : null; }), [1]); }),
       { yFmt: '0%', series: lf.slice(0, 3).map(function (_, i) { return { col: i + 1, color: [XC.blue, XC.orange, XC.aqua][i] }; }).concat([{ col: Math.min(lf.length, 3) + 1, color: XC.gray, type: 'line', dash: true }]) });
     if (!charts.length) return null;
-    var ws = XLSX.utils.aoa_to_sheet(aoa);
-    ws['!cols'] = [{ wch: 16 }, { wch: 14 }, { wch: 14 }, { wch: 14 }, { wch: 12 }, { wch: 4 }, { wch: 2 }];
-    // định dạng % cho các cột tỷ lệ
-    pctCells.forEach(function (k) { if (ws[k] && ws[k].t === 'n') ws[k].z = '0.0%'; });
-    return { ws: ws, charts: charts };
+    var sh = sheetFromRows(aoa, { widths: [18, 15, 15, 15, 13, 4, 2], gridlines: false, freeze: false });
+    return { ws: sh.ws, spec: sh.spec, charts: charts };
   }
 
   // ---------- Sự kiện ----------

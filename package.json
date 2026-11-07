@@ -4,6 +4,6 @@
   "private": true,
   "description": "Workflow chuẩn bị mã hàng từ ETA đến START (ra chuyền)",
   "scripts": {
-    "test": "node --test workflow/schedule.test.js bao-cao/report.test.js"
+    "test": "node --test workflow/schedule.test.js bao-cao/report.test.js bao-cao/xlsx-style.test.js"
   }
 }
