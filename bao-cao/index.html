@@ -204,6 +204,13 @@ details.ct-list > summary { cursor: pointer; font-weight: 600; color: var(--acce
 .chip.qua-tai { background: var(--bad-soft); color: var(--bad); }
 .chip.vua { background: var(--good-soft); color: var(--good); }
 .chip.thieu-hang { background: var(--warn-soft); color: var(--ink); }
+/* Song ngữ: chữ Nhật dưới (hoặc cạnh) chữ Việt */
+.ja { display: block; font-size: 0.78em; font-weight: 400; color: var(--muted); line-height: 1.25; letter-spacing: 0; text-transform: none; font-family: var(--f-body); }
+button .ja, .chip .ja, nav.jump a .ja, .legend span .ja, summary .ja, .seg button .ja { display: inline; margin-left: 0.4em; }
+button.primary .ja { color: inherit; opacity: 0.85; }
+h1 .ja { font-size: 0.45em; margin-top: 4px; }
+h2 .ja, h3 .ja, h4 .ja { font-size: 0.62em; }
+.eyebrow .ja { display: inline; }
 .old-banner { margin-top: 12px; padding: 12px 14px; border-radius: 8px; border: 1px solid var(--bad); background: var(--bad-soft); font-size: 13px; display: grid; gap: 6px; }
 .old-banner b { color: var(--bad); }
 .export-field { align-self: end; }
@@ -224,6 +231,10 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
     <span class="eyebrow">Báo cáo sản xuất · 生産月次報告</span>
     <h1>Báo cáo tháng từ file KH_UPDATE</h1>
     <p>Chọn các file KH_UPDATE (mỗi xưởng, mỗi lần update một file; càng nhiều tháng, nhiều năm càng tốt). Trang tự gộp, lấy số chốt của từng tháng và so sánh với tháng trước, cùng kỳ năm trước, lũy kế năm tài chính. Dữ liệu chỉ lưu trong trình duyệt này, không gửi đi đâu.</p>
+    <div class="seg" id="langSeg" role="group" aria-label="Ngôn ngữ / 言語">
+      <button type="button" data-lang="bi" aria-pressed="true">Việt + 日本語</button>
+      <button type="button" data-lang="vi" aria-pressed="false">Chỉ tiếng Việt</button>
+    </div>
     <nav class="jump" aria-label="Mục">
       <a href="#du-lieu">Dữ liệu</a><a href="#tong-quan">Tổng quan tháng</a><a href="#tong-hop">Tổng hợp toàn xưởng</a><a href="#cam-ket">Cam kết với TI</a><a href="#su-dung-chuyen">Sử dụng chuyền</a><a href="#theo-chieu">Nhãn hàng · chuyền · chủng loại</a>
       <a href="#theo-thang">Theo tháng</a><a href="#theo-nam">Năm tài chính</a><a href="#phan-tich">Phân tích</a><a href="#ma-hang">Mã hàng</a><a href="#cach-tinh">Cách tính</a>
@@ -426,6 +437,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script src="report.js"></script>
+<script src="i18n-ja.js"></script>
 <script src="xlsx-charts.js"></script>
 <script>
 (function () {
@@ -434,7 +446,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
   var SETTINGS = 'pm-bao-cao-settings';
   var $ = function (id) { return document.getElementById(id); };
 
-  var state = { startMonth: 4, aliasText: '', dim: 'brand', fyDim: 'brand', sort: 'th', month: '', factory: '', brand: '', anTab: 'lot', anPeriod: 'ytd', thMode: 'year', thFy: null, ctFy: 2026, ctMetric: 'efficiency', ctCompound: true, owner: '', tiText: null, luFy: null, lineOv: '' };
+  var state = { startMonth: 4, aliasText: '', dim: 'brand', fyDim: 'brand', sort: 'th', month: '', factory: '', brand: '', anTab: 'lot', anPeriod: 'ytd', thMode: 'year', thFy: null, ctFy: 2026, ctMetric: 'efficiency', ctCompound: true, owner: '', tiText: null, luFy: null, lineOv: '', lang: 'bi' };
   try { Object.assign(state, JSON.parse(localStorage.getItem(SETTINGS) || '{}')); } catch (e) { /* bỏ qua */ }
   function saveSettings() { try { localStorage.setItem(SETTINGS, JSON.stringify(state)); } catch (e) { /* bỏ qua */ } }
 
@@ -1690,7 +1702,10 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
   function exportExcel() {
     var wb = XLSX.utils.book_new();
     var r2 = function (v, d) { return v == null || !isFinite(v) ? null : Math.round(v * Math.pow(10, d || 0)) / Math.pow(10, d || 0); };
-    var add = function (name, aoa) { XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(aoa), name.slice(0, 31)); };
+    var add = function (name, aoa) {
+      aoa = aoa.map(function (row) { return (row || []).map(biText); });
+      XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(aoa), name.slice(0, 31));
+    };
     var metricRow = function (v) { return [r2(v.kh), r2(v.khOpen) || null, r2(v.th), r2(v.rate, 4), v.styles, v.start, v.end, r2(v.labor, 1), r2(v.perLine, 1), r2(v.pdT, 1), r2(v.productivity, 3), r2(v.sah, 1), r2(v.efficiency, 4), r2(v.avgSam, 1), r2(v.avgLot, 1)]; };
     var metricHead = ['KH', 'KH đầu tháng', 'TH', 'Tỷ lệ đạt', 'Số mã', 'Mã mới', 'Mã hoàn thành', 'LĐ bq/ngày', 'LĐ/chuyền', 'Ngày công', 'Năng suất (sp/người/ngày)', 'Giờ chuẩn', 'Hiệu suất', '工程分析時間 bình quân (giây/sp)', '生産ロット bình quân (sp)'];
 
@@ -1900,6 +1915,8 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
     var charts = [], BLOCK = 19, pctCells = [];
     var add = function (title, header, rows, spec) {
       if (!rows.length) return;
+      title = biText(title); header = header.map(biText);
+      rows = rows.map(function (r) { return [biText(r[0])].concat(r.slice(1)); });
       var r0 = aoa.length + 1; // để trống 1 hàng
       while (aoa.length < r0) aoa.push([]);
       aoa.push([title]); aoa.push(header);
@@ -2037,6 +2054,61 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
   $('dimSort').addEventListener('change', function () { state.sort = this.value; saveSettings(); renderDim(); });
   var searchTimer = null;
   $('styleSearch').addEventListener('input', function () { clearTimeout(searchTimer); searchTimer = setTimeout(renderStyles, 150); });
+
+  // ---------- Song ngữ Việt / Nhật ----------
+  var JA_SEL = 'h1, h2, h3, h4, th, label, button, summary, nav.jump a, .chip, .kpi .lbl, .legend span, td.lbl, tr.grp td, td:first-child, .eyebrow';
+  function jaOf(t) { return window.PMJa ? window.PMJa.ja(t) : null; }
+  function directText(el) {
+    var t = '';
+    for (var i = 0; i < el.childNodes.length; i++) if (el.childNodes[i].nodeType === 3) t += el.childNodes[i].nodeValue;
+    return t.replace(/\s+/g, ' ').trim();
+  }
+  function annotate(root) {
+    if (state.lang !== 'bi') return;
+    Array.prototype.forEach.call((root || document).querySelectorAll(JA_SEL), function (el) {
+      // Ghi nhớ chữ đã dịch; nếu chữ tiếng Việt đổi (ví dụ tiêu đề có tháng) thì dịch lại
+      var key = directText(el);
+      if (el.getAttribute('data-ja') === key) return;
+      el.setAttribute('data-ja', key);
+      Array.prototype.forEach.call(el.querySelectorAll(':scope > .ja'), function (x) { x.remove(); });
+      var j = jaOf(key);
+      if (!j) return;
+      var sp = document.createElement('span'); sp.className = 'ja'; sp.textContent = j; sp.setAttribute('lang', 'ja');
+      var sub = el.querySelector(':scope > .sub, :scope > .muted');
+      if (sub) el.insertBefore(sp, sub); else el.appendChild(sp);
+    });
+    // Ô chọn: "tiếng Việt / tiếng Nhật"
+    Array.prototype.forEach.call((root || document).querySelectorAll('option'), function (op) {
+      if (op.getAttribute('data-vi') != null) return;
+      var j = jaOf(op.textContent);
+      op.setAttribute('data-vi', op.textContent);
+      if (j) op.textContent = op.textContent + ' / ' + j;
+    });
+  }
+  function clearJa() {
+    Array.prototype.forEach.call(document.querySelectorAll('.ja'), function (x) { x.remove(); });
+    Array.prototype.forEach.call(document.querySelectorAll('[data-ja]'), function (x) { x.removeAttribute('data-ja'); });
+    Array.prototype.forEach.call(document.querySelectorAll('option[data-vi]'), function (op) { op.textContent = op.getAttribute('data-vi'); op.removeAttribute('data-vi'); });
+  }
+  var jaTimer = null;
+  try {
+    new MutationObserver(function () { clearTimeout(jaTimer); jaTimer = setTimeout(function () { annotate(document); }, 20); })
+      .observe(document.body, { childList: true, subtree: true });
+  } catch (e) { /* trình duyệt cũ: chỉ tiếng Việt */ }
+  function setLang(l) {
+    state.lang = l; saveSettings();
+    Array.prototype.forEach.call(document.querySelectorAll('#langSeg [data-lang]'), function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-lang') === l)); });
+    clearJa(); annotate(document);
+  }
+  $('langSeg').addEventListener('click', function (e) { var b = e.target.closest('[data-lang]'); if (b) setLang(b.getAttribute('data-lang')); });
+  setLang(state.lang || 'bi');
+  // Excel: "tiếng Việt / tiếng Nhật" cho tiêu đề, tên chỉ tiêu
+  var biCache = {};
+  function biText(v) {
+    if (state.lang !== 'bi' || typeof v !== 'string' || v.length > 120) return v;
+    if (!(v in biCache)) { var j = jaOf(v); biCache[v] = j ? v + ' / ' + j : v; }
+    return biCache[v];
+  }
 
   // ---------- Khởi động ----------
   DB.open().then(DB.all).then(function (saved) {

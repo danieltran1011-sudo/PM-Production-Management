@@ -19,6 +19,7 @@ Số ngày chuẩn lấy từ file rà soát 20260722, cập nhật theo cuộc 
 | `bao-cao/index.html` | Báo cáo sản xuất từ các file KH_UPDATE (sheet XN1AB): nạp nhiều file (nhiều xưởng, nhiều tháng, nhiều năm), tự lấy số chốt từng tháng; so sánh tháng trước, cùng kỳ năm trước, lũy kế năm tài chính; theo nhãn hàng, chuyền, cụm chuyền, chủng loại, xưởng; lao động chuyền, năng suất, hiệu suất; xuất Excel. |
 | `bao-cao/report.js` | Phần đọc file và tính báo cáo (dùng chung cho trang và test). |
 | `bao-cao/xlsx-charts.js` | Thêm biểu đồ Excel (sửa được trong Excel) vào file xuất ra: sheet "Bieu do" gồm bảng số và 13 biểu đồ. |
+| `bao-cao/i18n-ja.js` | Từ điển Việt → Nhật: trang và file Excel hiển thị song ngữ (nút "Việt + 日本語 / Chỉ tiếng Việt" ở đầu trang). Sửa thuật ngữ tại đây. |
 | `bao-cao/report.test.js` | Test đọc sheet, gộp nhiều file, lao động chuyền, năm tài chính, so sánh cùng kỳ. |
 | `docs/quy-trinh-lead-time.md` | Tài liệu quy trình, bảng thời gian chuẩn, bảng so sánh, việc cần làm sau họp, các điểm còn mở. |
 | `data/nguon/` | Hai file Excel gốc. |

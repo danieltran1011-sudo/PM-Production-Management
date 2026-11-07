@@ -717,9 +717,13 @@
   function aggregate(facts) {
     var a = { kh: 0, th: 0, khOpen: 0, pdK: 0, pdT: 0, ldK: 0, ldT: 0, sah: 0, sahK: 0, start: 0, end: 0, laborSum: 0, laborSumK: 0, n: 0,
       lotSum: 0, lotN: 0, samQty: 0, qtyW: 0 };
-    var styles = {}, months = {}, lines = {};
+    var styles = {}, months = {}, lines = {}, openKeys = {};
+    // Tháng có KH đầu tháng (để tỷ lệ đạt so KH đầu tháng chỉ tính trên các tháng đó)
+    facts.forEach(function (x) { if (x.open && x.khOpen > 0) openKeys[x.f + '|' + x.m] = 1; });
+    a.thOpen = 0;
     facts.forEach(function (x) {
       SUM_FIELDS.forEach(function (k) { a[k] += x[k] || 0; });
+      if (!x.open && openKeys[x.f + '|' + x.m]) a.thOpen += x.th || 0;
       a.laborSum += (x.pdT || 0) / (x.wd || 1);
       a.laborSumK += (x.pdK || 0) / (x.wd || 1);
       if (!x.open && (x.kh > 0 || x.th > 0)) { styles[x.f + '|' + x.style] = 1; months[x.m] = 1; }
@@ -741,7 +745,7 @@
     var n = nMonths || a.monthCount || 1;
     return Object.assign({}, a, {
       rate: a.kh > 0 ? a.th / a.kh : null,
-      rateOpen: a.khOpen > 0 ? a.th / a.khOpen : null,
+      rateOpen: a.khOpen > 0 ? a.thOpen / a.khOpen : null,
       labor: a.pdT > 0 ? a.laborSum / n : null,          // lao động bình quân/ngày (người)
       laborK: a.pdK > 0 ? a.laborSumK / n : null,
       perLine: a.ldT > 0 ? a.pdT / a.ldT : null,         // người/chuyền bình quân

@@ -606,3 +606,12 @@ test('Biểu đồ Excel: XML có chuỗi số, tham chiếu ô, cột chồng, 
   assert.match(xml, /<a:prstDash val="dash"\/>/);
   assert.match(xml, /<c:min val="0"\/>/);
 });
+
+test('Tỷ lệ đạt so KH đầu tháng nhiều tháng: chỉ tính TH của các tháng có KH đầu tháng', () => {
+  const v = R.derive(R.aggregate([
+    { f: 'A', m: '2026-09', th: 100, kh: 100, open: false },
+    { f: 'A', m: '2026-10', th: 200, kh: 200, open: false },
+    { f: 'A', m: '2026-10', khOpen: 180, open: true }
+  ]), 2);
+  assert.strictEqual(v.rateOpen, 200 / 180); // tháng 9 không có KH đầu tháng nên không tính
+});
