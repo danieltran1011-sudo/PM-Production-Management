@@ -482,3 +482,85 @@ test('Cam kết TI: mục tiêu năng suất +5%/năm so với NTC 2025, tỷ l�
   assert.deepStrictEqual(L.hard.map((h) => h.style), ['H']);
   assert.deepStrictEqual(L.small.map((h) => h.style + '@' + h.line), ['S@2A']);
 });
+
+test('Hàng TI / APIC tự bán: so khớp danh sách nhãn hàng TI', () => {
+  const m = R.tiMatcher(null);
+  for (const b of ['TNF', 'HELLY HANSEN', 'Helly Hansen', 'N/W', 'Neutral Works', 'DESCSENTE', 'Woorich', 'ALLTERRAIN81', 'YONEX WC', 'LL.BEAN', '241', 'Goldwin'])
+    assert.strictEqual(m(b), 'TI', b);
+  for (const b of ['RIACHUELO', "B'S", 'RICHLO', 'UMBRO', 'CCC', 'GTO', 'Inov-8']) assert.strictEqual(m(b), 'APIC', b);
+  assert.strictEqual(R.tiMatcher('TNF\nGOLDWIN')('MONTBELL'), 'APIC');
+});
+
+test('Sử dụng chuyền: nửa chuyền A/B, chuyền ghép AB, chuyền tách; giai đoạn trống và may hàng APIC', () => {
+  // 5–10/10/2026 (Thứ 2–Thứ 7). 1A: TI 5–7/10, APIC 8–9/10, trống 10/10. 1B: chuyền ghép 1AB may TI 5–6/10, 1B1 (nửa) TI 7/10.
+  const st = (style, line, brand, th) => ({ factory: 'APIC1A', line, brand, style, sam: 3600, hc: 30, aggLot: 1000, th, kh: th });
+  const rows = makeSheet({ from: '2026-10-01', to: '2026-10-31', styles: [
+    st('T1', '1A', 'TNF', { '2026-10-05': 50, '2026-10-06': 50, '2026-10-07': 50 }),
+    st('A1', '1A', 'RIACHUELO', { '2026-10-08': 40, '2026-10-09': 40 }),
+    st('T2', '1AB', 'GOLDWIN', { '2026-10-05': 100, '2026-10-06': 100 }),
+    st('T3', '1B1', 'TNF', { '2026-10-07': 20 })
+  ] });
+  const p = R.parseRows(rows, { name: 'KH UPDATE _APA1.20261031.xlsm' });
+  assert.deepStrictEqual(Object.keys(p.lineDays.lines).sort(), ['1A', '1B']);
+  const ds = R.buildDataset([p]);
+  const u = R.lineUsage(ds, { startMonth: 4 }, ['2026-10']);
+  const a = u.byMonth[0];
+  // tháng 10/2026: 31 ngày, Chủ nhật nghỉ (file thử không có hàng "x") → 27 ngày làm việc × 2 nửa chuyền
+  assert.strictEqual(a.wd, 27);
+  assert.strictEqual(a.total, 54);
+  // 1A: TI 5,6 (chia với 1AB) … ngày 5–6: 1A có cả T1 và 1AB → TI cả ngày; 7/10 TI; 8–9/10 APIC → TI 3, APIC 2
+  // 1B: 5–6/10 TI (1AB), 7/10 nửa chuyền 1B1 → 0,5 → TI 2,5
+  assert.ok(Math.abs(a.ti - 5.5) < 1e-9);
+  assert.ok(Math.abs(a.apic - 2) < 1e-9);
+  assert.ok(Math.abs(a.idle - (54 - 7.5)) < 1e-9);
+  const apic = u.periods.filter((x) => x.kind === 'apic');
+  assert.deepStrictEqual(apic.map((x) => [x.line, x.from, x.to, x.days, x.brands]), [['1A', '2026-10-08', '2026-10-09', 2, 'RIACHUELO']]);
+  const idle1B = u.periods.filter((x) => x.kind === 'idle' && x.line === '1B');
+  assert.deepStrictEqual(idle1B.map((x) => x.from), ['2026-10-01', '2026-10-07']); // 1–3/10 trống; 7/10 nửa chuyền 1B2 trống
+  assert.strictEqual(idle1B[1].days, 21.5); // 7/10: 0,5 + 21 ngày làm việc trống từ 8/10 đến 31/10
+
+  // Cách tính của TI: SL hàng TI ÷ chuyền-ngày TI
+  const tp = R.tiProductivity(ds, { startMonth: 4 }, ['2026-10']);
+  assert.strictEqual(tp.th, 150 + 200 + 20);
+  assert.ok(Math.abs(tp.perLineDay - 370 / 5.5) < 1e-9);
+  assert.ok(Math.abs(tp.per8h - 370 / 5.5 * (1 - 0.059)) < 1e-9);
+});
+
+test('File APIC負担金額 của TI: đọc khối tháng, đối chiếu với chuyền trống / may hàng APIC', () => {
+  const S = (iso) => serial(iso);
+  const rows = [
+    [null, 'APIC負担金額_総括'],
+    [null, 'ﾗｲﾝ', 'Part', '人数', '部課', '縫製開始', '縫製エンド', 'ライン稼働単価', '日数', '金額', 'APIC負担比率', '請求額'],
+    [null, 1, 'A', 32, '1課', S('2026-09-20'), S('2026-10-09'), 1000, 99, 99000, 0.5, 49500],
+    [],
+    [null, 'APIC負担金額 10月度'],
+    [null, 'ﾗｲﾝ', 'Part', '人数', '部課', '縫製開始', '縫製エンド', 'ライン稼働単価', '日数', '金額', 'APIC負担比率', '請求額'],
+    [null, 1, 'A', 32, '1課', S('2026-10-08'), S('2026-10-09'), 1000, 2, 2000, 0.4, 800, 'APIC自販分　生産期間'],
+    [null, 1, 'B1', 16, '1課', S('2026-10-07'), S('2026-10-07'), 500, 1, 500, 0.4, 200],
+    [null, 'TTL', null, null, null, null, null, null, 3, 2500, null, 1000]
+  ];
+  assert.ok(R.isBillingSheet(rows));
+  const b = R.parseBilling(rows, { name: 'x.xlsx' });
+  assert.strictEqual(b.month, '2026-10'); // lấy khối "10月度", bỏ khối 総括
+  assert.strictEqual(b.rows.length, 2);
+  assert.strictEqual(b.charge, 1000);
+  // Dữ liệu chuyền: 1A may TI 1–7/10, APIC 8–9/10; 1B chỉ nửa 1B2 may ngày 7/10 (1B1 trống)
+  const st = (style, line, brand, th) => ({ factory: 'APIC1A', line, brand, style, sam: 3600, hc: 30, aggLot: 1000, th, kh: th });
+  const all = (from, to) => { const o = {}; for (let d = from; d <= to; d = R.addDays(d, 1)) if (new Date(d + 'T00:00:00Z').getUTCDay() !== 0) o[d] = 30; return o; };
+  const sheet = makeSheet({ from: '2026-10-01', to: '2026-10-31', styles: [
+    st('T1', '1A', 'TNF', Object.assign(all('2026-10-01', '2026-10-07'), all('2026-10-10', '2026-10-31'))),
+    st('A1', '1A', 'RIACHUELO', { '2026-10-08': 40, '2026-10-09': 40 }),
+    st('T2', '1B', 'TNF', Object.assign(all('2026-10-01', '2026-10-06'), all('2026-10-08', '2026-10-31'))),
+    st('T3', '1B2', 'TNF', { '2026-10-07': 20 })
+  ] });
+  const ds = R.buildDataset([R.parseRows(sheet, { name: 'KH UPDATE _APA1.20261031.xlsm' })]);
+  const c = R.billingCompare(ds, b, 4);
+  assert.ok(c.full && c.dataOk);
+  const by = Object.fromEntries(c.rows.map((r) => [r.line, r]));
+  assert.strictEqual(by['1A'].tiDays, 2);
+  assert.strictEqual(by['1A'].apic, 2);
+  assert.strictEqual(by['1A'].diff, 0);
+  assert.strictEqual(by['1B'].tiDays, 0.5); // B1 = nửa chuyền
+  assert.strictEqual(by['1B'].idle, 0.5);
+  assert.strictEqual(by['1B'].diff, 0);
+});

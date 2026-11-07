@@ -32,6 +32,8 @@ Mở `bao-cao/index.html`, kéo thả các file `KH_UPDATE__APA1.YYYYMMDD.xlsm`,
 - Năm tài chính mặc định bắt đầu tháng 4, đổi được ở bộ lọc.
 - Mục **Tổng hợp toàn xưởng**: gộp mọi xưởng (hoặc theo bộ lọc), xem từng tháng trong năm tài chính (kèm cả năm, cùng kỳ năm trước) hoặc các năm tài chính: sản lượng, kế hoạch, mã hàng, chuyển mã, lot, thời gian công đoạn, chuyền, lao động, năng suất, hiệu suất, lên năng suất, lead time, ổn định kế hoạch.
 - Mục **Cam kết với TI** (hợp đồng 4/2026–3/2029): năng suất +5%/năm so với năm chuẩn NTC 2025, hàng khó (工程時間 > 20.000 giây) ≤ 2% và lot nhỏ (≤ 500 sp trên chuyền) ≤ 10% tổng số lượng sản xuất năm; thực tế, dự báo cả năm, hạn mức còn lại, danh sách mã.
+- **Hàng TI / hàng APIC tự bán**: theo danh sách nhãn hàng TI (sửa được trên trang); bộ lọc "Nhóm hàng". Cam kết với TI chỉ tính hàng TI, kèm cách tính của TI (sản lượng hàng TI / chuyền-ngày, năm chuẩn 647.091 sp).
+- Mục **Sử dụng chuyền**: mỗi nửa chuyền A/B mỗi ngày làm việc may hàng TI, hàng APIC tự bán hay trống; giai đoạn chuyền trống / APIC自販分 theo tháng; so sánh các năm. Nạp file **APIC負担金額** của TI để đối chiếu từng chuyền và số tiền.
 - Mục **Phân tích** (theo kỳ: lũy kế năm tài chính, 12 tháng, tháng, toàn bộ): (1) cỡ lot và hiệu suất, (2) lên năng suất so với 習熟日数, (3) lead time may so với 縫製リードタイム, (4) chuyển mã và giờ chuẩn mất, (5) độ ổn định kế hoạch (KH đầu tháng so với TH), (6) xếp hạng chuyền, (7) tải các tháng tới so với năng lực.
 - Kiểm tra file: công thức tổng ở XN1AB!A1:R3 (sheet TORAY) và tháng còn thiếu file cuối tháng.
 - Cách tính chi tiết ở cuối trang.
