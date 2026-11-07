@@ -485,9 +485,9 @@ test('Cam kết TI: mục tiêu năng suất +5%/năm so với NTC 2025, tỷ l�
 
 test('Hàng TI / APIC tự bán: so khớp danh sách nhãn hàng TI', () => {
   const m = R.tiMatcher(null);
-  for (const b of ['TNF', 'HELLY HANSEN', 'Helly Hansen', 'N/W', 'Neutral Works', 'DESCSENTE', 'Woorich', 'ALLTERRAIN81', 'YONEX WC', 'LL.BEAN', '241', 'Goldwin'])
+  for (const b of ['TNF', 'HELLY HANSEN', 'Helly Hansen', 'N/W', 'Neutral Works', 'DESCSENTE', 'Woorich', 'ALLTERRAIN81', 'YONEX WC', 'LL.BEAN', '241', 'Goldwin', 'UMBRO', 'CCC', 'Inov-8'])
     assert.strictEqual(m(b), 'TI', b);
-  for (const b of ['RIACHUELO', "B'S", 'RICHLO', 'UMBRO', 'CCC', 'GTO', 'Inov-8']) assert.strictEqual(m(b), 'APIC', b);
+  for (const b of ['RIACHUELO', 'RICHLO', "B'S", 'GTO']) assert.strictEqual(m(b), 'APIC', b);
   assert.strictEqual(R.tiMatcher('TNF\nGOLDWIN')('MONTBELL'), 'APIC');
 });
 
@@ -563,4 +563,9 @@ test('File APIC負担金額 của TI: đọc khối tháng, đối chiếu với
   assert.strictEqual(by['1B'].tiDays, 0.5); // B1 = nửa chuyền
   assert.strictEqual(by['1B'].idle, 0.5);
   assert.strictEqual(by['1B'].diff, 0);
+  assert.strictEqual(by['1A'].tiSelf, 2); // dòng ghi APIC自販分
+  assert.strictEqual(by['1B'].tiSelf, 0);
+  // File NHABE: mọi dòng là hàng tự bán
+  const c2 = R.billingCompare(ds, Object.assign({}, b, { name: '2025_4 APIC_NHABE 250428.xlsx' }), 4);
+  assert.strictEqual(c2.rows.find((r) => r.line === '1B').tiSelf, 0.5);
 });

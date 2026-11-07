@@ -121,7 +121,7 @@
   var TI_BRANDS_DEFAULT = ['TNF(GTC企画)', 'TNF(東京企画)', 'TNF(東京企画、GTC企画共通)サンプル', 'TNF別注 富山', 'TNF別注 東京', 'NW', 'UTMF', 'BOYS/DTN',
     'Gymphlex', 'NANGA', 'DANTON', 'TETON BROS', 'ALLTERRAIN', 'AIGLE', 'ORCIVAL', 'HH', 'WOOLRICH', 'CHAMPION', '241', 'SNOWPEAK', 'LECOQ', 'SRIXON',
     'MACKINTOSH', 'MARMOT', 'DESCENTE', 'C3FIT', 'MONTBELL', 'MILLET', 'GOLDWINサンプル', 'GOLDWIN', 'GSM', 'RESURRECTION', 'CANTERBURY', 'HYKE', '141',
-    'HAT +', 'LL.BEAN', 'FOXFIRE', 'TATRAS', 'KASCO', 'YONEX', 'KOTI'].join('\n');
+    'HAT +', 'LL.BEAN', 'FOXFIRE', 'TATRAS', 'KASCO', 'YONEX', 'KOTI', 'UMBRO', 'CCC', 'Inov-8'].join('\n');
   // Cách viết khác nhau của cùng nhãn hàng (đã bỏ dấu cách, ký tự đặc biệt)
   var BRAND_KEY_ALIASES = { HELLYHANSEN: 'HH', NEUTRALWORK: 'NW', NEUTRALWORKS: 'NW', THENORTHFACE: 'TNF', DESCSENTE: 'DESCENTE', DESCSENT: 'DESCENTE',
     WOORICH: 'WOOLRICH', ALLTERAIN: 'ALLTERRAIN', LECOQSPORTIF: 'LECOQ', SNOWPEAKS: 'SNOWPEAK' };
@@ -1359,6 +1359,8 @@
     return { kind: 'billing', name: opts.name || '', month: month, rows: list, days: sum('days'), amount: sum('amount'), charge: sum('charge') };
   }
   // Đối chiếu file APIC負担金額 của tháng với chuyền trống + may hàng APIC trang tính được (theo nửa chuyền)
+  // File có chữ "NHABE" trong tên: mọi dòng là may hàng APIC tự bán (Nhà Bè)
+  function billingSelf(bill, r) { return /NHABE/i.test(bill.name || '') || /自販|NHABE/i.test(r.note || ''); }
   function billingCompare(ds, bill, startMonth) {
     var full = (ds.lineMonthOk || {})[bill.month];
     var u = lineUsage(ds, { startMonth: startMonth || 4, relaxed: !full }, [bill.month]);
@@ -1377,7 +1379,7 @@
         var t = ti[k] || (ti[k] = { days: 0, rows: [], self: 0 });
         var d = (r.days || 0) * (sub ? 0.5 : 1);
         t.days += d; t.rows.push(r);
-        if (/自販/.test(r.note)) t.self += d;
+        if (billingSelf(bill, r)) t.self += d;
       });
     });
     var keys = {};
@@ -1525,7 +1527,7 @@
     overviewMetrics: overviewMetrics, overviewYear: overviewYear, overviewYears: overviewYears,
     TI_BRANDS_DEFAULT: TI_BRANDS_DEFAULT, TI_METHOD: TI_METHOD, brandKey: brandKey, tiMatcher: tiMatcher,
     lineUniverse: lineUniverse, lineUsage: lineUsage, tiProductivity: tiProductivity,
-    findDayColumns: findDayColumns, isBillingSheet: isBillingSheet, parseBilling: parseBilling, billingCompare: billingCompare,
+    findDayColumns: findDayColumns, isBillingSheet: isBillingSheet, billingSelf: billingSelf, parseBilling: parseBilling, billingCompare: billingCompare,
     CONTRACT: CONTRACT, contractTracking: contractTracking, contractLists: contractLists, contractTarget: contractTarget, periods: periods, summarize: summarize, monthly: monthly, fiscal: fiscal, pct: pct
   };
 });

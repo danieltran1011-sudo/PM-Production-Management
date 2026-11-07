@@ -1225,7 +1225,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
       var rows = c.rows.map(function (r) {
         var lp = partOf(r.line), note = !r.hasData ? 'Không có dữ liệu chuyền này trong tháng (thiếu file xưởng)' : Math.abs(r.diff) < 0.01 ? 'Khớp' : r.diff > 0 ? 'Trang thấy nhiều hơn TI tính' : 'TI tính nhiều hơn trang thấy';
         var cls = !r.hasData ? 'muted' : Math.abs(r.diff) < 0.01 ? 'up' : 'down';
-        var tiTxt = r.tiRows.map(function (x) { return x.part + ' ' + fmtDate(x.from).slice(0, -5) + '–' + fmtDate(x.to).slice(0, -5) + ' (' + x.days + ')' + (/自販/.test(x.note) ? ' 自販' : ''); }).join('; ');
+        var tiTxt = r.tiRows.map(function (x) { return x.part + ' ' + fmtDate(x.from).slice(0, -5) + '–' + fmtDate(x.to).slice(0, -5) + ' (' + x.days + ')' + (R.billingSelf(b, x) ? ' 自販' : ''); }).join('; ');
         var myTxt = r.periods.map(function (p) { return (p.kind === 'apic' ? 'APIC ' : 'trống ') + fmtDate(p.from).slice(0, -5) + '–' + fmtDate(p.to).slice(0, -5) + ' (' + fmtN(p.days, 1) + ')'; }).join('; ');
         return '<tr><td>' + lp[0] + '</td>' + td(lp[1], 'txt') + td(fmtN(r.tiDays, 1)) + td(r.tiSelf ? fmtN(r.tiSelf, 1) : '—') + td(r.hasData ? fmtN(r.idle, 1) : '—') + td(r.hasData ? fmtN(r.apic, 1) : '—') +
           td(r.hasData ? delta2(r.diff) : '—') + td('<span class="' + cls + '">' + note + '</span>', 'txt') +
@@ -1235,7 +1235,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
       detail = '<h3>Đối chiếu tháng ' + R.monthLabel(b.month) + ' với file ' + esc(b.name) + '</h3>' +
         '<p class="an-note">TI tính ' + fmtN(b.days, 1) + ' chuyền-ngày, 金額 ' + fmtN(b.amount, 0) + ' USD, 請求額 (APIC chịu) ' + fmtN(b.charge, 0) + ' USD. ' +
         (c.dataOk ? 'Ở các chuyền có dữ liệu, trang tính ' + fmtN(c.mine, 1) + ' chuyền-ngày trống + may hàng APIC' + (est != null ? ' → ước tính 請求額 ' + fmtN(est, 0) + ' USD (đơn giá ' + fmtN(pr, 2) + ' × tỷ lệ ' + fmtP(ra) + ')' : '') + '.' : 'Chưa có file chốt tháng này.') +
-        ' Part A1/A2/B1/B2 của TI tính nửa chuyền-ngày.</p>' +
+        ' Part A1/A2/B1/B2 của TI tính nửa chuyền-ngày. Dòng ghi "APIC自販分" hoặc file có chữ NHABE trong tên là may hàng APIC tự bán; dòng còn lại là chuyền trống.</p>' +
         table(['Chuyền', 'Part', 'TI tính<span class="sub">chuyền-ngày</span>', 'Trong đó 自販', 'Trang: trống', 'Trang: may APIC', 'Lệch', 'Kết quả', 'Chi tiết (TI / trang)'], rows);
     }
     return '<h3>Đối chiếu với file APIC負担金額 của TI</h3>' + t0 + detail + '<p class="an-note">Lệch dương: trang thấy chuyền trống hoặc may hàng APIC nhiều ngày hơn TI tính; lệch âm: TI tính nhiều hơn. Tháng thiếu file của một xưởng chỉ đối chiếu được các chuyền có dữ liệu.</p>';
@@ -1744,7 +1744,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
         R.billingCompare(ds, b, state.startMonth).rows.forEach(function (r) {
           var lp = partOf(r.line);
           dc.push([b.month, +lp[0], lp[1], r2(r.tiDays, 2), r2(r.tiSelf, 2), r.hasData ? r2(r.idle, 2) : null, r.hasData ? r2(r.apic, 2) : null, r.hasData ? r2(r.diff, 2) : null, r.hasData ? 'có' : 'không',
-            r.tiRows.map(function (x) { return x.part + ' ' + x.from + '→' + x.to + ' (' + x.days + ')' + (x.note ? ' ' + x.note : ''); }).join('; ')]);
+            r.tiRows.map(function (x) { return x.part + ' ' + x.from + '→' + x.to + ' (' + x.days + ')' + (R.billingSelf(b, x) ? ' 自販' : ''); }).join('; ')]);
         });
       });
       add('Doi chieu TI', dc);
