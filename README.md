@@ -18,6 +18,9 @@ Số ngày chuẩn lấy từ file rà soát 20260722, cập nhật theo cuộc 
 | `workflow/schedule.test.js` | Test đối chiếu với file Excel rà soát và các quy tắc đã xác nhận trong họp. |
 | `docs/quy-trinh-lead-time.md` | Tài liệu quy trình, bảng thời gian chuẩn, bảng so sánh, việc cần làm sau họp, các điểm còn mở. |
 | `data/nguon/` | Hai file Excel gốc. |
+| `phan-tich-tij/phan_tich.py` | Script phân tích file chi phí gia công TIJ gửi hàng tháng (APIC1A/APIC1B): sản lượng, chi phí/phút chuẩn, hiệu suất chuyền, thực tế so với dự toán ①②, chi phí đổi mã, mã nổi bật, lỗi dữ liệu. |
+| `phan-tich-tij/template.html` | Giao diện báo cáo (biểu đồ, bảng) mà script điền số liệu vào. |
+| `phan-tich-tij/bao-cao-2026-10.html` | Báo cáo tháng 10/2026. |
 
 ## Sử dụng
 
@@ -28,3 +31,11 @@ Chạy test:
 ```
 npm test
 ```
+
+Tạo báo cáo phân tích từ file TIJ gửi hàng tháng (cần Python với `pandas`, `openpyxl`):
+
+```
+python3 phan-tich-tij/phan_tich.py "<file TIJ>.xlsm"
+```
+
+Báo cáo được ghi vào `phan-tich-tij/bao-cao-<năm>-<tháng>.html` (tháng lấy từ ô Year/Month của sheet NEW).

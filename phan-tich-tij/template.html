@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Phân tích file chi phí gia công TIJ – tháng __MONTH__</title>
+<style>
+.rp {
+  color-scheme: light;
+  --bg: #f6f5f2; --surface: #fcfcfb; --border: #e3e1db; --grid: #ecebe6;
+  --text: #0b0b0b; --text-2: #52514e; --text-3: #7b7a74;
+  --s1: #2a78d6; --s2: #eb6834; --neg: #2a78d6; --pos: #e34948; --mid: #b9b7b0;
+  --good: #0ca30c; --bad: #d03b3b; --warn: #b77900;
+  --tip-bg: #1a1a19; --tip-text: #f0efec;
+}
+@media (prefers-color-scheme: dark) {
+  :root:where(:not([data-theme="light"])) .rp {
+    color-scheme: dark;
+    --bg: #111110; --surface: #1a1a19; --border: #33332f; --grid: #2a2a27;
+    --text: #f0efec; --text-2: #c3c2b7; --text-3: #8f8e86;
+    --s1: #3987e5; --s2: #d95926; --neg: #3987e5; --pos: #e66767; --mid: #5d5c57;
+    --good: #2fbf2f; --bad: #e66767; --warn: #e0a100;
+    --tip-bg: #f0efec; --tip-text: #111110;
+  }
+}
+:root[data-theme="dark"] .rp {
+  color-scheme: dark;
+  --bg: #111110; --surface: #1a1a19; --border: #33332f; --grid: #2a2a27;
+  --text: #f0efec; --text-2: #c3c2b7; --text-3: #8f8e86;
+  --s1: #3987e5; --s2: #d95926; --neg: #3987e5; --pos: #e66767; --mid: #5d5c57;
+  --good: #2fbf2f; --bad: #e66767; --warn: #e0a100;
+  --tip-bg: #f0efec; --tip-text: #111110;
+}
+* { box-sizing: border-box; }
+body { margin: 0; }
+.rp { background: var(--bg); color: var(--text); font: 15px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; min-height: 100vh; }
+.rp .wrap { max-width: 1180px; margin: 0 auto; padding: 28px 20px 60px; }
+.rp h1 { font-size: 26px; line-height: 1.25; margin: 0 0 6px; }
+.rp h2 { font-size: 20px; margin: 44px 0 6px; padding-top: 8px; }
+.rp h3 { font-size: 15px; margin: 0 0 2px; }
+.rp .sub { color: var(--text-2); margin: 0 0 14px; }
+.rp .muted { color: var(--text-3); font-size: 13px; }
+.rp nav { display: flex; flex-wrap: wrap; gap: 6px 14px; margin: 14px 0 6px; font-size: 13.5px; }
+.rp nav a { color: var(--text-2); text-decoration: none; border-bottom: 1px solid var(--border); }
+.rp nav a:hover { color: var(--text); }
+.rp .card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; }
+.rp .grid { display: grid; gap: 14px; }
+.rp .g2 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 440px), 1fr)); }
+.rp .g4 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr)); }
+.rp .findings { margin: 0; padding-left: 20px; }
+.rp .findings li { margin: 0 0 8px; }
+.rp .findings b { font-weight: 600; }
+.rp .tile .lbl { color: var(--text-2); font-size: 13px; }
+.rp .tile .val { font-size: 28px; font-weight: 600; letter-spacing: -0.01em; font-variant-numeric: tabular-nums; margin: 2px 0; }
+.rp .tile .cmp { font-size: 12.5px; color: var(--text-2); }
+.rp .fac { display: flex; align-items: center; gap: 8px; font-weight: 600; margin: 18px 0 8px; }
+.rp .key { display: inline-block; width: 12px; height: 12px; border-radius: 3px; }
+.rp .up-bad, .rp .down-bad { color: var(--bad); }
+.rp .up-good, .rp .down-good { color: var(--good); }
+.rp .legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: 13px; color: var(--text-2); margin: 6px 0 2px; }
+.rp .legend span { display: inline-flex; align-items: center; gap: 6px; }
+.rp .lk { width: 14px; height: 3px; border-radius: 2px; display: inline-block; }
+.rp .chart { position: relative; width: 100%; }
+.rp .chart svg { display: block; width: 100%; height: auto; overflow: visible; }
+.rp svg text { fill: var(--text-2); font-size: 11.5px; font-family: inherit; }
+.rp svg .axis line, .rp svg .grid line { stroke: var(--grid); }
+.rp svg .zero { stroke: var(--text-3); }
+.rp svg .hit { fill: transparent; cursor: default; }
+.rp svg .hit:focus { outline: none; }
+.rp svg .bar.on, .rp svg rect.on { opacity: .75; }
+.rp .tip { position: absolute; pointer-events: none; background: var(--tip-bg); color: var(--tip-text); font-size: 12.5px; line-height: 1.45; padding: 8px 10px; border-radius: 7px; box-shadow: 0 4px 14px rgba(0,0,0,.18); white-space: nowrap; z-index: 5; display: none; }
+.rp .tip .t { opacity: .75; margin-bottom: 3px; }
+.rp .tip .r { display: flex; align-items: center; gap: 7px; }
+.rp .tip .r b { font-weight: 600; font-variant-numeric: tabular-nums; }
+.rp table { width: 100%; border-collapse: collapse; font-size: 13.5px; font-variant-numeric: tabular-nums; }
+.rp th, .rp td { padding: 6px 8px; border-bottom: 1px solid var(--border); text-align: right; white-space: nowrap; }
+.rp th { color: var(--text-2); font-weight: 600; font-size: 12.5px; cursor: pointer; user-select: none; position: sticky; top: 0; background: var(--surface); }
+.rp th:first-child, .rp td:first-child, .rp td.l, .rp th.l { text-align: left; }
+.rp .tbl { overflow-x: auto; max-height: 520px; overflow-y: auto; }
+.rp details { margin-top: 8px; }
+.rp summary { cursor: pointer; color: var(--text-2); font-size: 13px; }
+.rp .pill { display: inline-block; padding: 0 6px; border-radius: 9px; font-size: 12px; }
+.rp .pos { color: var(--bad); }
+.rp .neg { color: var(--good); }
+.rp .explain { display: grid; grid-template-columns: auto 1fr; gap: 6px 12px; margin: 8px 0 0; }
+.rp .explain dt { font-weight: 600; white-space: nowrap; }
+.rp .explain dd { margin: 0; color: var(--text-2); }
+.rp .note { border-left: 3px solid var(--border); padding: 2px 0 2px 12px; color: var(--text-2); font-size: 13.5px; margin: 10px 0 0; }
+.rp ol.recs li { margin-bottom: 10px; }
+@media (max-width: 560px) { .rp .tile .val { font-size: 24px; } .rp h1 { font-size: 22px; } }
+</style>
+</head>
+<body>
+<div class="rp" id="rp">
+<div class="wrap">
+  <h1>Phân tích file chi phí gia công TIJ – tháng <span id="m-month"></span></h1>
+  <p class="sub">Xưởng An Phát APIC1A và APIC1B · <span id="m-meta"></span></p>
+  <nav>
+    <a href="#tom-tat">Tóm tắt</a><a href="#file-la-gi">File này là gì</a><a href="#thang-nay">Tháng này</a>
+    <a href="#xu-huong">Xu hướng 3 năm</a><a href="#so-chuan">Thực tế so với dự toán</a>
+    <a href="#chuyen">Theo chuyền</a><a href="#doi-ma">Chi phí đổi mã</a><a href="#ma-hang">Mã hàng nổi bật</a>
+    <a href="#dang-may">Đang may dở</a><a href="#dai-han">Nhân sự và tiền công</a><a href="#du-lieu">Lỗi dữ liệu</a><a href="#de-xuat">Đề xuất</a>
+  </nav>
+
+  <h2 id="tom-tat">Tóm tắt</h2>
+  <div class="card"><ul class="findings" id="findings"></ul></div>
+
+  <h2 id="file-la-gi">File này là gì</h2>
+  <div class="card">
+    <p style="margin-top:0">TIJ dùng file này để theo dõi <b>chi phí may thực tế của từng mã hàng trên từng chuyền</b> so với giá dự toán. Mỗi tháng TIJ trả cho xưởng một khoản gần như cố định (số người theo hợp đồng × đơn giá công/người), sau đó chia khoản này cho từng mã hàng theo số ngày chuyền đã may. Vì vậy <b>may nhanh hơn chuẩn thì giá mỗi sản phẩm rẻ hơn</b>, may chậm thì đắt hơn.</p>
+    <dl class="explain">
+      <dt>① Giá chuẩn 1</dt><dd>Dự toán lúc nhận đơn, tính trên tổng số lượng đặt hàng (lô càng lớn, càng ít ngày học nghề → giá càng thấp).</dd>
+      <dt>② Giá chuẩn 2</dt><dd>Dự toán tính lại theo lô thực tế đưa vào từng chuyền sau khi chia/gom đơn. Đây là thước đo công bằng nhất cho năng suất của xưởng.</dd>
+      <dt>③ Giá thực tế</dt><dd>Chi phí chuyền/ngày × số ngày may thực tế ÷ số sản phẩm hoàn thành. Chỉ có khi mã đã may xong.</dd>
+      <dt>⑤ Giá tháng</dt><dd>Phân bổ đúng tổng tiền tháng trả cho xưởng vào các mã đã may trong tháng.</dd>
+    </dl>
+    <p class="note">Khoảng cách ① → ② chủ yếu do chia nhỏ lô (quyết định về kế hoạch), còn ② → ③ phản ánh năng suất thực của chuyền. Báo cáo này lấy <b>② làm mốc chính</b>. Số dương = thực tế đắt hơn dự toán.</p>
+    <p class="muted" style="margin-bottom:0">Các sheet: <b>NEW</b> (sheet chính, từng mã hàng × chuyền + sản lượng từng ngày), <b>HCM</b> (nhân sự, đơn giá công, tổng tiền tháng từ 2015), <b>担当者</b> và <b>p(0)–p(3), QTY</b> (bảng pivot của TIJ), <b>Sheet1</b> (bảng tạm).</p>
+  </div>
+
+  <h2 id="thang-nay">Tháng <span class="m-month"></span></h2>
+  <p class="sub">So với tháng trước và trung bình 12 tháng gần nhất. Chi phí/phút chuẩn = tiền tháng (không gồm tiền mẫu) ÷ tổng phút chuẩn đã may — chỉ số này đã loại ảnh hưởng của mã dễ/khó nên so sánh giữa các tháng chính xác hơn chi phí/sản phẩm.</p>
+  <div id="kpis"></div>
+  <div class="card" style="margin-top:14px">
+    <h3>Từng chuyền trong tháng</h3>
+    <p class="muted" style="margin:0 0 8px">Hiệu suất = giờ chuẩn làm ra ÷ (số công nhân chuyền × 8 giờ × số ngày chạy). Bấm tiêu đề cột để sắp xếp.</p>
+    <div class="tbl" id="t-lines"></div>
+  </div>
+
+  <h2 id="xu-huong">Xu hướng từ <span id="m-first"></span></h2>
+  <p class="sub">Tiền trả mỗi tháng gần như cố định, nên sản lượng và độ khó của mã quyết định giá mỗi sản phẩm. Tháng Tết (tháng 2) chi phí/phút luôn tăng vọt vì ít ngày làm.</p>
+  <div class="grid g2">
+    <div class="card"><h3>Sản lượng may mỗi tháng (sản phẩm)</h3><div class="legend" id="lg-out"></div><div class="chart" id="c-out"></div>
+      <details><summary>Xem bảng số liệu</summary><div class="tbl" id="t-month"></div></details></div>
+    <div class="card"><h3>Chi phí trên mỗi phút chuẩn (USD/phút)</h3><div class="legend" id="lg-min"></div><div class="chart" id="c-min"></div></div>
+    <div class="card"><h3>Hiệu suất chuyền (%)</h3><div class="legend" id="lg-eff"></div><div class="chart" id="c-eff"></div></div>
+    <div class="card"><h3>Độ khó bình quân của mã đang may (giây/sản phẩm)</h3><div class="legend" id="lg-sec"></div><div class="chart" id="c-sec"></div></div>
+  </div>
+
+  <h2 id="so-chuan">Chi phí thực tế so với dự toán ②</h2>
+  <p class="sub" id="var-sub"></p>
+  <div class="grid g4" id="var-tiles"></div>
+  <div class="grid g2" style="margin-top:14px">
+    <div class="card"><h3>Theo độ khó của mã (giây công đoạn)</h3><p class="muted" style="margin:0">% chênh lệch so với ②; thanh đỏ = đắt hơn dự toán, xanh = rẻ hơn.</p><div class="chart" id="c-cx"></div></div>
+    <div class="card"><h3>Theo cỡ lô hoàn thành (sản phẩm)</h3><p class="muted" style="margin:0">% chênh lệch so với ②.</p><div class="chart" id="c-lot"></div></div>
+    <div class="card"><h3>Theo brand (≥ 3.000 sản phẩm)</h3><p class="muted" style="margin:0">% chênh lệch so với ②.</p><div class="chart" id="c-brand"></div></div>
+    <div class="card"><h3>Theo người phụ trách bên TIJ (≥ 3.000 sản phẩm)</h3><p class="muted" style="margin:0">% chênh lệch so với ②.</p><div class="chart" id="c-sales"></div></div>
+  </div>
+  <div class="card" style="margin-top:14px"><h3>Theo mùa hàng</h3><div class="tbl" id="t-season"></div></div>
+
+  <h2 id="chuyen">Theo chuyền (12 tháng)</h2>
+  <p class="sub">Chênh lệch so với ② của các mã đã hoàn thành trên từng chuyền. Chuyền có số âm may nhanh hơn dự toán.</p>
+  <div class="grid g2">
+    <div class="card"><h3>% chênh lệch so với ② theo chuyền</h3><div class="chart" id="c-line"></div></div>
+    <div class="card"><h3>Chi tiết</h3><div class="tbl" id="t-line"></div></div>
+  </div>
+
+  <h2 id="doi-ma">Chi phí học nghề khi đổi mã</h2>
+  <p class="sub" id="co-sub"></p>
+  <div class="grid g2">
+    <div class="card"><h3>Năng suất theo ngày thứ n của mã (% so với lúc ổn định)</h3><div class="chart" id="c-curve"></div></div>
+    <div class="card" id="co-tiles"></div>
+  </div>
+
+  <h2 id="ma-hang">Mã hàng nổi bật (12 tháng, lô ≥ 100 sản phẩm)</h2>
+  <div class="card"><h3>10 mã đắt hơn dự toán nhiều nhất (USD)</h3><div class="tbl" id="t-over"></div></div>
+  <div class="card" style="margin-top:14px"><h3>10 mã rẻ hơn dự toán nhiều nhất (USD)</h3><div class="tbl" id="t-under"></div></div>
+
+  <h2 id="dang-may">Mã đang may dở cuối tháng</h2>
+  <p class="sub">Có sản lượng trong tháng nhưng chưa hoàn thành, nên chưa có giá thực tế ③. Đây là các mã sẽ quyết định kết quả tháng sau.</p>
+  <div class="card"><div class="tbl" id="t-wip"></div></div>
+
+  <h2 id="dai-han">Nhân sự và tiền công (sheet HCM)</h2>
+  <div class="grid g2">
+    <div class="card"><h3>Đơn giá công bình quân (USD/người/tháng)</h3><div class="chart" id="c-wage"></div></div>
+    <div class="card"><h3>Theo năm</h3><div class="tbl" id="t-year"></div><p class="muted">Năm đầu và năm hiện tại chưa đủ 12 tháng (xem cột "Số tháng"). Tổng tiền gồm cả APIC1A và APIC1B, kể cả tiền mẫu.</p></div>
+  </div>
+
+  <h2 id="du-lieu">Lỗi dữ liệu cần lưu ý</h2>
+  <div class="card"><ul class="findings" id="dq"></ul></div>
+
+  <h2 id="de-xuat">Đề xuất</h2>
+  <div class="card"><ol class="recs" id="recs"></ol></div>
+
+  <p class="muted" style="margin-top:30px">Tạo bằng <code>phan-tich-tij/phan_tich.py</code> ngày <span id="m-gen"></span>. Hiệu suất tính theo ngày 8 giờ; số công nhân chuyền lấy từ cột "line人数" của file. Chi phí đổi mã là ước tính.</p>
+</div>
+<div class="tip" id="tip"></div>
+</div>
+
+<script>
+const D = __DATA__;
+const F = ["APIC1A", "APIC1B"];
+const COL = { APIC1A: "var(--s1)", APIC1B: "var(--s2)" };
+const nf = (v, d = 0) => { if (typeof d !== "number") d = 0; return v == null || isNaN(v) ? "–" : Number(v).toLocaleString("vi-VN", { minimumFractionDigits: d, maximumFractionDigits: d }); };
+const usd = (v, d = 0) => v == null ? "–" : (v < 0 ? "−$" + nf(-v, d) : "$" + nf(v, d));
+const pct = (v, d = 1) => v == null ? "–" : (v > 0 ? "+" : "") + nf(v, d) + "%";
+const ymLabel = s => { const [y, m] = s.split("-"); return m + "/" + y.slice(2); };
+const SVGNS = "http://www.w3.org/2000/svg";
+const el = (tag, attrs = {}, parent) => { const e = document.createElementNS(SVGNS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (parent) parent.appendChild(e); return e; };
+const h = (tag, attrs = {}, text) => { const e = document.createElement(tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (text != null) e.textContent = text; return e; };
+const $ = id => document.getElementById(id);
+const root = $("rp"), tip = $("tip");
+
+// ---------- tooltip ----------
+function showTip(evt, title, rows) {
+  tip.replaceChildren();
+  tip.appendChild(h("div", { class: "t" }, title));
+  rows.forEach(r => {
+    const d = h("div", { class: "r" });
+    if (r.color) { const k = h("span", { class: "lk" }); k.style.background = r.color; d.appendChild(k); }
+    d.appendChild(h("b", {}, r.value));
+    if (r.name) d.appendChild(h("span", {}, r.name));
+    tip.appendChild(d);
+  });
+  tip.style.display = "block";
+  const rb = root.getBoundingClientRect();
+  let x = (evt.clientX ?? 0) - rb.left + 14, y = (evt.clientY ?? 0) - rb.top + 14;
+  if (evt.type === "focus") { const b = evt.target.getBoundingClientRect(); x = b.left - rb.left + b.width / 2; y = b.top - rb.top - 10; }
+  const tw = tip.offsetWidth, th = tip.offsetHeight;
+  if (x + tw > rb.width - 8) x = Math.max(8, x - tw - 28);
+  if (y + th > rb.height - 8) y -= th + 28;
+  tip.style.left = x + "px"; tip.style.top = y + "px";
+}
+const hideTip = () => { tip.style.display = "none"; };
+
+function legend(id, items, kind = "line") {
+  const L = $(id); L.replaceChildren();
+  items.forEach(it => {
+    const s = h("span");
+    const k = h("span", { class: kind === "line" ? "lk" : "key" });
+    k.style.background = it.color; s.appendChild(k); s.appendChild(document.createTextNode(it.name)); L.appendChild(s);
+  });
+}
+
+function niceTicks(max, n = 4) {
+  if (max <= 0) return [0];
+  const raw = max / n, p = Math.pow(10, Math.floor(Math.log10(raw)));
+  const step = [1, 2, 2.5, 5, 10].map(m => m * p).find(s => s >= raw);
+  const t = []; for (let v = 0; v <= max + step * 0.001; v += step) t.push(+v.toFixed(6));
+  if (t[t.length - 1] < max) t.push(+(t[t.length - 1] + step).toFixed(6));
+  return t;
+}
+
+// ---------- line chart (crosshair) ----------
+function lineChart(id, labels, series, opt = {}) {
+  const box = $(id); box.replaceChildren();
+  const W = Math.max(300, box.clientWidth), H = opt.height || 240;
+  const m = { l: 46, r: 12, t: 10, b: 26 };
+  const all = series.flatMap(s => s.values).filter(v => v != null);
+  let lo = opt.min != null ? opt.min : 0, hi = Math.max(...all, opt.ref || 0);
+  const ticks = niceTicks(hi - lo).map(t => t + lo); hi = ticks[ticks.length - 1];
+  const x = i => m.l + (labels.length === 1 ? 0 : i * (W - m.l - m.r) / (labels.length - 1));
+  const y = v => m.t + (H - m.t - m.b) * (1 - (v - lo) / (hi - lo));
+  const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, width: "100%", role: "img" }, box);
+  const g = el("g", { class: "grid" }, svg);
+  ticks.forEach(t => { el("line", { x1: m.l, x2: W - m.r, y1: y(t), y2: y(t) }, g); const tx = el("text", { x: m.l - 6, y: y(t) + 4, "text-anchor": "end" }, svg); tx.textContent = opt.fmt ? opt.fmt(t) : nf(t); });
+  const step = Math.ceil(labels.length / Math.max(2, Math.floor((W - m.l) / 52)));
+  const lastI = labels.length - 1; labels.forEach((lb, i) => { const show = i === lastI || (i % step === 0 && lastI - i >= step * 0.75); if (show) { const tx = el("text", { x: x(i), y: H - 6, "text-anchor": i === lastI ? "end" : "middle" }, svg); tx.textContent = opt.xfmt ? opt.xfmt(lb) : lb; } });
+  if (opt.ref != null) { el("line", { x1: m.l, x2: W - m.r, y1: y(opt.ref), y2: y(opt.ref), stroke: "var(--text-3)", "stroke-dasharray": "4 4" }, svg); }
+  series.forEach(s => {
+    let d = ""; s.values.forEach((v, i) => { if (v == null) return; d += (d ? "L" : "M") + x(i).toFixed(1) + "," + y(v).toFixed(1); });
+    el("path", { d, fill: "none", stroke: s.color, "stroke-width": 2, "stroke-linejoin": "round", "stroke-linecap": "round" }, svg);
+    const li = s.values.length - 1;
+    if (opt.endDots !== false && s.values[li] != null) el("circle", { cx: x(li), cy: y(s.values[li]), r: 4, fill: s.color, stroke: "var(--surface)", "stroke-width": 2 }, svg);
+  });
+  const hair = el("line", { y1: m.t, y2: H - m.b, stroke: "var(--text-3)", "stroke-width": 1, visibility: "hidden" }, svg);
+  const dots = series.map(s => el("circle", { r: 4.5, fill: s.color, stroke: "var(--surface)", "stroke-width": 2, visibility: "hidden" }, svg));
+  const hit = el("rect", { x: m.l, y: m.t, width: W - m.l - m.r, height: H - m.t - m.b, class: "hit", tabindex: 0 }, svg);
+  const at = i => {
+    hair.setAttribute("x1", x(i)); hair.setAttribute("x2", x(i)); hair.setAttribute("visibility", "visible");
+    series.forEach((s, k) => { const v = s.values[i]; if (v == null) { dots[k].setAttribute("visibility", "hidden"); return; } dots[k].setAttribute("cx", x(i)); dots[k].setAttribute("cy", y(v)); dots[k].setAttribute("visibility", "visible"); });
+  };
+  let cur = labels.length - 1;
+  const move = evt => {
+    const r = svg.getBoundingClientRect(); const px = (evt.clientX - r.left) * W / r.width;
+    cur = Math.max(0, Math.min(labels.length - 1, Math.round((px - m.l) / ((W - m.l - m.r) / Math.max(1, labels.length - 1)))));
+    at(cur);
+    showTip(evt, opt.xfmt ? opt.xfmt(labels[cur]) : labels[cur], series.map(s => ({ color: s.color, name: s.name, value: s.values[cur] == null ? "–" : (opt.tfmt || opt.fmt || nf)(s.values[cur]) })));
+  };
+  hit.addEventListener("pointermove", move);
+  hit.addEventListener("pointerleave", () => { hideTip(); hair.setAttribute("visibility", "hidden"); dots.forEach(d => d.setAttribute("visibility", "hidden")); });
+  hit.addEventListener("focus", e => { at(cur); showTip(e, opt.xfmt ? opt.xfmt(labels[cur]) : labels[cur], series.map(s => ({ color: s.color, name: s.name, value: (opt.tfmt || opt.fmt || nf)(s.values[cur]) }))); });
+  hit.addEventListener("blur", hideTip);
+  hit.addEventListener("keydown", e => { if (e.key === "ArrowLeft" || e.key === "ArrowRight") { cur = Math.max(0, Math.min(labels.length - 1, cur + (e.key === "ArrowLeft" ? -1 : 1))); hit.dispatchEvent(new FocusEvent("focus")); e.preventDefault(); } });
+}
+
+// ---------- stacked bars ----------
+function stackedBars(id, labels, series, opt = {}) {
+  const box = $(id); box.replaceChildren();
+  const W = Math.max(300, box.clientWidth), H = opt.height || 240;
+  const m = { l: 50, r: 8, t: 10, b: 26 };
+  const totals = labels.map((_, i) => series.reduce((a, s) => a + (s.values[i] || 0), 0));
+  const ticks = niceTicks(Math.max(...totals)); const hi = ticks[ticks.length - 1];
+  const bw = (W - m.l - m.r) / labels.length, gap = Math.max(1, Math.min(4, bw * 0.2));
+  const y = v => m.t + (H - m.t - m.b) * (1 - v / hi);
+  const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, width: "100%", role: "img" }, box);
+  const g = el("g", { class: "grid" }, svg);
+  ticks.forEach(t => { el("line", { x1: m.l, x2: W - m.r, y1: y(t), y2: y(t) }, g); const tx = el("text", { x: m.l - 6, y: y(t) + 4, "text-anchor": "end" }, svg); tx.textContent = nf(t); });
+  const step = Math.ceil(labels.length / Math.max(2, Math.floor((W - m.l) / 52)));
+  labels.forEach((lb, i) => {
+    const x0 = m.l + i * bw + gap / 2, w = bw - gap;
+    let acc = 0; const grp = el("g", {}, svg);
+    series.forEach((s, k) => {
+      const v = s.values[i] || 0; if (!v) return;
+      const y0 = y(acc), y1 = y(acc + v); acc += v;
+      const top = k === series.length - 1;
+      const hgt = Math.max(0, y0 - y1 - (k > 0 ? 2 : 0));
+      el("rect", { x: x0, y: y1, width: Math.max(1, w), height: hgt, rx: top ? Math.min(3, w / 2) : 0, fill: s.color }, grp);
+    });
+    const lastI = labels.length - 1;
+    if (i === lastI || (i % step === 0 && lastI - i >= step * 0.75)) { const tx = el("text", { x: i === lastI ? x0 + w : x0 + w / 2, y: H - 6, "text-anchor": i === lastI ? "end" : "middle" }, svg); tx.textContent = opt.xfmt ? opt.xfmt(lb) : lb; }
+    const hit = el("rect", { x: m.l + i * bw, y: m.t, width: bw, height: H - m.t - m.b, class: "hit", tabindex: i === labels.length - 1 ? 0 : -1 }, svg);
+    const show = e => { grp.classList.add("on"); grp.style.opacity = .75; showTip(e, opt.xfmt ? opt.xfmt(lb) : lb, [...series.map(s => ({ color: s.color, name: s.name, value: nf(s.values[i]) })), { name: "tổng", value: nf(totals[i]) }]); };
+    hit.addEventListener("pointermove", show); hit.addEventListener("focus", show);
+    hit.addEventListener("pointerleave", () => { grp.style.opacity = 1; hideTip(); }); hit.addEventListener("blur", () => { grp.style.opacity = 1; hideTip(); });
+  });
+}
+
+// ---------- diverging horizontal bars ----------
+function divBars(id, rows, opt = {}) {
+  const box = $(id); box.replaceChildren();
+  const W = Math.max(300, box.clientWidth), rowH = 26;
+  const labW = Math.min(170, W * 0.34), m = { l: labW, r: 52, t: 6, b: 22 };
+  const H = m.t + m.b + rows.length * rowH;
+  const ext = Math.max(5, ...rows.map(r => Math.abs(r.value))) * 1.05;
+  const x = v => m.l + 46 + (W - m.l - m.r - 46) * (v + ext) / (2 * ext);
+  const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, width: "100%", role: "img" }, box);
+  const g = el("g", { class: "grid" }, svg);
+  niceTicks(ext, 2).forEach(t => (t === 0 ? [0] : [t, -t]).forEach(v => { if (Math.abs(v) > ext) return; el("line", { x1: x(v), x2: x(v), y1: m.t, y2: H - m.b }, g); const tx = el("text", { x: x(v), y: H - 6, "text-anchor": "middle" }, svg); tx.textContent = (v > 0 ? "+" : "") + nf(v) + "%"; }));
+  el("line", { x1: x(0), x2: x(0), y1: m.t, y2: H - m.b, class: "zero" }, svg);
+  rows.forEach((r, i) => {
+    const cy = m.t + i * rowH + rowH / 2, bh = 14;
+    const lab = el("text", { x: 0, y: cy + 4 }, svg); lab.textContent = r.name; lab.style.fill = "var(--text)";
+    const x0 = x(Math.min(0, r.value)), x1 = x(Math.max(0, r.value));
+    const bar = el("rect", { x: x0, y: cy - bh / 2, width: Math.max(1.5, x1 - x0), height: bh, rx: 3, fill: r.value > 0 ? "var(--pos)" : "var(--neg)" }, svg);
+    const vt = el("text", { x: r.value >= 0 ? x1 + 5 : x0 - 5, y: cy + 4, "text-anchor": r.value >= 0 ? "start" : "end" }, svg);
+    vt.textContent = pct(r.value); vt.style.fill = "var(--text)";
+    const hit = el("rect", { x: 0, y: cy - rowH / 2, width: W, height: rowH, class: "hit", tabindex: -1 }, svg);
+    const show = e => { bar.style.opacity = .75; showTip(e, r.name, r.tip); };
+    hit.addEventListener("pointermove", show); hit.addEventListener("focus", show);
+    hit.addEventListener("pointerleave", () => { bar.style.opacity = 1; hideTip(); });
+  });
+}
+const varTip = v => [
+  { name: "so với ②", value: pct(v.vs2) }, { name: "so với ①", value: pct(v.vs1) },
+  { name: "chênh lệch so với ②", value: usd(v.gap2) }, { name: "sản phẩm", value: nf(v.qty) },
+  { name: "mã", value: nf(v.n) }, { name: "giây/sản phẩm bình quân", value: nf(v.sec) }];
+
+// ---------- table ----------
+function table(id, cols, rows) {
+  const box = $(id); box.replaceChildren();
+  const t = h("table"), th = h("thead"), tr = h("tr"), tb = h("tbody");
+  let sortK = null, dir = 1;
+  const draw = () => {
+    tb.replaceChildren();
+    const rs = sortK == null ? rows : [...rows].sort((a, b) => { const A = a[sortK], B = b[sortK]; return (A > B ? 1 : A < B ? -1 : 0) * dir; });
+    rs.forEach(r => { const row = h("tr"); cols.forEach(c => { const td = h("td", c.l ? { class: "l" } : {}, c.f ? c.f(r[c.k], r) : (r[c.k] ?? "–")); if (c.cls) { const k = c.cls(r[c.k]); if (k) td.classList.add(k); } row.appendChild(td); }); tb.appendChild(row); });
+  };
+  cols.forEach(c => { const x = h("th", c.l ? { class: "l" } : {}, c.t); x.addEventListener("click", () => { dir = sortK === c.k ? -dir : (c.l ? 1 : -1); sortK = c.k; draw(); }); tr.appendChild(x); });
+  th.appendChild(tr); t.appendChild(th); t.appendChild(tb); box.appendChild(t); draw();
+}
+const sgn = v => v == null ? null : v > 0 ? "pos" : v < 0 ? "neg" : null;
+
+// ---------- content ----------
+const K = D.kpis, V = D.variance, C = D.changeover;
+$("m-month").textContent = D.month; document.querySelectorAll(".m-month").forEach(e => e.textContent = D.month);
+$("m-meta").textContent = `${nf(D.rows)} dòng mã hàng · sản lượng từng ngày từ ${D.first_day} đến ${D.last_day}`;
+$("m-first").textContent = D.first_day; $("m-gen").textContent = D.generated;
+
+function findings() {
+  const ul = $("findings"), out = [];
+  const a = K.APIC1A, b = K.APIC1B;
+  const tot = a.cur.pcs + b.cur.pcs, totPrev = (a.prev?.pcs || 0) + (b.prev?.pcs || 0), totLy = (a.ly?.pcs || 0) + (b.ly?.pcs || 0);
+  out.push([`Tháng ${D.month}: `, `may ${nf(tot)} sản phẩm`, ` (${pct((tot / totPrev - 1) * 100, 0)} so với tháng trước, ${pct((tot / totLy - 1) * 100, 0)} so với cùng kỳ năm trước). Chi phí/phút chuẩn APIC1A ${usd(a.cur.usd_min, 3)} và APIC1B ${usd(b.cur.usd_min, 3)}, ${a.cur.usd_min < a.avg12_usd_min && b.cur.usd_min < b.avg12_usd_min ? "đều thấp hơn (tốt hơn)" : "so với"} mức trung bình 12 tháng (${usd(a.avg12_usd_min, 3)} và ${usd(b.avg12_usd_min, 3)}).`]);
+  out.push([`12 tháng qua (${nf(V.total.n)} mã đã xong, ${nf(V.total.qty)} sản phẩm): `, `chi phí thực tế cao hơn dự toán ② ${pct(V.total.vs2)} (${usd(V.total.gap2)})`, ` và cao hơn giá lúc nhận đơn ① ${pct(V.total.vs1)} (${usd(V.total.gap1)}). Phần lớn khoảng cách so với ① đến từ việc chia nhỏ lô, không phải do chuyền may chậm.`]);
+  const cx = V.cx[V.cx.length - 1];
+  const cxShare = V.total.gap2 > 0 ? Math.round(cx.gap2 / V.total.gap2 * 100) : null;
+  out.push([`Mã khó là nguồn vượt chi phí chính: `, `mã trên 12.000 giây vượt ② ${pct(cx.vs2)} (${usd(cx.gap2)})`, cxShare != null && cxShare > 50 ? `, chiếm phần lớn tổng chênh lệch. Mã đơn giản dưới 5.000 giây lại rẻ hơn dự toán.` : `.`]);
+  const seas = [...V.season].sort((p, q) => q.qty - p.qty).slice(0, 3);
+  out.push([`Theo mùa: `, seas.map(s => `${s.name} ${pct(s.vs2)}`).join(", "), ` so với ②.`]);
+  const br = V.brand.filter(x => x.qty >= 5000);
+  const worst = [...br].sort((p, q) => q.vs2 - p.vs2).slice(0, 3), best = [...br].sort((p, q) => p.vs2 - q.vs2).slice(0, 2);
+  out.push([`Brand vượt nhiều nhất: `, worst.map(s => `${s.name} ${pct(s.vs2)}`).join(", "), `; tốt nhất: ${best.map(s => `${s.name} ${pct(s.vs2)}`).join(", ")}.`]);
+  const ln = [...V.line].sort((p, q) => p.vs2 - q.vs2);
+  out.push([`Chuyền: `, `tốt nhất ${ln.slice(0, 2).map(s => `${s.name} (${pct(s.vs2)})`).join(", ")}; yếu nhất ${ln.slice(-3).reverse().map(s => `${s.name} (${pct(s.vs2)})`).join(", ")}`, `.`]);
+  out.push([`Đổi mã tốn kém: `, `mỗi lần đổi mã mất khoảng ${nf(C.lost_days, 1)} ngày sản lượng của chuyền`, ` (ngày đầu chỉ đạt ~${nf(D.curve[0]?.pct, 0)}%, ngày thứ 5 ~${nf(D.curve[4]?.pct, 0)}%). Ước tính tối thiểu ${usd(C.usd)} trong 12 tháng, khoảng ${nf(C.usd / C.paid12 * 100, 0)}% tổng tiền công.`]);
+  const y = D.yearly, y0 = y.find(r => r.months === 12) || y[0], yl = y[y.length - 1];
+  out.push([`Tiền công bình quân: `, `${usd(y0.wage)}/người/tháng (${y0.year}) → ${usd(yl.wage)} (${yl.year})`, `; số người theo hợp đồng ${nf(y0.ppl)} → ${nf(yl.ppl)}.`]);
+  out.forEach(([p1, b1, p2]) => { const li = h("li"); li.appendChild(document.createTextNode(p1)); li.appendChild(h("b", {}, b1)); li.appendChild(document.createTextNode(p2)); ul.appendChild(li); });
+}
+
+function kpiTiles() {
+  const box = $("kpis");
+  F.forEach(f => {
+    const k = K[f], c = k.cur;
+    const hd = h("div", { class: "fac" }); const key = h("span", { class: "key" }); key.style.background = COL[f]; hd.appendChild(key); hd.appendChild(document.createTextNode(`${f} · ${nf(c.sewers)} công nhân may · ${k.styles} mã đang chạy · ${k.starts} mã mới vào chuyền`)); box.appendChild(hd);
+    const g = h("div", { class: "grid g4" });
+    const tile = (lbl, val, cmps) => { const t = h("div", { class: "card tile" }); t.appendChild(h("div", { class: "lbl" }, lbl)); t.appendChild(h("div", { class: "val" }, val)); cmps.forEach(([txt, cls]) => t.appendChild(h("div", { class: "cmp " + (cls || "") }, txt))); g.appendChild(t); };
+    const d = (v, base, lowerGood) => { if (base == null || !base) return ["", ""]; const p = (v / base - 1) * 100; return [pct(p, 0), (p > 0) === lowerGood ? "up-bad" : "up-good"]; };
+    const [p1, c1] = d(c.pcs, k.prev?.pcs, false), [p2, c2] = d(c.pcs, k.avg12_pcs, false);
+    tile("Sản lượng (sản phẩm)", nf(c.pcs), [[`${p1} so với tháng trước`, c1], [`${p2} so với TB 12 tháng`, c2]]);
+    const [p3, c3] = d(c.usd_min, k.prev?.usd_min, true), [p4, c4] = d(c.usd_min, k.avg12_usd_min, true);
+    tile("Chi phí / phút chuẩn", usd(c.usd_min, 3), [[`${p3} so với tháng trước`, c3], [`${p4} so với TB 12 tháng`, c4]]);
+    tile("Chi phí / sản phẩm", usd(c.usd_pc, 2), [[`Tiền tháng ${usd(c.paid)}` + (c.sample ? ` + mẫu ${usd(c.sample)}` : ""), ""], [`Mã bình quân ${nf(c.avg_sec)} giây/sp`, ""]]);
+    const e1 = c.eff - (k.prev?.eff || 0), e2 = c.eff - k.avg12_eff;
+    tile("Hiệu suất chuyền", nf(c.eff, 1) + "%", [[`${(e1 > 0 ? "+" : "") + nf(e1, 1)} điểm so với tháng trước`, e1 >= 0 ? "up-good" : "up-bad"], [`${(e2 > 0 ? "+" : "") + nf(e2, 1)} điểm so với TB 12 tháng`, e2 >= 0 ? "up-good" : "up-bad"]]);
+    box.appendChild(g);
+  });
+  table("t-lines", [
+    { k: "factory", t: "Xưởng", l: 1 }, { k: "line", t: "Chuyền", l: 1, f: v => v }, { k: "ppl", t: "Công nhân", f: nf },
+    { k: "pcs", t: "Sản lượng", f: nf }, { k: "hrs", t: "Giờ chuẩn", f: nf }, { k: "eff", t: "Hiệu suất", f: v => nf(v, 1) + "%" },
+    { k: "avg_sec", t: "Giây/sp", f: nf }, { k: "styles", t: "Số mã", f: nf }, { k: "starts", t: "Mã mới", f: nf }, { k: "brands", t: "Brand", l: 1 }], D.lines);
+}
+
+function trends() {
+  const M = D.monthly, labels = M.map(r => r.ym);
+  const ser = (key) => F.map(f => ({ name: f, color: COL[f], values: M.map(r => r[f] ? r[f][key] : null) }));
+  const items = F.map(f => ({ name: f, color: COL[f] }));
+  legend("lg-out", items, "box"); legend("lg-min", items); legend("lg-eff", items); legend("lg-sec", items);
+  stackedBars("c-out", labels, ser("pcs"), { xfmt: ymLabel });
+  lineChart("c-min", labels, ser("usd_min"), { xfmt: ymLabel, fmt: v => nf(v, 2), tfmt: v => usd(v, 3) });
+  lineChart("c-eff", labels, ser("eff"), { xfmt: ymLabel, fmt: v => nf(v) + "%", tfmt: v => nf(v, 1) + "%" });
+  lineChart("c-sec", labels, ser("avg_sec"), { xfmt: ymLabel });
+  const rows = M.map(r => ({ ym: ymLabel(r.ym), a: r.APIC1A?.pcs, b: r.APIC1B?.pcs, am: r.APIC1A?.usd_min, bm: r.APIC1B?.usd_min, ae: r.APIC1A?.eff, be: r.APIC1B?.eff, ap: r.APIC1A?.paid, bp: r.APIC1B?.paid })).reverse();
+  table("t-month", [{ k: "ym", t: "Tháng", l: 1 }, { k: "a", t: "Sản lượng 1A", f: nf }, { k: "b", t: "Sản lượng 1B", f: nf }, { k: "ap", t: "Tiền 1A", f: v => usd(v) }, { k: "bp", t: "Tiền 1B", f: v => usd(v) }, { k: "am", t: "USD/phút 1A", f: v => nf(v, 3) }, { k: "bm", t: "USD/phút 1B", f: v => nf(v, 3) }, { k: "ae", t: "Hiệu suất 1A", f: v => nf(v, 1) + "%" }, { k: "be", t: "Hiệu suất 1B", f: v => nf(v, 1) + "%" }], rows);
+}
+
+function variance() {
+  $("var-sub").textContent = `Tính trên ${nf(V.total.n)} dòng mã hàng hoàn thành trong 12 tháng gần nhất (có giá thực tế ③ > 0). Chênh lệch = (③ − ②) × số lượng hoàn thành.`;
+  const tiles = $("var-tiles");
+  const tile = (lbl, val, sub) => { const t = h("div", { class: "card tile" }); t.appendChild(h("div", { class: "lbl" }, lbl)); t.appendChild(h("div", { class: "val" }, val)); t.appendChild(h("div", { class: "cmp" }, sub)); tiles.appendChild(t); };
+  tile("Chi phí thực tế ③", usd(V.total.act), `${nf(V.total.qty)} sản phẩm`);
+  tile("So với dự toán ②", pct(V.total.vs2), `${usd(V.total.gap2)} chênh lệch`);
+  tile("So với giá nhận đơn ①", pct(V.total.vs1), `${usd(V.total.gap1)} chênh lệch`);
+  V.factory.forEach(f => tile(`${f.name} so với ②`, pct(f.vs2), `${usd(f.gap2)} · ${nf(f.n)} mã`));
+  const mk = arr => arr.map(v => ({ name: v.name, value: v.vs2, tip: varTip(v) }));
+  divBars("c-cx", mk(V.cx)); divBars("c-lot", mk(V.lot));
+  divBars("c-brand", mk([...V.brand].sort((a, b) => b.vs2 - a.vs2)));
+  divBars("c-sales", mk([...V.sales].sort((a, b) => b.vs2 - a.vs2)));
+  table("t-season", [{ k: "name", t: "Mùa", l: 1 }, { k: "n", t: "Số mã", f: nf }, { k: "qty", t: "Sản phẩm", f: nf }, { k: "sec", t: "Giây/sp TB", f: nf }, { k: "act", t: "Thực tế ③", f: v => usd(v) }, { k: "std2", t: "Dự toán ②", f: v => usd(v) }, { k: "gap2", t: "Chênh lệch", f: v => usd(v), cls: sgn }, { k: "vs2", t: "So với ②", f: v => pct(v), cls: sgn }, { k: "vs1", t: "So với ①", f: v => pct(v), cls: sgn }], V.season);
+  const lines = [...V.line].sort((a, b) => b.vs2 - a.vs2);
+  divBars("c-line", mk(lines));
+  table("t-line", [{ k: "name", t: "Chuyền", l: 1 }, { k: "n", t: "Số mã", f: nf }, { k: "qty", t: "Sản phẩm", f: nf }, { k: "sec", t: "Giây/sp TB", f: nf }, { k: "gap2", t: "Chênh lệch", f: v => usd(v), cls: sgn }, { k: "vs2", t: "So với ②", f: v => pct(v), cls: sgn }], lines);
+}
+
+function changeover() {
+  $("co-sub").textContent = `Mỗi lần chuyền đổi sang mã mới, năng suất mất nhiều ngày mới lên lại mức ổn định. Đo trên ${nf(C.starts)} lần vào chuyền trong 12 tháng có từ 10 ngày may trở lên (tổng cộng ${nf(C.all_starts)} dòng mã bắt đầu may trong 12 tháng).`;
+  const cv = D.curve;
+  lineChart("c-curve", cv.map(r => r.day), [{ name: "Năng suất", color: "var(--s1)", values: cv.map(r => r.pct) }], { xfmt: v => "Ngày " + v, fmt: v => nf(v) + "%", tfmt: v => nf(v, 1) + "%", ref: 100, endDots: false, height: 230 });
+  const box = $("co-tiles");
+  const add = (lbl, val, sub) => { const t = h("div", { class: "tile", style: "margin-bottom:16px" }); t.appendChild(h("div", { class: "lbl" }, lbl)); t.appendChild(h("div", { class: "val" }, val)); if (sub) t.appendChild(h("div", { class: "cmp" }, sub)); box.appendChild(t); };
+  add("Sản lượng mất mỗi lần đổi mã", nf(C.lost_days, 1) + " ngày chuyền", "Cộng phần thiếu so với mức ổn định trong 7 ngày đầu");
+  add("Ước tính chi phí 12 tháng", usd(C.usd), `≈ ${nf(C.usd / C.paid12 * 100, 1)}% tổng tiền công ${usd(C.paid12)}`);
+  add("Ngày đạt 90% năng suất", "Ngày " + ((cv.find(r => r.pct >= 90) || {}).day || "–"), "Trung vị các mã, so với mức ổn định của chính mã đó");
+  box.appendChild(h("p", { class: "note" }, "Đây là mức tối thiểu: các mã chạy dưới 10 ngày (lô nhỏ) không đo được mức ổn định nên chưa tính vào, dù chúng mất học nghề nhiều nhất tính trên mỗi sản phẩm."));
+}
+
+function styles() {
+  const cols = [{ k: "style", t: "Mã hàng", l: 1 }, { k: "brand", t: "Brand", l: 1 }, { k: "season", t: "Mùa", l: 1 }, { k: "factory", t: "Xưởng", l: 1 }, { k: "line", t: "Chuyền", l: 1 }, { k: "sales", t: "Phụ trách", l: 1 }, { k: "sec", t: "Giây/sp", f: nf }, { k: "qty", t: "Số lượng", f: nf }, { k: "days", t: "Ngày may", f: nf }, { k: "unit2", t: "② USD/sp", f: v => nf(v, 2) }, { k: "unit3", t: "③ USD/sp", f: v => nf(v, 2) }, { k: "pct", t: "So với ②", f: v => pct(v), cls: sgn }, { k: "gap", t: "Chênh lệch", f: v => usd(v), cls: sgn }, { k: "end", t: "Xong ngày", l: 1 }];
+  table("t-over", cols, D.top_over); table("t-under", cols, D.top_under);
+  table("t-wip", [{ k: "factory", t: "Xưởng", l: 1 }, { k: "line", t: "Chuyền", l: 1 }, { k: "style", t: "Mã hàng", l: 1 }, { k: "brand", t: "Brand", l: 1 }, { k: "season", t: "Mùa", l: 1 }, { k: "start", t: "Bắt đầu", l: 1 }, { k: "days", t: "Ngày đã may", f: nf }, { k: "qty", t: "Số lượng", f: nf }, { k: "done", t: "Đã xong", f: nf }, { k: "remain", t: "Còn lại", f: nf }], D.wip);
+}
+
+function longterm() {
+  const w = D.wage_m.filter((_, i, a) => i >= a.length - 72);
+  lineChart("c-wage", w.map(r => r.ym), [{ name: "USD/người", color: "var(--s1)", values: w.map(r => r.wage) }], { xfmt: ymLabel, tfmt: v => usd(v), min: 0, endDots: true });
+  table("t-year", [{ k: "year", t: "Năm", l: 1, f: v => String(v) }, { k: "months", t: "Số tháng", f: nf }, { k: "wage", t: "USD/người/tháng", f: v => usd(v) }, { k: "ppl", t: "Người (hợp đồng)", f: nf }, { k: "sewers", t: "Công nhân may", f: nf }, { k: "paid", t: "Tổng tiền năm", f: v => usd(v) }], [...D.yearly].reverse());
+  D.dq.forEach(t => $("dq").appendChild(h("li", {}, t)));
+}
+
+function recs() {
+  const cx = V.cx[V.cx.length - 1];
+  const ln = [...V.line].sort((p, q) => q.vs2 - p.vs2).slice(0, 3).map(s => s.name).join(", ");
+  const items = [
+    ["Làm rõ dự toán cho mã khó với TIJ. ", `Mã trên 12.000 giây đang vượt ② ${pct(cx.vs2)}. Nên đối chiếu giây công đoạn và số ngày học nghề TIJ dùng cho nhóm mã này với thực tế (thời gian lên chuyền, số người), mang số liệu cụ thể từng mã trong bảng "10 mã đắt hơn dự toán" đi trao đổi.`],
+    ["Giảm số lần đổi mã và rút ngắn thời gian học nghề. ", `Mỗi lần đổi mã mất khoảng ${nf(C.lost_days, 1)} ngày sản lượng (≥ ${usd(C.usd)}/năm). Gom các lô nhỏ cùng kiểu lên cùng chuyền, chuẩn bị mẫu, rập, cữ gá và đào tạo công đoạn khó trước khi vào chuyền (gắn với workflow ETA → START trong repo này).`],
+    ["Tập trung cải thiện các chuyền yếu. ", `${ln} có chênh lệch cao nhất so với ②. Xem kỹ mã hàng, cân bằng chuyền và tay nghề ở các chuyền này; học cách làm của chuyền tốt nhất.`],
+    ["Theo dõi chi phí/phút chuẩn hàng tháng thay cho chi phí/sản phẩm. ", "Chi phí/sản phẩm lên xuống theo độ khó của mã; chi phí/phút chuẩn và hiệu suất mới cho biết xưởng thực sự nhanh hay chậm hơn."],
+    ["Lập kế hoạch cho tháng Tết và tháng thưởng. ", "Tháng 2 chi phí/phút tăng gấp đôi vì ít ngày làm; các tháng có đơn giá công cao (thưởng) cũng làm giá tháng tăng. Nên báo trước với TIJ và xếp mã dễ/lô lớn vào những tháng này."],
+    ["Đề nghị TIJ sửa các lỗi dữ liệu ", "(mục Lỗi dữ liệu): mã phòng ban full-width, brand viết không thống nhất, dòng ③ = 0 — các lỗi này làm sai các bảng pivot TIJ dùng để đánh giá."],
+  ];
+  items.forEach(([b, t]) => { const li = h("li"); li.appendChild(h("b", {}, b)); li.appendChild(document.createTextNode(t)); $("recs").appendChild(li); });
+}
+
+function longterm2() { const w = D.wage_m.filter((_, i, a) => i >= a.length - 72); lineChart("c-wage", w.map(r => r.ym), [{ name: "USD/người", color: "var(--s1)", values: w.map(r => r.wage) }], { xfmt: ymLabel, tfmt: v => usd(v), min: 0 }); }
+findings(); kpiTiles(); styles(); recs();
+trends(); variance(); changeover(); longterm();
+let rt; let lastW = window.innerWidth;
+window.addEventListener("resize", () => { if (window.innerWidth === lastW) return; lastW = window.innerWidth; clearTimeout(rt); rt = setTimeout(() => { $("var-tiles").replaceChildren(); $("co-tiles").replaceChildren(); trends(); variance(); changeover(); longterm2(); }, 150); });
+</script>
+</body>
+</html>

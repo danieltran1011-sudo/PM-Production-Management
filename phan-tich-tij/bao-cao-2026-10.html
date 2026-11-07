@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Phân tích file chi phí gia công TIJ – tháng 10/2026</title>
+<style>
+.rp {
+  color-scheme: light;
+  --bg: #f6f5f2; --surface: #fcfcfb; --border: #e3e1db; --grid: #ecebe6;
+  --text: #0b0b0b; --text-2: #52514e; --text-3: #7b7a74;
+  --s1: #2a78d6; --s2: #eb6834; --neg: #2a78d6; --pos: #e34948; --mid: #b9b7b0;
+  --good: #0ca30c; --bad: #d03b3b; --warn: #b77900;
+  --tip-bg: #1a1a19; --tip-text: #f0efec;
+}
+@media (prefers-color-scheme: dark) {
+  :root:where(:not([data-theme="light"])) .rp {
+    color-scheme: dark;
+    --bg: #111110; --surface: #1a1a19; --border: #33332f; --grid: #2a2a27;
+    --text: #f0efec; --text-2: #c3c2b7; --text-3: #8f8e86;
+    --s1: #3987e5; --s2: #d95926; --neg: #3987e5; --pos: #e66767; --mid: #5d5c57;
+    --good: #2fbf2f; --bad: #e66767; --warn: #e0a100;
+    --tip-bg: #f0efec; --tip-text: #111110;
+  }
+}
+:root[data-theme="dark"] .rp {
+  color-scheme: dark;
+  --bg: #111110; --surface: #1a1a19; --border: #33332f; --grid: #2a2a27;
+  --text: #f0efec; --text-2: #c3c2b7; --text-3: #8f8e86;
+  --s1: #3987e5; --s2: #d95926; --neg: #3987e5; --pos: #e66767; --mid: #5d5c57;
+  --good: #2fbf2f; --bad: #e66767; --warn: #e0a100;
+  --tip-bg: #f0efec; --tip-text: #111110;
+}
+* { box-sizing: border-box; }
+body { margin: 0; }
+.rp { background: var(--bg); color: var(--text); font: 15px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; min-height: 100vh; }
+.rp .wrap { max-width: 1180px; margin: 0 auto; padding: 28px 20px 60px; }
+.rp h1 { font-size: 26px; line-height: 1.25; margin: 0 0 6px; }
+.rp h2 { font-size: 20px; margin: 44px 0 6px; padding-top: 8px; }
+.rp h3 { font-size: 15px; margin: 0 0 2px; }
+.rp .sub { color: var(--text-2); margin: 0 0 14px; }
+.rp .muted { color: var(--text-3); font-size: 13px; }
+.rp nav { display: flex; flex-wrap: wrap; gap: 6px 14px; margin: 14px 0 6px; font-size: 13.5px; }
+.rp nav a { color: var(--text-2); text-decoration: none; border-bottom: 1px solid var(--border); }
+.rp nav a:hover { color: var(--text); }
+.rp .card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; }
+.rp .grid { display: grid; gap: 14px; }
+.rp .g2 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 440px), 1fr)); }
+.rp .g4 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr)); }
+.rp .findings { margin: 0; padding-left: 20px; }
+.rp .findings li { margin: 0 0 8px; }
+.rp .findings b { font-weight: 600; }
+.rp .tile .lbl { color: var(--text-2); font-size: 13px; }
+.rp .tile .val { font-size: 28px; font-weight: 600; letter-spacing: -0.01em; font-variant-numeric: tabular-nums; margin: 2px 0; }
+.rp .tile .cmp { font-size: 12.5px; color: var(--text-2); }
+.rp .fac { display: flex; align-items: center; gap: 8px; font-weight: 600; margin: 18px 0 8px; }
+.rp .key { display: inline-block; width: 12px; height: 12px; border-radius: 3px; }
+.rp .up-bad, .rp .down-bad { color: var(--bad); }
+.rp .up-good, .rp .down-good { color: var(--good); }
+.rp .legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: 13px; color: var(--text-2); margin: 6px 0 2px; }
+.rp .legend span { display: inline-flex; align-items: center; gap: 6px; }
+.rp .lk { width: 14px; height: 3px; border-radius: 2px; display: inline-block; }
+.rp .chart { position: relative; width: 100%; }
+.rp .chart svg { display: block; width: 100%; height: auto; overflow: visible; }
+.rp svg text { fill: var(--text-2); font-size: 11.5px; font-family: inherit; }
+.rp svg .axis line, .rp svg .grid line { stroke: var(--grid); }
+.rp svg .zero { stroke: var(--text-3); }
+.rp svg .hit { fill: transparent; cursor: default; }
+.rp svg .hit:focus { outline: none; }
+.rp svg .bar.on, .rp svg rect.on { opacity: .75; }
+.rp .tip { position: absolute; pointer-events: none; background: var(--tip-bg); color: var(--tip-text); font-size: 12.5px; line-height: 1.45; padding: 8px 10px; border-radius: 7px; box-shadow: 0 4px 14px rgba(0,0,0,.18); white-space: nowrap; z-index: 5; display: none; }
+.rp .tip .t { opacity: .75; margin-bottom: 3px; }
+.rp .tip .r { display: flex; align-items: center; gap: 7px; }
+.rp .tip .r b { font-weight: 600; font-variant-numeric: tabular-nums; }
+.rp table { width: 100%; border-collapse: collapse; font-size: 13.5px; font-variant-numeric: tabular-nums; }
+.rp th, .rp td { padding: 6px 8px; border-bottom: 1px solid var(--border); text-align: right; white-space: nowrap; }
+.rp th { color: var(--text-2); font-weight: 600; font-size: 12.5px; cursor: pointer; user-select: none; position: sticky; top: 0; background: var(--surface); }
+.rp th:first-child, .rp td:first-child, .rp td.l, .rp th.l { text-align: left; }
+.rp .tbl { overflow-x: auto; max-height: 520px; overflow-y: auto; }
+.rp details { margin-top: 8px; }
+.rp summary { cursor: pointer; color: var(--text-2); font-size: 13px; }
+.rp .pill { display: inline-block; padding: 0 6px; border-radius: 9px; font-size: 12px; }
+.rp .pos { color: var(--bad); }
+.rp .neg { color: var(--good); }
+.rp .explain { display: grid; grid-template-columns: auto 1fr; gap: 6px 12px; margin: 8px 0 0; }
+.rp .explain dt { font-weight: 600; white-space: nowrap; }
+.rp .explain dd { margin: 0; color: var(--text-2); }
+.rp .note { border-left: 3px solid var(--border); padding: 2px 0 2px 12px; color: var(--text-2); font-size: 13.5px; margin: 10px 0 0; }
+.rp ol.recs li { margin-bottom: 10px; }
+@media (max-width: 560px) { .rp .tile .val { font-size: 24px; } .rp h1 { font-size: 22px; } }
+</style>
+</head>
+<body>
+<div class="rp" id="rp">
+<div class="wrap">
+  <h1>Phân tích file chi phí gia công TIJ – tháng <span id="m-month"></span></h1>
+  <p class="sub">Xưởng An Phát APIC1A và APIC1B · <span id="m-meta"></span></p>
+  <nav>
+    <a href="#tom-tat">Tóm tắt</a><a href="#file-la-gi">File này là gì</a><a href="#thang-nay">Tháng này</a>
+    <a href="#xu-huong">Xu hướng 3 năm</a><a href="#so-chuan">Thực tế so với dự toán</a>
+    <a href="#chuyen">Theo chuyền</a><a href="#doi-ma">Chi phí đổi mã</a><a href="#ma-hang">Mã hàng nổi bật</a>
+    <a href="#dang-may">Đang may dở</a><a href="#dai-han">Nhân sự và tiền công</a><a href="#du-lieu">Lỗi dữ liệu</a><a href="#de-xuat">Đề xuất</a>
+  </nav>
+
+  <h2 id="tom-tat">Tóm tắt</h2>
+  <div class="card"><ul class="findings" id="findings"></ul></div>
+
+  <h2 id="file-la-gi">File này là gì</h2>
+  <div class="card">
+    <p style="margin-top:0">TIJ dùng file này để theo dõi <b>chi phí may thực tế của từng mã hàng trên từng chuyền</b> so với giá dự toán. Mỗi tháng TIJ trả cho xưởng một khoản gần như cố định (số người theo hợp đồng × đơn giá công/người), sau đó chia khoản này cho từng mã hàng theo số ngày chuyền đã may. Vì vậy <b>may nhanh hơn chuẩn thì giá mỗi sản phẩm rẻ hơn</b>, may chậm thì đắt hơn.</p>
+    <dl class="explain">
+      <dt>① Giá chuẩn 1</dt><dd>Dự toán lúc nhận đơn, tính trên tổng số lượng đặt hàng (lô càng lớn, càng ít ngày học nghề → giá càng thấp).</dd>
+      <dt>② Giá chuẩn 2</dt><dd>Dự toán tính lại theo lô thực tế đưa vào từng chuyền sau khi chia/gom đơn. Đây là thước đo công bằng nhất cho năng suất của xưởng.</dd>
+      <dt>③ Giá thực tế</dt><dd>Chi phí chuyền/ngày × số ngày may thực tế ÷ số sản phẩm hoàn thành. Chỉ có khi mã đã may xong.</dd>
+      <dt>⑤ Giá tháng</dt><dd>Phân bổ đúng tổng tiền tháng trả cho xưởng vào các mã đã may trong tháng.</dd>
+    </dl>
+    <p class="note">Khoảng cách ① → ② chủ yếu do chia nhỏ lô (quyết định về kế hoạch), còn ② → ③ phản ánh năng suất thực của chuyền. Báo cáo này lấy <b>② làm mốc chính</b>. Số dương = thực tế đắt hơn dự toán.</p>
+    <p class="muted" style="margin-bottom:0">Các sheet: <b>NEW</b> (sheet chính, từng mã hàng × chuyền + sản lượng từng ngày), <b>HCM</b> (nhân sự, đơn giá công, tổng tiền tháng từ 2015), <b>担当者</b> và <b>p(0)–p(3), QTY</b> (bảng pivot của TIJ), <b>Sheet1</b> (bảng tạm).</p>
+  </div>
+
+  <h2 id="thang-nay">Tháng <span class="m-month"></span></h2>
+  <p class="sub">So với tháng trước và trung bình 12 tháng gần nhất. Chi phí/phút chuẩn = tiền tháng (không gồm tiền mẫu) ÷ tổng phút chuẩn đã may — chỉ số này đã loại ảnh hưởng của mã dễ/khó nên so sánh giữa các tháng chính xác hơn chi phí/sản phẩm.</p>
+  <div id="kpis"></div>
+  <div class="card" style="margin-top:14px">
+    <h3>Từng chuyền trong tháng</h3>
+    <p class="muted" style="margin:0 0 8px">Hiệu suất = giờ chuẩn làm ra ÷ (số công nhân chuyền × 8 giờ × số ngày chạy). Bấm tiêu đề cột để sắp xếp.</p>
+    <div class="tbl" id="t-lines"></div>
+  </div>
+
+  <h2 id="xu-huong">Xu hướng từ <span id="m-first"></span></h2>
+  <p class="sub">Tiền trả mỗi tháng gần như cố định, nên sản lượng và độ khó của mã quyết định giá mỗi sản phẩm. Tháng Tết (tháng 2) chi phí/phút luôn tăng vọt vì ít ngày làm.</p>
+  <div class="grid g2">
+    <div class="card"><h3>Sản lượng may mỗi tháng (sản phẩm)</h3><div class="legend" id="lg-out"></div><div class="chart" id="c-out"></div>
+      <details><summary>Xem bảng số liệu</summary><div class="tbl" id="t-month"></div></details></div>
+    <div class="card"><h3>Chi phí trên mỗi phút chuẩn (USD/phút)</h3><div class="legend" id="lg-min"></div><div class="chart" id="c-min"></div></div>
+    <div class="card"><h3>Hiệu suất chuyền (%)</h3><div class="legend" id="lg-eff"></div><div class="chart" id="c-eff"></div></div>
+    <div class="card"><h3>Độ khó bình quân của mã đang may (giây/sản phẩm)</h3><div class="legend" id="lg-sec"></div><div class="chart" id="c-sec"></div></div>
+  </div>
+
+  <h2 id="so-chuan">Chi phí thực tế so với dự toán ②</h2>
+  <p class="sub" id="var-sub"></p>
+  <div class="grid g4" id="var-tiles"></div>
+  <div class="grid g2" style="margin-top:14px">
+    <div class="card"><h3>Theo độ khó của mã (giây công đoạn)</h3><p class="muted" style="margin:0">% chênh lệch so với ②; thanh đỏ = đắt hơn dự toán, xanh = rẻ hơn.</p><div class="chart" id="c-cx"></div></div>
+    <div class="card"><h3>Theo cỡ lô hoàn thành (sản phẩm)</h3><p class="muted" style="margin:0">% chênh lệch so với ②.</p><div class="chart" id="c-lot"></div></div>
+    <div class="card"><h3>Theo brand (≥ 3.000 sản phẩm)</h3><p class="muted" style="margin:0">% chênh lệch so với ②.</p><div class="chart" id="c-brand"></div></div>
+    <div class="card"><h3>Theo người phụ trách bên TIJ (≥ 3.000 sản phẩm)</h3><p class="muted" style="margin:0">% chênh lệch so với ②.</p><div class="chart" id="c-sales"></div></div>
+  </div>
+  <div class="card" style="margin-top:14px"><h3>Theo mùa hàng</h3><div class="tbl" id="t-season"></div></div>
+
+  <h2 id="chuyen">Theo chuyền (12 tháng)</h2>
+  <p class="sub">Chênh lệch so với ② của các mã đã hoàn thành trên từng chuyền. Chuyền có số âm may nhanh hơn dự toán.</p>
+  <div class="grid g2">
+    <div class="card"><h3>% chênh lệch so với ② theo chuyền</h3><div class="chart" id="c-line"></div></div>
+    <div class="card"><h3>Chi tiết</h3><div class="tbl" id="t-line"></div></div>
+  </div>
+
+  <h2 id="doi-ma">Chi phí học nghề khi đổi mã</h2>
+  <p class="sub" id="co-sub"></p>
+  <div class="grid g2">
+    <div class="card"><h3>Năng suất theo ngày thứ n của mã (% so với lúc ổn định)</h3><div class="chart" id="c-curve"></div></div>
+    <div class="card" id="co-tiles"></div>
+  </div>
+
+  <h2 id="ma-hang">Mã hàng nổi bật (12 tháng, lô ≥ 100 sản phẩm)</h2>
+  <div class="card"><h3>10 mã đắt hơn dự toán nhiều nhất (USD)</h3><div class="tbl" id="t-over"></div></div>
+  <div class="card" style="margin-top:14px"><h3>10 mã rẻ hơn dự toán nhiều nhất (USD)</h3><div class="tbl" id="t-under"></div></div>
+
+  <h2 id="dang-may">Mã đang may dở cuối tháng</h2>
+  <p class="sub">Có sản lượng trong tháng nhưng chưa hoàn thành, nên chưa có giá thực tế ③. Đây là các mã sẽ quyết định kết quả tháng sau.</p>
+  <div class="card"><div class="tbl" id="t-wip"></div></div>
+
+  <h2 id="dai-han">Nhân sự và tiền công (sheet HCM)</h2>
+  <div class="grid g2">
+    <div class="card"><h3>Đơn giá công bình quân (USD/người/tháng)</h3><div class="chart" id="c-wage"></div></div>
+    <div class="card"><h3>Theo năm</h3><div class="tbl" id="t-year"></div><p class="muted">Năm đầu và năm hiện tại chưa đủ 12 tháng (xem cột "Số tháng"). Tổng tiền gồm cả APIC1A và APIC1B, kể cả tiền mẫu.</p></div>
+  </div>
+
+  <h2 id="du-lieu">Lỗi dữ liệu cần lưu ý</h2>
+  <div class="card"><ul class="findings" id="dq"></ul></div>
+
+  <h2 id="de-xuat">Đề xuất</h2>
+  <div class="card"><ol class="recs" id="recs"></ol></div>
+
+  <p class="muted" style="margin-top:30px">Tạo bằng <code>phan-tich-tij/phan_tich.py</code> ngày <span id="m-gen"></span>. Hiệu suất tính theo ngày 8 giờ; số công nhân chuyền lấy từ cột "line人数" của file. Chi phí đổi mã là ước tính.</p>
+</div>
+<div class="tip" id="tip"></div>
+</div>
+
+<script>
+const D = {"month": "10/2026", "ym": "2026-10", "prev": "2026-09", "ly": "2025-10", "generated": "07/11/2026", "rows": 3182, "first_day": "10/2023", "last_day": "31/10/2026", "kpis": {"APIC1A": {"cur": {"pcs": 42887, "hrs": 104427.0, "paid": 666719.0, "sample": 0.0, "usd_pc": 15.55, "usd_min": 0.106, "eff": 81.0, "sewers": 615.0, "avg_sec": 8766.0, "days": 27}, "prev": {"pcs": 25424, "hrs": 86000.0, "paid": 668973.0, "sample": 0.0, "usd_pc": 26.31, "usd_min": 0.13, "eff": 76.9, "sewers": 617.0, "avg_sec": 12178.0, "days": 24}, "ly": {"pcs": 34102, "hrs": 102047.0, "paid": 573604.0, "sample": 0.0, "usd_pc": 16.82, "usd_min": 0.094, "eff": 86.6, "sewers": 567.0, "avg_sec": 10773.0, "days": 27}, "avg12_usd_min": 0.126, "avg12_pcs": 31399.0, "avg12_eff": 74.0, "styles": 67, "starts": 48}, "APIC1B": {"cur": {"pcs": 17158, "hrs": 55642.0, "paid": 338721.0, "sample": 43384.0, "usd_pc": 19.74, "usd_min": 0.101, "eff": 75.3, "sewers": 352.0, "avg_sec": 11674.0, "days": 27}, "prev": {"pcs": 13152, "hrs": 47404.0, "paid": 349953.0, "sample": 43375.0, "usd_pc": 26.61, "usd_min": 0.123, "eff": 72.1, "sewers": 362.0, "avg_sec": 12976.0, "days": 24}, "ly": {"pcs": 34367, "hrs": 72224.0, "paid": 360593.0, "sample": 40770.0, "usd_pc": 10.49, "usd_min": 0.083, "eff": 87.6, "sewers": 396.0, "avg_sec": 7566.0, "days": 27}, "avg12_usd_min": 0.108, "avg12_pcs": 22924.0, "avg12_eff": 76.9, "styles": 31, "starts": 21}}, "monthly": [{"ym": "2023-10", "APIC1A": {"pcs": 25838, "hrs": 52726.0, "paid": 553670.0, "usd_pc": 21.43, "usd_min": 0.175, "eff": 79.7, "days": 26, "avg_sec": 7346.0}, "APIC1B": {"pcs": 14550, "hrs": 27752.0, "paid": 401338.0, "usd_pc": 27.58, "usd_min": 0.241, "eff": 66.7, "days": 21, "avg_sec": 6866.0}}, {"ym": "2023-11", "APIC1A": {"pcs": 32885, "hrs": 77846.0, "paid": 552760.0, "usd_pc": 16.81, "usd_min": 0.118, "eff": 72.9, "days": 26, "avg_sec": 8522.0}, "APIC1B": {"pcs": 33374, "hrs": 67894.0, "paid": 397807.0, "usd_pc": 11.92, "usd_min": 0.098, "eff": 82.6, "days": 26, "avg_sec": 7324.0}}, {"ym": "2023-12", "APIC1A": {"pcs": 35636, "hrs": 84096.0, "paid": 544088.0, "usd_pc": 15.27, "usd_min": 0.108, "eff": 77.6, "days": 26, "avg_sec": 8495.0}, "APIC1B": {"pcs": 38384, "hrs": 69830.0, "paid": 408720.0, "usd_pc": 10.65, "usd_min": 0.098, "eff": 82.8, "days": 26, "avg_sec": 6549.0}}, {"ym": "2024-01", "APIC1A": {"pcs": 44516, "hrs": 78394.0, "paid": 567135.0, "usd_pc": 12.74, "usd_min": 0.121, "eff": 72.4, "days": 26, "avg_sec": 6340.0}, "APIC1B": {"pcs": 33486, "hrs": 65751.0, "paid": 385186.0, "usd_pc": 11.5, "usd_min": 0.098, "eff": 78.5, "days": 26, "avg_sec": 7069.0}}, {"ym": "2024-02", "APIC1A": {"pcs": 41956, "hrs": 53695.0, "paid": 571101.0, "usd_pc": 13.61, "usd_min": 0.177, "eff": 78.6, "days": 16, "avg_sec": 4607.0}, "APIC1B": {"pcs": 20518, "hrs": 35916.0, "paid": 375409.0, "usd_pc": 18.3, "usd_min": 0.174, "eff": 70.1, "days": 16, "avg_sec": 6302.0}}, {"ym": "2024-03", "APIC1A": {"pcs": 28648, "hrs": 77136.0, "paid": 583243.0, "usd_pc": 20.36, "usd_min": 0.126, "eff": 72.8, "days": 26, "avg_sec": 9693.0}, "APIC1B": {"pcs": 19691, "hrs": 68237.0, "paid": 383872.0, "usd_pc": 19.49, "usd_min": 0.094, "eff": 81.9, "days": 26, "avg_sec": 12475.0}}, {"ym": "2024-04", "APIC1A": {"pcs": 20111, "hrs": 75912.0, "paid": 591196.0, "usd_pc": 29.4, "usd_min": 0.13, "eff": 79.7, "days": 24, "avg_sec": 13589.0}, "APIC1B": {"pcs": 18676, "hrs": 65036.0, "paid": 370763.0, "usd_pc": 19.85, "usd_min": 0.095, "eff": 84.1, "days": 24, "avg_sec": 12536.0}}, {"ym": "2024-05", "APIC1A": {"pcs": 27376, "hrs": 75865.0, "paid": 593319.0, "usd_pc": 21.67, "usd_min": 0.13, "eff": 71.9, "days": 26, "avg_sec": 9976.0}, "APIC1B": {"pcs": 22161, "hrs": 67310.0, "paid": 358242.0, "usd_pc": 16.17, "usd_min": 0.089, "eff": 80.7, "days": 26, "avg_sec": 10934.0}}, {"ym": "2024-06", "APIC1A": {"pcs": 35247, "hrs": 95590.0, "paid": 678873.0, "usd_pc": 19.26, "usd_min": 0.118, "eff": 81.7, "days": 27, "avg_sec": 9763.0}, "APIC1B": {"pcs": 26672, "hrs": 74819.0, "paid": 407344.0, "usd_pc": 15.27, "usd_min": 0.091, "eff": 87.8, "days": 27, "avg_sec": 10099.0}}, {"ym": "2024-07", "APIC1A": {"pcs": 29917, "hrs": 80817.0, "paid": 683515.0, "usd_pc": 22.85, "usd_min": 0.141, "eff": 67.0, "days": 28, "avg_sec": 9725.0}, "APIC1B": {"pcs": 27447, "hrs": 74237.0, "paid": 403434.0, "usd_pc": 14.7, "usd_min": 0.091, "eff": 85.7, "days": 28, "avg_sec": 9737.0}}, {"ym": "2024-08", "APIC1A": {"pcs": 30358, "hrs": 86905.0, "paid": 601526.0, "usd_pc": 19.81, "usd_min": 0.115, "eff": 75.9, "days": 27, "avg_sec": 10306.0}, "APIC1B": {"pcs": 19413, "hrs": 64057.0, "paid": 347377.0, "usd_pc": 17.89, "usd_min": 0.09, "eff": 78.8, "days": 28, "avg_sec": 11879.0}}, {"ym": "2024-09", "APIC1A": {"pcs": 21121, "hrs": 62888.0, "paid": 601965.0, "usd_pc": 28.5, "usd_min": 0.16, "eff": 65.4, "days": 23, "avg_sec": 10719.0}, "APIC1B": {"pcs": 16008, "hrs": 53318.0, "paid": 358934.0, "usd_pc": 22.42, "usd_min": 0.112, "eff": 79.1, "days": 23, "avg_sec": 11991.0}}, {"ym": "2024-10", "APIC1A": {"pcs": 28726, "hrs": 91825.0, "paid": 593563.0, "usd_pc": 20.66, "usd_min": 0.108, "eff": 79.5, "days": 27, "avg_sec": 11508.0}, "APIC1B": {"pcs": 28618, "hrs": 65183.0, "paid": 376935.0, "usd_pc": 13.17, "usd_min": 0.096, "eff": 81.3, "days": 27, "avg_sec": 8200.0}}, {"ym": "2024-11", "APIC1A": {"pcs": 29173, "hrs": 71202.0, "paid": 690662.0, "usd_pc": 23.67, "usd_min": 0.162, "eff": 62.5, "days": 26, "avg_sec": 8786.0}, "APIC1B": {"pcs": 25522, "hrs": 66026.0, "paid": 427559.0, "usd_pc": 16.75, "usd_min": 0.108, "eff": 84.2, "days": 26, "avg_sec": 9313.0}}, {"ym": "2024-12", "APIC1A": {"pcs": 33423, "hrs": 81625.0, "paid": 672823.0, "usd_pc": 20.13, "usd_min": 0.137, "eff": 69.8, "days": 26, "avg_sec": 8792.0}, "APIC1B": {"pcs": 28871, "hrs": 62149.0, "paid": 424670.0, "usd_pc": 14.71, "usd_min": 0.114, "eff": 75.9, "days": 26, "avg_sec": 7750.0}}, {"ym": "2025-01", "APIC1A": {"pcs": 25374, "hrs": 66737.0, "paid": 648700.0, "usd_pc": 25.57, "usd_min": 0.162, "eff": 70.6, "days": 21, "avg_sec": 9468.0}, "APIC1B": {"pcs": 20956, "hrs": 47809.0, "paid": 409155.0, "usd_pc": 19.52, "usd_min": 0.143, "eff": 71.5, "days": 21, "avg_sec": 8213.0}}, {"ym": "2025-02", "APIC1A": {"pcs": 20748, "hrs": 51555.0, "paid": 562141.0, "usd_pc": 27.09, "usd_min": 0.182, "eff": 55.0, "days": 21, "avg_sec": 8945.0}, "APIC1B": {"pcs": 23022, "hrs": 45427.0, "paid": 352820.0, "usd_pc": 15.33, "usd_min": 0.129, "eff": 69.2, "days": 21, "avg_sec": 7103.0}}, {"ym": "2025-03", "APIC1A": {"pcs": 19160, "hrs": 50048.0, "paid": 544916.0, "usd_pc": 28.44, "usd_min": 0.181, "eff": 45.9, "days": 26, "avg_sec": 9404.0}, "APIC1B": {"pcs": 17866, "hrs": 55418.0, "paid": 387643.0, "usd_pc": 21.7, "usd_min": 0.117, "eff": 68.5, "days": 26, "avg_sec": 11167.0}}, {"ym": "2025-04", "APIC1A": {"pcs": 27262, "hrs": 79932.0, "paid": 571559.0, "usd_pc": 20.97, "usd_min": 0.119, "eff": 79.5, "days": 24, "avg_sec": 10555.0}, "APIC1B": {"pcs": 19814, "hrs": 66115.0, "paid": 369100.0, "usd_pc": 18.63, "usd_min": 0.093, "eff": 91.8, "days": 24, "avg_sec": 12012.0}}, {"ym": "2025-05", "APIC1A": {"pcs": 35871, "hrs": 85919.0, "paid": 571529.0, "usd_pc": 15.93, "usd_min": 0.111, "eff": 81.2, "days": 25, "avg_sec": 8623.0}, "APIC1B": {"pcs": 24983, "hrs": 63828.0, "paid": 370246.0, "usd_pc": 14.82, "usd_min": 0.097, "eff": 85.9, "days": 25, "avg_sec": 9197.0}}, {"ym": "2025-06", "APIC1A": {"pcs": 28818, "hrs": 82798.0, "paid": 586224.0, "usd_pc": 20.34, "usd_min": 0.118, "eff": 71.8, "days": 26, "avg_sec": 10343.0}, "APIC1B": {"pcs": 21612, "hrs": 68431.0, "paid": 471756.0, "usd_pc": 21.83, "usd_min": 0.115, "eff": 90.5, "days": 26, "avg_sec": 11399.0}}, {"ym": "2025-07", "APIC1A": {"pcs": 28910, "hrs": 95015.0, "paid": 666361.0, "usd_pc": 23.05, "usd_min": 0.117, "eff": 79.2, "days": 27, "avg_sec": 11832.0}, "APIC1B": {"pcs": 21780, "hrs": 66375.0, "paid": 398634.0, "usd_pc": 18.3, "usd_min": 0.1, "eff": 83.4, "days": 27, "avg_sec": 10971.0}}, {"ym": "2025-08", "APIC1A": {"pcs": 27815, "hrs": 90124.0, "paid": 586117.0, "usd_pc": 21.07, "usd_min": 0.108, "eff": 77.8, "days": 26, "avg_sec": 11664.0}, "APIC1B": {"pcs": 20757, "hrs": 66596.0, "paid": 357616.0, "usd_pc": 17.23, "usd_min": 0.089, "eff": 85.1, "days": 26, "avg_sec": 11550.0}}, {"ym": "2025-09", "APIC1A": {"pcs": 18365, "hrs": 78838.0, "paid": 591532.0, "usd_pc": 32.21, "usd_min": 0.125, "eff": 74.4, "days": 24, "avg_sec": 15454.0}, "APIC1B": {"pcs": 14239, "hrs": 54443.0, "paid": 359096.0, "usd_pc": 25.22, "usd_min": 0.11, "eff": 75.8, "days": 24, "avg_sec": 13765.0}}, {"ym": "2025-10", "APIC1A": {"pcs": 34102, "hrs": 102047.0, "paid": 573604.0, "usd_pc": 16.82, "usd_min": 0.094, "eff": 86.6, "days": 27, "avg_sec": 10773.0}, "APIC1B": {"pcs": 34367, "hrs": 72224.0, "paid": 360593.0, "usd_pc": 10.49, "usd_min": 0.083, "eff": 87.6, "days": 27, "avg_sec": 7566.0}}, {"ym": "2025-11", "APIC1A": {"pcs": 37108, "hrs": 85675.0, "paid": 585857.0, "usd_pc": 15.79, "usd_min": 0.114, "eff": 84.8, "days": 23, "avg_sec": 8312.0}, "APIC1B": {"pcs": 39602, "hrs": 68138.0, "paid": 367836.0, "usd_pc": 9.29, "usd_min": 0.09, "eff": 96.4, "days": 23, "avg_sec": 6194.0}}, {"ym": "2025-12", "APIC1A": {"pcs": 40553, "hrs": 89743.0, "paid": 583394.0, "usd_pc": 14.39, "usd_min": 0.108, "eff": 75.0, "days": 27, "avg_sec": 7967.0}, "APIC1B": {"pcs": 29449, "hrs": 59657.0, "paid": 374832.0, "usd_pc": 12.73, "usd_min": 0.105, "eff": 71.8, "days": 27, "avg_sec": 7293.0}}, {"ym": "2026-01", "APIC1A": {"pcs": 37045, "hrs": 80260.0, "paid": 629756.0, "usd_pc": 17.0, "usd_min": 0.131, "eff": 65.6, "days": 26, "avg_sec": 7800.0}, "APIC1B": {"pcs": 24815, "hrs": 55995.0, "paid": 328012.0, "usd_pc": 13.22, "usd_min": 0.098, "eff": 77.8, "days": 26, "avg_sec": 8123.0}}, {"ym": "2026-02", "APIC1A": {"pcs": 16035, "hrs": 36464.0, "paid": 606462.0, "usd_pc": 37.82, "usd_min": 0.277, "eff": 49.5, "days": 16, "avg_sec": 8187.0}, "APIC1B": {"pcs": 9147, "hrs": 18650.0, "paid": 314898.0, "usd_pc": 34.43, "usd_min": 0.281, "eff": 42.6, "days": 16, "avg_sec": 7340.0}}, {"ym": "2026-03", "APIC1A": {"pcs": 31109, "hrs": 82634.0, "paid": 604750.0, "usd_pc": 19.44, "usd_min": 0.122, "eff": 68.3, "days": 26, "avg_sec": 9563.0}, "APIC1B": {"pcs": 31428, "hrs": 62024.0, "paid": 331118.0, "usd_pc": 10.54, "usd_min": 0.089, "eff": 85.5, "days": 26, "avg_sec": 7105.0}}, {"ym": "2026-04", "APIC1A": {"pcs": 37095, "hrs": 100465.0, "paid": 637800.0, "usd_pc": 17.19, "usd_min": 0.106, "eff": 86.0, "days": 25, "avg_sec": 9750.0}, "APIC1B": {"pcs": 38029, "hrs": 58134.0, "paid": 330554.0, "usd_pc": 8.69, "usd_min": 0.095, "eff": 84.9, "days": 25, "avg_sec": 5503.0}}, {"ym": "2026-05", "APIC1A": {"pcs": 31205, "hrs": 83553.0, "paid": 634989.0, "usd_pc": 20.35, "usd_min": 0.127, "eff": 75.6, "days": 24, "avg_sec": 9639.0}, "APIC1B": {"pcs": 23212, "hrs": 53934.0, "paid": 324583.0, "usd_pc": 13.98, "usd_min": 0.1, "eff": 82.7, "days": 24, "avg_sec": 8365.0}}, {"ym": "2026-06", "APIC1A": {"pcs": 25583, "hrs": 90318.0, "paid": 683425.0, "usd_pc": 26.71, "usd_min": 0.126, "eff": 74.6, "days": 26, "avg_sec": 12709.0}, "APIC1B": {"pcs": 17094, "hrs": 56632.0, "paid": 351187.0, "usd_pc": 20.54, "usd_min": 0.103, "eff": 80.9, "days": 26, "avg_sec": 11927.0}}, {"ym": "2026-07", "APIC1A": {"pcs": 27757, "hrs": 89655.0, "paid": 723731.0, "usd_pc": 26.07, "usd_min": 0.135, "eff": 71.7, "days": 27, "avg_sec": 11628.0}, "APIC1B": {"pcs": 19027, "hrs": 55293.0, "paid": 383035.0, "usd_pc": 20.13, "usd_min": 0.115, "eff": 75.0, "days": 27, "avg_sec": 10462.0}}, {"ym": "2026-08", "APIC1A": {"pcs": 24987, "hrs": 86221.0, "paid": 664486.0, "usd_pc": 26.59, "usd_min": 0.128, "eff": 71.2, "days": 26, "avg_sec": 12422.0}, "APIC1B": {"pcs": 12977, "hrs": 46440.0, "paid": 351151.0, "usd_pc": 27.06, "usd_min": 0.126, "eff": 66.0, "days": 26, "avg_sec": 12883.0}}, {"ym": "2026-09", "APIC1A": {"pcs": 25424, "hrs": 86000.0, "paid": 668973.0, "usd_pc": 26.31, "usd_min": 0.13, "eff": 76.9, "days": 24, "avg_sec": 12178.0}, "APIC1B": {"pcs": 13152, "hrs": 47404.0, "paid": 349953.0, "usd_pc": 26.61, "usd_min": 0.123, "eff": 72.1, "days": 24, "avg_sec": 12976.0}}, {"ym": "2026-10", "APIC1A": {"pcs": 42887, "hrs": 104427.0, "paid": 666719.0, "usd_pc": 15.55, "usd_min": 0.106, "eff": 81.0, "days": 27, "avg_sec": 8766.0}, "APIC1B": {"pcs": 17158, "hrs": 55642.0, "paid": 338721.0, "usd_pc": 19.74, "usd_min": 0.101, "eff": 75.3, "days": 27, "avg_sec": 11674.0}}], "lines": [{"factory": "APIC1A", "line": "1", "pcs": 3463, "hrs": 10645.0, "eff": 79.2, "ppl": 62.0, "styles": 6, "starts": 3, "avg_sec": 11066.0, "brands": "HELLY HANSEN, TNF, GW"}, {"factory": "APIC1A", "line": "2", "pcs": 3952, "hrs": 10871.0, "eff": 79.9, "ppl": 63.0, "styles": 7, "starts": 5, "avg_sec": 9903.0, "brands": "TNF, GW"}, {"factory": "APIC1A", "line": "3", "pcs": 1416, "hrs": 7714.0, "eff": 56.8, "ppl": 63.0, "styles": 9, "starts": 7, "avg_sec": 19611.0, "brands": "GW, SMS, HELLY HANSEN"}, {"factory": "APIC1A", "line": "4", "pcs": 5850, "hrs": 11791.0, "eff": 86.8, "ppl": 63.0, "styles": 5, "starts": 3, "avg_sec": 7256.0, "brands": "TNF, HELLY HANSEN"}, {"factory": "APIC1A", "line": "5", "pcs": 5081, "hrs": 13730.0, "eff": 99.8, "ppl": 64.0, "styles": 4, "starts": 2, "avg_sec": 9728.0, "brands": "TNF"}, {"factory": "APIC1A", "line": "6", "pcs": 2447, "hrs": 6529.0, "eff": 97.5, "ppl": 31.0, "styles": 2, "starts": 1, "avg_sec": 9605.0, "brands": "TNF"}, {"factory": "APIC1A", "line": "12", "pcs": 6839, "hrs": 12913.0, "eff": 84.4, "ppl": 65.0, "styles": 8, "starts": 6, "avg_sec": 6797.0, "brands": "TNF"}, {"factory": "APIC1A", "line": "13", "pcs": 3700, "hrs": 11228.0, "eff": 80.2, "ppl": 64.0, "styles": 9, "starts": 7, "avg_sec": 10925.0, "brands": "TNF"}, {"factory": "APIC1A", "line": "14", "pcs": 6227, "hrs": 11529.0, "eff": 80.1, "ppl": 63.0, "styles": 12, "starts": 9, "avg_sec": 6665.0, "brands": "TNF, HELLY HANSEN, GW"}, {"factory": "APIC1A", "line": "15", "pcs": 3912, "hrs": 7477.0, "eff": 70.6, "ppl": 49.0, "styles": 5, "starts": 5, "avg_sec": 6881.0, "brands": "TNF, GW"}, {"factory": "APIC1B", "line": "6", "pcs": 782, "hrs": 4407.0, "eff": 64.1, "ppl": 32.0, "styles": 3, "starts": 2, "avg_sec": 20290.0, "brands": "TNF"}, {"factory": "APIC1B", "line": "7", "pcs": 3737, "hrs": 12956.0, "eff": 94.9, "ppl": 64.0, "styles": 4, "starts": 2, "avg_sec": 12481.0, "brands": "TNF"}, {"factory": "APIC1B", "line": "8", "pcs": 5521, "hrs": 10886.0, "eff": 80.2, "ppl": 62.0, "styles": 8, "starts": 6, "avg_sec": 7099.0, "brands": "TNF"}, {"factory": "APIC1B", "line": "9", "pcs": 1184, "hrs": 8154.0, "eff": 62.9, "ppl": 60.0, "styles": 4, "starts": 2, "avg_sec": 24792.0, "brands": "DSSMS, ALLTERAIN"}, {"factory": "APIC1B", "line": "10", "pcs": 1008, "hrs": 7275.0, "eff": 56.1, "ppl": 60.0, "styles": 5, "starts": 4, "avg_sec": 25982.0, "brands": "ALLTERAIN, YONEXSMS, ALLTERAINSMS"}, {"factory": "APIC1B", "line": "11", "pcs": 4926, "hrs": 11963.0, "eff": 86.3, "ppl": 63.0, "styles": 7, "starts": 5, "avg_sec": 8743.0, "brands": "TNF"}], "variance": {"total": {"n": 752, "qty": 647948, "act": 11937913.0, "std2": 11477988.0, "std1": 10235989.0, "gap2": 459925.0, "gap1": 1701924.0, "vs2": 4.0, "vs1": 16.6}, "factory": [{"name": "APIC1A", "n": 456, "qty": 368236, "act": 7363934.0, "std2": 7038274.0, "gap2": 325660.0, "vs2": 4.6, "vs1": 17.8, "sec": 9926.0}, {"name": "APIC1B", "n": 296, "qty": 279712, "act": 4573979.0, "std2": 4439714.0, "gap2": 134265.0, "vs2": 3.0, "vs1": 14.8, "sec": 9316.0}], "line": [{"name": "APIC1A · 1", "n": 34, "qty": 33695, "act": 822808.0, "std2": 764939.0, "gap2": 57869.0, "vs2": 7.6, "vs1": 21.8, "sec": 13432.0}, {"name": "APIC1A · 12", "n": 30, "qty": 25430, "act": 634870.0, "std2": 590818.0, "gap2": 44052.0, "vs2": 7.5, "vs1": 26.6, "sec": 11257.0}, {"name": "APIC1A · 13", "n": 41, "qty": 47702, "act": 817114.0, "std2": 794689.0, "gap2": 22426.0, "vs2": 2.8, "vs1": 12.4, "sec": 10064.0}, {"name": "APIC1A · 14", "n": 93, "qty": 42604, "act": 745642.0, "std2": 703319.0, "gap2": 42323.0, "vs2": 6.0, "vs1": 16.2, "sec": 7412.0}, {"name": "APIC1A · 15", "n": 20, "qty": 27110, "act": 421194.0, "std2": 396993.0, "gap2": 24201.0, "vs2": 6.1, "vs1": 18.4, "sec": 9084.0}, {"name": "APIC1A · 2", "n": 54, "qty": 39996, "act": 831603.0, "std2": 793523.0, "gap2": 38080.0, "vs2": 4.8, "vs1": 17.5, "sec": 9850.0}, {"name": "APIC1A · 3", "n": 49, "qty": 38040, "act": 858405.0, "std2": 808107.0, "gap2": 50298.0, "vs2": 6.2, "vs1": 16.9, "sec": 11441.0}, {"name": "APIC1A · 4", "n": 54, "qty": 46802, "act": 875949.0, "std2": 852766.0, "gap2": 23183.0, "vs2": 2.7, "vs1": 17.3, "sec": 10182.0}, {"name": "APIC1A · 5", "n": 55, "qty": 37908, "act": 851878.0, "std2": 830832.0, "gap2": 21046.0, "vs2": 2.5, "vs1": 17.4, "sec": 10100.0}, {"name": "APIC1A · 6", "n": 26, "qty": 28949, "act": 504470.0, "std2": 502288.0, "gap2": 2182.0, "vs2": 0.4, "vs1": 15.3, "sec": 9636.0}, {"name": "APIC1B · 10", "n": 51, "qty": 50226, "act": 779573.0, "std2": 731949.0, "gap2": 47624.0, "vs2": 6.5, "vs1": 13.6, "sec": 9436.0}, {"name": "APIC1B · 11", "n": 54, "qty": 47919, "act": 781100.0, "std2": 759104.0, "gap2": 21996.0, "vs2": 2.9, "vs1": 15.8, "sec": 8894.0}, {"name": "APIC1B · 12", "n": 21, "qty": 14923, "act": 151924.0, "std2": 154863.0, "gap2": -2939.0, "vs2": -1.9, "vs1": 18.6, "sec": 5253.0}, {"name": "APIC1B · 6", "n": 22, "qty": 22121, "act": 363193.0, "std2": 352258.0, "gap2": 10935.0, "vs2": 3.1, "vs1": 15.4, "sec": 10255.0}, {"name": "APIC1B · 7", "n": 61, "qty": 49058, "act": 856600.0, "std2": 884210.0, "gap2": -27611.0, "vs2": -3.1, "vs1": 9.8, "sec": 9597.0}, {"name": "APIC1B · 8", "n": 35, "qty": 52563, "act": 840769.0, "std2": 806241.0, "gap2": 34527.0, "vs2": 4.3, "vs1": 21.1, "sec": 10758.0}, {"name": "APIC1B · 9", "n": 52, "qty": 42902, "act": 800820.0, "std2": 751088.0, "gap2": 49732.0, "vs2": 6.6, "vs1": 13.6, "sec": 9580.0}], "brand": [{"name": "TNF", "n": 490, "qty": 457506, "act": 7952329.0, "std2": 7788411.0, "gap2": 163918.0, "vs2": 2.1, "vs1": 17.1, "sec": 9376.0}, {"name": "GW", "n": 68, "qty": 49235, "act": 1234744.0, "std2": 1136436.0, "gap2": 98308.0, "vs2": 8.7, "vs1": 17.8, "sec": 11329.0}, {"name": "HELLY HANSEN", "n": 72, "qty": 38880, "act": 1024448.0, "std2": 949442.0, "gap2": 75006.0, "vs2": 7.9, "vs1": 16.4, "sec": 11405.0}, {"name": "MONTBELL", "n": 19, "qty": 34387, "act": 383468.0, "std2": 389143.0, "gap2": -5675.0, "vs2": -1.5, "vs1": 13.9, "sec": 6143.0}, {"name": "KASCO", "n": 5, "qty": 19464, "act": 146277.0, "std2": 138648.0, "gap2": 7629.0, "vs2": 5.5, "vs1": 9.4, "sec": 4452.0}, {"name": "ALLTERAIN", "n": 17, "qty": 13758, "act": 514376.0, "std2": 435587.0, "gap2": 78790.0, "vs2": 18.1, "vs1": 22.6, "sec": 17099.0}, {"name": "TETON BROS", "n": 30, "qty": 12651, "act": 175625.0, "std2": 184429.0, "gap2": -8804.0, "vs2": -4.8, "vs1": -4.8, "sec": 6350.0}, {"name": "NW", "n": 24, "qty": 6520, "act": 139889.0, "std2": 132591.0, "gap2": 7298.0, "vs2": 5.5, "vs1": 13.9, "sec": 6777.0}, {"name": "CANTERBURY", "n": 4, "qty": 5607, "act": 77860.0, "std2": 68943.0, "gap2": 8917.0, "vs2": 12.9, "vs1": 12.9, "sec": 10002.0}, {"name": "YONEX", "n": 10, "qty": 3427, "act": 142018.0, "std2": 123215.0, "gap2": 18803.0, "vs2": 15.3, "vs1": 20.3, "sec": 14168.0}], "sales": [{"name": "NAKANO", "n": 518, "qty": 468436, "act": 8163412.0, "std2": 7984599.0, "gap2": 178813.0, "vs2": 2.2, "vs1": 17.0, "sec": 9245.0}, {"name": "NAKAO", "n": 72, "qty": 38880, "act": 1024448.0, "std2": 949442.0, "gap2": 75006.0, "vs2": 7.9, "vs1": 16.4, "sec": 11405.0}, {"name": "INOUE", "n": 23, "qty": 34587, "act": 396244.0, "std2": 404006.0, "gap2": -7762.0, "vs2": -1.9, "vs1": 12.7, "sec": 7098.0}, {"name": "WATABE", "n": 46, "qty": 33287, "act": 721988.0, "std2": 697672.0, "gap2": 24316.0, "vs2": 3.5, "vs1": 12.8, "sec": 10114.0}, {"name": "ASAI", "n": 37, "qty": 32426, "act": 337178.0, "std2": 337897.0, "gap2": -719.0, "vs2": -0.2, "vs1": 1.3, "sec": 6407.0}, {"name": "NABE", "n": 23, "qty": 17494, "act": 612465.0, "std2": 519102.0, "gap2": 93363.0, "vs2": 18.0, "vs1": 21.7, "sec": 15184.0}, {"name": "KOBORI", "n": 18, "qty": 12935, "act": 435915.0, "std2": 372205.0, "gap2": 63709.0, "vs2": 17.1, "vs1": 25.0, "sec": 14700.0}, {"name": "ABE", "n": 4, "qty": 5607, "act": 77860.0, "std2": 68943.0, "gap2": 8917.0, "vs2": 12.9, "vs1": 12.9, "sec": 10002.0}, {"name": "SEKO", "n": 10, "qty": 3427, "act": 142018.0, "std2": 123215.0, "gap2": 18803.0, "vs2": 15.3, "vs1": 20.3, "sec": 14168.0}], "season": [{"name": "25FW", "n": 5, "qty": 2562, "act": 91932.0, "std2": 97476.0, "gap2": -5544.0, "vs2": -5.7, "vs1": 12.2, "sec": 15336.0}, {"name": "26FW", "n": 281, "qty": 248318, "act": 5574634.0, "std2": 5089116.0, "gap2": 485518.0, "vs2": 9.5, "vs1": 21.4, "sec": 11782.0}, {"name": "26SS", "n": 466, "qty": 397068, "act": 6271347.0, "std2": 6291396.0, "gap2": -20049.0, "vs2": -0.3, "vs1": 12.8, "sec": 8361.0}], "lot": [{"name": "Dưới 300", "n": 252, "qty": 37296, "act": 1286265.0, "std2": 1375566.0, "gap2": -89300.0, "vs2": -6.5, "vs1": 6.8, "sec": 9829.0}, {"name": "300–600", "n": 176, "qty": 78666, "act": 1869568.0, "std2": 1740468.0, "gap2": 129100.0, "vs2": 7.4, "vs1": 17.3, "sec": 9231.0}, {"name": "600–1.000", "n": 106, "qty": 86316, "act": 1917339.0, "std2": 1799422.0, "gap2": 117917.0, "vs2": 6.6, "vs1": 20.4, "sec": 10624.0}, {"name": "1.000–2.000", "n": 146, "qty": 217668, "act": 3994241.0, "std2": 3765485.0, "gap2": 228756.0, "vs2": 6.1, "vs1": 19.7, "sec": 10096.0}, {"name": "Trên 2.000", "n": 72, "qty": 228002, "act": 2870500.0, "std2": 2797048.0, "gap2": 73453.0, "vs2": 2.6, "vs1": 14.5, "sec": 8085.0}], "cx": [{"name": "Dưới 3.000 s", "n": 18, "qty": 16106, "act": 85498.0, "std2": 101145.0, "gap2": -15647.0, "vs2": -15.5, "vs1": 0.6, "sec": 2470.0}, {"name": "3.000–5.000 s", "n": 104, "qty": 92061, "act": 783369.0, "std2": 795077.0, "gap2": -11709.0, "vs2": -1.5, "vs1": 8.8, "sec": 4241.0}, {"name": "5.000–8.000 s", "n": 247, "qty": 253306, "act": 3335994.0, "std2": 3277767.0, "gap2": 58227.0, "vs2": 1.8, "vs1": 15.7, "sec": 6596.0}, {"name": "8.000–12.000 s", "n": 194, "qty": 151603, "act": 3063854.0, "std2": 3021377.0, "gap2": 42478.0, "vs2": 1.4, "vs1": 15.6, "sec": 10007.0}, {"name": "Trên 12.000 s", "n": 189, "qty": 134872, "act": 4669198.0, "std2": 4282623.0, "gap2": 386575.0, "vs2": 9.0, "vs1": 19.8, "sec": 17079.0}]}, "top_over": [{"factory": "APIC1A", "line": "14-ALL", "season": "26FW", "brand": "TNF", "sales": "NAKANO", "style": "NY82553", "sec": 14785.0, "qty": 3301, "days": 31, "unit2": 23.02, "unit3": 28.69, "gap": 18711.0, "pct": 24.6, "end": "20/04/2026"}, {"factory": "APIC1A", "line": "5-ALL", "season": "26FW", "brand": "GW", "sales": "KOBORI", "style": "GL26344", "sec": 25366.0, "qty": 1305, "days": 25, "unit2": 45.7, "unit3": 56.75, "gap": 14419.0, "pct": 24.2, "end": "21/08/2026"}, {"factory": "APIC1A", "line": "5-ALL", "season": "26FW", "brand": "TNF", "sales": "NAKANO", "style": "NP62625", "sec": 25199.0, "qty": 1104, "days": 23, "unit2": 47.1, "unit3": 59.04, "gap": 13173.0, "pct": 25.3, "end": "18/09/2026"}, {"factory": "APIC1B", "line": "9-A", "season": "26SS", "brand": "ALLTERAIN", "sales": "NABE", "style": "DO6FWB02M", "sec": 12610.0, "qty": 1199, "days": 28, "unit2": 22.42, "unit3": 32.43, "gap": 12008.0, "pct": 44.7, "end": "06/06/2026"}, {"factory": "APIC1A", "line": "2-B", "season": "26FW", "brand": "GW", "sales": "KOBORI", "style": "GM26349", "sec": 13798.0, "qty": 2416, "days": 43, "unit2": 21.69, "unit3": 26.36, "gap": 11297.0, "pct": 21.6, "end": "03/08/2026"}, {"factory": "APIC1B", "line": "10-ALL", "season": "26FW", "brand": "ALLTERAIN", "sales": "NABE", "style": "D06FWB11M", "sec": 26802.0, "qty": 558, "days": 13, "unit2": 45.15, "unit3": 64.71, "gap": 10911.0, "pct": 43.3, "end": "08/09/2026"}, {"factory": "APIC1A", "line": "1-ALL", "season": "26FW", "brand": "TNF", "sales": "NAKANO", "style": "ND92522", "sec": 42576.0, "qty": 953, "days": 28, "unit2": 75.6, "unit3": 87.04, "gap": 10906.0, "pct": 15.1, "end": "14/09/2026"}, {"factory": "APIC1B", "line": "9-A", "season": "26SS", "brand": "DSG", "sales": "NABE", "style": "DG6SRW00M", "sec": 10560.0, "qty": 1426, "days": 21, "unit2": 19.7, "unit3": 27.27, "gap": 10787.0, "pct": 38.4, "end": "23/12/2025"}, {"factory": "APIC1B", "line": "9-A", "season": "26FW", "brand": "ALLTERAIN", "sales": "NABE", "style": "D06FVE03M", "sec": 13646.0, "qty": 1476, "days": 31, "unit2": 23.3, "unit3": 30.14, "gap": 10093.0, "pct": 29.3, "end": "08/09/2026"}, {"factory": "APIC1A", "line": "4-ALL2", "season": "26FW", "brand": "TNF", "sales": "NAKANO", "style": "NP62625", "sec": 25199.0, "qty": 796, "days": 22, "unit2": 48.46, "unit3": 61.06, "gap": 10030.0, "pct": 26.0, "end": "22/09/2026"}], "top_under": [{"factory": "APIC1B", "line": "11-A1", "season": "26SS", "brand": "TNF", "sales": "NAKANO", "style": "NB42551", "sec": 5196.0, "qty": 2420, "days": 13, "unit2": 8.43, "unit3": 3.98, "gap": -10777.0, "pct": -52.8, "end": "20/01/2026"}, {"factory": "APIC1A", "line": "13-A", "season": "26SS", "brand": "TNF", "sales": "NAKANO", "style": "NP12615", "sec": 12197.0, "qty": 2491, "days": 24, "unit2": 18.48, "unit3": 14.72, "gap": -9362.0, "pct": -20.3, "end": "30/06/2026"}, {"factory": "APIC1B", "line": "7-A", "season": "25FW", "brand": "TNF", "sales": "NAKANO", "style": "ND92533R", "sec": 17685.0, "qty": 892, "days": 15, "unit2": 32.4, "unit3": 25.69, "gap": -5986.0, "pct": -20.7, "end": "21/11/2025"}, {"factory": "APIC1B", "line": "11-A", "season": "26SS", "brand": "TNF", "sales": "NAKANO", "style": "NP62553", "sec": 10465.0, "qty": 544, "days": 5, "unit2": 20.38, "unit3": 10.89, "gap": -5160.0, "pct": -46.5, "end": "13/11/2025"}, {"factory": "APIC1B", "line": "11-B2", "season": "26FW", "brand": "CANTERBURY", "sales": "ABE", "style": "RAUB2649A", "sec": 1850.0, "qty": 3000, "days": 9, "unit2": 3.07, "unit3": 1.39, "gap": -5042.0, "pct": -54.8, "end": "17/04/2026"}, {"factory": "APIC1A", "line": "15-A", "season": "26FW", "brand": "TNF", "sales": "NAKANO", "style": "NPW62550", "sec": 10409.0, "qty": 1490, "days": 15, "unit2": 18.59, "unit3": 15.38, "gap": -4789.0, "pct": -17.3, "end": "30/05/2026"}, {"factory": "APIC1B", "line": "7-B", "season": "26SS", "brand": "TNF", "sales": "NAKANO", "style": "NP72504Z", "sec": 8152.0, "qty": 653, "days": 6, "unit2": 18.78, "unit3": 12.76, "gap": -3934.0, "pct": -32.1, "end": "13/05/2026"}, {"factory": "APIC1A", "line": "5-A", "season": "26SS", "brand": "TNF", "sales": "NAKANO", "style": "NR12601", "sec": 7331.0, "qty": 209, "days": 2, "unit2": 32.7, "unit3": 14.17, "gap": -3871.0, "pct": -56.6, "end": "14/04/2026"}, {"factory": "APIC1B", "line": "9-A", "season": "26SS", "brand": "MONTBELL", "sales": "INOUE", "style": "1128791", "sec": 2662.0, "qty": 1838, "days": 5, "unit2": 6.04, "unit3": 4.03, "gap": -3691.0, "pct": -33.3, "end": "11/11/2025"}, {"factory": "APIC1A", "line": "13-A", "season": "26SS", "brand": "TNF", "sales": "NAKANO", "style": "NP72480", "sec": 4379.0, "qty": 4169, "days": 15, "unit2": 6.86, "unit3": 6.0, "gap": -3615.0, "pct": -12.6, "end": "18/11/2025"}], "curve": [{"day": 1, "pct": 15.4}, {"day": 2, "pct": 32.6}, {"day": 3, "pct": 50.0}, {"day": 4, "pct": 64.8}, {"day": 5, "pct": 80.0}, {"day": 6, "pct": 90.9}, {"day": 7, "pct": 94.7}, {"day": 8, "pct": 98.6}, {"day": 9, "pct": 100.0}, {"day": 10, "pct": 100.0}, {"day": 11, "pct": 100.0}, {"day": 12, "pct": 100.0}, {"day": 13, "pct": 100.0}, {"day": 14, "pct": 100.0}, {"day": 15, "pct": 100.0}], "changeover": {"starts": 350, "all_starts": 824, "lost_days": 2.6, "usd": 1189645.0, "paid12": 11836222.0, "sew_rate": 40.84}, "yearly": [{"year": 2015, "months": 4, "wage": 420.0, "ppl": 744.0, "sewers": 422.0, "paid": 2300576.0}, {"year": 2016, "months": 12, "wage": 450.0, "ppl": 732.0, "sewers": 418.0, "paid": 6594800.0}, {"year": 2017, "months": 12, "wage": 462.0, "ppl": 726.0, "sewers": 417.0, "paid": 6462383.0}, {"year": 2018, "months": 12, "wage": 472.0, "ppl": 706.0, "sewers": 414.0, "paid": 6514368.0}, {"year": 2019, "months": 12, "wage": 510.0, "ppl": 648.0, "sewers": 354.0, "paid": 6888896.0}, {"year": 2020, "months": 12, "wage": 575.0, "ppl": 793.0, "sewers": 498.0, "paid": 7570784.0}, {"year": 2021, "months": 12, "wage": 617.0, "ppl": 1048.0, "sewers": 730.0, "paid": 7768792.0}, {"year": 2022, "months": 12, "wage": 620.0, "ppl": 1233.0, "sewers": 866.0, "paid": 9194475.0}, {"year": 2023, "months": 12, "wage": 694.0, "ppl": 1388.0, "sewers": 973.0, "paid": 11559508.0}, {"year": 2024, "months": 12, "wage": 735.0, "ppl": 1423.0, "sewers": 987.0, "paid": 12546758.0}, {"year": 2025, "months": 12, "wage": 721.0, "ppl": 1405.0, "sewers": 975.0, "paid": 12151666.0}, {"year": 2026, "months": 10, "wage": 737.0, "ppl": 1403.0, "sewers": 978.0, "paid": 10346683.0}], "wage_m": [{"ym": "2015-09", "wage": 400.0}, {"ym": "2015-10", "wage": 400.0}, {"ym": "2015-11", "wage": 429.0}, {"ym": "2015-12", "wage": 450.0}, {"ym": "2016-01", "wage": 450.0}, {"ym": "2016-02", "wage": 450.0}, {"ym": "2016-03", "wage": 450.0}, {"ym": "2016-04", "wage": 450.0}, {"ym": "2016-05", "wage": 450.0}, {"ym": "2016-06", "wage": 450.0}, {"ym": "2016-07", "wage": 450.0}, {"ym": "2016-08", "wage": 450.0}, {"ym": "2016-09", "wage": 450.0}, {"ym": "2016-10", "wage": 450.0}, {"ym": "2016-11", "wage": 450.0}, {"ym": "2016-12", "wage": 450.0}, {"ym": "2017-01", "wage": 450.0}, {"ym": "2017-02", "wage": 450.0}, {"ym": "2017-03", "wage": 465.0}, {"ym": "2017-04", "wage": 465.0}, {"ym": "2017-05", "wage": 465.0}, {"ym": "2017-06", "wage": 463.0}, {"ym": "2017-07", "wage": 465.0}, {"ym": "2017-08", "wage": 465.0}, {"ym": "2017-09", "wage": 465.0}, {"ym": "2017-10", "wage": 464.0}, {"ym": "2017-11", "wage": 460.0}, {"ym": "2017-12", "wage": 464.0}, {"ym": "2018-01", "wage": 465.0}, {"ym": "2018-02", "wage": 465.0}, {"ym": "2018-03", "wage": 475.0}, {"ym": "2018-04", "wage": 475.0}, {"ym": "2018-05", "wage": 466.0}, {"ym": "2018-06", "wage": 472.0}, {"ym": "2018-07", "wage": 475.0}, {"ym": "2018-08", "wage": 474.0}, {"ym": "2018-09", "wage": 475.0}, {"ym": "2018-10", "wage": 475.0}, {"ym": "2018-11", "wage": 470.0}, {"ym": "2018-12", "wage": 473.0}, {"ym": "2019-01", "wage": 475.0}, {"ym": "2019-02", "wage": 475.0}, {"ym": "2019-03", "wage": 516.0}, {"ym": "2019-04", "wage": 516.0}, {"ym": "2019-05", "wage": 518.0}, {"ym": "2019-06", "wage": 518.0}, {"ym": "2019-07", "wage": 516.0}, {"ym": "2019-08", "wage": 511.0}, {"ym": "2019-09", "wage": 518.0}, {"ym": "2019-10", "wage": 516.0}, {"ym": "2019-11", "wage": 517.0}, {"ym": "2019-12", "wage": 518.0}, {"ym": "2020-01", "wage": 518.0}, {"ym": "2020-02", "wage": 518.0}, {"ym": "2020-03", "wage": 518.0}, {"ym": "2020-04", "wage": 610.0}, {"ym": "2020-05", "wage": 611.0}, {"ym": "2020-06", "wage": 610.0}, {"ym": "2020-07", "wage": 585.0}, {"ym": "2020-08", "wage": 588.0}, {"ym": "2020-09", "wage": 588.0}, {"ym": "2020-10", "wage": 586.0}, {"ym": "2020-11", "wage": 585.0}, {"ym": "2020-12", "wage": 588.0}, {"ym": "2021-01", "wage": 588.0}, {"ym": "2021-02", "wage": 587.0}, {"ym": "2021-03", "wage": 588.0}, {"ym": "2021-04", "wage": 588.0}, {"ym": "2021-05", "wage": 676.0}, {"ym": "2021-06", "wage": 582.0}, {"ym": "2021-07", "wage": 586.0}, {"ym": "2021-08", "wage": 678.0}, {"ym": "2021-09", "wage": 595.0}, {"ym": "2021-10", "wage": 721.0}, {"ym": "2021-11", "wage": 548.0}, {"ym": "2021-12", "wage": 671.0}, {"ym": "2022-01", "wage": 588.0}, {"ym": "2022-02", "wage": 576.0}, {"ym": "2022-03", "wage": 588.0}, {"ym": "2022-04", "wage": 588.0}, {"ym": "2022-05", "wage": 588.0}, {"ym": "2022-06", "wage": 689.0}, {"ym": "2022-07", "wage": 689.0}, {"ym": "2022-08", "wage": 690.0}, {"ym": "2022-09", "wage": 588.0}, {"ym": "2022-10", "wage": 588.0}, {"ym": "2022-11", "wage": 588.0}, {"ym": "2022-12", "wage": 678.0}, {"ym": "2023-01", "wage": 632.0}, {"ym": "2023-02", "wage": 588.0}, {"ym": "2023-03", "wage": 698.0}, {"ym": "2023-04", "wage": 697.0}, {"ym": "2023-05", "wage": 697.0}, {"ym": "2023-06", "wage": 697.0}, {"ym": "2023-07", "wage": 816.0}, {"ym": "2023-08", "wage": 697.0}, {"ym": "2023-09", "wage": 697.0}, {"ym": "2023-10", "wage": 702.0}, {"ym": "2023-11", "wage": 701.0}, {"ym": "2023-12", "wage": 702.0}, {"ym": "2024-01", "wage": 700.0}, {"ym": "2024-02", "wage": 699.0}, {"ym": "2024-03", "wage": 701.0}, {"ym": "2024-04", "wage": 702.0}, {"ym": "2024-05", "wage": 702.0}, {"ym": "2024-06", "wage": 800.0}, {"ym": "2024-07", "wage": 813.0}, {"ym": "2024-08", "wage": 703.0}, {"ym": "2024-09", "wage": 702.0}, {"ym": "2024-10", "wage": 703.0}, {"ym": "2024-11", "wage": 807.0}, {"ym": "2024-12", "wage": 784.0}, {"ym": "2025-01", "wage": 761.0}, {"ym": "2025-02", "wage": 689.0}, {"ym": "2025-03", "wage": 701.0}, {"ym": "2025-04", "wage": 708.0}, {"ym": "2025-05", "wage": 703.0}, {"ym": "2025-06", "wage": 783.0}, {"ym": "2025-07", "wage": 790.0}, {"ym": "2025-08", "wage": 703.0}, {"ym": "2025-09", "wage": 703.0}, {"ym": "2025-10", "wage": 703.0}, {"ym": "2025-11", "wage": 701.0}, {"ym": "2025-12", "wage": 701.0}, {"ym": "2026-01", "wage": 700.0}, {"ym": "2026-02", "wage": 699.0}, {"ym": "2026-03", "wage": 701.0}, {"ym": "2026-04", "wage": 703.0}, {"ym": "2026-05", "wage": 702.0}, {"ym": "2026-06", "wage": 757.0}, {"ym": "2026-07", "wage": 830.0}, {"ym": "2026-08", "wage": 761.0}, {"ym": "2026-09", "wage": 761.0}, {"ym": "2026-10", "wage": 761.0}], "wip": [{"factory": "APIC1A", "line": "1-A", "brand": "TNF", "style": "NPT12702", "season": "26FW", "qty": 862.0, "done": 425.0, "remain": 437.0, "start": "24/10", "days": 7}, {"factory": "APIC1A", "line": "1-B", "brand": "HELLY HANSEN", "style": "HH12540", "season": "26FW", "qty": 400.0, "done": 2.0, "remain": 398.0, "start": "31/10", "days": 1}, {"factory": "APIC1A", "line": "12-A", "brand": "TNF", "style": "NP92614Z", "season": "26FW", "qty": 689.0, "done": 630.0, "remain": 59.0, "start": "19/10", "days": 12}, {"factory": "APIC1A", "line": "12-B1", "brand": "TNF", "style": "NB72480", "season": "26FW", "qty": 3170.0, "done": 2165.0, "remain": 1005.0, "start": "07/10", "days": 22}, {"factory": "APIC1A", "line": "12-B2", "brand": "TNF", "style": "NBW72480", "season": "26FW", "qty": 2740.0, "done": 1015.0, "remain": 1725.0, "start": "22/10", "days": 9}, {"factory": "APIC1A", "line": "13-A1", "brand": "TNF", "style": "NB32762", "season": "26FW", "qty": 2572.0, "done": 20.0, "remain": 2552.0, "start": "30/10", "days": 2}, {"factory": "APIC1A", "line": "13-A2", "brand": "TNF", "style": "NPJ22770", "season": "26FW", "qty": 2193.0, "done": 15.0, "remain": 2178.0, "start": "30/10", "days": 2}, {"factory": "APIC1A", "line": "13-B", "brand": "TNF", "style": "NPW12705", "season": "26FW", "qty": 1344.0, "done": 427.0, "remain": 917.0, "start": "27/10", "days": 5}, {"factory": "APIC1A", "line": "14-A2", "brand": "TNF", "style": "NR12601", "season": "26FW", "qty": 837.0, "done": 330.0, "remain": 507.0, "start": "23/10", "days": 8}, {"factory": "APIC1A", "line": "14-B1", "brand": "NW", "style": "KSU16303", "season": "26FW", "qty": 290.0, "done": 149.0, "remain": 141.0, "start": "26/10", "days": 6}, {"factory": "APIC1A", "line": "14-B2", "brand": "TNF", "style": "NP12671", "season": "26FW", "qty": 224.0, "done": 60.0, "remain": 164.0, "start": "28/10", "days": 4}, {"factory": "APIC1A", "line": "15-A", "brand": "GW", "style": "GL77570CH", "season": "26FW", "qty": 448.0, "done": 324.0, "remain": 124.0, "start": "23/10", "days": 8}, {"factory": "APIC1A", "line": "15-B", "brand": "TNF", "style": "NPJ22771", "season": "26FW", "qty": 2143.0, "done": 7.0, "remain": 2136.0, "start": "31/10", "days": 1}, {"factory": "APIC1A", "line": "2-A", "brand": "TNF", "style": "NP72662LAB", "season": "26FW", "qty": 200.0, "done": 148.0, "remain": 52.0, "start": "17/10", "days": 13}, {"factory": "APIC1A", "line": "2-B1", "brand": "TNF", "style": "NAT22736R", "season": "26FW", "qty": 377.0, "done": 65.0, "remain": 312.0, "start": "28/10", "days": 4}, {"factory": "APIC1A", "line": "2-B2", "brand": "GW", "style": "GL17101", "season": "26FW", "qty": 2674.0, "done": 100.0, "remain": 2574.0, "start": "28/10", "days": 4}, {"factory": "APIC1A", "line": "3-A", "brand": "SMS", "style": "", "season": "nan", "qty": null, "done": null, "remain": null, "start": "08/10", "days": 4}, {"factory": "APIC1A", "line": "3-A1", "brand": "GW", "style": "GL16331", "season": "26FW", "qty": 337.0, "done": 5.0, "remain": 332.0, "start": "31/10", "days": 1}, {"factory": "APIC1A", "line": "3-A2", "brand": "TNF", "style": "NB72571", "season": "26FW", "qty": 1600.0, "done": 30.0, "remain": 1570.0, "start": "31/10", "days": 1}, {"factory": "APIC1A", "line": "3-B", "brand": "SMS", "style": "", "season": "nan", "qty": null, "done": null, "remain": null, "start": "05/10", "days": 7}, {"factory": "APIC1A", "line": "3-B", "brand": "HELLY HANSEN", "style": "HEZ12557", "season": "26FW", "qty": 1500.0, "done": 2.0, "remain": 1498.0, "start": "31/10", "days": 1}, {"factory": "APIC1A", "line": "4-A", "brand": "HELLY HANSEN", "style": "HO12580", "season": "26FW", "qty": 2960.0, "done": 75.0, "remain": 2885.0, "start": "29/10", "days": 3}, {"factory": "APIC1A", "line": "4-B", "brand": "TNF", "style": "NPW62550", "season": "26FW", "qty": 623.0, "done": 170.0, "remain": 453.0, "start": "28/10", "days": 4}, {"factory": "APIC1A", "line": "5-A", "brand": "TNF", "style": "NP62550", "season": "26FW", "qty": 1754.0, "done": 116.0, "remain": 1638.0, "start": "30/10", "days": 2}, {"factory": "APIC1A", "line": "5-B", "brand": "TNF", "style": "NP62550", "season": "26FW", "qty": 3379.0, "done": 1541.0, "remain": 1838.0, "start": "10/10", "days": 19}, {"factory": "APIC1A", "line": "6-A", "brand": "TNF", "style": "NP22601", "season": "26FW", "qty": 2543.0, "done": 2291.0, "remain": 252.0, "start": "02/10", "days": 26}, {"factory": "APIC1B", "line": "10-A", "brand": "YONEXSMS", "style": "", "season": "", "qty": null, "done": null, "remain": null, "start": "30/10", "days": 2}, {"factory": "APIC1B", "line": "10-B", "brand": "ALLTERAINSMS", "style": "", "season": "", "qty": null, "done": null, "remain": null, "start": "30/10", "days": 2}, {"factory": "APIC1B", "line": "11-A1", "brand": "TNF", "style": "NP22631", "season": "26FW", "qty": 3254.0, "done": 465.0, "remain": 2789.0, "start": "22/10", "days": 9}, {"factory": "APIC1B", "line": "11-A2", "brand": "TNF", "style": "NP22631", "season": "26FW", "qty": 3429.0, "done": 471.0, "remain": 2958.0, "start": "22/10", "days": 9}, {"factory": "APIC1B", "line": "11-B1", "brand": "TNF", "style": "NP22631", "season": "26FW", "qty": 3430.0, "done": 399.0, "remain": 3031.0, "start": "23/10", "days": 8}, {"factory": "APIC1B", "line": "11-B2", "brand": "TNF", "style": "NP22631", "season": "26FW", "qty": 3078.0, "done": 399.0, "remain": 2679.0, "start": "23/10", "days": 8}, {"factory": "APIC1B", "line": "6-B", "brand": "TNF", "style": "NP62653Z", "season": "26FW", "qty": 1740.0, "done": 105.0, "remain": 1635.0, "start": "28/10", "days": 4}, {"factory": "APIC1B", "line": "7-A", "brand": "TNF", "style": "NP12704", "season": "26FW", "qty": 2080.0, "done": 880.0, "remain": 1200.0, "start": "16/10", "days": 14}, {"factory": "APIC1B", "line": "7-B", "brand": "TNF", "style": "NP12704", "season": "26FW", "qty": 2600.0, "done": 1169.0, "remain": 1431.0, "start": "12/10", "days": 18}, {"factory": "APIC1B", "line": "8-A", "brand": "TNF", "style": "ND92658R", "season": "26FW", "qty": 201.0, "done": 45.0, "remain": 156.0, "start": "29/10", "days": 3}, {"factory": "APIC1B", "line": "8-B1", "brand": "TNF", "style": "NP22665", "season": "26FW", "qty": 2500.0, "done": 535.0, "remain": 1965.0, "start": "21/10", "days": 10}, {"factory": "APIC1B", "line": "8-B2", "brand": "TNF", "style": "NP22665", "season": "26FW", "qty": 2549.0, "done": 552.0, "remain": 1997.0, "start": "21/10", "days": 10}, {"factory": "APIC1B", "line": "9-A", "brand": "DSSMS", "style": "SMS", "season": "", "qty": null, "done": null, "remain": null, "start": "28/09", "days": 5}, {"factory": "APIC1B", "line": "9-B", "brand": "DSSMS", "style": "SMS", "season": "", "qty": null, "done": null, "remain": null, "start": "25/09", "days": 7}, {"factory": "APIC1B", "line": "9-ALL", "brand": "ALLTERAIN", "style": "DU7SWBA3M", "season": "26FW", "qty": 383.0, "done": 330.0, "remain": 53.0, "start": "22/10", "days": 9}], "dq": ["17 dòng có đơn giá thực tế ③ = 0 (thường là mã chỉ may vài chiếc, 1 ngày) — các dòng này làm chênh lệch trông 'tốt' giả; báo cáo đã loại ra.", "97 dòng ghi mã phòng ban bằng chữ full-width (ví dụ ＡＤ５ thay vì AD5) — pivot của TIJ sẽ tách thành 2 nhóm khác nhau.", "Tên brand viết hoa/thường không thống nhất: CANTERBURY, CHAMPION, MARMOT, MILLET.", "150 dòng không có mùa (Status) và 105 dòng 'ﾀﾞﾐｰ' (dữ liệu giả để giữ chỗ).", "989 dòng có lỗi #N/A ở cột số lượng bình quân/ngày (chủ yếu mã cũ hoặc chưa chạy).", "Sheet HCM ghi BTNB cố định 697 USD/người, 1.141 người cho mọi tháng — có vẻ là số tham chiếu, không phải số thực tế từng tháng.", "Đơn giá công/người tăng mạnh vào một số tháng (6, 7, 11, 12) — nhiều khả năng là tháng có thưởng/phụ cấp; chi phí/phút các tháng này cao hơn dù năng suất không đổi."]};
+const F = ["APIC1A", "APIC1B"];
+const COL = { APIC1A: "var(--s1)", APIC1B: "var(--s2)" };
+const nf = (v, d = 0) => { if (typeof d !== "number") d = 0; return v == null || isNaN(v) ? "–" : Number(v).toLocaleString("vi-VN", { minimumFractionDigits: d, maximumFractionDigits: d }); };
+const usd = (v, d = 0) => v == null ? "–" : (v < 0 ? "−$" + nf(-v, d) : "$" + nf(v, d));
+const pct = (v, d = 1) => v == null ? "–" : (v > 0 ? "+" : "") + nf(v, d) + "%";
+const ymLabel = s => { const [y, m] = s.split("-"); return m + "/" + y.slice(2); };
+const SVGNS = "http://www.w3.org/2000/svg";
+const el = (tag, attrs = {}, parent) => { const e = document.createElementNS(SVGNS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (parent) parent.appendChild(e); return e; };
+const h = (tag, attrs = {}, text) => { const e = document.createElement(tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (text != null) e.textContent = text; return e; };
+const $ = id => document.getElementById(id);
+const root = $("rp"), tip = $("tip");
+
+// ---------- tooltip ----------
+function showTip(evt, title, rows) {
+  tip.replaceChildren();
+  tip.appendChild(h("div", { class: "t" }, title));
+  rows.forEach(r => {
+    const d = h("div", { class: "r" });
+    if (r.color) { const k = h("span", { class: "lk" }); k.style.background = r.color; d.appendChild(k); }
+    d.appendChild(h("b", {}, r.value));
+    if (r.name) d.appendChild(h("span", {}, r.name));
+    tip.appendChild(d);
+  });
+  tip.style.display = "block";
+  const rb = root.getBoundingClientRect();
+  let x = (evt.clientX ?? 0) - rb.left + 14, y = (evt.clientY ?? 0) - rb.top + 14;
+  if (evt.type === "focus") { const b = evt.target.getBoundingClientRect(); x = b.left - rb.left + b.width / 2; y = b.top - rb.top - 10; }
+  const tw = tip.offsetWidth, th = tip.offsetHeight;
+  if (x + tw > rb.width - 8) x = Math.max(8, x - tw - 28);
+  if (y + th > rb.height - 8) y -= th + 28;
+  tip.style.left = x + "px"; tip.style.top = y + "px";
+}
+const hideTip = () => { tip.style.display = "none"; };
+
+function legend(id, items, kind = "line") {
+  const L = $(id); L.replaceChildren();
+  items.forEach(it => {
+    const s = h("span");
+    const k = h("span", { class: kind === "line" ? "lk" : "key" });
+    k.style.background = it.color; s.appendChild(k); s.appendChild(document.createTextNode(it.name)); L.appendChild(s);
+  });
+}
+
+function niceTicks(max, n = 4) {
+  if (max <= 0) return [0];
+  const raw = max / n, p = Math.pow(10, Math.floor(Math.log10(raw)));
+  const step = [1, 2, 2.5, 5, 10].map(m => m * p).find(s => s >= raw);
+  const t = []; for (let v = 0; v <= max + step * 0.001; v += step) t.push(+v.toFixed(6));
+  if (t[t.length - 1] < max) t.push(+(t[t.length - 1] + step).toFixed(6));
+  return t;
+}
+
+// ---------- line chart (crosshair) ----------
+function lineChart(id, labels, series, opt = {}) {
+  const box = $(id); box.replaceChildren();
+  const W = Math.max(300, box.clientWidth), H = opt.height || 240;
+  const m = { l: 46, r: 12, t: 10, b: 26 };
+  const all = series.flatMap(s => s.values).filter(v => v != null);
+  let lo = opt.min != null ? opt.min : 0, hi = Math.max(...all, opt.ref || 0);
+  const ticks = niceTicks(hi - lo).map(t => t + lo); hi = ticks[ticks.length - 1];
+  const x = i => m.l + (labels.length === 1 ? 0 : i * (W - m.l - m.r) / (labels.length - 1));
+  const y = v => m.t + (H - m.t - m.b) * (1 - (v - lo) / (hi - lo));
+  const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, width: "100%", role: "img" }, box);
+  const g = el("g", { class: "grid" }, svg);
+  ticks.forEach(t => { el("line", { x1: m.l, x2: W - m.r, y1: y(t), y2: y(t) }, g); const tx = el("text", { x: m.l - 6, y: y(t) + 4, "text-anchor": "end" }, svg); tx.textContent = opt.fmt ? opt.fmt(t) : nf(t); });
+  const step = Math.ceil(labels.length / Math.max(2, Math.floor((W - m.l) / 52)));
+  const lastI = labels.length - 1; labels.forEach((lb, i) => { const show = i === lastI || (i % step === 0 && lastI - i >= step * 0.75); if (show) { const tx = el("text", { x: x(i), y: H - 6, "text-anchor": i === lastI ? "end" : "middle" }, svg); tx.textContent = opt.xfmt ? opt.xfmt(lb) : lb; } });
+  if (opt.ref != null) { el("line", { x1: m.l, x2: W - m.r, y1: y(opt.ref), y2: y(opt.ref), stroke: "var(--text-3)", "stroke-dasharray": "4 4" }, svg); }
+  series.forEach(s => {
+    let d = ""; s.values.forEach((v, i) => { if (v == null) return; d += (d ? "L" : "M") + x(i).toFixed(1) + "," + y(v).toFixed(1); });
+    el("path", { d, fill: "none", stroke: s.color, "stroke-width": 2, "stroke-linejoin": "round", "stroke-linecap": "round" }, svg);
+    const li = s.values.length - 1;
+    if (opt.endDots !== false && s.values[li] != null) el("circle", { cx: x(li), cy: y(s.values[li]), r: 4, fill: s.color, stroke: "var(--surface)", "stroke-width": 2 }, svg);
+  });
+  const hair = el("line", { y1: m.t, y2: H - m.b, stroke: "var(--text-3)", "stroke-width": 1, visibility: "hidden" }, svg);
+  const dots = series.map(s => el("circle", { r: 4.5, fill: s.color, stroke: "var(--surface)", "stroke-width": 2, visibility: "hidden" }, svg));
+  const hit = el("rect", { x: m.l, y: m.t, width: W - m.l - m.r, height: H - m.t - m.b, class: "hit", tabindex: 0 }, svg);
+  const at = i => {
+    hair.setAttribute("x1", x(i)); hair.setAttribute("x2", x(i)); hair.setAttribute("visibility", "visible");
+    series.forEach((s, k) => { const v = s.values[i]; if (v == null) { dots[k].setAttribute("visibility", "hidden"); return; } dots[k].setAttribute("cx", x(i)); dots[k].setAttribute("cy", y(v)); dots[k].setAttribute("visibility", "visible"); });
+  };
+  let cur = labels.length - 1;
+  const move = evt => {
+    const r = svg.getBoundingClientRect(); const px = (evt.clientX - r.left) * W / r.width;
+    cur = Math.max(0, Math.min(labels.length - 1, Math.round((px - m.l) / ((W - m.l - m.r) / Math.max(1, labels.length - 1)))));
+    at(cur);
+    showTip(evt, opt.xfmt ? opt.xfmt(labels[cur]) : labels[cur], series.map(s => ({ color: s.color, name: s.name, value: s.values[cur] == null ? "–" : (opt.tfmt || opt.fmt || nf)(s.values[cur]) })));
+  };
+  hit.addEventListener("pointermove", move);
+  hit.addEventListener("pointerleave", () => { hideTip(); hair.setAttribute("visibility", "hidden"); dots.forEach(d => d.setAttribute("visibility", "hidden")); });
+  hit.addEventListener("focus", e => { at(cur); showTip(e, opt.xfmt ? opt.xfmt(labels[cur]) : labels[cur], series.map(s => ({ color: s.color, name: s.name, value: (opt.tfmt || opt.fmt || nf)(s.values[cur]) }))); });
+  hit.addEventListener("blur", hideTip);
+  hit.addEventListener("keydown", e => { if (e.key === "ArrowLeft" || e.key === "ArrowRight") { cur = Math.max(0, Math.min(labels.length - 1, cur + (e.key === "ArrowLeft" ? -1 : 1))); hit.dispatchEvent(new FocusEvent("focus")); e.preventDefault(); } });
+}
+
+// ---------- stacked bars ----------
+function stackedBars(id, labels, series, opt = {}) {
+  const box = $(id); box.replaceChildren();
+  const W = Math.max(300, box.clientWidth), H = opt.height || 240;
+  const m = { l: 50, r: 8, t: 10, b: 26 };
+  const totals = labels.map((_, i) => series.reduce((a, s) => a + (s.values[i] || 0), 0));
+  const ticks = niceTicks(Math.max(...totals)); const hi = ticks[ticks.length - 1];
+  const bw = (W - m.l - m.r) / labels.length, gap = Math.max(1, Math.min(4, bw * 0.2));
+  const y = v => m.t + (H - m.t - m.b) * (1 - v / hi);
+  const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, width: "100%", role: "img" }, box);
+  const g = el("g", { class: "grid" }, svg);
+  ticks.forEach(t => { el("line", { x1: m.l, x2: W - m.r, y1: y(t), y2: y(t) }, g); const tx = el("text", { x: m.l - 6, y: y(t) + 4, "text-anchor": "end" }, svg); tx.textContent = nf(t); });
+  const step = Math.ceil(labels.length / Math.max(2, Math.floor((W - m.l) / 52)));
+  labels.forEach((lb, i) => {
+    const x0 = m.l + i * bw + gap / 2, w = bw - gap;
+    let acc = 0; const grp = el("g", {}, svg);
+    series.forEach((s, k) => {
+      const v = s.values[i] || 0; if (!v) return;
+      const y0 = y(acc), y1 = y(acc + v); acc += v;
+      const top = k === series.length - 1;
+      const hgt = Math.max(0, y0 - y1 - (k > 0 ? 2 : 0));
+      el("rect", { x: x0, y: y1, width: Math.max(1, w), height: hgt, rx: top ? Math.min(3, w / 2) : 0, fill: s.color }, grp);
+    });
+    const lastI = labels.length - 1;
+    if (i === lastI || (i % step === 0 && lastI - i >= step * 0.75)) { const tx = el("text", { x: i === lastI ? x0 + w : x0 + w / 2, y: H - 6, "text-anchor": i === lastI ? "end" : "middle" }, svg); tx.textContent = opt.xfmt ? opt.xfmt(lb) : lb; }
+    const hit = el("rect", { x: m.l + i * bw, y: m.t, width: bw, height: H - m.t - m.b, class: "hit", tabindex: i === labels.length - 1 ? 0 : -1 }, svg);
+    const show = e => { grp.classList.add("on"); grp.style.opacity = .75; showTip(e, opt.xfmt ? opt.xfmt(lb) : lb, [...series.map(s => ({ color: s.color, name: s.name, value: nf(s.values[i]) })), { name: "tổng", value: nf(totals[i]) }]); };
+    hit.addEventListener("pointermove", show); hit.addEventListener("focus", show);
+    hit.addEventListener("pointerleave", () => { grp.style.opacity = 1; hideTip(); }); hit.addEventListener("blur", () => { grp.style.opacity = 1; hideTip(); });
+  });
+}
+
+// ---------- diverging horizontal bars ----------
+function divBars(id, rows, opt = {}) {
+  const box = $(id); box.replaceChildren();
+  const W = Math.max(300, box.clientWidth), rowH = 26;
+  const labW = Math.min(170, W * 0.34), m = { l: labW, r: 52, t: 6, b: 22 };
+  const H = m.t + m.b + rows.length * rowH;
+  const ext = Math.max(5, ...rows.map(r => Math.abs(r.value))) * 1.05;
+  const x = v => m.l + 46 + (W - m.l - m.r - 46) * (v + ext) / (2 * ext);
+  const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, width: "100%", role: "img" }, box);
+  const g = el("g", { class: "grid" }, svg);
+  niceTicks(ext, 2).forEach(t => (t === 0 ? [0] : [t, -t]).forEach(v => { if (Math.abs(v) > ext) return; el("line", { x1: x(v), x2: x(v), y1: m.t, y2: H - m.b }, g); const tx = el("text", { x: x(v), y: H - 6, "text-anchor": "middle" }, svg); tx.textContent = (v > 0 ? "+" : "") + nf(v) + "%"; }));
+  el("line", { x1: x(0), x2: x(0), y1: m.t, y2: H - m.b, class: "zero" }, svg);
+  rows.forEach((r, i) => {
+    const cy = m.t + i * rowH + rowH / 2, bh = 14;
+    const lab = el("text", { x: 0, y: cy + 4 }, svg); lab.textContent = r.name; lab.style.fill = "var(--text)";
+    const x0 = x(Math.min(0, r.value)), x1 = x(Math.max(0, r.value));
+    const bar = el("rect", { x: x0, y: cy - bh / 2, width: Math.max(1.5, x1 - x0), height: bh, rx: 3, fill: r.value > 0 ? "var(--pos)" : "var(--neg)" }, svg);
+    const vt = el("text", { x: r.value >= 0 ? x1 + 5 : x0 - 5, y: cy + 4, "text-anchor": r.value >= 0 ? "start" : "end" }, svg);
+    vt.textContent = pct(r.value); vt.style.fill = "var(--text)";
+    const hit = el("rect", { x: 0, y: cy - rowH / 2, width: W, height: rowH, class: "hit", tabindex: -1 }, svg);
+    const show = e => { bar.style.opacity = .75; showTip(e, r.name, r.tip); };
+    hit.addEventListener("pointermove", show); hit.addEventListener("focus", show);
+    hit.addEventListener("pointerleave", () => { bar.style.opacity = 1; hideTip(); });
+  });
+}
+const varTip = v => [
+  { name: "so với ②", value: pct(v.vs2) }, { name: "so với ①", value: pct(v.vs1) },
+  { name: "chênh lệch so với ②", value: usd(v.gap2) }, { name: "sản phẩm", value: nf(v.qty) },
+  { name: "mã", value: nf(v.n) }, { name: "giây/sản phẩm bình quân", value: nf(v.sec) }];
+
+// ---------- table ----------
+function table(id, cols, rows) {
+  const box = $(id); box.replaceChildren();
+  const t = h("table"), th = h("thead"), tr = h("tr"), tb = h("tbody");
+  let sortK = null, dir = 1;
+  const draw = () => {
+    tb.replaceChildren();
+    const rs = sortK == null ? rows : [...rows].sort((a, b) => { const A = a[sortK], B = b[sortK]; return (A > B ? 1 : A < B ? -1 : 0) * dir; });
+    rs.forEach(r => { const row = h("tr"); cols.forEach(c => { const td = h("td", c.l ? { class: "l" } : {}, c.f ? c.f(r[c.k], r) : (r[c.k] ?? "–")); if (c.cls) { const k = c.cls(r[c.k]); if (k) td.classList.add(k); } row.appendChild(td); }); tb.appendChild(row); });
+  };
+  cols.forEach(c => { const x = h("th", c.l ? { class: "l" } : {}, c.t); x.addEventListener("click", () => { dir = sortK === c.k ? -dir : (c.l ? 1 : -1); sortK = c.k; draw(); }); tr.appendChild(x); });
+  th.appendChild(tr); t.appendChild(th); t.appendChild(tb); box.appendChild(t); draw();
+}
+const sgn = v => v == null ? null : v > 0 ? "pos" : v < 0 ? "neg" : null;
+
+// ---------- content ----------
+const K = D.kpis, V = D.variance, C = D.changeover;
+$("m-month").textContent = D.month; document.querySelectorAll(".m-month").forEach(e => e.textContent = D.month);
+$("m-meta").textContent = `${nf(D.rows)} dòng mã hàng · sản lượng từng ngày từ ${D.first_day} đến ${D.last_day}`;
+$("m-first").textContent = D.first_day; $("m-gen").textContent = D.generated;
+
+function findings() {
+  const ul = $("findings"), out = [];
+  const a = K.APIC1A, b = K.APIC1B;
+  const tot = a.cur.pcs + b.cur.pcs, totPrev = (a.prev?.pcs || 0) + (b.prev?.pcs || 0), totLy = (a.ly?.pcs || 0) + (b.ly?.pcs || 0);
+  out.push([`Tháng ${D.month}: `, `may ${nf(tot)} sản phẩm`, ` (${pct((tot / totPrev - 1) * 100, 0)} so với tháng trước, ${pct((tot / totLy - 1) * 100, 0)} so với cùng kỳ năm trước). Chi phí/phút chuẩn APIC1A ${usd(a.cur.usd_min, 3)} và APIC1B ${usd(b.cur.usd_min, 3)}, ${a.cur.usd_min < a.avg12_usd_min && b.cur.usd_min < b.avg12_usd_min ? "đều thấp hơn (tốt hơn)" : "so với"} mức trung bình 12 tháng (${usd(a.avg12_usd_min, 3)} và ${usd(b.avg12_usd_min, 3)}).`]);
+  out.push([`12 tháng qua (${nf(V.total.n)} mã đã xong, ${nf(V.total.qty)} sản phẩm): `, `chi phí thực tế cao hơn dự toán ② ${pct(V.total.vs2)} (${usd(V.total.gap2)})`, ` và cao hơn giá lúc nhận đơn ① ${pct(V.total.vs1)} (${usd(V.total.gap1)}). Phần lớn khoảng cách so với ① đến từ việc chia nhỏ lô, không phải do chuyền may chậm.`]);
+  const cx = V.cx[V.cx.length - 1];
+  const cxShare = V.total.gap2 > 0 ? Math.round(cx.gap2 / V.total.gap2 * 100) : null;
+  out.push([`Mã khó là nguồn vượt chi phí chính: `, `mã trên 12.000 giây vượt ② ${pct(cx.vs2)} (${usd(cx.gap2)})`, cxShare != null && cxShare > 50 ? `, chiếm phần lớn tổng chênh lệch. Mã đơn giản dưới 5.000 giây lại rẻ hơn dự toán.` : `.`]);
+  const seas = [...V.season].sort((p, q) => q.qty - p.qty).slice(0, 3);
+  out.push([`Theo mùa: `, seas.map(s => `${s.name} ${pct(s.vs2)}`).join(", "), ` so với ②.`]);
+  const br = V.brand.filter(x => x.qty >= 5000);
+  const worst = [...br].sort((p, q) => q.vs2 - p.vs2).slice(0, 3), best = [...br].sort((p, q) => p.vs2 - q.vs2).slice(0, 2);
+  out.push([`Brand vượt nhiều nhất: `, worst.map(s => `${s.name} ${pct(s.vs2)}`).join(", "), `; tốt nhất: ${best.map(s => `${s.name} ${pct(s.vs2)}`).join(", ")}.`]);
+  const ln = [...V.line].sort((p, q) => p.vs2 - q.vs2);
+  out.push([`Chuyền: `, `tốt nhất ${ln.slice(0, 2).map(s => `${s.name} (${pct(s.vs2)})`).join(", ")}; yếu nhất ${ln.slice(-3).reverse().map(s => `${s.name} (${pct(s.vs2)})`).join(", ")}`, `.`]);
+  out.push([`Đổi mã tốn kém: `, `mỗi lần đổi mã mất khoảng ${nf(C.lost_days, 1)} ngày sản lượng của chuyền`, ` (ngày đầu chỉ đạt ~${nf(D.curve[0]?.pct, 0)}%, ngày thứ 5 ~${nf(D.curve[4]?.pct, 0)}%). Ước tính tối thiểu ${usd(C.usd)} trong 12 tháng, khoảng ${nf(C.usd / C.paid12 * 100, 0)}% tổng tiền công.`]);
+  const y = D.yearly, y0 = y.find(r => r.months === 12) || y[0], yl = y[y.length - 1];
+  out.push([`Tiền công bình quân: `, `${usd(y0.wage)}/người/tháng (${y0.year}) → ${usd(yl.wage)} (${yl.year})`, `; số người theo hợp đồng ${nf(y0.ppl)} → ${nf(yl.ppl)}.`]);
+  out.forEach(([p1, b1, p2]) => { const li = h("li"); li.appendChild(document.createTextNode(p1)); li.appendChild(h("b", {}, b1)); li.appendChild(document.createTextNode(p2)); ul.appendChild(li); });
+}
+
+function kpiTiles() {
+  const box = $("kpis");
+  F.forEach(f => {
+    const k = K[f], c = k.cur;
+    const hd = h("div", { class: "fac" }); const key = h("span", { class: "key" }); key.style.background = COL[f]; hd.appendChild(key); hd.appendChild(document.createTextNode(`${f} · ${nf(c.sewers)} công nhân may · ${k.styles} mã đang chạy · ${k.starts} mã mới vào chuyền`)); box.appendChild(hd);
+    const g = h("div", { class: "grid g4" });
+    const tile = (lbl, val, cmps) => { const t = h("div", { class: "card tile" }); t.appendChild(h("div", { class: "lbl" }, lbl)); t.appendChild(h("div", { class: "val" }, val)); cmps.forEach(([txt, cls]) => t.appendChild(h("div", { class: "cmp " + (cls || "") }, txt))); g.appendChild(t); };
+    const d = (v, base, lowerGood) => { if (base == null || !base) return ["", ""]; const p = (v / base - 1) * 100; return [pct(p, 0), (p > 0) === lowerGood ? "up-bad" : "up-good"]; };
+    const [p1, c1] = d(c.pcs, k.prev?.pcs, false), [p2, c2] = d(c.pcs, k.avg12_pcs, false);
+    tile("Sản lượng (sản phẩm)", nf(c.pcs), [[`${p1} so với tháng trước`, c1], [`${p2} so với TB 12 tháng`, c2]]);
+    const [p3, c3] = d(c.usd_min, k.prev?.usd_min, true), [p4, c4] = d(c.usd_min, k.avg12_usd_min, true);
+    tile("Chi phí / phút chuẩn", usd(c.usd_min, 3), [[`${p3} so với tháng trước`, c3], [`${p4} so với TB 12 tháng`, c4]]);
+    tile("Chi phí / sản phẩm", usd(c.usd_pc, 2), [[`Tiền tháng ${usd(c.paid)}` + (c.sample ? ` + mẫu ${usd(c.sample)}` : ""), ""], [`Mã bình quân ${nf(c.avg_sec)} giây/sp`, ""]]);
+    const e1 = c.eff - (k.prev?.eff || 0), e2 = c.eff - k.avg12_eff;
+    tile("Hiệu suất chuyền", nf(c.eff, 1) + "%", [[`${(e1 > 0 ? "+" : "") + nf(e1, 1)} điểm so với tháng trước`, e1 >= 0 ? "up-good" : "up-bad"], [`${(e2 > 0 ? "+" : "") + nf(e2, 1)} điểm so với TB 12 tháng`, e2 >= 0 ? "up-good" : "up-bad"]]);
+    box.appendChild(g);
+  });
+  table("t-lines", [
+    { k: "factory", t: "Xưởng", l: 1 }, { k: "line", t: "Chuyền", l: 1, f: v => v }, { k: "ppl", t: "Công nhân", f: nf },
+    { k: "pcs", t: "Sản lượng", f: nf }, { k: "hrs", t: "Giờ chuẩn", f: nf }, { k: "eff", t: "Hiệu suất", f: v => nf(v, 1) + "%" },
+    { k: "avg_sec", t: "Giây/sp", f: nf }, { k: "styles", t: "Số mã", f: nf }, { k: "starts", t: "Mã mới", f: nf }, { k: "brands", t: "Brand", l: 1 }], D.lines);
+}
+
+function trends() {
+  const M = D.monthly, labels = M.map(r => r.ym);
+  const ser = (key) => F.map(f => ({ name: f, color: COL[f], values: M.map(r => r[f] ? r[f][key] : null) }));
+  const items = F.map(f => ({ name: f, color: COL[f] }));
+  legend("lg-out", items, "box"); legend("lg-min", items); legend("lg-eff", items); legend("lg-sec", items);
+  stackedBars("c-out", labels, ser("pcs"), { xfmt: ymLabel });
+  lineChart("c-min", labels, ser("usd_min"), { xfmt: ymLabel, fmt: v => nf(v, 2), tfmt: v => usd(v, 3) });
+  lineChart("c-eff", labels, ser("eff"), { xfmt: ymLabel, fmt: v => nf(v) + "%", tfmt: v => nf(v, 1) + "%" });
+  lineChart("c-sec", labels, ser("avg_sec"), { xfmt: ymLabel });
+  const rows = M.map(r => ({ ym: ymLabel(r.ym), a: r.APIC1A?.pcs, b: r.APIC1B?.pcs, am: r.APIC1A?.usd_min, bm: r.APIC1B?.usd_min, ae: r.APIC1A?.eff, be: r.APIC1B?.eff, ap: r.APIC1A?.paid, bp: r.APIC1B?.paid })).reverse();
+  table("t-month", [{ k: "ym", t: "Tháng", l: 1 }, { k: "a", t: "Sản lượng 1A", f: nf }, { k: "b", t: "Sản lượng 1B", f: nf }, { k: "ap", t: "Tiền 1A", f: v => usd(v) }, { k: "bp", t: "Tiền 1B", f: v => usd(v) }, { k: "am", t: "USD/phút 1A", f: v => nf(v, 3) }, { k: "bm", t: "USD/phút 1B", f: v => nf(v, 3) }, { k: "ae", t: "Hiệu suất 1A", f: v => nf(v, 1) + "%" }, { k: "be", t: "Hiệu suất 1B", f: v => nf(v, 1) + "%" }], rows);
+}
+
+function variance() {
+  $("var-sub").textContent = `Tính trên ${nf(V.total.n)} dòng mã hàng hoàn thành trong 12 tháng gần nhất (có giá thực tế ③ > 0). Chênh lệch = (③ − ②) × số lượng hoàn thành.`;
+  const tiles = $("var-tiles");
+  const tile = (lbl, val, sub) => { const t = h("div", { class: "card tile" }); t.appendChild(h("div", { class: "lbl" }, lbl)); t.appendChild(h("div", { class: "val" }, val)); t.appendChild(h("div", { class: "cmp" }, sub)); tiles.appendChild(t); };
+  tile("Chi phí thực tế ③", usd(V.total.act), `${nf(V.total.qty)} sản phẩm`);
+  tile("So với dự toán ②", pct(V.total.vs2), `${usd(V.total.gap2)} chênh lệch`);
+  tile("So với giá nhận đơn ①", pct(V.total.vs1), `${usd(V.total.gap1)} chênh lệch`);
+  V.factory.forEach(f => tile(`${f.name} so với ②`, pct(f.vs2), `${usd(f.gap2)} · ${nf(f.n)} mã`));
+  const mk = arr => arr.map(v => ({ name: v.name, value: v.vs2, tip: varTip(v) }));
+  divBars("c-cx", mk(V.cx)); divBars("c-lot", mk(V.lot));
+  divBars("c-brand", mk([...V.brand].sort((a, b) => b.vs2 - a.vs2)));
+  divBars("c-sales", mk([...V.sales].sort((a, b) => b.vs2 - a.vs2)));
+  table("t-season", [{ k: "name", t: "Mùa", l: 1 }, { k: "n", t: "Số mã", f: nf }, { k: "qty", t: "Sản phẩm", f: nf }, { k: "sec", t: "Giây/sp TB", f: nf }, { k: "act", t: "Thực tế ③", f: v => usd(v) }, { k: "std2", t: "Dự toán ②", f: v => usd(v) }, { k: "gap2", t: "Chênh lệch", f: v => usd(v), cls: sgn }, { k: "vs2", t: "So với ②", f: v => pct(v), cls: sgn }, { k: "vs1", t: "So với ①", f: v => pct(v), cls: sgn }], V.season);
+  const lines = [...V.line].sort((a, b) => b.vs2 - a.vs2);
+  divBars("c-line", mk(lines));
+  table("t-line", [{ k: "name", t: "Chuyền", l: 1 }, { k: "n", t: "Số mã", f: nf }, { k: "qty", t: "Sản phẩm", f: nf }, { k: "sec", t: "Giây/sp TB", f: nf }, { k: "gap2", t: "Chênh lệch", f: v => usd(v), cls: sgn }, { k: "vs2", t: "So với ②", f: v => pct(v), cls: sgn }], lines);
+}
+
+function changeover() {
+  $("co-sub").textContent = `Mỗi lần chuyền đổi sang mã mới, năng suất mất nhiều ngày mới lên lại mức ổn định. Đo trên ${nf(C.starts)} lần vào chuyền trong 12 tháng có từ 10 ngày may trở lên (tổng cộng ${nf(C.all_starts)} dòng mã bắt đầu may trong 12 tháng).`;
+  const cv = D.curve;
+  lineChart("c-curve", cv.map(r => r.day), [{ name: "Năng suất", color: "var(--s1)", values: cv.map(r => r.pct) }], { xfmt: v => "Ngày " + v, fmt: v => nf(v) + "%", tfmt: v => nf(v, 1) + "%", ref: 100, endDots: false, height: 230 });
+  const box = $("co-tiles");
+  const add = (lbl, val, sub) => { const t = h("div", { class: "tile", style: "margin-bottom:16px" }); t.appendChild(h("div", { class: "lbl" }, lbl)); t.appendChild(h("div", { class: "val" }, val)); if (sub) t.appendChild(h("div", { class: "cmp" }, sub)); box.appendChild(t); };
+  add("Sản lượng mất mỗi lần đổi mã", nf(C.lost_days, 1) + " ngày chuyền", "Cộng phần thiếu so với mức ổn định trong 7 ngày đầu");
+  add("Ước tính chi phí 12 tháng", usd(C.usd), `≈ ${nf(C.usd / C.paid12 * 100, 1)}% tổng tiền công ${usd(C.paid12)}`);
+  add("Ngày đạt 90% năng suất", "Ngày " + ((cv.find(r => r.pct >= 90) || {}).day || "–"), "Trung vị các mã, so với mức ổn định của chính mã đó");
+  box.appendChild(h("p", { class: "note" }, "Đây là mức tối thiểu: các mã chạy dưới 10 ngày (lô nhỏ) không đo được mức ổn định nên chưa tính vào, dù chúng mất học nghề nhiều nhất tính trên mỗi sản phẩm."));
+}
+
+function styles() {
+  const cols = [{ k: "style", t: "Mã hàng", l: 1 }, { k: "brand", t: "Brand", l: 1 }, { k: "season", t: "Mùa", l: 1 }, { k: "factory", t: "Xưởng", l: 1 }, { k: "line", t: "Chuyền", l: 1 }, { k: "sales", t: "Phụ trách", l: 1 }, { k: "sec", t: "Giây/sp", f: nf }, { k: "qty", t: "Số lượng", f: nf }, { k: "days", t: "Ngày may", f: nf }, { k: "unit2", t: "② USD/sp", f: v => nf(v, 2) }, { k: "unit3", t: "③ USD/sp", f: v => nf(v, 2) }, { k: "pct", t: "So với ②", f: v => pct(v), cls: sgn }, { k: "gap", t: "Chênh lệch", f: v => usd(v), cls: sgn }, { k: "end", t: "Xong ngày", l: 1 }];
+  table("t-over", cols, D.top_over); table("t-under", cols, D.top_under);
+  table("t-wip", [{ k: "factory", t: "Xưởng", l: 1 }, { k: "line", t: "Chuyền", l: 1 }, { k: "style", t: "Mã hàng", l: 1 }, { k: "brand", t: "Brand", l: 1 }, { k: "season", t: "Mùa", l: 1 }, { k: "start", t: "Bắt đầu", l: 1 }, { k: "days", t: "Ngày đã may", f: nf }, { k: "qty", t: "Số lượng", f: nf }, { k: "done", t: "Đã xong", f: nf }, { k: "remain", t: "Còn lại", f: nf }], D.wip);
+}
+
+function longterm() {
+  const w = D.wage_m.filter((_, i, a) => i >= a.length - 72);
+  lineChart("c-wage", w.map(r => r.ym), [{ name: "USD/người", color: "var(--s1)", values: w.map(r => r.wage) }], { xfmt: ymLabel, tfmt: v => usd(v), min: 0, endDots: true });
+  table("t-year", [{ k: "year", t: "Năm", l: 1, f: v => String(v) }, { k: "months", t: "Số tháng", f: nf }, { k: "wage", t: "USD/người/tháng", f: v => usd(v) }, { k: "ppl", t: "Người (hợp đồng)", f: nf }, { k: "sewers", t: "Công nhân may", f: nf }, { k: "paid", t: "Tổng tiền năm", f: v => usd(v) }], [...D.yearly].reverse());
+  D.dq.forEach(t => $("dq").appendChild(h("li", {}, t)));
+}
+
+function recs() {
+  const cx = V.cx[V.cx.length - 1];
+  const ln = [...V.line].sort((p, q) => q.vs2 - p.vs2).slice(0, 3).map(s => s.name).join(", ");
+  const items = [
+    ["Làm rõ dự toán cho mã khó với TIJ. ", `Mã trên 12.000 giây đang vượt ② ${pct(cx.vs2)}. Nên đối chiếu giây công đoạn và số ngày học nghề TIJ dùng cho nhóm mã này với thực tế (thời gian lên chuyền, số người), mang số liệu cụ thể từng mã trong bảng "10 mã đắt hơn dự toán" đi trao đổi.`],
+    ["Giảm số lần đổi mã và rút ngắn thời gian học nghề. ", `Mỗi lần đổi mã mất khoảng ${nf(C.lost_days, 1)} ngày sản lượng (≥ ${usd(C.usd)}/năm). Gom các lô nhỏ cùng kiểu lên cùng chuyền, chuẩn bị mẫu, rập, cữ gá và đào tạo công đoạn khó trước khi vào chuyền (gắn với workflow ETA → START trong repo này).`],
+    ["Tập trung cải thiện các chuyền yếu. ", `${ln} có chênh lệch cao nhất so với ②. Xem kỹ mã hàng, cân bằng chuyền và tay nghề ở các chuyền này; học cách làm của chuyền tốt nhất.`],
+    ["Theo dõi chi phí/phút chuẩn hàng tháng thay cho chi phí/sản phẩm. ", "Chi phí/sản phẩm lên xuống theo độ khó của mã; chi phí/phút chuẩn và hiệu suất mới cho biết xưởng thực sự nhanh hay chậm hơn."],
+    ["Lập kế hoạch cho tháng Tết và tháng thưởng. ", "Tháng 2 chi phí/phút tăng gấp đôi vì ít ngày làm; các tháng có đơn giá công cao (thưởng) cũng làm giá tháng tăng. Nên báo trước với TIJ và xếp mã dễ/lô lớn vào những tháng này."],
+    ["Đề nghị TIJ sửa các lỗi dữ liệu ", "(mục Lỗi dữ liệu): mã phòng ban full-width, brand viết không thống nhất, dòng ③ = 0 — các lỗi này làm sai các bảng pivot TIJ dùng để đánh giá."],
+  ];
+  items.forEach(([b, t]) => { const li = h("li"); li.appendChild(h("b", {}, b)); li.appendChild(document.createTextNode(t)); $("recs").appendChild(li); });
+}
+
+function longterm2() { const w = D.wage_m.filter((_, i, a) => i >= a.length - 72); lineChart("c-wage", w.map(r => r.ym), [{ name: "USD/người", color: "var(--s1)", values: w.map(r => r.wage) }], { xfmt: ymLabel, tfmt: v => usd(v), min: 0 }); }
+findings(); kpiTiles(); styles(); recs();
+trends(); variance(); changeover(); longterm();
+let rt; let lastW = window.innerWidth;
+window.addEventListener("resize", () => { if (window.innerWidth === lastW) return; lastW = window.innerWidth; clearTimeout(rt); rt = setTimeout(() => { $("var-tiles").replaceChildren(); $("co-tiles").replaceChildren(); trends(); variance(); changeover(); longterm2(); }, 150); });
+</script>
+</body>
+</html>
