@@ -121,7 +121,7 @@
   var TI_BRANDS_DEFAULT = ['TNF(GTC企画)', 'TNF(東京企画)', 'TNF(東京企画、GTC企画共通)サンプル', 'TNF別注 富山', 'TNF別注 東京', 'NW', 'UTMF', 'BOYS/DTN',
     'Gymphlex', 'NANGA', 'DANTON', 'TETON BROS', 'ALLTERRAIN', 'AIGLE', 'ORCIVAL', 'HH', 'WOOLRICH', 'CHAMPION', '241', 'SNOWPEAK', 'LECOQ', 'SRIXON',
     'MACKINTOSH', 'MARMOT', 'DESCENTE', 'C3FIT', 'MONTBELL', 'MILLET', 'GOLDWINサンプル', 'GOLDWIN', 'GSM', 'RESURRECTION', 'CANTERBURY', 'HYKE', '141',
-    'HAT +', 'LL.BEAN', 'FOXFIRE', 'TATRAS', 'KASCO', 'YONEX', 'KOTI', 'UMBRO', 'CCC', 'Inov-8'].join('\n');
+    'HAT +', 'LL.BEAN', 'FOXFIRE', 'TATRAS', 'KASCO', 'YONEX', 'KOTI', 'UMBRO', 'CCC', 'Inov-8', "B'S", 'GTO'].join('\n');
   // Cách viết khác nhau của cùng nhãn hàng (đã bỏ dấu cách, ký tự đặc biệt)
   var BRAND_KEY_ALIASES = { HELLYHANSEN: 'HH', NEUTRALWORK: 'NW', NEUTRALWORKS: 'NW', THENORTHFACE: 'TNF', DESCSENTE: 'DESCENTE', DESCSENT: 'DESCENTE',
     WOORICH: 'WOOLRICH', ALLTERAIN: 'ALLTERRAIN', LECOQSPORTIF: 'LECOQ', SNOWPEAKS: 'SNOWPEAK' };

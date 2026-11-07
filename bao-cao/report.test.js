@@ -485,9 +485,9 @@ test('Cam kết TI: mục tiêu năng suất +5%/năm so với NTC 2025, tỷ l�
 
 test('Hàng TI / APIC tự bán: so khớp danh sách nhãn hàng TI', () => {
   const m = R.tiMatcher(null);
-  for (const b of ['TNF', 'HELLY HANSEN', 'Helly Hansen', 'N/W', 'Neutral Works', 'DESCSENTE', 'Woorich', 'ALLTERRAIN81', 'YONEX WC', 'LL.BEAN', '241', 'Goldwin', 'UMBRO', 'CCC', 'Inov-8'])
+  for (const b of ['TNF', 'HELLY HANSEN', 'Helly Hansen', 'N/W', 'Neutral Works', 'DESCSENTE', 'Woorich', 'ALLTERRAIN81', 'YONEX WC', 'LL.BEAN', '241', 'Goldwin', 'UMBRO', 'CCC', 'Inov-8', "B'S", 'GTO'])
     assert.strictEqual(m(b), 'TI', b);
-  for (const b of ['RIACHUELO', 'RICHLO', "B'S", 'GTO']) assert.strictEqual(m(b), 'APIC', b);
+  for (const b of ['RIACHUELO', 'RICHLO']) assert.strictEqual(m(b), 'APIC', b);
   assert.strictEqual(R.tiMatcher('TNF\nGOLDWIN')('MONTBELL'), 'APIC');
 });
 
