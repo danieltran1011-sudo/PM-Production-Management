@@ -88,7 +88,7 @@
   }
 
   // Tên nhãn hàng viết sai đã gặp trong file
-  var BRAND_ALIASES = { 'ALLTERAIN': 'ALLTERRAIN', 'DESCSENTE': 'DESCENTE' };
+  var BRAND_ALIASES = { 'ALLTERAIN': 'ALLTERRAIN', 'DESCSENTE': 'DESCENTE', 'MONBELL': 'MONTBELL', 'MONTBEL': 'MONTBELL', 'MONTBEEL': 'MONTBELL', 'MONBEL': 'MONTBELL', 'MONT-BELL': 'MONTBELL', 'MONT BELL': 'MONTBELL' };
 
   // "TÊN SAI = TÊN ĐÚNG", mỗi dòng một cặp
   function parseAliasText(text) {
@@ -121,10 +121,13 @@
   var TI_BRANDS_DEFAULT = ['TNF(GTC企画)', 'TNF(東京企画)', 'TNF(東京企画、GTC企画共通)サンプル', 'TNF別注 富山', 'TNF別注 東京', 'NW', 'UTMF', 'BOYS/DTN',
     'Gymphlex', 'NANGA', 'DANTON', 'TETON BROS', 'ALLTERRAIN', 'AIGLE', 'ORCIVAL', 'HH', 'WOOLRICH', 'CHAMPION', '241', 'SNOWPEAK', 'LECOQ', 'SRIXON',
     'MACKINTOSH', 'MARMOT', 'DESCENTE', 'C3FIT', 'MONTBELL', 'MILLET', 'GOLDWINサンプル', 'GOLDWIN', 'GSM', 'RESURRECTION', 'CANTERBURY', 'HYKE', '141',
-    'HAT +', 'LL.BEAN', 'FOXFIRE', 'TATRAS', 'KASCO', 'YONEX', 'KOTI', 'UMBRO', 'CCC', 'Inov-8', "B'S", 'GTO'].join('\n');
+    'HAT +', 'LL.BEAN', 'FOXFIRE', 'TATRAS', 'KASCO', 'YONEX', 'KOTI', 'UMBRO', 'CCC', 'Inov-8', "B'S", 'GTO', 'Finisher'].join('\n');
+  // Nhãn TI bổ sung sau: tự thêm vào danh sách người dùng đã lưu trước đó
+  var TI_BRANDS_ADDED = ['Finisher'];
   // Cách viết khác nhau của cùng nhãn hàng (đã bỏ dấu cách, ký tự đặc biệt)
   var BRAND_KEY_ALIASES = { HELLYHANSEN: 'HH', NEUTRALWORK: 'NW', NEUTRALWORKS: 'NW', THENORTHFACE: 'TNF', DESCSENTE: 'DESCENTE', DESCSENT: 'DESCENTE',
-    WOORICH: 'WOOLRICH', ALLTERAIN: 'ALLTERRAIN', LECOQSPORTIF: 'LECOQ', SNOWPEAKS: 'SNOWPEAK' };
+    WOORICH: 'WOOLRICH', ALLTERAIN: 'ALLTERRAIN', LECOQSPORTIF: 'LECOQ', SNOWPEAKS: 'SNOWPEAK',
+    MONBELL: 'MONTBELL', MONTBEL: 'MONTBELL', MONTBEEL: 'MONTBELL', MONBEL: 'MONTBELL' };
   function brandKey(name) {
     var t = norm(name).toUpperCase();
     t = t.split('(')[0].split('（')[0].replace(/別注.*$/, '').replace(/サンプル.*$/, '').replace(/企画.*$/, '');
@@ -1585,7 +1588,7 @@
     lotEfficiency: lotEfficiency, learning: learning, leadTime: leadTime, changeover: changeover,
     planStability: planStability, lineRanking: lineRanking, capacityLoad: capacityLoad, loadStatus: loadStatus,
     overviewMetrics: overviewMetrics, overviewYear: overviewYear, overviewYears: overviewYears,
-    TI_BRANDS_DEFAULT: TI_BRANDS_DEFAULT, TI_METHOD: TI_METHOD, brandKey: brandKey, tiMatcher: tiMatcher,
+    TI_BRANDS_DEFAULT: TI_BRANDS_DEFAULT, TI_BRANDS_ADDED: TI_BRANDS_ADDED, TI_METHOD: TI_METHOD, brandKey: brandKey, tiMatcher: tiMatcher,
     lineUniverse: lineUniverse, lineUsage: lineUsage, computeLineLife: computeLineLife, parseLineOverrides: parseLineOverrides, tiProductivity: tiProductivity,
     findDayColumns: findDayColumns, isBillingSheet: isBillingSheet, billingSelf: billingSelf, parseBilling: parseBilling, billingCompare: billingCompare,
     CONTRACT: CONTRACT, contractTracking: contractTracking, contractLists: contractLists, contractTarget: contractTarget, periods: periods, summarize: summarize, monthly: monthly, fiscal: fiscal, pct: pct

@@ -450,6 +450,18 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
   var state = { startMonth: 4, aliasText: '', dim: 'brand', fyDim: 'brand', sort: 'th', month: '', factory: '', brand: '', anTab: 'lot', anPeriod: 'ytd', thMode: 'year', thFy: null, ctFy: 2026, ctMetric: 'efficiency', ctCompound: true, owner: '', tiText: null, luFy: null, lineOv: '', lang: 'bi' };
   try { Object.assign(state, JSON.parse(localStorage.getItem(SETTINGS) || '{}')); } catch (e) { /* bỏ qua */ }
   function saveSettings() { try { localStorage.setItem(SETTINGS, JSON.stringify(state)); } catch (e) { /* bỏ qua */ } }
+  // Nhãn TI bổ sung sau (vd. Finisher): thêm vào danh sách đã lưu, mỗi nhãn chỉ thêm một lần
+  (function () {
+    var done = state.tiAddedDone || [];
+    var add = R.TI_BRANDS_ADDED.filter(function (b) { return done.indexOf(b) < 0; });
+    if (!add.length) return;
+    if (state.tiText != null) {
+      var keys = state.tiText.split(/\r?\n/).map(R.brandKey);
+      add.forEach(function (b) { if (keys.indexOf(R.brandKey(b)) < 0) state.tiText = state.tiText.replace(/\s*$/, '') + '\n' + b; });
+    }
+    state.tiAddedDone = done.concat(add);
+    saveSettings();
+  })();
 
   var files = []; // dữ liệu đã đọc của từng file
   var bills = []; // file APIC負担金額 của TI

@@ -615,3 +615,12 @@ test('Tỷ lệ đạt so KH đầu tháng nhiều tháng: chỉ tính TH của 
   ]), 2);
   assert.strictEqual(v.rateOpen, 200 / 180); // tháng 9 không có KH đầu tháng nên không tính
 });
+
+test('Nhãn TI: MONBELL là MONTBELL, Finisher là hàng TI', () => {
+  const m = R.tiMatcher(null);
+  assert.strictEqual(m('MONBELL'), 'TI');
+  assert.strictEqual(m('mont-bell'), 'TI');
+  assert.strictEqual(m('Finisher'), 'TI');
+  assert.strictEqual(m('RICHLO'), 'APIC');
+  assert.strictEqual(R.normBrand('Monbell'), 'MONTBELL');
+});
