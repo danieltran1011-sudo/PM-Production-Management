@@ -523,7 +523,7 @@ test('Sử dụng chuyền: nửa chuyền A/B, chuyền ghép AB, chuyền tác
   const tp = R.tiProductivity(ds, { startMonth: 4 }, ['2026-10']);
   assert.strictEqual(tp.th, 150 + 200 + 20);
   assert.ok(Math.abs(tp.perLineDay - 370 / 5.5) < 1e-9);
-  assert.ok(Math.abs(tp.per8h - 370 / 5.5 * (1 - 0.059)) < 1e-9);
+  assert.ok(Math.abs(tp.per8h - 370 / 5.5 * (1 - 0.5 / 8.5)) < 1e-9);
 });
 
 test('File APIC負担金額 của TI: đọc khối tháng, đối chiếu với chuyền trống / may hàng APIC', () => {

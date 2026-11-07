@@ -1401,7 +1401,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
     var hl = y.ti && y.ti.per8h != null ? 'Theo cách tính của TI, NTC ' + y.fy + ' đạt ' + f1(y.ti.per8h) + ' sp hàng TI/chuyền-ngày (giờ hành chính), quy ra ' + fmtN(y.ti.annualEq) + ' sp/năm, ' +
       (y.ti.per8h >= y.tiTarget ? 'đạt' : 'thấp hơn') + ' mục tiêu ' + f1(y.tiTarget) + ' sp (' + fmtN(y.tiTargetQty) + ' sp/năm).' : 'Chưa có tháng nào của NTC ' + y.fy + ' đủ số liệu chuyền của mọi xưởng.';
     return '<h3>Theo cách tính của TI (ベンチマーク 647.091 sp)</h3><p class="headline">' + hl + '</p>' +
-      '<p class="an-note">Sản lượng hàng TI ÷ chuyền-ngày may hàng TI (nửa chuyền A/B, ngày làm việc; trừ chuyền-ngày may hàng APIC tự bán và chuyền trống), × (1 − 5,9% tăng ca) = sản lượng/chuyền-ngày giờ hành chính. Quy đổi năm = × 8.613 chuyền-ngày (29 chuyền × 297 ngày). Năm chuẩn theo tài liệu TI: 654.487 sp, 8.613 − 330 (APIC) − 84 (trống) = 8.199 chuyền-ngày TI → 647.091 sp. Chỉ tính các tháng mọi xưởng đã chốt.</p>' +
+      '<p class="an-note">Sản lượng hàng TI ÷ chuyền-ngày may hàng TI (nửa chuyền A/B, ngày làm việc; trừ chuyền-ngày may hàng APIC tự bán và chuyền trống), × (1 − 5,9% tăng ca; chính xác là 0,5 giờ ÷ 8,5 giờ = 5,88%, như TI tính) = sản lượng/chuyền-ngày giờ hành chính. Quy đổi năm = × 8.613 chuyền-ngày (29 chuyền × 297 ngày). Năm chuẩn theo tài liệu TI: 654.487 sp, 8.613 − 330 (APIC) − 84 (trống) = 8.199 chuyền-ngày TI → 647.091 sp. Chỉ tính các tháng mọi xưởng đã chốt.</p>' +
       table(['Năm', 'Tháng có số', 'SL hàng TI', 'Chuyền-ngày TI', 'Chuyền-ngày APIC', 'Chuyền-ngày trống', 'SL/chuyền-ngày', 'Giờ hành chính', 'Mục tiêu', 'So mục tiêu', 'Quy đổi năm', 'Mục tiêu năm'], rows);
   }
   function renderContract() {
@@ -1954,7 +1954,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
       if (LL.hard.length) { sc.push([]); sc.push(['Mã hàng khó > 20.000 giây · NTC ' + x.fy]); sc.push(['Mã hàng', 'Xưởng', 'Nhãn hàng', 'Chủng loại', '工程時間', 'Chuyền', 'TH']); LL.hard.forEach(function (h) { sc.push([h.style, h.f, h.brand, h.item, h.sam, h.lines, r2(h.th)]); }); }
       if (LL.small.length) { sc.push([]); sc.push(['Lot nhỏ ≤ 500 sp trên chuyền · NTC ' + x.fy]); sc.push(['Mã hàng', 'Xưởng', 'Chuyền', 'Nhãn hàng', 'Chủng loại', 'Lot', '工程時間', 'TH']); LL.small.forEach(function (h) { sc.push([h.style, h.f, h.line, h.brand, h.item, h.lot, h.sam, r2(h.th)]); }); }
     });
-    sc.push([]); sc.push(['Theo cách tính của TI (năm chuẩn 647.091 sp = 29 chuyền × 297 ngày, trừ 5,9% tăng ca)']);
+    sc.push([]); sc.push(['Theo cách tính của TI (năm chuẩn 647.091 sp = 29 chuyền × 297 ngày, trừ 5,9% tăng ca = 0,5 giờ / 8,5 giờ)']);
     sc.push(xr('head', ['Năm', 'SL hàng TI', 'Chuyền-ngày TI', 'Chuyền-ngày APIC', 'Chuyền-ngày trống', 'SL/chuyền-ngày', 'Giờ hành chính', 'Mục tiêu', 'Quy đổi năm', 'Mục tiêu năm'], { fmts: ['g', 'n0', 'n1', 'n1', 'n1', 'n2', 'n2', 'n2', 'n0', 'n0'] }));
     sc.push(xr('group', ['NTC 2025 (dữ liệu)', r2(ct.benchmark.ti.th), r2(ct.benchmark.ti.tiLineDays, 1), r2(ct.benchmark.ti.apicLineDays, 1), r2(ct.benchmark.ti.idleLineDays, 1), r2(ct.benchmark.ti.perLineDay, 2), r2(ct.benchmark.ti.per8h, 2), null, r2(ct.benchmark.ti.annualEq), 647091]));
     ct.years.forEach(function (x) {

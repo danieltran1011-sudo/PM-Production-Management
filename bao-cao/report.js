@@ -1274,7 +1274,8 @@
    * Mỗi chuyền-ngày chia thành TI / APIC theo nhãn hàng của phần chiếm chuyền; phần còn lại là trống.
    * Ngày nghỉ (Chủ nhật, lễ) có may: tính riêng, không cộng vào chuyền-ngày.
    */
-  var TI_METHOD = { benchQty: 647091, benchLineDays: 8613, overtime: 0.059, lines: 29,
+  var TI_METHOD = { benchQty: 647091, benchLineDays: 8613, overtime: 0.5 / 8.5, lines: 29, // tăng ca 0,5 giờ / 8,5 giờ = 5,88% (tài liệu TI ghi tròn 5,9%)
+   
     doc2025: { qty: 654487, lineDays: 8613, apicDays: 330, idleDays: 84, tiDaysPerLine: 283 } };
   function lineUniverse(ds, fy, startMonth) {
     var months = fiscalMonths(fy, startMonth || 4), set = {};
