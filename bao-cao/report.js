@@ -663,7 +663,8 @@
     return {
       facts: facts, meta: meta, months: Object.keys(monthsAll).sort(), lineLife: lineLife,
       factories: Object.keys(byF).sort(), runs: runs, lineDay: lineDay, dayOff: dayOff, lineMonthOk: lineMonthOk, lineMonthAny: lineMonthAny, ownerOf: ownerOf,
-      oldFiles: files.filter(function (fl) { return (fl.v || 0) < DATA_VERSION; }).length
+      oldFiles: files.filter(function (fl) { return (fl.v || 0) < DATA_VERSION; }).length,
+      oldFileList: files.filter(function (fl) { return (fl.v || 0) < DATA_VERSION; }).map(function (fl) { return { factory: fl.factory, updateDate: fl.updateDate, name: fl.name }; })
     };
   }
 

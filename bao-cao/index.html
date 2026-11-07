@@ -204,6 +204,8 @@ details.ct-list > summary { cursor: pointer; font-weight: 600; color: var(--acce
 .chip.qua-tai { background: var(--bad-soft); color: var(--bad); }
 .chip.vua { background: var(--good-soft); color: var(--good); }
 .chip.thieu-hang { background: var(--warn-soft); color: var(--ink); }
+.old-banner { margin-top: 12px; padding: 12px 14px; border-radius: 8px; border: 1px solid var(--bad); background: var(--bad-soft); font-size: 13px; display: grid; gap: 6px; }
+.old-banner b { color: var(--bad); }
 .export-field { align-self: end; }
 .export-field button { width: 100%; padding: 9px 12px; font-size: 14px; }
 details.filelist { margin-top: 14px; }
@@ -239,6 +241,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
       <span class="muted">Chọn được nhiều file một lúc, mỗi file vài giây. Nạp chung được file APIC負担金額 của TI để đối chiếu chuyền trống / hàng APIC.</span>
     </label>
     <p class="status" id="status" role="status" aria-live="polite"></p>
+    <div id="oldBanner" class="old-banner" hidden></div>
     <div class="toolbar">
       <button class="primary" id="btnExport" disabled>Xuất Excel</button>
       <span class="spacer"></span>
@@ -257,6 +260,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
       <div class="field export-field"><button class="primary" id="btnExport2" type="button">Xuất Excel</button></div>
     </div>
     <p class="status" id="exportStatus" role="status" aria-live="polite"></p>
+    <div id="oldBanner2" class="old-banner" hidden></div>
     <details class="settings">
       <summary>Nhãn hàng của TI (còn lại là hàng APIC tự bán)</summary>
       <div class="inner" style="max-width:900px">
@@ -593,12 +597,28 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
     var has = !!(ds && ds.months.length);
     ['bo-loc', 'tong-quan', 'tong-hop', 'cam-ket', 'su-dung-chuyen', 'theo-chieu', 'theo-thang', 'theo-nam', 'phan-tich', 'ma-hang'].forEach(function (id) { $(id).hidden = !has; });
     $('empty').hidden = has;
+    renderOldBanner();
     $('btnExport').disabled = !has; $('btnExport2').disabled = !has; $('btnClear').disabled = !files.length && !bills.length;
     if (!has) return;
     fillFilters();
     render();
   }
 
+  // Cảnh báo file nạp bằng bản trang cũ (thiếu lot, lên năng suất, lead time, sử dụng chuyền)
+  function renderOldBanner() {
+    var list = ds && ds.oldFileList ? ds.oldFileList : [];
+    var html = '';
+    if (list.length) {
+      var by = {};
+      list.forEach(function (f) { (by[f.factory] = by[f.factory] || []).push(f.updateDate); });
+      html = '<div><b>⚠ ' + list.length + ' file được nạp bằng bản trang cũ, nên thiếu số liệu: lot bình quân (生産ロット), hàng khó / lot nhỏ, lên năng suất, lead time, sử dụng chuyền.</b></div>' +
+        '<div>Kéo thả lại các file này (hoặc cả thư mục KH_UPDATE) để có đủ số. File mới tự thay file cũ, các file khác giữ nguyên.</div>' +
+        '<div>' + Object.keys(by).sort().map(function (f) {
+          return '<b>' + esc(f) + '</b>: ' + by[f].sort().map(function (d) { return 'update ' + fmtDate(d); }).join(', ');
+        }).join('<br>') + '</div>';
+    }
+    ['oldBanner', 'oldBanner2'].forEach(function (id) { $(id).innerHTML = html; $(id).hidden = !html; });
+  }
   function renderFiles() {
     if (!files.length && !bills.length) { $('fileList').innerHTML = ''; return; }
     var usedBy = {};
@@ -662,6 +682,10 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
   var CHECK_FMT = { kh: 0, th: 0, changes: 0, lot: 0, people: 1, sam: 0 };
   function hasProblem(f) { return f.check && ((f.check.cells || []).length || f.check.issues.length); }
   function checkNote(f) {
+    if ((f.v || 0) < R.DATA_VERSION) return '<span class="down">⚠ Nạp lại file này (nạp bằng bản trang cũ).</span> ' + checkNote2(f);
+    return checkNote2(f);
+  }
+  function checkNote2(f) {
     if (!f.check || !f.check.cells) return '<span class="muted">Chưa kiểm tra công thức (nạp lại file để kiểm tra).</span> ';
     if (!hasProblem(f)) return '<span class="up">✓ Công thức tổng (A1:R3) đủ vùng, không có ô lỗi.</span> ';
     return '<span class="down">⚠ Công thức tổng cần sửa: ' + esc(f.check.cells.map(function (c) { return c.cell; }).join(', ')) + ' (dữ liệu đến hàng ' + f.check.lastRow + ').</span> ';
