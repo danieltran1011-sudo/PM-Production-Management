@@ -624,3 +624,31 @@ test('Nhãn TI: MONBELL là MONTBELL, Finisher là hàng TI', () => {
   assert.strictEqual(m('RICHLO'), 'APIC');
   assert.strictEqual(R.normBrand('Monbell'), 'MONTBELL');
 });
+
+test('Sổ ライン空き原価配分表: đọc tháng, ô gộp nguyên nhân, nửa chuyền, kiểm tra ô tổng', () => {
+  const rows = [
+    [null, null, null, null, null, null, null, null, null, null, null, null, null, 46000],
+    ['1月度ライン空き原価配分表'],
+    [], [], [], ['x', null, null, null, null, null, null, null, null, 'APIC1A', 26, 17, 442], ['y', null, null, null, null, null, null, null, null, '       1B', 26, 12, 312],
+    [], [], [], [], ['＜26,1月ライン空き状況＞'],
+    ['【1A工場】', '1～6A'],
+    ['ライン', '稼働責任部課', '空き期間', '空き日数', '原価金額（USD)', '空き原因'],
+    ['1B', 'SW1課', '1/10,1/12', 2, 200, 'TNF品番の材料遅延'],
+    ['5A', 'SW1課', '1/27~1/31', 5, 500, '投入物なし(NYABEオーダー縫製)'],
+    ['14A1', 'SW1課', '1/2~1/31', 26, 1000, null],
+    [null, 'SW1課小計'],
+    ['１A工場計', null, null, 33, 1200],
+    ['【APIC合計】']
+  ];
+  const out = R.parseIdleRegister([{ name: '1月実績', rows, merges: [{ s: { r: 15, c: 5 }, e: { r: 16, c: 7 } }] }], {});
+  assert.strictEqual(out.length, 1);
+  const m = out[0];
+  assert.strictEqual(m.month, '2026-01');
+  assert.deepStrictEqual(m.factories.APIC1A, { wd: 26, lines: 17 });
+  assert.deepStrictEqual(m.rows.map(r => [r.line + r.part, r.from, r.to, r.cause]), [
+    ['1B', '2026-01-10', '2026-01-12', 'material'], ['5A', '2026-01-27', '2026-01-31', 'nyabe'], ['14A1', '2026-01-02', '2026-01-31', 'nyabe']]);
+  assert.strictEqual(m.days, 2 + 5 + 13); // A1 = nửa chuyền-ngày
+  assert.strictEqual(m.nyabeDays, 18);
+  assert.deepStrictEqual(m.checks.map(c => [c.what, c.sheet, c.rows]), [['amount', 1200, 1700]]);
+  assert.ok(R.billingSelf(m, m.rows[1]));
+});

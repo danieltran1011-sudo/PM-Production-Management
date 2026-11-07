@@ -465,6 +465,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
 
   var files = []; // dữ liệu đã đọc của từng file
   var bills = []; // file APIC負担金額 của TI
+  var regs = []; // sổ ライン空き原価配分表 của APIC, mỗi tháng một mục
   var fileListOpen = false;
   var ds = null;
 
@@ -575,6 +576,23 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
         var wb = XLSX.read(buf, { type: 'array', sheets: [sheet], cellFormula: true, cellHTML: false, cellText: false, cellStyles: false, bookVBA: false });
         var ws = wb.Sheets[sheet];
         var rows = XLSX.utils.sheet_to_json(ws, { header: 1, raw: true, defval: null });
+        // Sổ ライン空き原価配分表 của APIC: đọc mọi sheet (mỗi sheet một tháng)
+        if (sheet !== 'XN1AB' && R.isIdleRegisterSheet(rows)) {
+          var wbAll = XLSX.read(buf, { type: 'array', cellFormula: false, cellHTML: false, cellText: false, cellStyles: false, bookVBA: false });
+          var d1904 = !!(wbAll.Workbook && wbAll.Workbook.WBProps && wbAll.Workbook.WBProps.date1904);
+          var regList = R.parseIdleRegister(wbAll.SheetNames.map(function (n) {
+            return { name: n, rows: XLSX.utils.sheet_to_json(wbAll.Sheets[n], { header: 1, raw: true, defval: null }), merges: wbAll.Sheets[n]['!merges'] || [] };
+          }), { name: file.name, date1904: d1904 });
+          for (var ri = 0; ri < regList.length; ri++) {
+            var rg = regList[ri];
+            rg.id = 'idlereg|' + rg.month; rg.loadedAt = new Date().toISOString();
+            regs = regs.filter(function (x) { return x.id !== rg.id; });
+            regs.push(rg);
+            await DB.put(rg);
+          }
+          ok++;
+          continue;
+        }
         // File APIC負担金額 của TI (chuyền trống / may hàng APIC tự bán)
         if (sheet !== 'XN1AB' && R.isBillingSheet(rows)) {
           var bl = R.parseBilling(rows, { name: file.name, date1904: !!(wb.Workbook && wb.Workbook.WBProps && wb.Workbook.WBProps.date1904) });
@@ -586,7 +604,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
           ok++;
           continue;
         }
-        if (sheet !== 'XN1AB' && !R.findDayColumns(rows)) throw new Error('không phải file KH_UPDATE (sheet XN1AB) hay file APIC負担金額 của TI');
+        if (sheet !== 'XN1AB' && !R.findDayColumns(rows)) throw new Error('không phải file KH_UPDATE (sheet XN1AB), file APIC負担金額 của TI hay sổ ライン空き原価配分表');
         // Công thức và ô lỗi trong vùng tổng A1:R3
         var formulas = {}, errors = {};
         for (var rr = 0; rr < 3; rr++) for (var cc = 0; cc < 18; cc++) {
@@ -623,7 +641,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
     ['bo-loc', 'tong-quan', 'tong-hop', 'cam-ket', 'su-dung-chuyen', 'theo-chieu', 'theo-thang', 'theo-nam', 'phan-tich', 'ma-hang'].forEach(function (id) { $(id).hidden = !has; });
     $('empty').hidden = has;
     renderOldBanner();
-    $('btnExport').disabled = !has; $('btnExport2').disabled = !has; $('btnClear').disabled = !files.length && !bills.length;
+    $('btnExport').disabled = !has; $('btnExport2').disabled = !has; $('btnClear').disabled = !files.length && !bills.length && !regs.length;
     if (!has) return;
     fillFilters();
     render();
@@ -645,7 +663,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
     ['oldBanner', 'oldBanner2'].forEach(function (id) { $(id).innerHTML = html; $(id).hidden = !html; });
   }
   function renderFiles() {
-    if (!files.length && !bills.length) { $('fileList').innerHTML = ''; return; }
+    if (!files.length && !bills.length && !regs.length) { $('fileList').innerHTML = ''; return; }
     var usedBy = {};
     if (ds) Object.keys(ds.meta).forEach(function (k) {
       var m = ds.meta[k];
@@ -666,7 +684,17 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
     var billBox = bills.length ? '<div class="coverage"><h3>File APIC負担金額 của TI (' + bills.length + ')</h3><p>' + bills.slice().sort(function (a, b) { return a.month < b.month ? -1 : 1; }).map(function (b) {
       return '<span style="margin-right:14px;white-space:nowrap"><b>' + R.monthLabel(b.month) + '</b> <span class="muted">' + fmtN(b.days, 1) + ' ngày · ' + fmtN(b.charge, 0) + ' USD</span> <button class="link" data-del="' + esc(b.id) + '">Xóa</button></span>';
     }).join('') + '</p><p class="muted">Đối chiếu xem ở phần "Sử dụng chuyền" (chọn tháng ở thanh bộ lọc).</p></div>' : '';
-    $('fileList').innerHTML = coverageBox() + billBox + checkTable() +
+    var regSorted = regs.slice().sort(function (a, b) { return a.month < b.month ? -1 : 1; });
+    var regBad = regSorted.filter(function (r) { return r.checks && r.checks.length; });
+    var regBox = regs.length ? '<div class="coverage"><h3>Sổ ライン空き原価配分表 của APIC (' + regs.length + ' tháng)</h3><p>' + regSorted.map(function (r) {
+      return '<span style="margin-right:14px;white-space:nowrap"><b>' + R.monthLabel(r.month) + '</b> <span class="muted">' + fmtN(r.days, 1) + ' chuyền-ngày · ' + fmtN(r.amount, 0) + ' USD</span>' +
+        (r.checks && r.checks.length ? ' <span class="down">⚠</span>' : '') + ' <button class="link" data-del="' + esc(r.id) + '">Xóa</button></span>';
+    }).join('') + '</p>' + (regBad.length ? '<p class="warn">⚠ ' + regBad.map(function (r) {
+      return R.monthLabel(r.month) + ' (sheet ' + esc(r.sheet) + '): ' + r.checks.map(function (c) {
+        return 'ô 工場計 ' + c.factory + ' ' + (c.what === 'amount' ? 'chi phí ' + fmtN(c.sheet, 0) + ' USD, cộng các dòng ra ' + fmtN(c.rows, 0) + ' USD' : 'số ngày ' + fmtN(c.sheet, 1) + ', cộng các dòng ra ' + fmtN(c.rows, 1)) + ' → công thức tổng thiếu dòng';
+      }).join('; ');
+    }).join(' · ') + '</p>' : '') + '<p class="muted">Đối chiếu xem ở phần "Sử dụng chuyền". Chuyền A1/A2/B1/B2 tính nửa chuyền-ngày.</p></div>' : '';
+    $('fileList').innerHTML = coverageBox() + billBox + regBox + checkTable() +
       '<details class="filelist"' + (fileListOpen ? ' open' : '') + '><summary>Danh sách ' + files.length + ' file đã nạp' + (bad ? ' (' + bad + ' file cần sửa công thức)' : '') + ' — bấm để xem</summary>' +
       html.replace('style="margin-top:14px"', 'style="margin-top:8px"') + '</tbody></table></div></details>';
     var det = $('fileList').querySelector('details.filelist');
@@ -1264,6 +1292,79 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
     drawCharts($('thCharts'));
   }
 
+  // ---------- Đối chiếu sổ ライン空き原価配分表 của APIC ----------
+  function regCompare() {
+    return regs.slice().sort(function (a, b) { return a.month < b.month ? -1 : 1; }).map(function (r) {
+      var c = R.billingCompare(ds, r, state.startMonth);
+      var u = R.lineUsage(ds, { startMonth: state.startMonth }, [r.month]).byMonth[0];
+      var has = c.rows.filter(function (x) { return x.hasData; });
+      var sum = function (list, f) { return list.reduce(function (a, x) { return a + f(x); }, 0); };
+      var regWd = Object.keys(r.factories || {}).map(function (f) { return r.factories[f].wd; });
+      var regLines = sum(Object.keys(r.factories || {}), function (f) { return r.factories[f].lines || 0; });
+      var bill = bills.filter(function (b) { return b.month === r.month; })[0] || null;
+      // TI tính theo cùng đơn vị nửa chuyền-ngày (A1/A2 = 0,5)
+      var billDays = bill ? sum(R.billingCompare(ds, bill, state.startMonth).rows, function (q) { return q.tiDays; }) : null;
+      return { r: r, c: c, u: u, bill: bill, billDays: billDays,
+        regIdle: sum(c.rows, function (x) { return x.tiDays - x.tiSelf; }), regNyabe: sum(c.rows, function (x) { return x.tiSelf; }),
+        // so ở các chuyền trang có dữ liệu
+        regIdleHas: sum(has, function (x) { return x.tiDays - x.tiSelf; }), regNyabeHas: sum(has, function (x) { return x.tiSelf; }),
+        pageIdle: sum(has, function (x) { return x.idle; }), pageApic: sum(has, function (x) { return x.apic; }),
+        regWd: regWd.length ? Math.max.apply(null, regWd) : null, regLines: regLines || null };
+    });
+  }
+  function regRowText(x) {
+    var c = R.IDLE_CAUSES.filter(function (k) { return k.id === x.cause; })[0];
+    return x.part + ' ' + (x.period || fmtDate(x.from).slice(0, -5)) + ' (' + x.days + ') ' + (x.note ? x.note : '') + (c && c.id !== 'other' ? ' [' + c.label + ']' : '');
+  }
+  function regBlock() {
+    if (!regs.length) return '';
+    var cmp = regCompare();
+    var t0 = table(['Tháng', 'Ngày làm việc<span class="sub">sổ / trang</span>', 'Chuyền nhỏ<span class="sub">sổ / trang</span>', 'Sổ: trống', 'Sổ: may Nhà Bè', 'Trang: trống', 'Trang: may APIC', 'Lệch trống', 'Lệch APIC', 'TI tính (APIC負担金額)', 'Chi phí trống (USD)'], cmp.map(function (x) {
+      var ok = x.c.dataOk;
+      return '<tr' + (x.r.month === state.month ? ' class="sel"' : '') + '><td>' + R.monthLabel(x.r.month) + (x.r.checks && x.r.checks.length ? ' <span class="down" title="Ô tổng trong sổ cộng thiếu dòng">⚠</span>' : '') + '</td>' +
+        td((x.regWd != null ? x.regWd : '—') + ' / ' + (ok && x.u && !x.u.noData ? x.u.wd : '—')) + td((x.regLines || '—') + ' / ' + (ok && x.u && !x.u.noData ? x.u.lines : '—')) +
+        td(fmtN(x.regIdle, 1)) + td(fmtN(x.regNyabe, 1)) + td(ok ? fmtN(x.pageIdle, 1) : '—') + td(ok ? fmtN(x.pageApic, 1) : '—') +
+        td(ok ? delta2(x.pageIdle - x.regIdleHas) : '—') + td(ok ? delta2(x.pageApic - x.regNyabeHas) : '—') + td(x.bill ? fmtN(x.billDays, 1) : '—') + td(fmtN(x.r.amount, 0)) + '</tr>';
+    }).concat([(function () {
+      var s = function (f) { return cmp.reduce(function (a, x) { return a + f(x); }, 0); };
+      return '<tr class="total"><td>Tổng</td><td></td><td></td>' + td(fmtN(s(function (x) { return x.regIdle; }), 1)) + td(fmtN(s(function (x) { return x.regNyabe; }), 1)) +
+        td(fmtN(s(function (x) { return x.c.dataOk ? x.pageIdle : 0; }), 1)) + td(fmtN(s(function (x) { return x.c.dataOk ? x.pageApic : 0; }), 1)) + '<td></td><td></td>' +
+        td(fmtN(s(function (x) { return x.bill ? x.billDays : 0; }), 1)) + td(fmtN(s(function (x) { return x.r.amount; }), 0)) + '</tr>';
+    })()]));
+    // nguyên nhân
+    var by = {};
+    regs.forEach(function (r) { r.rows.forEach(function (x) {
+      var k = by[x.cause] || (by[x.cause] = { days: 0, amount: 0, months: {} });
+      k.days += x.days * (x.part.length > 1 && x.part !== 'AB' ? 0.5 : x.part === 'AB' ? 2 : 1); k.amount += x.amount; k.months[x.month || r.month] = 1;
+    }); });
+    var totU = Object.keys(by).reduce(function (a, k) { return a + by[k].amount; }, 0);
+    var t1 = table(['Nguyên nhân', 'Chuyền-ngày', 'Chi phí (USD)', '% chi phí', 'Tháng'], R.IDLE_CAUSES.filter(function (k) { return by[k.id]; }).map(function (k) {
+      var v = by[k.id];
+      return '<tr><td>' + esc(k.label) + '</td>' + td(fmtN(v.days, 1)) + td(fmtN(v.amount, 0)) + td(fmtP(totU ? v.amount / totU : null)) + td(Object.keys(v.months).sort().map(R.monthLabel).join(', '), 'txt') + '</tr>';
+    }));
+    // chênh lệch đáng chú ý ở mọi tháng
+    var diffs = [];
+    cmp.forEach(function (x) { if (!x.c.dataOk) return; x.c.rows.forEach(function (row) { if (row.hasData && Math.abs(row.diff) >= 1) diffs.push({ m: x.r.month, row: row, reg: x.r }); }); });
+    diffs.sort(function (a, b) { return Math.abs(b.row.diff) - Math.abs(a.row.diff); });
+    var t2 = diffs.length ? table(['Tháng', 'Chuyền', 'Part', 'Sổ<span class="sub">chuyền-ngày</span>', 'Trang<span class="sub">trống + APIC</span>', 'Lệch', 'Sổ ghi', 'Trang thấy'], diffs.slice(0, 40).map(function (d) {
+      var lp = partOf(d.row.line), regRows = d.reg.rows.filter(function (q) { return q.line + q.part.charAt(0) === d.row.line || (q.part === 'AB' && (q.line + 'A' === d.row.line || q.line + 'B' === d.row.line)); });
+      var myTxt = d.row.periods.map(function (p) { return (p.kind === 'apic' ? 'APIC ' : 'trống ') + fmtDate(p.from).slice(0, -5) + '–' + fmtDate(p.to).slice(0, -5) + ' (' + fmtN(p.days, 1) + ')'; }).join('; ');
+      return '<tr><td>' + R.monthLabel(d.m) + '</td>' + td(lp[0]) + td(lp[1], 'txt') + td(fmtN(d.row.tiDays, 1)) + td(fmtN(d.row.mine, 1)) + td(delta2(d.row.diff)) +
+        '<td class="txt" style="white-space:normal;min-width:200px;font-size:12px">' + (regRows.length ? esc(regRows.map(regRowText).join('; ')) : '<span class="muted">không ghi</span>') + '</td>' +
+        '<td class="txt" style="white-space:normal;min-width:180px;font-size:12px">' + (myTxt ? esc(myTxt) : '<span class="muted">có sản lượng hàng TI</span>') + '</td></tr>';
+    })) : '<p class="up">Các tháng có dữ liệu: sổ và trang khớp từng chuyền.</p>';
+    var cur = cmp.filter(function (x) { return x.r.month === state.month; })[0];
+    var bad = regs.filter(function (r) { return r.checks && r.checks.length; });
+    return '<h3>Đối chiếu sổ ライン空き原価配分表 của APIC (' + R.monthLabel(cmp[0].r.month) + ' – ' + R.monthLabel(cmp[cmp.length - 1].r.month) + ')</h3>' +
+      '<p class="an-note">Sổ: chuyền trống theo nguyên nhân; dòng "投入物なし(NYABEオーダー縫製)" là chuyền may hàng Nhà Bè (APIC tự bán), so với "Trang: may APIC". Chuyền A1/A2/B1/B2 tính nửa chuyền-ngày. Lệch = trang − sổ, chỉ ở các chuyền trang có dữ liệu. ' +
+      (cur ? '' : 'Chọn một tháng trong sổ ở thanh bộ lọc để tô đậm dòng tháng đó.') + '</p>' + t0 +
+      (bad.length ? '<p class="warn">⚠ Sổ cộng thiếu: ' + bad.map(function (r) { return R.monthLabel(r.month) + ' ' + r.checks.map(function (c) { return c.factory + ' ' + (c.what === 'amount' ? 'chi phí ghi ' + fmtN(c.sheet, 0) + ' USD, đúng ra ' + fmtN(c.rows, 0) + ' USD' : 'ngày ghi ' + fmtN(c.sheet, 1) + ', đúng ra ' + fmtN(c.rows, 1)); }).join(', '); }).join(' · ') + '. Bảng trên dùng tổng các dòng.</p>' : '') +
+      '<h3>Nguyên nhân chuyền trống theo sổ</h3>' + t1 +
+      '<h3>Chuyền lệch giữa sổ và trang</h3>' + t2 +
+      (diffs.length > 40 ? '<p class="muted">Hiện 40 / ' + diffs.length + ' dòng lệch nhiều nhất; đủ danh sách ở file Excel.</p>' : '') +
+      '<p class="an-note">Trang thấy trống nhưng sổ không ghi: chuyền không có sản lượng trong file KH_UPDATE mà sổ không tính là trống (vd. chuyền ngừng, gộp chuyền, may mẫu, hỗ trợ xưởng khác). Nếu chuyền ngừng thật, khai báo ngày ngừng ở mục "Khai báo ngày mở / ngừng chuyền" để không tính vào chuyền-ngày.</p>';
+  }
+
   // ---------- Đối chiếu file APIC負担金額 của TI ----------
   function billingBlock() {
     if (!bills.length) return '';
@@ -1378,7 +1479,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
     var monthBlock = (ds.lineMonthOk[mm] ? '<h3>Tháng ' + R.monthLabel(mm) + ': giai đoạn may hàng APIC tự bán (APIC自販分)</h3>' + per('apic') + '<h3>Tháng ' + R.monthLabel(mm) + ': giai đoạn chuyền trống</h3>' + per('idle') +
       '<p class="an-note">Hai bảng này tương ứng danh sách APIC負担金額 hằng tháng của TI (dòng "APIC自販分 生産期間" và dòng chuyền trống). Ngày làm việc không tính Chủ nhật, ngày lễ. Chuyền-ngày = 0,5 khi chỉ một nửa chuyền tách (A1 hoặc A2) trống hoặc may hàng APIC. Đổi tháng ở thanh bộ lọc.</p>'
       : '<p class="muted">Tháng ' + R.monthLabel(mm) + ' chưa đủ file chốt của mọi xưởng nên chưa lập được giai đoạn chuyền.</p>');
-    $('luBody').innerHTML = billingBlock() + '<p class="headline">' + head + '</p>' + charts + '<h3>Theo tháng</h3>' + t1 + '<h3>So sánh các năm</h3>' + t2 +
+    $('luBody').innerHTML = billingBlock() + regBlock() + '<p class="headline">' + head + '</p>' + charts + '<h3>Theo tháng</h3>' + t1 + '<h3>So sánh các năm</h3>' + t2 +
       '<p class="an-note">Số nửa chuyền = nửa chuyền A/B có sản lượng trong năm. Tài liệu TI tính 29 chuyền × 297 ngày. Năm thiếu tháng thì số chuyền-ngày nhỏ hơn.</p>' +
       '<h3>Theo chuyền · NTC ' + state.luFy + '</h3>' + t3 + monthBlock;
     drawCharts($('luBody'));
@@ -1730,7 +1831,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
     if (/^Chênh TH/.test(h)) return 'dn';
     if (/^Lệch$/.test(h)) return 'd1';
     if (/Năng suất|SL\/chuyền-ngày|Giờ hành chính/.test(h)) return 'n2';
-    if (/LĐ|Ngày công|Chuyền-ngày|Ngày lên NS|lý thuyết|Lý thuyết|^LT |Chậm bq|Lot bq|^Chênh|Ngày làm việc|Số ngày có may|^Trống$|^Hàng TI$|Hàng APIC|May ngày nghỉ|Trong đó|^Trang:|TI tính|\(ngày\)/.test(h)) return 'n1';
+    if (/LĐ|Ngày công|Chuyền-ngày|Ngày lên NS|lý thuyết|Lý thuyết|^LT |Chậm bq|Lot bq|^Chênh|Ngày làm việc|Số ngày có may|^Trống$|^Hàng TI$|Hàng APIC|May ngày nghỉ|Trong đó|^Trang:|^Sổ|^Lệch |Ngày \(sổ\)|TI tính|\(ngày\)/.test(h)) return 'n1';
     if (/^NTC$|^Năm|Ngày update|^Từ|^Đến|Bắt đầu|Kết thúc|Dữ liệu đến hàng|^Hạng$|^PO$|^Mã hàng$|^Chuyền|^Part$|^Tháng|trong file|– đúng/.test(h)) return 'g';
     return 'n0';
   }
@@ -1982,6 +2083,37 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
       add('Doi chieu TI', dc);
     }
 
+    if (regs.length) {
+      var rc = regCompare();
+      var sr = [['Đối chiếu sổ ライン空き原価配分表 của APIC với chuyền trống / may hàng APIC trang tính được'], [],
+        ['Tháng', 'Ngày làm việc (sổ)', 'Ngày làm việc (trang)', 'Chuyền nhỏ (sổ)', 'Sổ: trống', 'Sổ: may Nhà Bè', 'Trang: trống', 'Trang: may APIC', 'Lệch trống', 'Lệch APIC', 'TI tính (APIC負担金額)', 'Chi phí trống (USD)', 'Kiểm tra sổ']];
+      rc.forEach(function (x) {
+        var ok = x.c.dataOk;
+        sr.push([x.r.month, x.regWd, ok && !x.u.noData ? x.u.wd : null, x.regLines, r2(x.regIdle, 1), r2(x.regNyabe, 1), ok ? r2(x.pageIdle, 1) : null, ok ? r2(x.pageApic, 1) : null,
+          ok ? r2(x.pageIdle - x.regIdleHas, 1) : null, ok ? r2(x.pageApic - x.regNyabeHas, 1) : null, x.bill ? r2(x.billDays, 1) : null, r2(x.r.amount, 0),
+          (x.r.checks || []).map(function (c) { return c.factory + ' ' + (c.what === 'amount' ? 'tổng chi phí ' + Math.round(c.sheet) + ' ≠ ' + Math.round(c.rows) : 'tổng ngày ' + c.sheet + ' ≠ ' + c.rows); }).join('; ')]);
+      });
+      sr.push([]); sr.push(['Chi tiết từng chuyền']);
+      sr.push(['Tháng', 'Xưởng', 'Chuyền', 'Part', 'Bộ phận', 'Kỳ trống', 'Từ', 'Đến', 'Ngày (sổ)', 'Chuyền-ngày', 'Chi phí (USD)', 'Nguyên nhân (sổ)', 'Nhóm nguyên nhân']);
+      regs.slice().sort(function (a, b) { return a.month < b.month ? -1 : 1; }).forEach(function (r) {
+        r.rows.forEach(function (q) {
+          var k = R.IDLE_CAUSES.filter(function (c) { return c.id === q.cause; })[0];
+          sr.push([r.month, q.factory, +q.line, q.part, q.dept, q.period, q.from, q.to, q.days, q.days * (q.part.length > 1 && q.part !== 'AB' ? 0.5 : q.part === 'AB' ? 2 : 1), r2(q.amount, 0), q.note, k ? k.label : '']);
+        });
+      });
+      sr.push([]); sr.push(['Chuyền lệch giữa sổ và trang']);
+      sr.push(['Tháng', 'Chuyền', 'Part', 'Sổ (chuyền-ngày)', 'Trang (trống + APIC)', 'Lệch', 'Trang thấy']);
+      rc.forEach(function (x) {
+        if (!x.c.dataOk) return;
+        x.c.rows.forEach(function (row) {
+          if (!row.hasData || Math.abs(row.diff) < 1) return;
+          var lp = partOf(row.line);
+          sr.push([x.r.month, +lp[0], lp[1], r2(row.tiDays, 1), r2(row.mine, 1), r2(row.diff, 1), row.periods.map(function (p) { return (p.kind === 'apic' ? 'APIC ' : 'trống ') + p.from + '→' + p.to + ' (' + r2(p.days, 1) + ')'; }).join('; ')]);
+        });
+      });
+      add('So trong chuyen APIC', sr);
+    }
+
     // Phân tích (theo kỳ phân tích đang chọn)
     var ao = opts({ period: state.anPeriod });
     var pLabel = R.ANALYSIS_PERIODS.filter(function (x) { return x.id === state.anPeriod; })[0].label;
@@ -2183,6 +2315,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
     var id = b.getAttribute('data-del');
     files = files.filter(function (f) { return f.id !== id; });
     bills = bills.filter(function (b) { return b.id !== id; });
+    regs = regs.filter(function (r) { return r.id !== id; });
     await DB.del(id);
     setStatus('Đã xóa 1 file.');
     rebuild();
@@ -2198,7 +2331,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
       return;
     }
     clearTimeout(clearTimer); delete b.dataset.armed; b.textContent = 'Xóa toàn bộ dữ liệu';
-    files = []; bills = []; await DB.clear(); setStatus('Đã xóa toàn bộ dữ liệu.'); rebuild();
+    files = []; bills = []; regs = []; await DB.clear(); setStatus('Đã xóa toàn bộ dữ liệu.'); rebuild();
   });
   async function onExport() {
     exportMsg('Đang tạo file Excel…');
@@ -2291,6 +2424,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
   DB.open().then(DB.all).then(function (saved) {
     files = (saved || []).filter(function (f) { return f && f.facts; });
     bills = (saved || []).filter(function (f) { return f && f.kind === 'billing'; });
+    regs = (saved || []).filter(function (f) { return f && f.kind === 'idlereg'; });
     if (files.length) setStatus('Đã mở lại ' + files.length + ' file đã nạp trước đây.');
     rebuild();
   });

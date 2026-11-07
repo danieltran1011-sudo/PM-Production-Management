@@ -1424,7 +1424,7 @@
   }
   // Đối chiếu file APIC負担金額 của tháng với chuyền trống + may hàng APIC trang tính được (theo nửa chuyền)
   // File có chữ "NHABE" trong tên: mọi dòng là may hàng APIC tự bán (Nhà Bè)
-  function billingSelf(bill, r) { return /NHABE/i.test(bill.name || '') || /自販|NHABE/i.test(r.note || ''); }
+  function billingSelf(bill, r) { return /NHABE/i.test(bill.name || '') || /自販|NHABE|NYABE/i.test(r.note || ''); }
   function billingCompare(ds, bill, startMonth) {
     var full = (ds.lineMonthOk || {})[bill.month];
     var u = lineUsage(ds, { startMonth: startMonth || 4, relaxed: !full }, [bill.month]);
@@ -1437,7 +1437,7 @@
     });
     var ti = {};
     bill.rows.forEach(function (r) {
-      var half = (r.part.match(/^[AB]/) || [''])[0], sub = r.part.length > 1;
+      var half = (r.part.match(/^[AB]/) || [''])[0], sub = r.part.length > 1 && r.part !== 'AB'; // A1, A2, B1… = nửa của nửa chuyền; AB = cả hai nửa
       var keys = r.part === 'AB' ? [r.line + 'A', r.line + 'B'] : [r.line + half];
       keys.forEach(function (k) {
         var t = ti[k] || (ti[k] = { days: 0, rows: [], self: 0 });
@@ -1457,6 +1457,98 @@
     });
     return { month: bill.month, dataOk: ok, full: !!full, rows: rows, tiDays: bill.days,
       mine: rows.reduce(function (a, r) { return a + (r.mine || 0); }, 0), missing: rows.filter(function (r) { return !r.hasData; }).length };
+  }
+
+  // ---------- Sổ ライン空き原価配分表 của APIC (chuyền trống hằng tháng, có nguyên nhân và chi phí) ----------
+  // Mỗi sheet "N月実績" là một tháng; khối 【1A工場】, 【1B工場】: ライン, 稼働責任部課, 空き期間, 空き日数, 原価金額（USD), 空き原因.
+  // Nguyên nhân là ô gộp nhiều hàng → điền xuống theo vùng gộp. "投入物なし(NYABEオーダー縫製)" = chuyền may hàng Nhà Bè (APIC tự bán).
+  function isIdleRegisterSheet(rows) {
+    for (var r = 0; r < Math.min(rows.length, 6); r++) for (var c = 0; c < Math.min((rows[r] || []).length, 6); c++) if (/ライン空き原価配分表/.test(norm(rows[r][c]))) return true;
+    return false;
+  }
+  var IDLE_CAUSES = [
+    { id: 'nyabe', label: 'May hàng Nhà Bè (APIC tự bán)', re: /NYABE|NHABE|自販/i },
+    { id: 'material', label: 'Chậm nguyên phụ liệu', re: /材料|糸|ネーム|副資材|生地/ },
+    { id: 'approval', label: 'Chậm duyệt mẫu / rập', re: /型紙|承認|先上げ|締切/ },
+    { id: 'plan', label: 'Thay đổi kế hoạch / chuyển mã', re: /計画|移動|投入遅れ|変更/ },
+    { id: 'other', label: 'Khác / không ghi', re: /.*/ }
+  ];
+  function idleCause(text) { for (var i = 0; i < IDLE_CAUSES.length; i++) if (IDLE_CAUSES[i].re.test(text || '')) return IDLE_CAUSES[i].id; return 'other'; }
+  // "12/29~12/31", "1/10,1/12", ngày (serial) → { from, to } trong năm của tháng sổ
+  function parsePeriod(v, ym, date1904) {
+    if (typeof v === 'number') { var iso = toISO(v, date1904); return iso ? { from: iso, to: iso } : null; }
+    var t = norm(v).replace(/[～〜~]/g, '~').replace(/[、，]/g, ',');
+    var ds = t.match(/\d{1,2}\/\d{1,2}/g);
+    if (!ds) return null;
+    var y = +ym.slice(0, 4), mm = +ym.slice(5, 7);
+    var one = function (md) { var p = md.split('/'), m = +p[0], d = +p[1]; var yy = m > mm + 6 ? y - 1 : m < mm - 6 ? y + 1 : y; return yy + '-' + pad(m) + '-' + pad(d); };
+    var list = ds.map(one).sort();
+    return { from: list[0], to: list[list.length - 1], list: t.indexOf(',') >= 0 && t.indexOf('~') < 0 ? list : null };
+  }
+  // sheets: [{ name, rows, merges: [{s:{r,c}, e:{r,c}}] }] → [{ kind:'idlereg', month, rows, factories }]
+  function parseIdleRegister(sheets, opts) {
+    opts = opts || {};
+    var out = [];
+    sheets.forEach(function (sh) {
+      var rows = sh.rows || [];
+      if (!isIdleRegisterSheet(rows)) return;
+      // điền nguyên nhân / kỳ cho ô gộp
+      (sh.merges || []).forEach(function (m) {
+        var v = (rows[m.s.r] || [])[m.s.c];
+        if (v == null || v === '') return;
+        for (var r = m.s.r + 1; r <= m.e.r; r++) { rows[r] = rows[r] || []; if (rows[r][m.s.c] == null || rows[r][m.s.c] === '') rows[r][m.s.c] = v; }
+      });
+      var month = null;
+      rows.slice(0, 20).forEach(function (row) { (row || []).forEach(function (v) { var m = norm(v).match(/[＜<]\s*(\d{2,4})\s*[,，、.]\s*(\d{1,2})月/); if (m && !month) month = (m[1].length === 2 ? '20' + m[1] : m[1]) + '-' + pad(+m[2]); }); });
+      if (!month) return;
+      var fac = null, cols = null, list = [], facInfo = {}, subs = {};
+      var half = function (t) { return norm(t).replace(/[０-９Ａ-Ｚ]/g, function (ch) { return String.fromCharCode(ch.charCodeAt(0) - 0xFEE0); }).toUpperCase(); };
+      rows.forEach(function (row) {
+        row = row || [];
+        // ngày làm việc / số chuyền nhỏ (khối ＜総稼働日数＞)
+        row.forEach(function (v, ci) {
+          var n = norm(v).replace(/\s/g, '');
+          var f = /^APIC1A$/i.test(n) ? 'APIC1A' : /^(APIC)?1B$/i.test(n) ? 'APIC1B' : null;
+          if (f && typeof row[ci + 1] === 'number' && typeof row[ci + 2] === 'number') facInfo[f] = { wd: row[ci + 1], lines: row[ci + 2] };
+        });
+        var a = half(row[0]);
+        if (/^【/.test(a)) { fac = /1A/.test(a) ? 'APIC1A' : /1B/.test(a) ? 'APIC1B' : null; cols = null; return; }
+        if (!fac) return;
+        // ô tổng của xưởng trong sổ (để kiểm tra công thức)
+        if (/工場計/.test(a) && cols) { subs[fac] = { days: numOrNull(row[cols.days]), amount: numOrNull(row[cols.amount]) }; return; }
+        var h = row.map(norm);
+        if (h.indexOf('ライン') >= 0) {
+          var f2 = function (re) { for (var i = 0; i < h.length; i++) if (re.test(h[i])) return i; return -1; };
+          cols = { line: h.indexOf('ライン'), dept: f2(/部課/), period: f2(/期間/), days: f2(/日数/), amount: f2(/金額/), cause: f2(/原因/) };
+          return;
+        }
+        if (!cols) return;
+        var ln = half(row[cols.line]);
+        var lm = ln.match(/^(\d+)([AB]{1,2}\d?)$/);
+        if (!lm) return;
+        var days = numOrNull(row[cols.days]);
+        if (!days) return;
+        var per = parsePeriod(row[cols.period], month, opts.date1904);
+        var cause = norm(row[cols.cause]);
+        list.push({ factory: fac, line: lm[1], part: lm[2], dept: norm(row[cols.dept]), period: norm(typeof row[cols.period] === 'number' ? (per && per.from) : row[cols.period]),
+          from: per ? per.from : month + '-01', to: per ? per.to : monthEnd(month), dates: per && per.list, days: days, amount: numOrNull(row[cols.amount]) || 0,
+          note: cause, cause: idleCause(cause) });
+      });
+      var sum = function (k, f) { return list.filter(f || function () { return true; }).reduce(function (a, x) { return a + (x[k] || 0) * (x.part.length > 1 && x.part !== 'AB' ? 0.5 : 1) * (x.part === 'AB' ? 2 : 1); }, 0); };
+      // Tổng trong sổ khác cộng các dòng → công thức tổng thiếu dòng
+      var checks = [];
+      Object.keys(subs).forEach(function (f) {
+        var rs = list.filter(function (x) { return x.factory === f; });
+        var d = rs.reduce(function (s2, x) { return s2 + x.days; }, 0), u = rs.reduce(function (s2, x) { return s2 + x.amount; }, 0);
+        if (subs[f].days != null && Math.abs(subs[f].days - d) > 0.01) checks.push({ factory: f, what: 'days', sheet: subs[f].days, rows: d });
+        if (subs[f].amount != null && Math.abs(subs[f].amount - u) > 1) checks.push({ factory: f, what: 'amount', sheet: subs[f].amount, rows: u });
+      });
+      out.push({ kind: 'idlereg', name: opts.name || '', sheet: sh.name, month: month, rows: list, factories: facInfo, checks: checks,
+        days: sum('days'), nyabeDays: sum('days', function (x) { return x.cause === 'nyabe'; }),
+        amount: list.reduce(function (a, x) { return a + x.amount; }, 0) });
+    });
+    if (!out.length) throw new Error('không thấy sheet ライン空き原価配分表 nào');
+    return out;
   }
 
   // Năng suất theo cách của TI: sản lượng hàng TI ÷ chuyền-ngày may hàng TI, quy về giờ hành chính (trừ tăng ca)
@@ -1591,7 +1683,7 @@
     overviewMetrics: overviewMetrics, overviewYear: overviewYear, overviewYears: overviewYears,
     TI_BRANDS_DEFAULT: TI_BRANDS_DEFAULT, TI_BRANDS_ADDED: TI_BRANDS_ADDED, TI_METHOD: TI_METHOD, brandKey: brandKey, tiMatcher: tiMatcher,
     lineUniverse: lineUniverse, lineUsage: lineUsage, computeLineLife: computeLineLife, parseLineOverrides: parseLineOverrides, tiProductivity: tiProductivity,
-    findDayColumns: findDayColumns, isBillingSheet: isBillingSheet, billingSelf: billingSelf, parseBilling: parseBilling, billingCompare: billingCompare,
+    findDayColumns: findDayColumns, isBillingSheet: isBillingSheet, isIdleRegisterSheet: isIdleRegisterSheet, parseIdleRegister: parseIdleRegister, IDLE_CAUSES: IDLE_CAUSES, idleCause: idleCause, billingSelf: billingSelf, parseBilling: parseBilling, billingCompare: billingCompare,
     CONTRACT: CONTRACT, contractTracking: contractTracking, contractLists: contractLists, contractTarget: contractTarget, periods: periods, summarize: summarize, monthly: monthly, fiscal: fiscal, pct: pct
   };
 });

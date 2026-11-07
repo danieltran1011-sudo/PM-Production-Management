@@ -21,6 +21,7 @@ Số ngày chuẩn lấy từ file rà soát 20260722, cập nhật theo cuộc 
 | `bao-cao/xlsx-charts.js` | Thêm biểu đồ Excel (sửa được trong Excel) vào file xuất ra: sheet "Bieu do" gồm bảng số và 13 biểu đồ. |
 | `bao-cao/i18n-ja.js` | Từ điển Việt → Nhật: trang và file Excel hiển thị song ngữ (nút "Việt + 日本語 / Chỉ tiếng Việt" ở đầu trang). Sửa thuật ngữ tại đây. |
 | `bao-cao/xlsx-style.js` | Định dạng file Excel xuất ra (màu tiêu đề, viền, sọc xen kẽ, định dạng % và hàng nghìn, cố định hàng tiêu đề, tô xanh/đỏ đạt/chưa đạt cam kết TI). |
+| Sổ ライン空き原価配分表 (APIC) | Kéo vào trang cùng các file khác: mỗi sheet "N月実績" là một tháng. Trang đối chiếu chuyền trống / may Nhà Bè theo sổ với số trang tính và file APIC負担金額 của TI, thống kê nguyên nhân và chi phí, báo ô tổng trong sổ cộng thiếu dòng. |
 | `bao-cao/report.test.js` | Test đọc sheet, gộp nhiều file, lao động chuyền, năm tài chính, so sánh cùng kỳ. |
 | `docs/quy-trinh-lead-time.md` | Tài liệu quy trình, bảng thời gian chuẩn, bảng so sánh, việc cần làm sau họp, các điểm còn mở. |
 | `data/nguon/` | Hai file Excel gốc. |
