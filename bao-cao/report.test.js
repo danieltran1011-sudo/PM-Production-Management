@@ -569,3 +569,40 @@ test('File APIC負担金額 của TI: đọc khối tháng, đối chiếu với
   const c2 = R.billingCompare(ds, Object.assign({}, b, { name: '2025_4 APIC_NHABE 250428.xlsx' }), 4);
   assert.strictEqual(c2.rows.find((r) => r.line === '1B').tiSelf, 0.5);
 });
+
+test('Chuyền mở mới: chỉ tính từ ngày có sản lượng đầu tiên; khai báo tay thay ngày tự nhận', () => {
+  const isSun = (d) => new Date(d + 'T00:00:00Z').getUTCDay() === 0;
+  const all = (from, to) => { const o = {}; for (let d = from; d <= to; d = R.addDays(d, 1)) if (!isSun(d)) o[d] = 30; return o; };
+  const st = (style, line, th) => ({ factory: 'APIC1A', line, brand: 'TNF', style, sam: 3600, hc: 30, aggLot: 1000, th, kh: th });
+  const fl = R.parseRows(makeSheet({ from: '2026-08-01', to: '2026-10-31', styles: [
+    st('A', '1A', all('2026-08-01', '2026-10-31')), st('B', '1B', all('2026-08-01', '2026-10-31')), st('N', '15B', all('2026-10-01', '2026-10-31'))
+  ] }), { name: 'KH UPDATE _APA1.20261031.xlsm' });
+  const ds = R.buildDataset([fl]);
+  assert.strictEqual(ds.lineLife['15B'].from, '2026-10-01');
+  assert.ok(ds.lineLife['15B'].opened);
+  assert.strictEqual(ds.lineLife['1A'].from, '2026-08-01');
+  const u = R.lineUsage(ds, { startMonth: 4 }, ['2026-09', '2026-10']);
+  assert.deepStrictEqual(u.byMonth.map((a) => a.lines), [2, 3]);
+  assert.strictEqual(u.byMonth[0].idle, 0); // 15B chưa mở: không tính trống tháng 9
+  const ds2 = R.buildDataset([fl], { lineOverrides: '15B 15/9/2026' });
+  assert.strictEqual(ds2.lineLife['15B'].from, '2026-09-15');
+  const u2 = R.lineUsage(ds2, { startMonth: 4 }, ['2026-09']);
+  assert.strictEqual(u2.byMonth[0].idle, 14); // 15–30/9: 16 ngày trừ 2 Chủ nhật = 14 ngày làm việc trống
+});
+
+test('Biểu đồ Excel: XML có chuỗi số, tham chiếu ô, cột chồng, trục cột từ 0', () => {
+  const C = require('./xlsx-charts.js');
+  const xml = C.chartXml({
+    title: 'Chuyền-ngày', stacked: true, yFmt: '#,##0',
+    cats: { ref: "'Bieu do'!$A$5:$A$6", values: ['5/2026', '6/2026'] },
+    series: [{ name: 'Hàng TI', ref: "'Bieu do'!$B$5:$B$6", values: [686, null], color: '2A78D6' },
+      { name: 'Giới hạn', ref: "'Bieu do'!$C$5:$C$6", values: [1, 1], color: '5B6482', type: 'line', dash: true }]
+  });
+  assert.match(xml, /<c:grouping val="stacked"\/>/);
+  assert.match(xml, /<c:f>'Bieu do'!\$B\$5:\$B\$6<\/c:f>/);
+  assert.match(xml, /<c:pt idx="0"><c:v>686<\/c:v><\/c:pt>/);
+  assert.doesNotMatch(xml, /<c:pt idx="1"><c:v>null/); // ô trống không ghi
+  assert.match(xml, /<c:lineChart>/);
+  assert.match(xml, /<a:prstDash val="dash"\/>/);
+  assert.match(xml, /<c:min val="0"\/>/);
+});

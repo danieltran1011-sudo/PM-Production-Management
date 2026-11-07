@@ -328,6 +328,15 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
       <p>Mỗi nửa chuyền A/B mỗi ngày làm việc là 1 chuyền-ngày (như 29 chuyền trong cách tính của TI). Chuyền ghép AB tính cả hai nửa; chuyền tách A1, A2 mỗi cái nửa chuyền.</p>
     </div>
     <div class="row-tools"><div class="field"><label for="luFy">Năm tài chính</label><select id="luFy"></select></div></div>
+    <div id="luLines"></div>
+    <details class="settings" style="margin-bottom:14px">
+      <summary>Khai báo ngày mở / ngừng chuyền (khi trang tự nhận sai)</summary>
+      <div class="inner">
+        <p class="muted">Mỗi dòng: nửa chuyền, ngày bắt đầu, (ngày ngừng nếu có). Ví dụ <span class="mono">15B 1/10/2026</span> hoặc <span class="mono">7A 1/4/2023 31/12/2025</span>. Dòng khai báo thay cho ngày trang tự nhận.</p>
+        <textarea id="lineOv" spellcheck="false" placeholder="15B 1/10/2026"></textarea>
+        <div><button id="btnLineOv">Áp dụng</button></div>
+      </div>
+    </details>
     <div id="luBody" class="an-body"></div>
   </section>
 
@@ -411,7 +420,9 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script src="report.js"></script>
+<script src="xlsx-charts.js"></script>
 <script>
 (function () {
   'use strict';
@@ -419,7 +430,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
   var SETTINGS = 'pm-bao-cao-settings';
   var $ = function (id) { return document.getElementById(id); };
 
-  var state = { startMonth: 4, aliasText: '', dim: 'brand', fyDim: 'brand', sort: 'th', month: '', factory: '', brand: '', anTab: 'lot', anPeriod: 'ytd', thMode: 'year', thFy: null, ctFy: 2026, ctMetric: 'efficiency', ctCompound: true, owner: '', tiText: null, luFy: null };
+  var state = { startMonth: 4, aliasText: '', dim: 'brand', fyDim: 'brand', sort: 'th', month: '', factory: '', brand: '', anTab: 'lot', anPeriod: 'ytd', thMode: 'year', thFy: null, ctFy: 2026, ctMetric: 'efficiency', ctCompound: true, owner: '', tiText: null, luFy: null, lineOv: '' };
   try { Object.assign(state, JSON.parse(localStorage.getItem(SETTINGS) || '{}')); } catch (e) { /* bỏ qua */ }
   function saveSettings() { try { localStorage.setItem(SETTINGS, JSON.stringify(state)); } catch (e) { /* bỏ qua */ } }
 
@@ -577,7 +588,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
   // ---------- Dựng lại dữ liệu ----------
   function rebuild() {
     files.sort(function (a, b) { return a.factory < b.factory ? -1 : a.factory > b.factory ? 1 : a.updateDate < b.updateDate ? -1 : 1; });
-    ds = files.length ? R.buildDataset(files, { aliases: R.parseAliasText(state.aliasText), tiBrands: state.tiText == null ? null : state.tiText }) : null;
+    ds = files.length ? R.buildDataset(files, { aliases: R.parseAliasText(state.aliasText), tiBrands: state.tiText == null ? null : state.tiText, lineOverrides: state.lineOv }) : null;
     renderFiles();
     var has = !!(ds && ds.months.length);
     ['bo-loc', 'tong-quan', 'tong-hop', 'cam-ket', 'su-dung-chuyen', 'theo-chieu', 'theo-thang', 'theo-nam', 'phan-tich', 'ma-hang'].forEach(function (id) { $(id).hidden = !has; });
@@ -1244,7 +1255,19 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
 
   // ---------- Sử dụng chuyền ----------
   function partOf(pl) { var m = pl.match(/^(\d+)(.*)$/); return m ? [m[1], m[2]] : [pl, '']; }
+  function renderLineLife() {
+    $('lineOv').value = state.lineOv || '';
+    var life = Object.keys(ds.lineLife || {}).map(function (k) { return ds.lineLife[k]; });
+    var ch = life.filter(function (l) { return l.opened || l.closed || l.manual; }).sort(function (a, b) { return a.from < b.from ? -1 : 1; });
+    var all = life.length;
+    $('luLines').innerHTML = '<div class="coverage" style="margin:0 0 12px"><h3>Số nửa chuyền theo thời gian</h3><p>' + all + ' nửa chuyền trong dữ liệu. ' +
+      (ch.length ? 'Thay đổi: ' + ch.map(function (l) {
+        return '<b>' + esc(l.line) + '</b> ' + (l.opened ? 'mở từ ' + fmtDate(l.from) : '') + (l.opened && l.closed ? ', ' : '') + (l.closed ? 'ngừng sau ' + fmtDate(l.to) : '') + (l.manual ? ' <span class="muted">(khai báo tay)</span>' : '');
+      }).join(' · ') : 'Không có chuyền mở mới hay ngừng trong khoảng dữ liệu.') +
+      '</p><p class="muted">Chuyền chỉ được tính từ ngày có sản lượng đầu tiên đến ngày có sản lượng cuối cùng; trước khi mở và sau khi ngừng không tính là trống. Chuyền có sản lượng trong 31 ngày đầu (hoặc cuối) của dữ liệu thì coi như có từ đầu (vẫn còn đến cuối).</p></div>';
+  }
   function renderLineUsage() {
+    renderLineLife();
     var sm = state.startMonth, years = {};
     ds.months.forEach(function (m) { if (ds.lineMonthOk[m]) years[R.fiscalYear(m, sm)] = 1; });
     var fys = Object.keys(years).map(Number).sort();
@@ -1257,7 +1280,8 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
     var pc1 = function (v, tot) { return tot > 0 ? fmtP(v / tot) : '—'; };
     var th = function (m, owner) { return R.filterFacts(ds.facts, { months: [m], owner: owner }).filter(function (x) { return !x.open; }).reduce(function (a, x) { return a + x.th; }, 0); };
     var ok = u.byMonth.filter(function (a) { return !a.noData; });
-    var head = T.total ? 'NTC ' + state.luFy + ' (' + ok.length + ' tháng có đủ số): ' + R.lineUniverse(ds, state.luFy, sm).length + ' nửa chuyền, ' + fmtN(T.total) + ' chuyền-ngày. May hàng TI ' + pc1(T.ti, T.total) +
+    var lc = ok.map(function (a) { return a.lines; }), lcTxt = lc.length ? (Math.min.apply(null, lc) === Math.max.apply(null, lc) ? lc[0] : Math.min.apply(null, lc) + '–' + Math.max.apply(null, lc)) : '—';
+    var head = T.total ? 'NTC ' + state.luFy + ' (' + ok.length + ' tháng có đủ số): ' + lcTxt + ' nửa chuyền, ' + fmtN(T.total) + ' chuyền-ngày. May hàng TI ' + pc1(T.ti, T.total) +
       ' (' + fmtN(T.ti) + '), hàng APIC tự bán ' + pc1(T.apic, T.total) + ' (' + fmtN(T.apic) + '), chuyền trống ' + pc1(T.idle, T.total) + ' (' + fmtN(T.idle) + ').' : 'Năm này chưa có tháng nào đủ số liệu.';
     // biểu đồ
     var labels = u.byMonth.map(function (a) { return 'T' + (+a.month.slice(5)); }), tips = u.byMonth.map(function (a) { return 'Tháng ' + R.monthLabel(a.month); });
@@ -1801,19 +1825,36 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
     files.forEach(function (f) { srcs.push([f.factory, f.updateDate, f.name, f.styleCount, f.firstDate, f.lastDate, (f.warnings || []).join(' ')]); });
     add('File nguon', srcs);
 
-    return saveWorkbook(wb, 'Bao-cao-san-xuat-' + state.month + '.xlsx');
+    var cs = buildChartSheet();
+    if (cs) {
+      XLSX.utils.book_append_sheet(wb, cs.ws, 'Bieu do');
+      // đưa sheet biểu đồ lên đầu
+      wb.SheetNames.unshift(wb.SheetNames.pop());
+    }
+    return saveWorkbook(wb, 'Bao-cao-san-xuat-' + state.month + '.xlsx', cs ? cs.charts : []);
   }
 
   // Lưu file: trên claude.ai dùng khả năng "downloads" (người xem xác nhận), mở trên máy thì tải thẳng
-  async function saveWorkbook(wb, filename) {
+  async function saveWorkbook(wb, filename, charts) {
+    var data = XLSX.write(wb, { bookType: 'xlsx', type: 'array' }), chartNote = '';
+    // Thêm biểu đồ Excel vào sheet "Bieu do"
+    if (charts && charts.length) {
+      if (window.JSZip && window.PMXlsxCharts) {
+        try {
+          var zip = await window.JSZip.loadAsync(data);
+          await window.PMXlsxCharts.addCharts(zip, 'Bieu do', charts);
+          data = await zip.generateAsync({ type: 'uint8array', compression: 'DEFLATE' });
+          chartNote = ' (kèm ' + charts.length + ' biểu đồ ở sheet "Bieu do")';
+        } catch (e) { chartNote = ' (không thêm được biểu đồ: ' + (e && e.message ? e.message : e) + ')'; }
+      } else chartNote = ' (chưa tải được thư viện vẽ biểu đồ, file chỉ có bảng số)';
+    }
     if (window.claude && window.claude.use) {
       var dl = null;
       try { dl = await window.claude.use('downloads'); } catch (e) { dl = null; }
       if (!dl) { exportMsg('Trang này chưa được phép lưu file. Tải trang về máy để xuất Excel.', true); return; }
-      var data = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
       try {
         await dl.save({ filename: filename, data: new Blob([data]) });
-        exportMsg('Đã lưu ' + filename + '.');
+        exportMsg('Đã lưu ' + filename + chartNote + '.');
       } catch (e) {
         if (e && e.code === 'declined') exportMsg('Đã hủy lưu file.');
         else if (e && e.code === 'rate_limited') exportMsg('Đang có một yêu cầu lưu file chờ xác nhận. Xác nhận hoặc đóng nó rồi bấm lại.', true);
@@ -1821,7 +1862,94 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
       }
       return;
     }
-    XLSX.writeFile(wb, filename);
+    // Mở trên máy: tải thẳng
+    var url = URL.createObjectURL(new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
+    var a = document.createElement('a'); a.href = url; a.download = filename; document.body.appendChild(a); a.click();
+    setTimeout(function () { URL.revokeObjectURL(url); a.remove(); }, 1000);
+    exportMsg('Đã tạo ' + filename + chartNote + ', xem thư mục Tải xuống (Downloads).');
+  }
+
+  // ---------- Sheet "Bieu do": bảng số + biểu đồ Excel ----------
+  var XC = { blue: '2A78D6', orange: 'EB6834', aqua: '1BAF7A', gray: '5B6482' };
+  function buildChartSheet() {
+    var aoa = [['Biểu đồ · ' + scopeText() + ' · dữ liệu đến ' + R.monthLabel(state.month)], ['Mỗi biểu đồ lấy số từ bảng bên trái; sửa số trong bảng thì biểu đồ đổi theo.']];
+    var charts = [], BLOCK = 19, pctCells = [];
+    var add = function (title, header, rows, spec) {
+      if (!rows.length) return;
+      var r0 = aoa.length + 1; // để trống 1 hàng
+      while (aoa.length < r0) aoa.push([]);
+      aoa.push([title]); aoa.push(header);
+      rows.forEach(function (r) { aoa.push(r); });
+      var first = r0 + 3, last = r0 + 2 + rows.length; // số hàng Excel (1-based)
+      if (spec.yFmt === '0%') spec.series.forEach(function (sr) { for (var rr = first; rr <= last; rr++) pctCells.push(XLSX.utils.encode_cell({ r: rr - 1, c: sr.col })); });
+      var ref = function (ci) { var c = XLSX.utils.encode_col(ci); return "'Bieu do'!$" + c + '$' + first + ':$' + c + '$' + last; };
+      var colVals = function (ci) { return rows.map(function (r) { var v = r[ci]; return typeof v === 'number' && isFinite(v) ? v : null; }); };
+      charts.push({
+        title: title, anchor: { col: 7, row: r0, cols: 9, rows: 17 }, stacked: !!spec.stacked, yFmt: spec.yFmt || '#,##0',
+        cats: { ref: ref(0), values: rows.map(function (r) { return String(r[0]); }) },
+        series: spec.series.map(function (sr) { return { name: header[sr.col], ref: ref(sr.col), values: colVals(sr.col), color: sr.color, type: sr.type || spec.type || 'bar', dash: !!sr.dash }; })
+      });
+      while (aoa.length < r0 + BLOCK) aoa.push([]);
+    };
+    var num = function (v, d) { return v == null || !isFinite(v) ? null : Math.round(v * Math.pow(10, d || 0)) / Math.pow(10, d || 0); };
+    var o = { factory: state.factory || null, brand: state.brand || null, owner: state.owner || null, startMonth: state.startMonth };
+    // 1–6. Tổng hợp theo tháng: năm tài chính đang xem so với năm trước
+    var fy = state.thFy || R.fiscalYear(state.month, state.startMonth);
+    var y = R.overviewYear(ds, o, fy), py = ds.months.some(function (m) { return R.fiscalYear(m, state.startMonth) === fy - 1; }) ? R.overviewYear(ds, o, fy - 1) : null;
+    var mv = function (yy, i, k) { var c = yy && yy.cols[i] && yy.cols[i].v; return c && c.hasTh ? c[k] : null; };
+    var lab = y.cols.map(function (c) { return 'T' + (+c.month.slice(5)); });
+    [['th', 'Sản lượng thực hiện (sp)', 'bar', 0, '#,##0'], ['efficiency', 'Hiệu suất (giờ chuẩn/giờ công)', 'line', 4, '0%'], ['productivity', 'Năng suất (sp/người/ngày)', 'line', 2, '0.0'],
+      ['labor', 'Lao động bình quân/ngày (người)', 'line', 0, '#,##0'], ['avgLot', 'Lot bình quân 生産ロット (sp)', 'line', 0, '#,##0'], ['avgSam', 'Thời gian công đoạn bình quân 工程分析時間 (giây/sp)', 'line', 0, '#,##0']].forEach(function (d) {
+      var rows = lab.map(function (l, i) { return [l, num(mv(y, i, d[0]), d[3]), num(mv(py, i, d[0]), d[3])]; });
+      if (!rows.some(function (r) { return r[1] != null || r[2] != null; })) return;
+      add(d[1] + ' · NTC ' + fy + ' so NTC ' + (fy - 1), ['Tháng', 'NTC ' + fy, 'NTC ' + (fy - 1)], rows,
+        { type: d[2], yFmt: d[4], series: [{ col: 1, color: XC.blue }, { col: 2, color: XC.orange }] });
+    });
+    // 7–9. Cam kết với TI (hàng TI)
+    var ct = R.contractTracking(ds, { factory: state.factory || null, brand: state.brand || null, owner: 'TI', startMonth: state.startMonth }, { metric: state.ctMetric, compound: !!state.ctCompound });
+    var cy = ct.years.filter(function (x) { return x.fy === state.ctFy; })[0] || ct.years[0];
+    if (cy) {
+      var cl = cy.monthly.map(function (m) { return 'T' + (+m.month.slice(5)); });
+      var isEff = state.ctMetric === 'efficiency';
+      add((isEff ? 'Hiệu suất' : 'Năng suất') + ' hàng TI so mục tiêu · NTC ' + cy.fy, ['Tháng', 'NTC ' + cy.fy, 'NTC 2025 (chuẩn)', 'Mục tiêu'],
+        cl.map(function (l, i) { return [l, num(cy.monthly[i].value, 4), num(ct.benchmark.monthly[i] && ct.benchmark.monthly[i].value, 4), num(cy.target, 4)]; }),
+        { type: 'line', yFmt: isEff ? '0%' : '0.00', series: [{ col: 1, color: XC.blue }, { col: 2, color: XC.orange }, { col: 3, color: XC.gray, dash: true }] });
+      ['hardShare', 'smallShare'].forEach(function (k) {
+        var lim = k === 'hardShare' ? ct.cfg.hardMax : ct.cfg.smallMax;
+        add((k === 'hardShare' ? 'Tỷ lệ hàng khó (> 20.000 giây)' : 'Tỷ lệ lot nhỏ (≤ 500 sp/chuyền)') + ' · NTC ' + cy.fy, ['Tháng', 'Thực tế (TH)', 'Theo kế hoạch (KH)', 'Giới hạn'],
+          cl.map(function (l, i) { var m = cy.monthly[i]; return [l, m.basis === 'TH' ? num(m[k], 4) : null, m.basis === 'KH' ? num(m[k], 4) : null, lim]; }),
+          { yFmt: '0%', series: [{ col: 1, color: XC.blue }, { col: 2, color: XC.orange }, { col: 3, color: XC.gray, type: 'line', dash: true }] });
+      });
+    }
+    // 10. Sử dụng chuyền
+    var lfy = state.luFy || R.fiscalYear(state.month, state.startMonth);
+    var lu = R.lineUsage(ds, { startMonth: state.startMonth }, R.fiscalMonths(lfy, state.startMonth));
+    add('Chuyền-ngày: hàng TI, hàng APIC tự bán, chuyền trống · NTC ' + lfy, ['Tháng', 'Hàng TI', 'Hàng APIC tự bán', 'Chuyền trống'],
+      lu.byMonth.filter(function (a) { return !a.noData; }).map(function (a) { return [R.monthLabel(a.month), num(a.ti, 1), num(a.apic, 1), num(a.idle, 1)]; }),
+      { stacked: true, yFmt: '#,##0', series: [{ col: 1, color: XC.blue }, { col: 2, color: XC.orange }, { col: 3, color: XC.aqua }] });
+    // 11–12. Phân tích (kỳ phân tích đang chọn)
+    var ao = opts({ period: state.anPeriod });
+    var le = R.learning(ds, ao);
+    add('Đường lên năng suất (% sản lượng ổn định)', ['Ngày sản xuất'].concat(le.rows.map(function (x) { return x.band.label; })),
+      le.curveDays.map(function (d, i) { return ['Ngày ' + d].concat(le.rows.map(function (x) { return num(x.v.curve[i], 4); })); }),
+      { type: 'line', yFmt: '0%', series: le.rows.map(function (_, i) { return { col: i + 1, color: [XC.blue, XC.orange, XC.aqua][i] }; }) });
+    var lot = R.lotEfficiency(ds, ao);
+    add('Hiệu suất theo cỡ lot và mức thời gian may', ['Cỡ lot'].concat(R.SAM_BANDS.map(function (b) { return b.label; })),
+      lot.matrix.map(function (x) { return [x.band.label].concat(x.cells.map(function (c) { return num(c.efficiency, 4); })); }),
+      { yFmt: '0%', series: R.SAM_BANDS.map(function (_, i) { return { col: i + 1, color: [XC.blue, XC.orange, XC.aqua][i] }; }) });
+    // 13. Tải các tháng tới
+    var cap = R.capacityLoad(ds, o), lm = [], lf = [];
+    cap.rows.forEach(function (x) { if (lm.indexOf(x.month) < 0) lm.push(x.month); if (lf.indexOf(x.f) < 0) lf.push(x.f); });
+    lm.sort();
+    add('Tải các tháng tới so với năng lực', ['Tháng'].concat(lf.slice(0, 3), ['100% năng lực']),
+      lm.map(function (m) { return [R.monthLabel(m)].concat(lf.slice(0, 3).map(function (f) { var x = cap.rows.filter(function (q) { return q.f === f && q.month === m; })[0]; return x ? num(x.load, 4) : null; }), [1]); }),
+      { yFmt: '0%', series: lf.slice(0, 3).map(function (_, i) { return { col: i + 1, color: [XC.blue, XC.orange, XC.aqua][i] }; }).concat([{ col: Math.min(lf.length, 3) + 1, color: XC.gray, type: 'line', dash: true }]) });
+    if (!charts.length) return null;
+    var ws = XLSX.utils.aoa_to_sheet(aoa);
+    ws['!cols'] = [{ wch: 16 }, { wch: 14 }, { wch: 14 }, { wch: 14 }, { wch: 12 }, { wch: 4 }, { wch: 2 }];
+    // định dạng % cho các cột tỷ lệ
+    pctCells.forEach(function (k) { if (ws[k] && ws[k].t === 'n') ws[k].z = '0.0%'; });
+    return { ws: ws, charts: charts };
   }
 
   // ---------- Sự kiện ----------
@@ -1856,7 +1984,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
   });
   async function onExport() {
     exportMsg('Đang tạo file Excel…');
-    try { await exportExcel(); if (!(window.claude && window.claude.use)) exportMsg('Đã tạo file Excel, xem thư mục Tải xuống (Downloads).'); }
+    try { await exportExcel(); }
     catch (e) { exportMsg('Không xuất được Excel: ' + e.message, true); }
   }
   $('btnExport').addEventListener('click', onExport);
@@ -1873,6 +2001,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
   $('btnAliases').addEventListener('click', function () { state.aliasText = $('aliases').value; saveSettings(); rebuild(); });
   $('dimSeg').addEventListener('click', function (e) { var b = e.target.closest('[data-dim]'); if (!b) return; state.dim = b.getAttribute('data-dim'); saveSettings(); renderDim(); });
   $('fyDimSeg').addEventListener('click', function (e) { var b = e.target.closest('[data-fydim]'); if (!b) return; state.fyDim = b.getAttribute('data-fydim'); saveSettings(); renderFiscal(); });
+  $('btnLineOv').addEventListener('click', function () { state.lineOv = $('lineOv').value; saveSettings(); rebuild(); });
   $('luFy').addEventListener('change', function () { state.luFy = +this.value; saveSettings(); renderLineUsage(); });
   $('ctFy').addEventListener('change', function () { state.ctFy = +this.value; saveSettings(); renderContract(); });
   $('ctMetric').addEventListener('change', function () { state.ctMetric = this.value; saveSettings(); renderContract(); });

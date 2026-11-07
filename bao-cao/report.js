@@ -659,8 +659,9 @@
         });
       }
     });
+    var lineLife = computeLineLife(lineDay, dayOff, opts && opts.lineOverrides);
     return {
-      facts: facts, meta: meta, months: Object.keys(monthsAll).sort(),
+      facts: facts, meta: meta, months: Object.keys(monthsAll).sort(), lineLife: lineLife,
       factories: Object.keys(byF).sort(), runs: runs, lineDay: lineDay, dayOff: dayOff, lineMonthOk: lineMonthOk, lineMonthAny: lineMonthAny, ownerOf: ownerOf,
       oldFiles: files.filter(function (fl) { return (fl.v || 0) < DATA_VERSION; }).length
     };
@@ -1214,6 +1215,50 @@
     });
   }
 
+  // ---------- Thời gian hoạt động của từng nửa chuyền (chuyền mở mới / ngừng) ----------
+  /*
+   * Mỗi nửa chuyền có mặt từ ngày có sản lượng đầu tiên đến ngày có sản lượng cuối cùng.
+   * Sản lượng đầu tiên trong 31 ngày đầu của dữ liệu → coi như có từ đầu (không biết trước đó);
+   * sản lượng cuối cùng trong 31 ngày cuối → coi như vẫn còn đến cuối dữ liệu.
+   * Khai báo tay (mỗi dòng "15B 1/10/2026" hoặc "15B 1/10/2026 31/3/2027", ngày dạng d/m/yyyy hoặc yyyy-mm-dd)
+   * thay cho ngày tự nhận.
+   */
+  var LINE_EDGE_DAYS = 31;
+  function parseLineOverrides(text) {
+    var out = {};
+    String(text || '').split(/\r?\n/).forEach(function (l) {
+      var m = norm(l).toUpperCase().match(/^(\d+[AB])\s+(\S+)(?:\s+(\S+))?/);
+      if (!m) return;
+      var d = function (t) {
+        if (!t) return null;
+        var a = t.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+        return a ? a[3] + '-' + pad(+a[2]) + '-' + pad(+a[1]) : toISO(t);
+      };
+      out[m[1]] = { from: d(m[2]), to: d(m[3]) };
+    });
+    return out;
+  }
+  function computeLineLife(lineDay, dayOff, overridesText) {
+    var days = Object.keys(dayOff || {}).sort();
+    if (!days.length) return {};
+    var d0 = days[0], d1 = days[days.length - 1], first = {}, last = {};
+    Object.keys(lineDay).sort().forEach(function (iso) {
+      Object.keys(lineDay[iso]).forEach(function (pl) { if (!first[pl]) first[pl] = iso; last[pl] = iso; });
+    });
+    var ov = parseLineOverrides(overridesText), life = {};
+    Object.keys(first).concat(Object.keys(ov)).forEach(function (pl) {
+      if (life[pl]) return;
+      var f = first[pl] || null, l = last[pl] || null;
+      var from = !f || f <= addDays(d0, LINE_EDGE_DAYS) ? d0 : f;
+      var to = !l || l >= addDays(d1, -LINE_EDGE_DAYS) ? d1 : l;
+      var o = ov[pl];
+      life[pl] = { line: pl, from: o && o.from ? o.from : from, to: o && o.to ? o.to : (o && o.from && !first[pl] ? d1 : to),
+        firstProd: f, lastProd: l, manual: !!o, opened: (o && o.from ? o.from : from) > d0, closed: (o && o.to ? o.to : to) < d1 };
+    });
+    return life;
+  }
+  function lineAlive(ds, pl, iso) { var L = (ds.lineLife || {})[pl]; return !L || (iso >= L.from && iso <= L.to); }
+
   // ---------- Sử dụng chuyền: hàng TI, hàng APIC tự bán, chuyền trống ----------
   /*
    * Đơn vị: nửa chuyền A/B (như 29 chuyền trong cách tính của TI), mỗi ngày làm việc là 1 chuyền-ngày.
@@ -1229,6 +1274,9 @@
       if (months.indexOf(iso.slice(0, 7)) < 0) return;
       Object.keys(ds.lineDay[iso]).forEach(function (pl) { set[pl] = 1; });
     });
+    // chuyền khai báo tay / còn hoạt động trong năm dù không có sản lượng
+    var fs = months[0] + '-01', fe = monthEnd(months[11]);
+    Object.keys(ds.lineLife || {}).forEach(function (pl) { var L = ds.lineLife[pl]; if (L.from <= fe && L.to >= fs) set[pl] = 1; });
     return Object.keys(set).sort(function (a, b) { return a.localeCompare(b, 'en', { numeric: true }); });
   }
   function dayClass(slot, ownerOf) {
@@ -1259,16 +1307,22 @@
       var days = [], dim = daysInMonth(m);
       for (var d = 1; d <= dim; d++) days.push(m + '-' + pad(d));
       if (!okMap[m]) { byMonth.push(Object.assign(a, { noData: true })); return; }
+      var alive = {};
       days.forEach(function (iso) {
         var off = ds.dayOff[iso] !== false, slots = (ds.lineDay || {})[iso] || {};
         if (!off) a.wd++;
         uni.forEach(function (pl) {
+          if (!opts.relaxed && !lineAlive(ds, pl, iso)) return;
+          alive[pl] = 1;
           var c = dayClass(slots[pl], ownerOf), t = lineTot[pl] || (lineTot[pl] = { line: pl, total: 0, ti: 0, apic: 0, idle: 0 });
           if (off) { a.offWork += c.ti + c.apic; return; }
           a.total++; a.ti += c.ti; a.apic += c.apic; a.idle += c.idle;
           t.total++; t.ti += c.ti; t.apic += c.apic; t.idle += c.idle;
         });
       });
+      a.lines = Object.keys(alive).length;
+      var endIso = days[days.length - 1];
+      a.linesEnd = opts.relaxed ? a.lines : uni.filter(function (pl) { return lineAlive(ds, pl, endIso); }).length;
       byMonth.push(a);
     });
     // Giai đoạn liên tục may hàng APIC / chuyền trống của từng nửa chuyền (ngày làm việc)
@@ -1281,6 +1335,7 @@
       var close = function () { if (cur) { periods.push(cur); cur = null; } };
       allDays.forEach(function (iso) {
         if (!(iso in (ds.dayOff || {})) || ds.dayOff[iso] !== false) return; // chỉ ngày làm việc
+        if (!opts.relaxed && !lineAlive(ds, pl, iso)) { close(); return; }
         var c = dayClass(((ds.lineDay || {})[iso] || {})[pl], ownerOf);
         var kind = c.apic >= 0.25 ? 'apic' : c.idle >= 0.5 ? 'idle' : null;
         if (!kind) { close(); return; }
@@ -1526,7 +1581,7 @@
     planStability: planStability, lineRanking: lineRanking, capacityLoad: capacityLoad, loadStatus: loadStatus,
     overviewMetrics: overviewMetrics, overviewYear: overviewYear, overviewYears: overviewYears,
     TI_BRANDS_DEFAULT: TI_BRANDS_DEFAULT, TI_METHOD: TI_METHOD, brandKey: brandKey, tiMatcher: tiMatcher,
-    lineUniverse: lineUniverse, lineUsage: lineUsage, tiProductivity: tiProductivity,
+    lineUniverse: lineUniverse, lineUsage: lineUsage, computeLineLife: computeLineLife, parseLineOverrides: parseLineOverrides, tiProductivity: tiProductivity,
     findDayColumns: findDayColumns, isBillingSheet: isBillingSheet, billingSelf: billingSelf, parseBilling: parseBilling, billingCompare: billingCompare,
     CONTRACT: CONTRACT, contractTracking: contractTracking, contractLists: contractLists, contractTarget: contractTarget, periods: periods, summarize: summarize, monthly: monthly, fiscal: fiscal, pct: pct
   };
