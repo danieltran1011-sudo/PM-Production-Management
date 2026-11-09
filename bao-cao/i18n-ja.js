@@ -401,8 +401,8 @@
   // Mẫu có số: "NTC 2026", "Tháng 4", "Tháng 10/2026"…
   var PATTERNS = [
     [/^NTC (\d{4})$/, function (m) { return m[1] + '年度'; }],
-    [/^Đối chiếu sổ ライン空き原価配分表 của APIC \((\d{1,2})\/(\d{4}) – (\d{1,2})\/(\d{4})\)$/, function (m) { return 'APICライン空き原価配分表との照合（' + m[2] + '年' + m[1] + '月～' + m[4] + '年' + m[3] + '月）'; }],
-    [/^Sổ ライン空き原価配分表 của APIC \((\d+) tháng\)$/, function (m) { return 'APICライン空き原価配分表（' + m[1] + 'か月）'; }],
+    [/^Đối chiếu sổ ライン空き原価配分表 của TI \((\d{1,2})\/(\d{4}) – (\d{1,2})\/(\d{4})\)$/, function (m) { return 'TIライン空き原価配分表との照合（' + m[2] + '年' + m[1] + '月～' + m[4] + '年' + m[3] + '月）'; }],
+    [/^Sổ ライン空き原価配分表 của TI \((\d+) tháng\)$/, function (m) { return 'TIライン空き原価配分表（' + m[1] + 'か月）'; }],
     [/^NTC (\d{4}) \((\d{1,2})\/(\d{4})–(\d{1,2})\/(\d{4})\)$/, function (m) { return m[1] + '年度（' + m[3] + '年' + m[2] + '月～' + m[5] + '年' + m[4] + '月）'; }],
     [/^Tháng (\d{1,2})$/, function (m) { return m[1] + '月'; }],
     [/^Tháng (\d{1,2}) \(theo năm dương lịch\)$/, function (m) { return m[1] + '月（暦年）'; }],

@@ -474,7 +474,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
 
   var files = []; // dữ liệu đã đọc của từng file
   var bills = []; // file APIC負担金額 của TI
-  var regs = []; // sổ ライン空き原価配分表 của APIC, mỗi tháng một mục
+  var regs = []; // sổ ライン空き原価配分表 của TI, mỗi tháng một mục
   var fileListOpen = false;
   var ds = null;
 
@@ -585,7 +585,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
         var wb = XLSX.read(buf, { type: 'array', sheets: [sheet], cellFormula: true, cellHTML: false, cellText: false, cellStyles: false, bookVBA: false });
         var ws = wb.Sheets[sheet];
         var rows = XLSX.utils.sheet_to_json(ws, { header: 1, raw: true, defval: null });
-        // Sổ ライン空き原価配分表 của APIC: đọc mọi sheet (mỗi sheet một tháng)
+        // Sổ ライン空き原価配分表 của TI: đọc mọi sheet (mỗi sheet một tháng)
         if (sheet !== 'XN1AB' && R.isIdleRegisterSheet(rows)) {
           var wbAll = XLSX.read(buf, { type: 'array', cellFormula: false, cellHTML: false, cellText: false, cellStyles: false, bookVBA: false });
           var d1904 = !!(wbAll.Workbook && wbAll.Workbook.WBProps && wbAll.Workbook.WBProps.date1904);
@@ -695,7 +695,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
     }).join('') + '</p><p class="muted">Đối chiếu xem ở phần "Sử dụng chuyền" (chọn tháng ở thanh bộ lọc).</p></div>' : '';
     var regSorted = regs.slice().sort(function (a, b) { return a.month < b.month ? -1 : 1; });
     var regBad = regSorted.filter(function (r) { return r.checks && r.checks.length; });
-    var regBox = regs.length ? '<div class="coverage"><h3>Sổ ライン空き原価配分表 của APIC (' + regs.length + ' tháng)</h3><p>' + regSorted.map(function (r) {
+    var regBox = regs.length ? '<div class="coverage"><h3>Sổ ライン空き原価配分表 của TI (' + regs.length + ' tháng)</h3><p>' + regSorted.map(function (r) {
       return '<span style="margin-right:14px;white-space:nowrap"><b>' + R.monthLabel(r.month) + '</b> <span class="muted">' + fmtN(r.days, 1) + ' chuyền-ngày · ' + fmtN(r.amount, 0) + ' USD</span>' +
         (r.checks && r.checks.length ? ' <span class="down">⚠</span>' : '') + ' <button class="link" data-del="' + esc(r.id) + '">Xóa</button></span>';
     }).join('') + '</p>' + (regBad.length ? '<p class="warn">⚠ ' + regBad.map(function (r) {
@@ -1305,7 +1305,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
     drawCharts($('thCharts'));
   }
 
-  // ---------- Đối chiếu sổ ライン空き原価配分表 của APIC ----------
+  // ---------- Đối chiếu sổ ライン空き原価配分表 của TI ----------
   function regCompare() {
     return regs.slice().sort(function (a, b) { return a.month < b.month ? -1 : 1; }).map(function (r) {
       var c = R.billingCompare(ds, r, state.startMonth);
@@ -1368,7 +1368,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
     })) : '<p class="up">Các tháng có dữ liệu: sổ và trang khớp từng chuyền.</p>';
     var cur = cmp.filter(function (x) { return x.r.month === state.month; })[0];
     var bad = regs.filter(function (r) { return r.checks && r.checks.length; });
-    return '<h3>Đối chiếu sổ ライン空き原価配分表 của APIC (' + R.monthLabel(cmp[0].r.month) + ' – ' + R.monthLabel(cmp[cmp.length - 1].r.month) + ')</h3>' +
+    return '<h3>Đối chiếu sổ ライン空き原価配分表 của TI (' + R.monthLabel(cmp[0].r.month) + ' – ' + R.monthLabel(cmp[cmp.length - 1].r.month) + ')</h3>' +
       '<p class="an-note">Sổ: chuyền trống theo nguyên nhân; dòng "投入物なし(NYABEオーダー縫製)" là chuyền may hàng Nhà Bè (APIC tự bán), so với "Trang: may APIC". Chuyền A1/A2/B1/B2 tính nửa chuyền-ngày. Lệch = trang − sổ, chỉ ở các chuyền trang có dữ liệu. ' +
       (cur ? '' : 'Chọn một tháng trong sổ ở thanh bộ lọc để tô đậm dòng tháng đó.') + '</p>' + t0 +
       (bad.length ? '<p class="warn">⚠ Sổ cộng thiếu: ' + bad.map(function (r) { return R.monthLabel(r.month) + ' ' + r.checks.map(function (c) { return c.factory + ' ' + (c.what === 'amount' ? 'chi phí ghi ' + fmtN(c.sheet, 0) + ' USD, đúng ra ' + fmtN(c.rows, 0) + ' USD' : 'ngày ghi ' + fmtN(c.sheet, 1) + ', đúng ra ' + fmtN(c.rows, 1)); }).join(', '); }).join(' · ') + '. Bảng trên dùng tổng các dòng.</p>' : '') +
@@ -2101,7 +2101,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
 
     if (regs.length) {
       var rc = regCompare();
-      var sr = [['Đối chiếu sổ ライン空き原価配分表 của APIC với chuyền trống / may hàng APIC trang tính được'], [],
+      var sr = [['Đối chiếu sổ ライン空き原価配分表 của TI với chuyền trống / may hàng APIC trang tính được'], [],
         ['Tháng', 'Ngày làm việc (sổ)', 'Ngày làm việc (trang)', 'Chuyền nhỏ (sổ)', 'Sổ: trống', 'Sổ: may Nhà Bè', 'Trang: trống', 'Trang: may APIC', 'Lệch trống', 'Lệch APIC', 'TI tính (APIC負担金額)', 'Chi phí trống (USD)', 'Kiểm tra sổ']];
       rc.forEach(function (x) {
         var ok = x.c.dataOk;
@@ -2127,7 +2127,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
           sr.push([x.r.month, +lp[0], lp[1], r2(row.tiDays, 1), r2(row.mine, 1), r2(row.diff, 1), row.periods.map(function (p) { return (p.kind === 'apic' ? 'APIC ' : 'trống ') + p.from + '→' + p.to + ' (' + r2(p.days, 1) + ')'; }).join('; ')]);
         });
       });
-      add('So trong chuyen APIC', sr);
+      add('So trong chuyen TI', sr);
     }
 
     // Phân tích (theo kỳ phân tích đang chọn)

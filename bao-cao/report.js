@@ -1533,7 +1533,7 @@
       mine: rows.reduce(function (a, r) { return a + (r.mine || 0); }, 0), missing: rows.filter(function (r) { return !r.hasData; }).length };
   }
 
-  // ---------- Sổ ライン空き原価配分表 của APIC (chuyền trống hằng tháng, có nguyên nhân và chi phí) ----------
+  // ---------- Sổ ライン空き原価配分表 của TI (chuyền trống hằng tháng, có nguyên nhân và chi phí) ----------
   // Mỗi sheet "N月実績" là một tháng; khối 【1A工場】, 【1B工場】: ライン, 稼働責任部課, 空き期間, 空き日数, 原価金額（USD), 空き原因.
   // Nguyên nhân là ô gộp nhiều hàng → điền xuống theo vùng gộp. "投入物なし(NYABEオーダー縫製)" = chuyền may hàng Nhà Bè (APIC tự bán).
   function isIdleRegisterSheet(rows) {
