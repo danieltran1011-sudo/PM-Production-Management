@@ -16,6 +16,7 @@ Số ngày chuẩn lấy từ file rà soát 20260722, cập nhật theo cuộc 
 | `workflow/planner.html` | Công cụ lập lịch từng mã hàng: nhập ETA, SAH, mã mới/lặp lại, in (gia công ngoài tại Hạnh Đan / Vĩnh Phát), thêu (trong nhà máy) → ngày của từng bước, Gantt, tính ngược ETA muộn nhất, danh sách nhiều mã, sửa số ngày chuẩn. |
 | `workflow/schedule.js` | Phần tính lịch dùng chung cho hai trang. |
 | `workflow/schedule.test.js` | Test đối chiếu với file Excel rà soát và các quy tắc đã xác nhận trong họp. |
+| `docs/Leadtime-TIJ.xlsx` | File Excel song ngữ Nhật–Việt: 概要 (tổng hợp, so sánh chuẩn), フロー (Gantt chọn được điều kiện), 理由・依頼 (lý do, đề nghị TIJ), 標準日数 (thời gian chuẩn, sửa được), 計算 (công thức tính). Tạo lại bằng `python3 scripts/xuat_excel.py`. |
 | `docs/quy-trinh-lead-time.md` | Tài liệu quy trình, bảng thời gian chuẩn, bảng so sánh, việc cần làm sau họp, các điểm còn mở. |
 | `data/nguon/` | Hai file Excel gốc. |
 
