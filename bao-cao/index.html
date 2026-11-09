@@ -290,6 +290,15 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
         <div id="brandRaw" class="warn"></div>
       </div>
     </details>
+    <details class="settings">
+      <summary>Mã hàng chia công đoạn (tính là một mã)</summary>
+      <div class="inner">
+        <p class="muted">Mỗi dòng một mã gốc. Các mã <span class="mono">MÃ-01, MÃ-02 …</span> là các công đoạn gia công của cùng một sản phẩm: tính là một mã (số mã, mã mới, chuyển mã, lot), sản lượng KH/TH lấy công đoạn cuối (thành phẩm), 工程分析時間 = tổng các công đoạn.</p>
+        <textarea id="stagedText" spellcheck="false" placeholder="ND92625"></textarea>
+        <div><button id="btnStaged">Áp dụng</button> <button class="link" id="btnStagedReset" type="button">Trả về mặc định</button></div>
+        <div id="stagedInfo" class="muted"></div>
+      </div>
+    </details>
   </section>
 
   <div id="empty" class="panel empty">Chưa có dữ liệu. Chọn ít nhất một file KH_UPDATE ở trên.</div>
@@ -447,7 +456,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
   var SETTINGS = 'pm-bao-cao-settings';
   var $ = function (id) { return document.getElementById(id); };
 
-  var state = { startMonth: 4, aliasText: '', dim: 'brand', fyDim: 'brand', sort: 'th', month: '', factory: '', brand: '', anTab: 'lot', anPeriod: 'ytd', thMode: 'year', thFy: null, ctFy: 2026, ctMetric: 'efficiency', ctCompound: true, owner: '', tiText: null, luFy: null, lineOv: '', lang: 'bi' };
+  var state = { startMonth: 4, aliasText: '', dim: 'brand', fyDim: 'brand', sort: 'th', month: '', factory: '', brand: '', anTab: 'lot', anPeriod: 'ytd', thMode: 'year', thFy: null, ctFy: 2026, ctMetric: 'efficiency', ctCompound: true, owner: '', tiText: null, luFy: null, lineOv: '', lang: 'bi', stagedText: null };
   try { Object.assign(state, JSON.parse(localStorage.getItem(SETTINGS) || '{}')); } catch (e) { /* bỏ qua */ }
   function saveSettings() { try { localStorage.setItem(SETTINGS, JSON.stringify(state)); } catch (e) { /* bỏ qua */ } }
   // Nhãn TI bổ sung sau (vd. Finisher): thêm vào danh sách đã lưu, mỗi nhãn chỉ thêm một lần
@@ -635,7 +644,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
   // ---------- Dựng lại dữ liệu ----------
   function rebuild() {
     files.sort(function (a, b) { return a.factory < b.factory ? -1 : a.factory > b.factory ? 1 : a.updateDate < b.updateDate ? -1 : 1; });
-    ds = files.length ? R.buildDataset(files, { aliases: R.parseAliasText(state.aliasText), tiBrands: state.tiText == null ? null : state.tiText, lineOverrides: state.lineOv }) : null;
+    ds = files.length ? R.buildDataset(files, { aliases: R.parseAliasText(state.aliasText), tiBrands: state.tiText == null ? null : state.tiText, lineOverrides: state.lineOv, staged: state.stagedText }) : null;
     renderFiles();
     var has = !!(ds && ds.months.length);
     ['bo-loc', 'tong-quan', 'tong-hop', 'cam-ket', 'su-dung-chuyen', 'theo-chieu', 'theo-thang', 'theo-nam', 'phan-tich', 'ma-hang'].forEach(function (id) { $(id).hidden = !has; });
@@ -818,6 +827,10 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
     for (var i = 1; i <= 12; i++) fy += '<option value="' + i + '"' + (i === state.startMonth ? ' selected' : '') + '>Tháng ' + i + (i === 1 ? ' (theo năm dương lịch)' : '') + '</option>';
     $('fFy').innerHTML = fy;
     $('aliases').value = state.aliasText || '';
+    $('stagedText').value = state.stagedText == null ? R.STAGED_DEFAULT : state.stagedText;
+    $('stagedInfo').innerHTML = ds && ds.staged && ds.staged.length ? 'Đang gộp: ' + ds.staged.map(function (x) {
+      return '<b>' + esc(x.base) + '</b> (' + esc(x.f) + ') ← ' + esc(x.stages.join(', ')) + ' · 工程分析時間 ' + fmtN(x.totalSam) + ' giây · thành phẩm: công đoạn ' + x.last;
+    }).join('<br>') : 'Chưa thấy mã nào trong danh sách ở các file đã nạp.';
     $('fOwner').value = state.owner || '';
     $('tiBrands').value = state.tiText == null ? R.TI_BRANDS_DEFAULT : state.tiText;
     renderTiClass();
@@ -1444,13 +1457,16 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
         { name: '% may hàng APIC', color: 'var(--series-2)', values: u.byMonth.map(function (a) { return a.noData || !a.total ? null : a.apic / a.total; }) }],
       fmt: function (v) { return fmtP(v); }, axisFmt: pctAxis, zero: true, height: 200 }) + '</div>';
     // bảng tháng
-    var t1 = table(['Tháng', 'Ngày làm việc', 'Nửa chuyền', 'Chuyền-ngày', 'Hàng TI', 'Hàng APIC', 'Trống', '% trống', 'May ngày nghỉ', 'SL hàng TI', 'SL hàng APIC', 'SL TI/chuyền-ngày TI'],
+    var t1 = table(['Tháng', 'Ngày làm việc', 'Nửa chuyền', 'Chuyền-ngày', 'Hàng TI', 'Hàng APIC', 'Trống', '% trống', 'May ngày nghỉ', 'SL hàng TI', 'SL hàng APIC', 'SL TI/chuyền-ngày TI', 'Có KH, không ghi TH'],
       u.byMonth.map(function (a) {
-        if (a.noData) return '<tr><td>' + R.monthLabel(a.month) + '</td><td class="txt muted" colspan="11">Chưa đủ file chốt của mọi xưởng</td></tr>';
+        if (a.noData) return '<tr><td>' + R.monthLabel(a.month) + '</td><td class="txt muted" colspan="12">Chưa đủ file chốt của mọi xưởng</td></tr>';
         var tth = th(a.month, 'TI');
         return '<tr' + (a.month === state.month ? ' class="sel"' : '') + '><td>' + R.monthLabel(a.month) + '</td>' + td(a.wd) + td(a.lines) + td(fmtN(a.total)) + td(fmtN(a.ti, 1)) + td(fmtN(a.apic, 1)) + td(fmtN(a.idle, 1)) +
-          td(pc1(a.idle, a.total)) + td(a.offWork ? fmtN(a.offWork, 1) : '—') + td(fmtN(tth)) + td(fmtN(th(a.month, 'APIC'))) + td(a.ti > 0 ? fmtN(tth / a.ti, 1) : '—') + '</tr>';
-      }).concat(['<tr class="total"><td>Cả năm</td>' + td(T.wd) + td('') + td(fmtN(T.total)) + td(fmtN(T.ti, 1)) + td(fmtN(T.apic, 1)) + td(fmtN(T.idle, 1)) + td(pc1(T.idle, T.total)) + td(T.offWork ? fmtN(T.offWork, 1) : '—') + td('') + td('') + td('') + '</tr>']));
+          td(pc1(a.idle, a.total)) + td(a.offWork ? fmtN(a.offWork, 1) : '—') + td(fmtN(tth)) + td(fmtN(th(a.month, 'APIC'))) + td(a.ti > 0 ? fmtN(tth / a.ti, 1) : '—') + td(a.plan ? fmtN(a.plan, 1) : '—') + '</tr>';
+      }).concat(['<tr class="total"><td>Cả năm</td>' + td(T.wd) + td('') + td(fmtN(T.total)) + td(fmtN(T.ti, 1)) + td(fmtN(T.apic, 1)) + td(fmtN(T.idle, 1)) + td(pc1(T.idle, T.total)) + td(T.offWork ? fmtN(T.offWork, 1) : '—') + td('') + td('') + td('') + td(T.plan ? fmtN(T.plan, 1) : '—') + '</tr>']));
+    var npf = (ds.noPlanFiles || []).filter(function (x) { return x.months.some(function (m) { return R.fiscalYear(m, sm) === state.luFy; }); });
+    var planNote = '<p class="an-note">Ngày đã qua mà chuyền / tổ có KH nhưng không ghi TH (vd. tổ 4AB1 may ND92625, hàng 工程時間 rất dài chưa ghi TH hằng ngày) được tính là có may, ghi ở cột "Có KH, không ghi TH". Chuyền gộp 4AB, 12AB…: tổ 4AB1 hoặc 4AB2 có may là cả 4A và 4B có may; tổ của nửa chuyền (4A1, 4A2) tính nửa chuyền-ngày.' +
+      (npf.length ? ' <span class="warn">File nạp trước bản này chưa có KH theo ngày: nạp lại ' + npf.map(function (x) { return esc(x.factory) + ' update ' + fmtDate(x.updateDate); }).join(', ') + ' để tính phần này.</span>' : '') + '</p>';
     // so sánh các năm
     var yRows = fys.map(function (fy) {
       var uu = R.lineUsage(ds, o, R.fiscalMonths(fy, sm)), tt = uu.total;
@@ -1479,7 +1495,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
     var monthBlock = (ds.lineMonthOk[mm] ? '<h3>Tháng ' + R.monthLabel(mm) + ': giai đoạn may hàng APIC tự bán (APIC自販分)</h3>' + per('apic') + '<h3>Tháng ' + R.monthLabel(mm) + ': giai đoạn chuyền trống</h3>' + per('idle') +
       '<p class="an-note">Hai bảng này tương ứng danh sách APIC負担金額 hằng tháng của TI (dòng "APIC自販分 生産期間" và dòng chuyền trống). Ngày làm việc không tính Chủ nhật, ngày lễ. Chuyền-ngày = 0,5 khi chỉ một nửa chuyền tách (A1 hoặc A2) trống hoặc may hàng APIC. Đổi tháng ở thanh bộ lọc.</p>'
       : '<p class="muted">Tháng ' + R.monthLabel(mm) + ' chưa đủ file chốt của mọi xưởng nên chưa lập được giai đoạn chuyền.</p>');
-    $('luBody').innerHTML = billingBlock() + regBlock() + '<p class="headline">' + head + '</p>' + charts + '<h3>Theo tháng</h3>' + t1 + '<h3>So sánh các năm</h3>' + t2 +
+    $('luBody').innerHTML = billingBlock() + regBlock() + '<p class="headline">' + head + '</p>' + charts + '<h3>Theo tháng</h3>' + t1 + planNote + '<h3>So sánh các năm</h3>' + t2 +
       '<p class="an-note">Số nửa chuyền = nửa chuyền A/B có sản lượng trong năm. Tài liệu TI tính 29 chuyền × 297 ngày. Năm thiếu tháng thì số chuyền-ngày nhỏ hơn.</p>' +
       '<h3>Theo chuyền · NTC ' + state.luFy + '</h3>' + t3 + monthBlock;
     drawCharts($('luBody'));
@@ -2350,6 +2366,8 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
   $('btnTi').addEventListener('click', function () { state.tiText = $('tiBrands').value; saveSettings(); rebuild(); });
   $('btnTiReset').addEventListener('click', function () { state.tiText = null; saveSettings(); rebuild(); });
   $('btnAliases').addEventListener('click', function () { state.aliasText = $('aliases').value; saveSettings(); rebuild(); });
+  $('btnStaged').addEventListener('click', function () { state.stagedText = $('stagedText').value; saveSettings(); rebuild(); });
+  $('btnStagedReset').addEventListener('click', function () { state.stagedText = null; saveSettings(); rebuild(); });
   $('dimSeg').addEventListener('click', function (e) { var b = e.target.closest('[data-dim]'); if (!b) return; state.dim = b.getAttribute('data-dim'); saveSettings(); renderDim(); });
   $('fyDimSeg').addEventListener('click', function (e) { var b = e.target.closest('[data-fydim]'); if (!b) return; state.fyDim = b.getAttribute('data-fydim'); saveSettings(); renderFiscal(); });
   $('btnLineOv').addEventListener('click', function () { state.lineOv = $('lineOv').value; saveSettings(); rebuild(); });

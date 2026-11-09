@@ -652,3 +652,32 @@ test('Sổ ライン空き原価配分表: đọc tháng, ô gộp nguyên nhân
   assert.deepStrictEqual(m.checks.map(c => [c.what, c.sheet, c.rows]), [['amount', 1200, 1700]]);
   assert.ok(R.billingSelf(m, m.rows[1]));
 });
+
+test('Chuyền gộp 4AB: tổ 4AB1/4AB2 có may là cả 4A, 4B có may; ngày có KH không ghi TH tính theo KH', () => {
+  const st = (lineRaw, th, kh) => ({ lineRaw, brandRaw: 'TNF', th, kh });
+  // ngày 0: chỉ 4AB2 có TH; ngày 1: 4AB1 có KH không TH, 4AB2 không gì; ngày 2: 4A1 có TH (nửa của 4A); ngày 3: KH sau ngày update → không tính
+  const L = R.__test.buildLineDays([st('4AB2', [10, 0, 0, 0], [10, 0, 0, 0]), st('4AB1', [0, 0, 0, 0], [0, 5, 0, 5]), st('4A1', [0, 0, 7, 0], [0, 0, 7, 0])], 4, 2);
+  assert.strictEqual(L.lines['4A'][0], '0:1');
+  assert.strictEqual(L.lines['4B'][0], '0:1');
+  assert.strictEqual(L.lines['4A'][1], 'k0:1');
+  assert.strictEqual(L.lines['4A'][2], '0:0.5');
+  assert.strictEqual(L.lines['4A'][3], undefined);
+});
+
+test('Mã chia công đoạn ND92625-01…-04: một mã, số lượng của công đoạn cuối, 工程時間 cộng các công đoạn', () => {
+  const f = (style, sam, kh, th, start, end) => ({ f: 'APIC1A', m: '2026-08', style, line: '4AB', lineRaw: '4AB1', sam, kh, th, khOpen: 0, sah: th * sam / 3600, sahK: kh * sam / 3600, theo: 1, start, end, aggLot: 100 });
+  const facts = [f('ND92625-01', 24143, 100, 0, 1, 1), f('ND92625-02', 17953, 100, 0, 1, 1), f('ND92625-03', 119400, 28, 0, 1, 0), f('ND92625-04', 18935, 100, 100, 1, 1), f('NS62517', 18256, 50, 50, 1, 0)];
+  const runs = [{ f: 'APIC1A', style: 'ND92625-04', sam: 18935 }, { f: 'APIC1A', style: 'ND92625-02', sam: 17953 }];
+  const st = R.applyStaged(facts, runs, R.parseStaged(null));
+  assert.strictEqual(st.length, 1);
+  assert.strictEqual(st[0].totalSam, 24143 + 17953 + 119400 + 18935);
+  const nd = facts.filter(x => x.style === 'ND92625');
+  assert.strictEqual(nd.length, 4);
+  assert.strictEqual(nd.reduce((a, x) => a + x.kh, 0), 100);
+  assert.strictEqual(nd.reduce((a, x) => a + x.th, 0), 100);
+  assert.strictEqual(nd.reduce((a, x) => a + x.start, 0), 1);
+  assert.strictEqual(nd.reduce((a, x) => a + x.theo, 0), 1);
+  assert.strictEqual(nd.find(x => x.th > 0).sam, 180431);
+  assert.deepStrictEqual(runs.map(r => r.style), ['ND92625']);
+  assert.strictEqual(facts[4].style, 'NS62517');
+});

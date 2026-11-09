@@ -383,7 +383,9 @@
     });
 
     // Chuyền vật lý theo ngày (nửa chuyền A/B, như cách TI tính 29 chuyền): nhãn hàng nào chiếm chuyền
-    var lineDays = buildLineDays(styles, nd);
+    var cut = -1;
+    for (var jc = 0; jc < nd; jc++) if (dates[jc] <= updateDate) cut = jc;
+    var lineDays = buildLineDays(styles, nd, cut);
 
     // Từng lượt may (1 mã trên 1 chuyền): lên năng suất, lead time thực tế
     var runs = [];
@@ -396,7 +398,7 @@
       v: DATA_VERSION, name: opts.name || '', factory: factory, updateDate: updateDate, updateFrom: updateFrom,
       firstDate: dates[0], lastDate: dates[nd - 1], months: months,
       styleCount: styles.length, facts: facts, runs: runs, warnings: warnings,
-      lineDays: { off: off.map(function (o) { return o ? '1' : '0'; }).join(''), brands: lineDays.brands, lines: lineDays.lines }
+      lineDays: { off: off.map(function (o) { return o ? '1' : '0'; }).join(''), brands: lineDays.brands, lines: lineDays.lines, plan: 1 }
     };
   }
 
@@ -412,24 +414,48 @@
     var sub = !!m[3], halves = m[2] === 'AB' ? ['A', 'B'] : [m[2]];
     return halves.map(function (h) { return { line: m[1] + h, sub: sub, raw: norm(line).toUpperCase() }; });
   }
-  function buildLineDays(styles, nd) {
+  /*
+   * Chuyền có may trong ngày: có TH. Ngày đã qua (≤ ngày update) mà tổ/chuyền có KH nhưng không ghi TH
+   * (vd. 4AB1 may hàng 工程時間 rất dài, chưa ghi TH hằng ngày) cũng tính là có may — phần này ghi riêng
+   * (tiền tố "k" trước số nhãn hàng) để trang cho biết bao nhiêu chuyền-ngày tính theo KH.
+   */
+  function buildLineDays(styles, nd, cut) {
     var brands = [], bIdx = {}, lines = {};
+    if (cut == null) cut = -1;
     var bi = function (b) { if (!(b in bIdx)) { bIdx[b] = brands.length; brands.push(b); } return bIdx[b]; };
     for (var j = 0; j < nd; j++) {
       var day = {};
+      var get = function (pl) { return day[pl.line] || (day[pl.line] = { main: false, subs: {}, by: {}, tot: 0, pMain: false, pSubs: {}, pby: {}, ptot: 0 }); };
       styles.forEach(function (st) {
         if (!(st.th[j] > 0)) return;
         physicalLines(st.lineRaw).forEach(function (pl) {
-          var d = day[pl.line] || (day[pl.line] = { main: false, subs: {}, by: {}, tot: 0 });
+          var d = get(pl);
           if (pl.sub) d.subs[pl.raw] = 1; else d.main = true;
           var k = bi(st.brandRaw || '');
           d.by[k] = (d.by[k] || 0) + st.th[j]; d.tot += st.th[j];
         });
       });
+      if (j <= cut) styles.forEach(function (st) {
+        if (st.th[j] > 0 || !(st.kh[j] > 0)) return;
+        physicalLines(st.lineRaw).forEach(function (pl) {
+          var d = get(pl);
+          if (d.main || (pl.sub ? d.subs[pl.raw] : false)) return; // tổ / chuyền này đã có TH mã khác trong ngày
+          if (pl.sub) d.pSubs[pl.raw] = 1; else d.pMain = true;
+          var k = bi(st.brandRaw || '');
+          d.pby[k] = (d.pby[k] || 0) + st.kh[j]; d.ptot += st.kh[j];
+        });
+      });
+      // Tổ của nửa chuyền (4A1, 4A2) chiếm 0,5; tổ của chuyền gộp (4AB1, 4AB2) chiếm cả chuyền gộp:
+      // 4A + 4B gộp thành 4AB để may hàng 工程時間 cao, một tổ có may là cả chuyền gộp có may (như sổ ライン空き tính).
+      var w = function (raws) { return raws.reduce(function (a, r) { return a + (/^\d+AB\d+$/.test(r) ? 1 : 0.5); }, 0); };
       Object.keys(day).forEach(function (pl) {
-        var d = day[pl], occ = d.main ? 1 : Math.min(1, 0.5 * Object.keys(d.subs).length);
-        var parts = Object.keys(d.by).map(function (k) { return k + ':' + (Math.round(occ * d.by[k] / d.tot * 100) / 100); });
-        (lines[pl] = lines[pl] || {})[j] = parts.join(',');
+        var d = day[pl], subs = Object.keys(d.subs);
+        var occ = d.main ? 1 : Math.min(1, w(subs));
+        var all = d.main || d.pMain ? 1 : Math.min(1, w(subs.concat(Object.keys(d.pSubs).filter(function (r) { return !d.subs[r]; }))));
+        var pocc = Math.max(0, all - occ);
+        var parts = d.tot > 0 ? Object.keys(d.by).map(function (k) { return k + ':' + (Math.round(occ * d.by[k] / d.tot * 100) / 100); }) : [];
+        if (pocc > 0 && d.ptot > 0) parts = parts.concat(Object.keys(d.pby).map(function (k) { return 'k' + k + ':' + (Math.round(pocc * d.pby[k] / d.ptot * 100) / 100); }));
+        if (parts.length) (lines[pl] = lines[pl] || {})[j] = parts.join(',');
       });
     }
     return { brands: brands, lines: lines };
@@ -568,6 +594,49 @@
    * KH đầu tháng: file update mới nhất trước ngày 1 của tháng, trong vòng 10 ngày (file cuối tháng trước).
    */
   var OPEN_MAX_DAYS = 10;
+  // ---------- Mã hàng chia nhiều công đoạn (vd. ND92625-01 … -04, công đoạn cuối là thành phẩm) ----------
+  var STAGED_DEFAULT = 'ND92625';
+  function parseStaged(text) {
+    return String(text == null ? STAGED_DEFAULT : text).split(/\r?\n|,/).map(function (t) { return norm(t).toUpperCase(); }).filter(Boolean);
+  }
+  // Gộp về một mã: số lượng KH/TH lấy công đoạn cuối, 工程分析時間 = tổng các công đoạn, mã mới tính ở công đoạn đầu
+  function applyStaged(facts, runs, bases) {
+    if (!bases || !bases.length) return [];
+    var stageOf = function (style) {
+      var u = norm(style).toUpperCase();
+      for (var i = 0; i < bases.length; i++) {
+        var b = bases[i];
+        if (u.indexOf(b + '-') === 0 && /^\d{1,2}$/.test(u.slice(b.length + 1))) return { base: b, n: +u.slice(b.length + 1) };
+      }
+      return null;
+    };
+    var info = {};
+    facts.concat(runs).forEach(function (x) {
+      var sg = stageOf(x.style); if (!sg) return;
+      var k = x.f + '|' + sg.base, it = info[k] || (info[k] = { f: x.f, base: sg.base, min: sg.n, max: sg.n, sam: {}, styles: {} });
+      it.min = Math.min(it.min, sg.n); it.max = Math.max(it.max, sg.n);
+      if (x.sam > 0) it.sam[sg.n] = Math.max(it.sam[sg.n] || 0, x.sam);
+      it.styles[norm(x.style).toUpperCase()] = 1;
+    });
+    Object.keys(info).forEach(function (k) { var it = info[k]; it.totalSam = Object.keys(it.sam).reduce(function (a, n) { return a + it.sam[n]; }, 0); });
+    facts.forEach(function (x) {
+      var sg = stageOf(x.style); if (!sg) return;
+      var it = info[x.f + '|' + sg.base];
+      x.styleRaw = x.style; x.style = sg.base; x.stage = sg.n;
+      if (sg.n !== it.min) x.start = 0;
+      if (sg.n !== it.max) { x.kh = 0; x.th = 0; x.khOpen = 0; x.sah = 0; x.sahK = 0; x.theo = 0; x.end = 0; }
+      else if (it.totalSam > 0) { x.sam = it.totalSam; x.sah = x.th * it.totalSam / 3600; x.sahK = x.kh * it.totalSam / 3600; }
+    });
+    for (var i = runs.length - 1; i >= 0; i--) {
+      var r = runs[i], sg = stageOf(r.style); if (!sg) continue;
+      var it = info[r.f + '|' + sg.base];
+      if (sg.n !== it.max) { runs.splice(i, 1); continue; }
+      r.styleRaw = r.style; r.style = sg.base;
+      if (it.totalSam > 0) r.sam = it.totalSam;
+    }
+    return Object.keys(info).map(function (k) { var it = info[k]; return { f: it.f, base: it.base, stages: Object.keys(it.styles).sort(), totalSam: it.totalSam, last: it.max }; });
+  }
+
   function buildDataset(files, opts) {
     var aliases = (opts && opts.aliases) || null;
     var ownerOf = tiMatcher(opts && opts.tiBrands != null ? opts.tiBrands : null);
@@ -624,6 +693,7 @@
       });
     });
     var runs = Object.keys(runMap).map(function (k) { return runMap[k]; });
+    var staged = applyStaged(facts, runs, parseStaged(opts && opts.staged !== undefined ? opts.staged : null));
     // Mã lặp lại: đã có lượt may của cùng mã kết thúc trước ngày bắt đầu ít nhất 14 ngày
     var byStyle = {};
     runs.forEach(function (r) { (byStyle[r.style] = byStyle[r.style] || []).push(r); });
@@ -638,13 +708,14 @@
     Object.keys(monthsAll).forEach(function (m) {
       lineMonthOk[m] = facAll.every(function (f) { return meta[f + '|' + m] && meta[f + '|' + m].status === 'chot'; });
     });
-    var lineMonthAny = {};
+    var lineMonthAny = {}, linePlan = {}, noPlanFiles = {};
     Object.keys(meta).forEach(function (k) {
       var me = meta[k];
       if (me.status !== 'chot') return;
       lineMonthAny[me.m] = true;
       var src = files.filter(function (fl) { return fl.factory === me.f && fl.updateDate === me.srcDate; })[0];
       if (!src || !src.lineDays) return;
+      if (!src.lineDays.plan) (noPlanFiles[src.factory + '|' + src.updateDate] = noPlanFiles[src.factory + '|' + src.updateDate] || { factory: src.factory, updateDate: src.updateDate, months: [] }).months.push(me.m);
       var L = src.lineDays;
       for (var j = 0; j < L.off.length; j++) {
         var iso = addDays(src.firstDate, j);
@@ -656,8 +727,9 @@
           if (!e) return;
           var d = lineDay[iso] || (lineDay[iso] = {}), slot = d[pl] || (d[pl] = {});
           e.split(',').forEach(function (part) {
-            var q = part.split(':'), b = L.brands[+q[0]];
+            var q = part.split(':'), plan = q[0].charAt(0) === 'k', b = L.brands[+(plan ? q[0].slice(1) : q[0])];
             slot[b] = (slot[b] || 0) + (+q[1]);
+            if (plan) { var pd = linePlan[iso] || (linePlan[iso] = {}); pd[pl] = (pd[pl] || 0) + (+q[1]); }
           });
         });
       }
@@ -665,7 +737,8 @@
     var lineLife = computeLineLife(lineDay, dayOff, opts && opts.lineOverrides);
     return {
       facts: facts, meta: meta, months: Object.keys(monthsAll).sort(), lineLife: lineLife,
-      factories: Object.keys(byF).sort(), runs: runs, lineDay: lineDay, dayOff: dayOff, lineMonthOk: lineMonthOk, lineMonthAny: lineMonthAny, ownerOf: ownerOf,
+      factories: Object.keys(byF).sort(), runs: runs, staged: staged, lineDay: lineDay, linePlan: linePlan, noPlanFiles: Object.keys(noPlanFiles).sort().map(function (k) { return noPlanFiles[k]; }),
+      dayOff: dayOff, lineMonthOk: lineMonthOk, lineMonthAny: lineMonthAny, ownerOf: ownerOf,
       oldFiles: files.filter(function (fl) { return (fl.v || 0) < DATA_VERSION; }).length,
       oldFileList: files.filter(function (fl) { return (fl.v || 0) < DATA_VERSION; }).map(function (fl) { return { factory: fl.factory, updateDate: fl.updateDate, name: fl.name }; })
     };
@@ -1312,7 +1385,7 @@
     months.forEach(function (m) {
       var fy = fiscalYear(m, startMonth);
       var uni = opts.relaxed ? (uniCache['m' + m] = seenIn(m)) : (uniCache[fy] || (uniCache[fy] = lineUniverse(ds, fy, startMonth)));
-      var a = { month: m, lines: uni.length, wd: 0, total: 0, ti: 0, apic: 0, idle: 0, offWork: 0 };
+      var a = { month: m, lines: uni.length, wd: 0, total: 0, ti: 0, apic: 0, idle: 0, offWork: 0, plan: 0 };
       var days = [], dim = daysInMonth(m);
       for (var d = 1; d <= dim; d++) days.push(m + '-' + pad(d));
       if (!okMap[m]) { byMonth.push(Object.assign(a, { noData: true })); return; }
@@ -1326,6 +1399,7 @@
           var c = dayClass(slots[pl], ownerOf), t = lineTot[pl] || (lineTot[pl] = { line: pl, total: 0, ti: 0, apic: 0, idle: 0 });
           if (off) { a.offWork += c.ti + c.apic; return; }
           a.total++; a.ti += c.ti; a.apic += c.apic; a.idle += c.idle;
+          a.plan += Math.min(1, ((ds.linePlan || {})[iso] || {})[pl] || 0);
           t.total++; t.ti += c.ti; t.apic += c.apic; t.idle += c.idle;
         });
       });
@@ -1357,9 +1431,9 @@
     });
     periods.forEach(function (p) { p.brands = Object.keys(p.brands).join(', '); });
     var total = byMonth.reduce(function (s, a) {
-      ['wd', 'total', 'ti', 'apic', 'idle', 'offWork'].forEach(function (k) { s[k] += a[k] || 0; });
+      ['wd', 'total', 'ti', 'apic', 'idle', 'offWork', 'plan'].forEach(function (k) { s[k] += a[k] || 0; });
       return s;
-    }, { wd: 0, total: 0, ti: 0, apic: 0, idle: 0, offWork: 0 });
+    }, { wd: 0, total: 0, ti: 0, apic: 0, idle: 0, offWork: 0, plan: 0 });
     var lines = Object.keys(lineTot).map(function (k) { return lineTot[k]; }).sort(function (a, b) { return a.line.localeCompare(b.line, 'en', { numeric: true }); });
     var okMonths = months.filter(function (m) { return okMap[m]; });
     return { months: months, okMonths: okMonths, byMonth: byMonth, total: total, lines: lines, periods: periods,
@@ -1668,6 +1742,8 @@
   }
 
   return {
+    __test: { buildLineDays: buildLineDays },
+    STAGED_DEFAULT: STAGED_DEFAULT, parseStaged: parseStaged, applyStaged: applyStaged,
     HOURS_PER_DAY: HOURS_PER_DAY, BRAND_ALIASES: BRAND_ALIASES, DIMS: DIMS,
     toISO: toISO, serialToISO: serialToISO, addDays: addDays, addMonths: addMonths, monthEnd: monthEnd, monthLabel: monthLabel,
     fiscalYear: fiscalYear, fiscalMonths: fiscalMonths, fiscalLabel: fiscalLabel, updateDateFromName: updateDateFromName,
