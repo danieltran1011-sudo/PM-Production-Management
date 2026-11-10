@@ -276,6 +276,8 @@
     'Chuyền-ngày TI tính': 'TI請求日数',
     'Trang tính (chuyền có dữ liệu)': '当システム算出（データのあるライン）',
     'Lệch': '差異',
+    'Gắn mã hàng (USD)': '当該品番に紐付け（USD）',
+    'Gắn mã hàng (当該品番に紐付け)': '当該品番に紐付け',
     'Mã hàng chia công đoạn (tính là một mã)': '工程分割品番（1品番として集計）',
     'Có KH, không ghi TH': '計画あり・実績未入力',
     'Trả về mặc định': '初期値に戻す',

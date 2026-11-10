@@ -681,3 +681,22 @@ test('Mã chia công đoạn ND92625-01…-04: một mã, số lượng của c�
   assert.deepStrictEqual(runs.map(r => r.style), ['ND92625']);
   assert.strictEqual(facts[4].style, 'NS62517');
 });
+
+test('Sổ ライン空き: dòng không nằm trong công thức 小計 là chi phí gắn mã hàng (当該品番に紐付け)', () => {
+  const rows = [
+    [], ['12月度ライン空き原価配分表'], [], ['＜25,12月ライン空き状況＞'],
+    ['【1B工場】', '7～12'],
+    ['ライン', '稼働責任部課', '空き期間', '空き日数', '原価金額（USD)', '空き原因'],
+    ['9A', 'SW2課', '12/1~12/6', 6, 300, '材料遅延'],
+    ['9A', 'SW2課', '12/24~12/31', 7, 100, null],
+    [null, 'SW2課小計', null, 13, 100],
+    ['１B工場計', null, null, 13, 100],
+    ['【APIC合計】']
+  ];
+  const [m] = R.parseIdleRegister([{ name: '12月実績', rows, merges: [], formulas: { D9: 'SUM(D7:D8)', E9: 'SUM(E8)' } }], {});
+  assert.deepStrictEqual(m.rows.map(r => r.linked), [true, false]);
+  assert.strictEqual(m.amount, 100);
+  assert.strictEqual(m.amountLinked, 300);
+  assert.deepStrictEqual(m.checks, []);
+  assert.strictEqual(m.days, 13);
+});

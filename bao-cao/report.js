@@ -1575,9 +1575,16 @@
       var month = null;
       rows.slice(0, 20).forEach(function (row) { (row || []).forEach(function (v) { var m = norm(v).match(/[＜<]\s*(\d{2,4})\s*[,，、.]\s*(\d{1,2})月/); if (m && !month) month = (m[1].length === 2 ? '20' + m[1] : m[1]) + '-' + pad(+m[2]); }); });
       if (!month) return;
-      var fac = null, cols = null, list = [], facInfo = {}, subs = {};
+      var fac = null, cols = null, list = [], facInfo = {}, subs = {}, covered = {}, hasF = {};
+      var colL = function (i) { var t = ''; i++; while (i > 0) { var m = (i - 1) % 26; t = String.fromCharCode(65 + m) + t; i = Math.floor((i - 1) / 26); } return t; };
+      // Dòng tiền không nằm trong công thức 小計 (chữ đỏ, ghi chú 当該品番に紐付け): chi phí gắn vào mã hàng liên quan, không tính vào chi phí trống
+      var cover = function (f, formula, col) {
+        hasF[f] = true;
+        var set = covered[f] || (covered[f] = {}), re = /\$?([A-Z]{1,3})\$?(\d+)(?::\$?([A-Z]{1,3})\$?(\d+))?/g, m;
+        while ((m = re.exec(formula))) { if (m[1] !== col) continue; for (var r = +m[2]; r <= +(m[4] || m[2]); r++) set[r] = 1; }
+      };
       var half = function (t) { return norm(t).replace(/[０-９Ａ-Ｚ]/g, function (ch) { return String.fromCharCode(ch.charCodeAt(0) - 0xFEE0); }).toUpperCase(); };
-      rows.forEach(function (row) {
+      rows.forEach(function (row, ri) {
         row = row || [];
         // ngày làm việc / số chuyền nhỏ (khối ＜総稼働日数＞)
         row.forEach(function (v, ci) {
@@ -1597,6 +1604,11 @@
           return;
         }
         if (!cols) return;
+        if (/小計/.test(norm(row[1])) && cols.amount >= 0 && sh.formulas) {
+          var fm = sh.formulas[colL(cols.amount) + (ri + 1)];
+          if (fm) cover(fac, fm, colL(cols.amount));
+          return;
+        }
         var ln = half(row[cols.line]);
         var lm = ln.match(/^(\d+)([AB]{1,2}\d?)$/);
         if (!lm) return;
@@ -1606,20 +1618,23 @@
         var cause = norm(row[cols.cause]);
         list.push({ factory: fac, line: lm[1], part: lm[2], dept: norm(row[cols.dept]), period: norm(typeof row[cols.period] === 'number' ? (per && per.from) : row[cols.period]),
           from: per ? per.from : month + '-01', to: per ? per.to : monthEnd(month), dates: per && per.list, days: days, amount: numOrNull(row[cols.amount]) || 0,
-          note: cause, cause: idleCause(cause) });
+          note: cause, cause: idleCause(cause), xlRow: ri + 1 });
       });
+      list.forEach(function (x) { x.linked = !!(hasF[x.factory] && x.amount && !(covered[x.factory] || {})[x.xlRow]); });
+      var idleAmt = function (x) { return x.linked ? 0 : x.amount; };
       var sum = function (k, f) { return list.filter(f || function () { return true; }).reduce(function (a, x) { return a + (x[k] || 0) * (x.part.length > 1 && x.part !== 'AB' ? 0.5 : 1) * (x.part === 'AB' ? 2 : 1); }, 0); };
       // Tổng trong sổ khác cộng các dòng → công thức tổng thiếu dòng
       var checks = [];
       Object.keys(subs).forEach(function (f) {
         var rs = list.filter(function (x) { return x.factory === f; });
-        var d = rs.reduce(function (s2, x) { return s2 + x.days; }, 0), u = rs.reduce(function (s2, x) { return s2 + x.amount; }, 0);
+        var d = rs.reduce(function (s2, x) { return s2 + x.days; }, 0), u = rs.reduce(function (s2, x) { return s2 + idleAmt(x); }, 0);
         if (subs[f].days != null && Math.abs(subs[f].days - d) > 0.01) checks.push({ factory: f, what: 'days', sheet: subs[f].days, rows: d });
         if (subs[f].amount != null && Math.abs(subs[f].amount - u) > 1) checks.push({ factory: f, what: 'amount', sheet: subs[f].amount, rows: u });
       });
       out.push({ kind: 'idlereg', name: opts.name || '', sheet: sh.name, month: month, rows: list, factories: facInfo, checks: checks,
         days: sum('days'), nyabeDays: sum('days', function (x) { return x.cause === 'nyabe'; }),
-        amount: list.reduce(function (a, x) { return a + x.amount; }, 0) });
+        amount: list.reduce(function (a, x) { return a + idleAmt(x); }, 0), amountLinked: list.reduce(function (a, x) { return a + (x.linked ? x.amount : 0); }, 0),
+        formulasRead: !!sh.formulas });
     });
     if (!out.length) throw new Error('không thấy sheet ライン空き原価配分表 nào');
     return out;

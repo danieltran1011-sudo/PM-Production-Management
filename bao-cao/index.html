@@ -587,10 +587,12 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
         var rows = XLSX.utils.sheet_to_json(ws, { header: 1, raw: true, defval: null });
         // Sổ ライン空き原価配分表 của TI: đọc mọi sheet (mỗi sheet một tháng)
         if (sheet !== 'XN1AB' && R.isIdleRegisterSheet(rows)) {
-          var wbAll = XLSX.read(buf, { type: 'array', cellFormula: false, cellHTML: false, cellText: false, cellStyles: false, bookVBA: false });
+          var wbAll = XLSX.read(buf, { type: 'array', cellFormula: true, cellHTML: false, cellText: false, cellStyles: false, bookVBA: false });
           var d1904 = !!(wbAll.Workbook && wbAll.Workbook.WBProps && wbAll.Workbook.WBProps.date1904);
           var regList = R.parseIdleRegister(wbAll.SheetNames.map(function (n) {
-            return { name: n, rows: XLSX.utils.sheet_to_json(wbAll.Sheets[n], { header: 1, raw: true, defval: null }), merges: wbAll.Sheets[n]['!merges'] || [] };
+            var wsn = wbAll.Sheets[n], fm = {};
+            Object.keys(wsn).forEach(function (k) { if (k.charAt(0) !== '!' && wsn[k] && wsn[k].f) fm[k] = wsn[k].f; });
+            return { name: n, rows: XLSX.utils.sheet_to_json(wsn, { header: 1, raw: true, defval: null }), merges: wsn['!merges'] || [], formulas: fm };
           }), { name: file.name, date1904: d1904 });
           for (var ri = 0; ri < regList.length; ri++) {
             var rg = regList[ri];
@@ -696,13 +698,14 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
     var regSorted = regs.slice().sort(function (a, b) { return a.month < b.month ? -1 : 1; });
     var regBad = regSorted.filter(function (r) { return r.checks && r.checks.length; });
     var regBox = regs.length ? '<div class="coverage"><h3>Sổ ライン空き原価配分表 của TI (' + regs.length + ' tháng)</h3><p>' + regSorted.map(function (r) {
-      return '<span style="margin-right:14px;white-space:nowrap"><b>' + R.monthLabel(r.month) + '</b> <span class="muted">' + fmtN(r.days, 1) + ' chuyền-ngày · ' + fmtN(r.amount, 0) + ' USD</span>' +
+      return '<span style="margin-right:14px;white-space:nowrap"><b>' + R.monthLabel(r.month) + '</b> <span class="muted">' + fmtN(r.days, 1) + ' chuyền-ngày · ' + fmtN(r.amount, 0) + ' USD' + (r.amountLinked ? ' (+ ' + fmtN(r.amountLinked, 0) + ' USD gắn mã hàng)' : '') + '</span>' +
         (r.checks && r.checks.length ? ' <span class="down">⚠</span>' : '') + ' <button class="link" data-del="' + esc(r.id) + '">Xóa</button></span>';
     }).join('') + '</p>' + (regBad.length ? '<p class="warn">⚠ ' + regBad.map(function (r) {
       return R.monthLabel(r.month) + ' (sheet ' + esc(r.sheet) + '): ' + r.checks.map(function (c) {
         return 'ô 工場計 ' + c.factory + ' ' + (c.what === 'amount' ? 'chi phí ' + fmtN(c.sheet, 0) + ' USD, cộng các dòng ra ' + fmtN(c.rows, 0) + ' USD' : 'số ngày ' + fmtN(c.sheet, 1) + ', cộng các dòng ra ' + fmtN(c.rows, 1)) + ' → công thức tổng thiếu dòng';
       }).join('; ');
-    }).join(' · ') + '</p>' : '') + '<p class="muted">Đối chiếu xem ở phần "Sử dụng chuyền". Chuyền A1/A2/B1/B2 tính nửa chuyền-ngày.</p></div>' : '';
+    }).join(' · ') + '</p>' : '') + (regs.some(function (r) { return !r.formulasRead; }) ? '<p class="warn">Sổ nạp từ bản trước: nạp lại file sổ để tách chi phí 当該品番に紐付け (gắn vào mã hàng).</p>' : '') +
+      '<p class="muted">Đối chiếu xem ở phần "Sử dụng chuyền". Chuyền A1/A2/B1/B2 tính nửa chuyền-ngày. Số tiền không nằm trong công thức 小計 của sổ (chữ đỏ, 当該品番に紐付け) là chi phí gắn vào mã hàng, không tính vào chi phí trống.</p></div>' : '';
     $('fileList').innerHTML = coverageBox() + billBox + regBox + checkTable() +
       '<details class="filelist"' + (fileListOpen ? ' open' : '') + '><summary>Danh sách ' + files.length + ' file đã nạp' + (bad ? ' (' + bad + ' file cần sửa công thức)' : '') + ' — bấm để xem</summary>' +
       html.replace('style="margin-top:14px"', 'style="margin-top:8px"') + '</tbody></table></div></details>';
@@ -1332,28 +1335,28 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
   function regBlock() {
     if (!regs.length) return '';
     var cmp = regCompare();
-    var t0 = table(['Tháng', 'Ngày làm việc<span class="sub">sổ / trang</span>', 'Chuyền nhỏ<span class="sub">sổ / trang</span>', 'Sổ: trống', 'Sổ: may Nhà Bè', 'Trang: trống', 'Trang: may APIC', 'Lệch trống', 'Lệch APIC', 'TI tính (APIC負担金額)', 'Chi phí trống (USD)'], cmp.map(function (x) {
+    var t0 = table(['Tháng', 'Ngày làm việc<span class="sub">sổ / trang</span>', 'Chuyền nhỏ<span class="sub">sổ / trang</span>', 'Sổ: trống', 'Sổ: may Nhà Bè', 'Trang: trống', 'Trang: may APIC', 'Lệch trống', 'Lệch APIC', 'TI tính (APIC負担金額)', 'Chi phí trống (USD)', 'Gắn mã hàng (USD)'], cmp.map(function (x) {
       var ok = x.c.dataOk;
       return '<tr' + (x.r.month === state.month ? ' class="sel"' : '') + '><td>' + R.monthLabel(x.r.month) + (x.r.checks && x.r.checks.length ? ' <span class="down" title="Ô tổng trong sổ cộng thiếu dòng">⚠</span>' : '') + '</td>' +
         td((x.regWd != null ? x.regWd : '—') + ' / ' + (ok && x.u && !x.u.noData ? x.u.wd : '—')) + td((x.regLines || '—') + ' / ' + (ok && x.u && !x.u.noData ? x.u.lines : '—')) +
         td(fmtN(x.regIdle, 1)) + td(fmtN(x.regNyabe, 1)) + td(ok ? fmtN(x.pageIdle, 1) : '—') + td(ok ? fmtN(x.pageApic, 1) : '—') +
-        td(ok ? delta2(x.pageIdle - x.regIdleHas) : '—') + td(ok ? delta2(x.pageApic - x.regNyabeHas) : '—') + td(x.bill ? fmtN(x.billDays, 1) : '—') + td(fmtN(x.r.amount, 0)) + '</tr>';
+        td(ok ? delta2(x.pageIdle - x.regIdleHas) : '—') + td(ok ? delta2(x.pageApic - x.regNyabeHas) : '—') + td(x.bill ? fmtN(x.billDays, 1) : '—') + td(fmtN(x.r.amount, 0)) + td(x.r.amountLinked ? fmtN(x.r.amountLinked, 0) : '—') + '</tr>';
     }).concat([(function () {
       var s = function (f) { return cmp.reduce(function (a, x) { return a + f(x); }, 0); };
       return '<tr class="total"><td>Tổng</td><td></td><td></td>' + td(fmtN(s(function (x) { return x.regIdle; }), 1)) + td(fmtN(s(function (x) { return x.regNyabe; }), 1)) +
         td(fmtN(s(function (x) { return x.c.dataOk ? x.pageIdle : 0; }), 1)) + td(fmtN(s(function (x) { return x.c.dataOk ? x.pageApic : 0; }), 1)) + '<td></td><td></td>' +
-        td(fmtN(s(function (x) { return x.bill ? x.billDays : 0; }), 1)) + td(fmtN(s(function (x) { return x.r.amount; }), 0)) + '</tr>';
+        td(fmtN(s(function (x) { return x.bill ? x.billDays : 0; }), 1)) + td(fmtN(s(function (x) { return x.r.amount; }), 0)) + td(fmtN(s(function (x) { return x.r.amountLinked || 0; }), 0)) + '</tr>';
     })()]));
     // nguyên nhân
     var by = {};
     regs.forEach(function (r) { r.rows.forEach(function (x) {
       var k = by[x.cause] || (by[x.cause] = { days: 0, amount: 0, months: {} });
-      k.days += x.days * (x.part.length > 1 && x.part !== 'AB' ? 0.5 : x.part === 'AB' ? 2 : 1); k.amount += x.amount; k.months[x.month || r.month] = 1;
+      k.days += x.days * (x.part.length > 1 && x.part !== 'AB' ? 0.5 : x.part === 'AB' ? 2 : 1); if (x.linked) k.linked = (k.linked || 0) + x.amount; else k.amount += x.amount; k.months[x.month || r.month] = 1;
     }); });
     var totU = Object.keys(by).reduce(function (a, k) { return a + by[k].amount; }, 0);
-    var t1 = table(['Nguyên nhân', 'Chuyền-ngày', 'Chi phí (USD)', '% chi phí', 'Tháng'], R.IDLE_CAUSES.filter(function (k) { return by[k.id]; }).map(function (k) {
+    var t1 = table(['Nguyên nhân', 'Chuyền-ngày', 'Chi phí (USD)', '% chi phí', 'Gắn mã hàng (USD)', 'Tháng'], R.IDLE_CAUSES.filter(function (k) { return by[k.id]; }).map(function (k) {
       var v = by[k.id];
-      return '<tr><td>' + esc(k.label) + '</td>' + td(fmtN(v.days, 1)) + td(fmtN(v.amount, 0)) + td(fmtP(totU ? v.amount / totU : null)) + td(Object.keys(v.months).sort().map(R.monthLabel).join(', '), 'txt') + '</tr>';
+      return '<tr><td>' + esc(k.label) + '</td>' + td(fmtN(v.days, 1)) + td(fmtN(v.amount, 0)) + td(fmtP(totU ? v.amount / totU : null)) + td(v.linked ? fmtN(v.linked, 0) : '—') + td(Object.keys(v.months).sort().map(R.monthLabel).join(', '), 'txt') + '</tr>';
     }));
     // chênh lệch đáng chú ý ở mọi tháng
     var diffs = [];
@@ -2102,19 +2105,19 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
     if (regs.length) {
       var rc = regCompare();
       var sr = [['Đối chiếu sổ ライン空き原価配分表 của TI với chuyền trống / may hàng APIC trang tính được'], [],
-        ['Tháng', 'Ngày làm việc (sổ)', 'Ngày làm việc (trang)', 'Chuyền nhỏ (sổ)', 'Sổ: trống', 'Sổ: may Nhà Bè', 'Trang: trống', 'Trang: may APIC', 'Lệch trống', 'Lệch APIC', 'TI tính (APIC負担金額)', 'Chi phí trống (USD)', 'Kiểm tra sổ']];
+        ['Tháng', 'Ngày làm việc (sổ)', 'Ngày làm việc (trang)', 'Chuyền nhỏ (sổ)', 'Sổ: trống', 'Sổ: may Nhà Bè', 'Trang: trống', 'Trang: may APIC', 'Lệch trống', 'Lệch APIC', 'TI tính (APIC負担金額)', 'Chi phí trống (USD)', 'Gắn mã hàng (USD)', 'Kiểm tra sổ']];
       rc.forEach(function (x) {
         var ok = x.c.dataOk;
         sr.push([x.r.month, x.regWd, ok && !x.u.noData ? x.u.wd : null, x.regLines, r2(x.regIdle, 1), r2(x.regNyabe, 1), ok ? r2(x.pageIdle, 1) : null, ok ? r2(x.pageApic, 1) : null,
-          ok ? r2(x.pageIdle - x.regIdleHas, 1) : null, ok ? r2(x.pageApic - x.regNyabeHas, 1) : null, x.bill ? r2(x.billDays, 1) : null, r2(x.r.amount, 0),
+          ok ? r2(x.pageIdle - x.regIdleHas, 1) : null, ok ? r2(x.pageApic - x.regNyabeHas, 1) : null, x.bill ? r2(x.billDays, 1) : null, r2(x.r.amount, 0), x.r.amountLinked ? r2(x.r.amountLinked, 0) : null,
           (x.r.checks || []).map(function (c) { return c.factory + ' ' + (c.what === 'amount' ? 'tổng chi phí ' + Math.round(c.sheet) + ' ≠ ' + Math.round(c.rows) : 'tổng ngày ' + c.sheet + ' ≠ ' + c.rows); }).join('; ')]);
       });
       sr.push([]); sr.push(['Chi tiết từng chuyền']);
-      sr.push(['Tháng', 'Xưởng', 'Chuyền', 'Part', 'Bộ phận', 'Kỳ trống', 'Từ', 'Đến', 'Ngày (sổ)', 'Chuyền-ngày', 'Chi phí (USD)', 'Nguyên nhân (sổ)', 'Nhóm nguyên nhân']);
+      sr.push(['Tháng', 'Xưởng', 'Chuyền', 'Part', 'Bộ phận', 'Kỳ trống', 'Từ', 'Đến', 'Ngày (sổ)', 'Chuyền-ngày', 'Chi phí (USD)', 'Gắn mã hàng (当該品番に紐付け)', 'Nguyên nhân (sổ)', 'Nhóm nguyên nhân']);
       regs.slice().sort(function (a, b) { return a.month < b.month ? -1 : 1; }).forEach(function (r) {
         r.rows.forEach(function (q) {
           var k = R.IDLE_CAUSES.filter(function (c) { return c.id === q.cause; })[0];
-          sr.push([r.month, q.factory, +q.line, q.part, q.dept, q.period, q.from, q.to, q.days, q.days * (q.part.length > 1 && q.part !== 'AB' ? 0.5 : q.part === 'AB' ? 2 : 1), r2(q.amount, 0), q.note, k ? k.label : '']);
+          sr.push([r.month, q.factory, +q.line, q.part, q.dept, q.period, q.from, q.to, q.days, q.days * (q.part.length > 1 && q.part !== 'AB' ? 0.5 : q.part === 'AB' ? 2 : 1), r2(q.amount, 0), q.linked ? 'có' : '', q.note, k ? k.label : '']);
         });
       });
       sr.push([]); sr.push(['Chuyền lệch giữa sổ và trang']);
