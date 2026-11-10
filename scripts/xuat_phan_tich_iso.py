@@ -27,7 +27,7 @@ thin = Side(style="thin", color="D8DDE8")
 BOX = Border(left=thin, right=thin, top=thin, bottom=thin)
 WRAP = Alignment(wrap_text=True, vertical="top")
 CENTER = Alignment(horizontal="center", vertical="center", wrap_text=True)
-NGUOI = list(NGUON)  # THAN, VUONG, BC3
+NGUOI = list(NGUON)  # THAN, VUONG, DAO
 
 
 def f(size=10, bold=False, color=INK, italic=False):
@@ -88,7 +88,7 @@ CHUNG = ["kiểm tra vệ sinh 5s,bảo hộ", "ghi nhận hình ảnh", "kiểm
          "*kiểm tra công nhân", "bảng chéo vật dụng, ktra", "đầu ca vào làm việc thực hiện tốt"]
 # (người, dòng) ghi nhận không phải lỗi: khu vực đạt, kiểm tra không phát hiện lỗi
 KHONG_LOI = {("THAN", 10), ("THAN", 58), ("VUONG", 49), ("VUONG", 56), ("VUONG", 92), ("VUONG", 132),
-             ("VUONG", 177), ("VUONG", 189), ("BC3", 8), ("BC3", 18), ("BC3", 113)}
+             ("VUONG", 177), ("VUONG", 189), ("DAO", 8), ("DAO", 18), ("DAO", 113)}
 # Dòng kiểm tra lại lỗi của ngày trước
 KIEM_LAI = {("THAN", 32), ("THAN", 56), ("THAN", 57), ("THAN", 99), ("THAN", 129), ("VUONG", 91),
             ("VUONG", 108), ("VUONG", 111), ("VUONG", 129), ("VUONG", 130), ("VUONG", 131)}
@@ -313,7 +313,7 @@ TAC_DONG = {
     "I3": "Nhập 2 lần/ngày ở 3 xưởng; có thể dùng thiết bị ghi tự động hoặc giao người tại chỗ.",
     "I4": "Tài liệu ban hành hằng ngày là tài liệu sản xuất theo mã (list đổ hàng, TCC) – luồng Kỹ thuật / Kế hoạch. 3 người làm song song ở 3 xưởng.",
     "I5": "Báo cáo ngày chép mẫu 52–61% dòng; không có danh sách lỗi mở, hạn đóng, quá hạn.",
-    "P1": "Chuyền trưởng không trực tiếp chịu trách nhiệm số đăng ký; phòng cắt nhận yêu cầu qua người trung gian; báo cáo 3 ghi ngày đăng ký '5-11' lặp sau ngày đó.",
+    "P1": "Chuyền trưởng không trực tiếp chịu trách nhiệm số đăng ký; phòng cắt nhận yêu cầu qua người trung gian; Đạo ghi ngày đăng ký '5-11' lặp sau ngày đó.",
     "P2": "Cắt, in, thêu nhận hối thúc từ ISO song song với Kế hoạch; không rõ ai quyết thứ tự ưu tiên.",
     "P3": "Thêm một bước trung chuyển phiếu giữa chuyền và kho.",
     "P4": "ISO 'kiểm tra phân chia kế hoạch, đẩy năng suất' – chồng lên quyền của Kế hoạch và quản đốc.",
@@ -767,7 +767,7 @@ PB = [
     ("Bố trí hiện nay: mỗi xưởng một người 'ISO kiêm kế hoạch'.",
      "Chia người theo xưởng, không theo khối lượng: A3 chỉ 8 chuyền nhưng vẫn 1 người như xưởng 10–11 chuyền. Ghép hai chức năng "
      "ngược nhau – ISO phải kiểm tra độc lập, kế hoạch là việc vận hành – vào một người nằm trong xưởng.",
-     "Chuyền nhắc trong báo cáo: Thân 1A–6A (11), báo cáo 3 6B–11B (10), Vương 12A–15B (8).",
+     "Chuyền nhắc trong báo cáo: Thân 1A–6A (11), Đạo 6B–11B (10), Vương 12A–15B (8).",
      "Bỏ mô hình 1 người/xưởng. Tách vai trò ISO và vai trò kế hoạch."),
     ("ISO tự làm việc vận hành rồi tự kiểm.",
      "Người kiểm đang tự làm việc mình kiểm: tự kiểm bảng đánh chéo, bóp VDKL thay quản lý chuyền, tự đăng ký BTP, tự cấp vật tư. "
@@ -822,7 +822,7 @@ PB = [
     ("Handoff chưa nêu rủi ro an toàn bị trì hoãn.",
      "Vạch lối thoát hiểm ghi 'sẽ thực hiện sau khi khách gần tới'; vòng chắn kim gãy 12A, 15A, 15B; ổ điện rớt ở nhiều chuyền; "
      "ba hạng mục ngày 06/11 ghi 'kiểm tra lại' nhưng các ngày sau không thấy theo dõi.",
-     "LoiHienTruong; báo cáo 3 ngày 06/11; Vương 10/11.", "Giao cơ điện có hạn sửa, không phụ thuộc lịch khách."),
+     "LoiHienTruong; báo cáo Đạo ngày 06/11; Vương 10/11.", "Giao cơ điện có hạn sửa, không phụ thuộc lịch khách."),
     ("Gốc vấn đề.",
      "Ba vị trí này tồn tại vì quản đốc, chuyền trưởng chưa chịu trách nhiệm trực tiếp về BTP, 5S, VDKL. Rút người mà không giao trách nhiệm "
      "và chỉ tiêu cho tuyến chuyền thì kỷ luật hiện trường sẽ tụt.",
@@ -848,9 +848,9 @@ for row in [
                    "(cài nhắc trả rập tự động, đổi ra bàn ủi màu tối).",
      "Ghi 'phân chia kế hoạch chuyền' – cần làm rõ quyền. Nhiệt độ 14A ghi giống hệt 5 ngày. Ngày 10/11 ghi sai thành 2026-10-11.",
      "Điều độ / kế hoạch xưởng hoặc phân phối tài liệu sản xuất (PA2)."),
-    ("Báo cáo 3 (chưa rõ tên)", "42% lỗi do quản lý tự khắc phục và gửi ảnh – đẩy trách nhiệm về quản lý (đúng hướng).",
+    ("Đạo", "42% lỗi do quản lý tự khắc phục và gửi ảnh – đẩy trách nhiệm về quản lý (đúng hướng).",
      "61% dòng chép nguyên văn; lỗi chép ngày '5-11'; 4 hạng mục hẹn kiểm tra lại không thấy theo dõi.",
-     "Cần xác định người viết trước khi bố trí."),
+     "Cần quản đốc nhận xét thêm trước khi bố trí; ưu điểm là đẩy trách nhiệm về quản lý."),
 ]:
     put(wsP, r, 1, "")
     for col, v in enumerate(row, 2):
@@ -932,7 +932,7 @@ KL = [
     "Rút người trước khi giao trách nhiệm thì kỷ luật hiện trường sẽ tụt.",
     "7. KHÁC HANDOFF: không cần chờ thử 10 ngày mới loại phương án giữ 3; đối chiếu hồ sơ BTP không phải điều kiện của quyết định định biên; "
     "'người liên hệ mỗi xưởng' phải là quản đốc, không phải các nhân sự này. Xem sheet PhanBien.",
-    "Giới hạn: giờ là giờ tự khai; phút/lượt và quy mô đánh giá là giả định (ô vàng ở DinhBien, NoiDungThucChat). Báo cáo 3 chưa rõ người viết. "
+    "Giới hạn: giờ là giờ tự khai; phút/lượt và quy mô đánh giá là giả định (ô vàng ở DinhBien, NoiDungThucChat). "
     "Gợi ý bố trí từng người chỉ dựa trên báo cáo, cần quản đốc xác nhận.",
 ]
 for t in KL:
@@ -975,17 +975,17 @@ wsN = wb.create_sheet("GhiChuDuLieu")
 title(wsN, "Ghi chú dữ liệu, giả định và điểm khác với handoff")
 wsN.column_dimensions["A"].width = 130
 notes = [
-    "Kỳ dữ liệu: file nhận ngày 10/11 có thêm ngày 10/11 (Vương, báo cáo 3). Thân: 03,04,05,06,07,09/11. Vương và báo cáo 3: 03,04,05,06,07,09,10/11. "
+    "Kỳ dữ liệu: file nhận ngày 10/11 có thêm ngày 10/11 (Vương, Đạo). Thân: 03,04,05,06,07,09/11. Vương và Đạo: 03,04,05,06,07,09,10/11. "
     "Ngày 08/11 là Chủ nhật.",
     "Handoff ghi 17 ngày công trong kỳ 03–09/11; bản file hiện tại có 18 ngày trong kỳ đó (mỗi báo cáo 6 ngày) và 20 ngày nếu tính cả 10/11.",
-    "Báo cáo 3 ghi 'ứng/nhận vải thử máy' 4 ngày (04, 06, 07, 09/11) chứ không phải 3/5 như handoff.",
-    "Báo cáo 3 ghi 'kiểm tra vốn chuyền để đăng ký BTP cho ngày 5-11' ở các ngày 03, 04, 05 và 06/11 – ngày 06/11 vẫn ghi cho ngày 05/11, "
+    "Đạo ghi 'ứng/nhận vải thử máy' 4 ngày (04, 06, 07, 09/11) chứ không phải 3/5 như handoff.",
+    "Đạo ghi 'kiểm tra vốn chuyền để đăng ký BTP cho ngày 5-11' ở các ngày 03, 04, 05 và 06/11 – ngày 06/11 vẫn ghi cho ngày 05/11, "
     "dấu hiệu chép mẫu. Từ 07/11 ghi 9-11, 10-11, 'hôm sau'.",
     "Vương ghi ngày 10/11 thành 2026-10-11 (đảo ngày tháng); đã hiểu là 10/11.",
-    "Báo cáo Vương và Thân không ghi tên trong file, chỉ có tên file. Báo cáo 3 không có tên; chuyền nhắc tới là 6B–11B và có nhắc 'cầu qua Xí nghiệp A1', "
+    "Báo cáo không ghi tên người trong file. Báo cáo thứ ba (file NỘI DUNG KIỂM TRA) là của Đạo, theo xác nhận ngày 10/11; chuyền nhắc tới là 6B–11B và có nhắc 'cầu qua Xí nghiệp A1', "
     "nên không phải A1. Thân nhắc chuyền 1A–6A. Vương ghi Xí nghiệp A3, chuyền 12A–15B.",
-    "Tỷ lệ dòng chép nguyên văn (cùng hạng mục + nội dung + biện pháp xuất hiện ở ≥ 2 ngày): Thân 54%, Vương 52%, báo cáo 3 61%. "
-    "Khung giờ: Thân và báo cáo 3 dùng một bộ khung duy nhất cho mọi ngày; Vương 3 bộ trong 7 ngày.",
+    "Tỷ lệ dòng chép nguyên văn (cùng hạng mục + nội dung + biện pháp xuất hiện ở ≥ 2 ngày): Thân 54%, Vương 52%, Đạo 61%. "
+    "Khung giờ: Thân và Đạo dùng một bộ khung duy nhất cho mọi ngày; Vương 3 bộ trong 7 ngày.",
     "Phân bổ phút: khung giờ chia đều cho các mã việc có trong khung. Ví dụ khung 15h45–16h30 của Thân có 4 việc → mỗi việc ≈ 11 phút.",
     "Phân loại mã việc theo từ khóa (scripts/iso_nhat_ky.py). Phân loại chủ đề, kiểu biện pháp, trạng thái lỗi theo từ khóa "
     "(scripts/xuat_phan_tich_iso.py); có thể sửa tay trong sheet LoiHienTruong, các bảng thống kê tự cập nhật.",

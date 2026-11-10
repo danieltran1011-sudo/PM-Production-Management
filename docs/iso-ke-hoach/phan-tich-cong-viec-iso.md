@@ -1,6 +1,6 @@
 # APIC – 3 nhân sự ISO kiêm kế hoạch: bố trí có hợp lý không, có dư người không?
 
-Nguồn: 3 báo cáo công việc hằng ngày 03–10/11/2026 (Thân 6 ngày; Vương – A3 7 ngày; báo cáo thứ ba chưa rõ tên 7 ngày).
+Nguồn: 3 báo cáo công việc hằng ngày 03–10/11/2026 (Thân 6 ngày; Vương – A3 7 ngày; Đạo 7 ngày).
 Số liệu, công thức, giả định sửa được: `Phan-tich-cong-viec-ISO.xlsx` (tạo lại bằng `python3 scripts/xuat_phan_tich_iso.py`).
 Handoff trước đó chỉ được dùng để tham khảo. Các điểm khác với handoff nằm ở mục "Phản biện handoff".
 
@@ -23,7 +23,7 @@ Kịch bản cao đã cộng dồn mọi giả định bất lợi: đánh giá 
 
 **Dư vì làm thay việc của người khác:**
 
-| Việc đang làm | Đúng ra thuộc về | Thân | Vương | BC3 |
+| Việc đang làm | Đúng ra thuộc về | Thân | Vương | Đạo |
 |---|---|---|---|---|
 | Tuần tra 5S, nội quy 2–4 lượt/ngày; kiểm bảng và bóp vật dụng kim loại (VDKL) | Quản lý chuyền kiểm hằng ngày; ISO chỉ đánh giá xác suất | 64% | 50% | 53% |
 | Đăng ký BTP; hối thúc cắt – in – thêu – laze; năng suất; biểu mẫu; phụ liệu; vải thử máy | Chuyền trưởng, Kế hoạch, kho, kỹ thuật | 8% | 40% | 27% |
@@ -77,7 +77,7 @@ Chỉ dựa trên báo cáo, cần quản đốc xác nhận.
 
 - **Thân:** 79% thời gian là việc kiểu ISO. Là người duy nhất ghi rõ lỗi gốc từ ngày nào và hẹn giờ kiểm tra lại. Tuy vậy vẫn chủ yếu nhắc nhở và đe dọa xử lý ABC. Phù hợp với vị trí ISO chung nếu được đào tạo đánh giá xác suất.
 - **Vương (A3):** 40% thời gian là điều phối kế hoạch. Có biện pháp xử lý gốc: nhắc trả rập tự động, đổi ra bàn ủi sang màu tối. Phù hợp với vị trí điều độ / kế hoạch. Cần làm rõ quyền đang có.
-- **Báo cáo 3:** chưa rõ người viết. Có cách làm đúng hướng: để quản lý tự khắc phục và gửi ảnh. Nhưng 61% dòng chép lại và có 4 việc hẹn kiểm tra lại mà không thấy theo dõi.
+- **Đạo:** có cách làm đúng hướng: để quản lý tự khắc phục và gửi ảnh. Nhưng 61% dòng chép lại và có 4 việc hẹn kiểm tra lại mà không thấy theo dõi.
 
 ## Giới hạn
 
@@ -99,3 +99,7 @@ Chỉ dựa trên báo cáo, cần quản đốc xác nhận.
 | NhatKy, LoiHienTruong | Dữ liệu từng dòng, có ô nguồn |
 | DoiChieuBTP | Mẫu đối chiếu hồ sơ cấp BTP |
 | GhiChuDuLieu | Giả định, sai lệch dữ liệu |
+
+## Dàn ý đàm phán
+
+Dàn ý và lập luận để đàm phán với APIC (mục tiêu, chuỗi lập luận, gói đề xuất, xử lý phản bác, trình tự, biên bản): [tài liệu Claude](https://claude.ai/artifact/UsP6ra12ns9pXrpWdbMtQS).

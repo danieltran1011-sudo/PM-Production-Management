@@ -16,7 +16,7 @@ from openpyxl import load_workbook
 NGUON = {
     "THAN": ("data/nguon/iso/Bao-cao-hang-ngay-Than.xlsx", "Thân"),
     "VUONG": ("data/nguon/iso/Bao-cao-hang-ngay-Vuong.xlsx", "Vương (A3)"),
-    "BC3": ("data/nguon/iso/NOI-DUNG-KIEM-TRA.xlsx", "Báo cáo 3 (chưa rõ tên)"),
+    "DAO": ("data/nguon/iso/NOI-DUNG-KIEM-TRA.xlsx", "Đạo"),
 }
 
 # Mã việc: (tên, nhóm, chức danh/bộ phận nên làm chính, đề xuất)
