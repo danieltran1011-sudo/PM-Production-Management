@@ -1373,6 +1373,8 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
     var bad = regs.filter(function (r) { return r.checks && r.checks.length; });
     return '<h3>Đối chiếu sổ ライン空き原価配分表 của TI (' + R.monthLabel(cmp[0].r.month) + ' – ' + R.monthLabel(cmp[cmp.length - 1].r.month) + ')</h3>' +
       '<p class="an-note">Sổ: chuyền trống theo nguyên nhân; dòng "投入物なし(NYABEオーダー縫製)" là chuyền may hàng Nhà Bè (APIC tự bán), so với "Trang: may APIC". Chuyền A1/A2/B1/B2 tính nửa chuyền-ngày. Lệch = trang − sổ, chỉ ở các chuyền trang có dữ liệu. ' +
+      'Chi phí trống (số đen trong sổ) được TI phân bổ vào các mã cùng bộ phận (部署コード) ở file 原価管理, cột ⑥月単位実績単価(空き配分), theo tỷ lệ chi phí ⑤ của từng mã. ' +
+      '"Gắn mã hàng" (số đỏ, 当該品番に紐付け) là chi phí ⑤ của cả mã hàng gây ra trống trong tháng, không phải riêng chi phí các ngày trống: các ngày chờ được tính vào thời gian sản xuất của chính mã đó. ' +
       (cur ? '' : 'Chọn một tháng trong sổ ở thanh bộ lọc để tô đậm dòng tháng đó.') + '</p>' + t0 +
       (bad.length ? '<p class="warn">⚠ Sổ cộng thiếu: ' + bad.map(function (r) { return R.monthLabel(r.month) + ' ' + r.checks.map(function (c) { return c.factory + ' ' + (c.what === 'amount' ? 'chi phí ghi ' + fmtN(c.sheet, 0) + ' USD, đúng ra ' + fmtN(c.rows, 0) + ' USD' : 'ngày ghi ' + fmtN(c.sheet, 1) + ', đúng ra ' + fmtN(c.rows, 1)); }).join(', '); }).join(' · ') + '. Bảng trên dùng tổng các dòng.</p>' : '') +
       '<h3>Nguyên nhân chuyền trống theo sổ</h3>' + t1 +
