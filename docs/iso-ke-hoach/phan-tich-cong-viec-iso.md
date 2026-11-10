@@ -1,66 +1,101 @@
-# APIC – Phân tích công việc 3 nhân sự ISO kiêm kế hoạch
+# APIC – 3 nhân sự ISO kiêm kế hoạch: bố trí có hợp lý không, có dư người không?
 
-Nguồn: 3 báo cáo công việc hằng ngày, kỳ 03–10/11/2026 (Thân 6 ngày; Vương – A3 7 ngày; báo cáo thứ ba chưa rõ tên 7 ngày).
-Số liệu đầy đủ, công thức và nhật ký từng dòng: `Phan-tich-cong-viec-ISO.xlsx` (tạo lại bằng `python3 scripts/xuat_phan_tich_iso.py`).
+Nguồn: 3 báo cáo công việc hằng ngày 03–10/11/2026 (Thân 6 ngày; Vương – A3 7 ngày; báo cáo thứ ba chưa rõ tên 7 ngày).
+Số liệu, công thức, giả định sửa được: `Phan-tich-cong-viec-ISO.xlsx` (tạo lại bằng `python3 scripts/xuat_phan_tich_iso.py`).
+Handoff trước đó chỉ được dùng để tham khảo. Các điểm khác với handoff nằm ở mục "Phản biện handoff".
 
-> Giờ trong bảng là **giờ tự ghi** theo khung giờ trong báo cáo, không phải giờ đo. Khung giờ gần như giống nhau mỗi ngày
-> và 52–61% dòng báo cáo chép nguyên văn từ ngày khác, nên đây là cơ cấu công việc tự khai. Cần đo lại trong 10 ngày thử.
+## Trả lời ngắn
 
-## Kết luận
+**Có dư người, và bố trí hiện nay chưa hợp lý.**
 
-1. **Vị trí "ISO kiêm kế hoạch, mỗi xưởng một người" làm ba loại việc trộn lẫn**: việc ISO; việc kế hoạch, văn thư của chuyền trưởng, Kế hoạch, phòng cắt, kho; và vai trò trung gian chuyển tin. Hai loại sau không thuộc chức năng ISO và tạo kênh chỉ đạo song song với Kế hoạch.
-2. **Phần "ISO" phần lớn cũng là làm thay quản lý chuyền.** Tuần tra 5S và kiểm vật dụng kim loại (VDKL) chiếm 50–64% thời gian, 2–4 lượt mỗi ngày. 60% lỗi chỉ xử lý bằng nhắc nhở, 84% lỗi được báo "đạt" ngay trong ngày, nhưng 46% lỗi lặp lại cùng khu vực và cùng chủ đề. Kiểm tra như vậy không làm thay đổi hệ thống.
-3. **Không có mục tiêu, chỉ tiêu, danh sách lỗi mở hay hạn đóng.** Báo cáo ngày là mẫu chép lại. Điều này khớp với nhận định "thấy gì làm đó, thấy đâu nói đó".
-4. **Về số người:** nếu ISO chỉ làm đúng chức năng (đánh giá xác suất, xác minh VDKL, kiểm soát tài liệu tập trung, theo dõi khắc phục), khối lượng ước tính khoảng **0,9 người cho cả 3 xưởng**. So với chức năng ISO, ba vị trí hiện nay là dư.
-5. **Việc kế hoạch không tự biến mất.** Khoảng 3,7 giờ mỗi ngày (≈ 0,5 người) phải chuyển về Kế hoạch / thống kê: đồng bộ cắt – in – thêu – laze, năng suất, biểu mẫu. Nếu Kế hoạch không có công suất, có thể điều chuyển một người sang Kế hoạch / điều độ thay vì giữ trong ISO.
-6. **Đề xuất:** bỏ mô hình 3 ISO kiêm kế hoạch. Mục tiêu là 1 đầu mối ISO chuyên trách cho cả 3 xưởng, thêm đầu mối kiểm soát tài liệu nếu chưa gộp được. Chuyển việc theo bảng giữ / chuyển / bỏ, chạy thử 10 ngày làm việc, đo lại rồi chốt 1 hay 2 người.
-
-## Cơ cấu thời gian tự ghi (% giờ mỗi ngày)
-
-| | Thân | Vương (A3) | Báo cáo 3 |
+| | Thấp | Cơ sở | Cao |
 |---|---|---|---|
-| Giờ ghi/ngày | 8,2 | 8,8 | 8,2 |
-| Việc ISO giữ lại (phải đổi cách làm) | 79% | 55% | 65% |
-| – trong đó tuần tra 5S + kiểm VDKL | 64% | 50% | 53% |
-| Việc nên chuyển về bộ phận khác | 8% | 40% | 27% |
-| Việc nên bỏ (trung gian chuyển tin) | 12% | 5% | 8% |
+| Số người ISO cần (đúng chức năng, cả 3 xưởng) | 0,51 | 0,74 | 1,31 |
+| Số người cho phần việc kế hoạch đang nằm trong 3 vị trí | 0,82 | 0,78 | 0,71 |
+| **Tổng người cần** | **1,33** | **1,53** | **2,02** |
+| **Dư so với 3 người hiện có** | **1,7** | **1,5** | **1,0** |
 
-## Trùng lặp với bộ phận, chức danh khác
+Kịch bản cao đã cộng dồn mọi giả định bất lợi: đánh giá 15 chuyền/ngày, ISO giữ 50% việc tài liệu, và giữ nguyên giờ tự khai của việc kế hoạch. Dù vậy vẫn dư khoảng 1 người.
 
-| Việc ISO đang làm | Đúng ra thuộc về | Hệ quả |
-|---|---|---|
-| Tuần tra 5S, nội quy, BHLĐ 2–4 lượt/ngày | Quản lý chuyền (kiểm hằng ngày), nhóm 5S xưởng | Quản lý chuyền dựa vào ISO để phát hiện lỗi; lỗi lặp lại |
-| Kiểm bảng đánh chéo, bóp VDKL cuối ngày | Quản lý chuyền; ISO chỉ xác minh xác suất | Ghi "Đạt" chung chung, không ghi số chuyền và số túi đã kiểm |
-| Đăng ký BTP, kiểm vốn chuyền | Chuyền trưởng đăng ký; Kế hoạch chốt | Phòng cắt nhận yêu cầu qua người trung gian |
-| Hối thúc cắt, in, thêu, laze, keo | Kế hoạch / điều độ | Hai kênh hối thúc, không rõ ai quyết ưu tiên |
-| Theo dõi năng suất, "phân chia kế hoạch chuyền" | Quản đốc, Kế hoạch | Vượt quyền |
-| Đánh máy, in list đánh chéo, list giấy số, bảng năng suất | Thống kê / Kế hoạch (mẫu chuẩn) | Việc văn thư lặp theo mã hàng |
-| Gom phiếu phụ liệu, ứng vải thử máy, cấp kệ, rổ, vải vệ sinh | Chuyền ↔ Kho, kỹ thuật chuyền, hành chính | Thêm một bước trung chuyển |
-| Đọc mail, nhóm chat, chuyển lỗi chuyền cho bộ phận khác | Chuyền trưởng báo thẳng qua kênh chung | Thông tin đi vòng, chậm, mất dấu trách nhiệm |
-| Ban hành, photo, đóng mộc tài liệu ở cả 3 xưởng | Một đầu mối kiểm soát tài liệu | Ba người cùng làm một việc |
-| Lập biên bản, hạ loại thi đua | Quản đốc / Nhân sự | ISO tự kỷ luật |
+## Vì sao dư
 
-## Điểm cần xử lý ngay
+**Dư không phải vì ngồi không.** Báo cáo vẫn kín giờ. Nếu tính lại khối lượng theo số lượt việc thực tế, nội dung ghi được lấp khoảng 50–95% giờ khai, tùy giả định số phút cho mỗi lượt. Vì vậy báo cáo không chứng minh được ai thiếu việc.
 
-- Vạch lối thoát hiểm ở A3 bị bong tróc, báo cáo ghi "sẽ thực hiện sau khi khách gần tới". Đây là hạng mục an toàn, cần đặt hạn sửa ngay.
-- Vòng chắn kim bị gãy ở chuyền 12A, 15A, 15B (10/11) và tủ vật dụng nguy hiểm chuyền 3B lặp lỗi 05–07/11. Cả hai đều chưa có bằng chứng đóng lỗi.
+**Dư vì làm thay việc của người khác:**
+
+| Việc đang làm | Đúng ra thuộc về | Thân | Vương | BC3 |
+|---|---|---|---|---|
+| Tuần tra 5S, nội quy 2–4 lượt/ngày; kiểm bảng và bóp vật dụng kim loại (VDKL) | Quản lý chuyền kiểm hằng ngày; ISO chỉ đánh giá xác suất | 64% | 50% | 53% |
+| Đăng ký BTP; hối thúc cắt – in – thêu – laze; năng suất; biểu mẫu; phụ liệu; vải thử máy | Chuyền trưởng, Kế hoạch, kho, kỹ thuật | 8% | 40% | 27% |
+| Đọc mail, chuyển tin lỗi chuyền | Chuyền báo thẳng bộ phận xử lý | 12% | 5% | 8% |
+
+Khi bỏ phần làm thay, việc ISO còn lại khoảng 0,5–1,3 người cho cả 3 xưởng. Việc trả về chuyền chỉ khoảng 10 phút mỗi chuyền mỗi ngày, không phải lý do để giữ người.
+
+## Vì sao bố trí chưa hợp lý
+
+1. **Chia người theo xưởng, không theo khối lượng.** A3 chỉ có 8 chuyền nhưng vẫn được bố trí 1 người như hai xưởng 10–11 chuyền.
+2. **ISO tự làm rồi tự kiểm.** Người kiểm tra đang làm chính việc mình kiểm: kiểm bảng VDKL thay quản lý chuyền, tự đăng ký BTP, tự cấp vật tư. Như vậy không còn kiểm tra độc lập (ISO 9001 mục 9.2.2 c).
+3. **Hai kênh chỉ đạo song song.** Cắt, in, thêu nhận hối thúc từ cả ISO lẫn Kế hoạch. Vương còn ghi việc "phân chia kế hoạch chuyền", tức là vượt quyền.
+4. **Không có mục tiêu, chỉ tiêu, danh sách lỗi chưa đóng hay hạn đóng.**
+   - 60% lỗi chỉ xử lý bằng nhắc nhở. 84% lỗi báo "đạt" ngay trong ngày, nhưng 46% lặp lại ở cùng khu vực và cùng chủ đề.
+   - Kiểm VDKL xác suất luôn ghi "Đạt" mà không có số lượng.
+   - Nhiệt độ / độ ẩm chuyền 14A ghi y hệt 26°C / 73% trong 5 ngày.
+   - 52–61% dòng báo cáo chép nguyên văn từ ngày khác.
+
+## Đề xuất
+
+**Phương án 2 (khuyến nghị):**
+- 1 người ISO chung cho 3 xưởng, trực thuộc cấp trên xưởng. Người này chỉ làm: đánh giá xác suất, xác minh VDKL có số lượng, kiểm soát tài liệu hệ thống, theo dõi lỗi chưa đóng và báo cáo tuần.
+- 1 người chuyển sang Kế hoạch: điều độ đầu vào (cắt – in – thêu – laze) và phân phối tài liệu sản xuất theo mã hàng cho 3 xưởng.
+- 1 người điều chuyển.
+
+**Phương án 3:** chỉ giữ 1 người ISO, nếu Kế hoạch xác nhận tự nhận được khoảng 0,8 người việc.
+
+**Điều kiện:** giao trách nhiệm và chỉ tiêu cho quản đốc, chuyền trưởng trước khi rút người (5S và VDKL hằng ngày, đăng ký BTP, báo lỗi trực tiếp). Rút người trước khi giao trách nhiệm thì kỷ luật hiện trường sẽ tụt.
+
+**Việc an toàn cần sửa ngay**, không chờ lịch khách đến:
+- Vạch lối thoát hiểm ở A3.
+- Vòng chắn kim bị gãy ở chuyền 12A, 15A, 15B.
+- Ổ điện rớt ở nhiều chuyền.
+
+## Phản biện handoff
+
+| Handoff | Phản biện |
+|---|---|
+| Chưa chốt giảm người; thử 10 ngày rồi xem giữ 3, 2 hay 1 | Cả 3 kịch bản đều dưới 3 người, nên loại ngay phương án giữ 3. Chạy thử chỉ để chọn giữa 1 và 2. |
+| Một đầu mối ISO chung và một người liên hệ tại mỗi xưởng từ nhân sự sẵn có | Nếu "người liên hệ" lại chính là 3 người này thì vị trí cũ vẫn còn nguyên, chỉ đổi tên. Người liên hệ phải là quản đốc hoặc phó quản đốc. |
+| Bước tiếp theo là đối chiếu hồ sơ cấp BTP | Việc này dùng để thiết kế quy trình BTP, không quyết định ISO có dư hay không. Không để quyết định tổ chức chờ bước này. |
+| Ban hành tài liệu là việc ISO | Tài liệu ban hành hằng ngày là tài liệu sản xuất theo mã (list đổ hàng, TCC), thuộc luồng Kỹ thuật / Kế hoạch. ISO chỉ giữ tài liệu hệ thống. |
+| Đo bằng tần suất ghi nhận (số ngày có việc) | Tần suất không phản ánh khối lượng. Cần đo theo thời gian, số lượt và đầu ra. |
+| Duy trì đủ các lượt kiểm tra bắt buộc | Chưa xác định lượt nào bắt buộc. Cần lập danh mục yêu cầu của khách hàng (Toray). |
+| Chuyển việc về Kế hoạch | Chưa kiểm tra Kế hoạch còn công suất không. Phần việc chuyển sang tương đương khoảng 0,7–0,8 người. |
+| (không nêu) | Các việc an toàn đang bị trì hoãn. Gốc vấn đề là tuyến chuyền chưa chịu trách nhiệm, chứ không chỉ là thừa người. |
+
+## Gợi ý bố trí từng người
+
+Chỉ dựa trên báo cáo, cần quản đốc xác nhận.
+
+- **Thân:** 79% thời gian là việc kiểu ISO. Là người duy nhất ghi rõ lỗi gốc từ ngày nào và hẹn giờ kiểm tra lại. Tuy vậy vẫn chủ yếu nhắc nhở và đe dọa xử lý ABC. Phù hợp với vị trí ISO chung nếu được đào tạo đánh giá xác suất.
+- **Vương (A3):** 40% thời gian là điều phối kế hoạch. Có biện pháp xử lý gốc: nhắc trả rập tự động, đổi ra bàn ủi sang màu tối. Phù hợp với vị trí điều độ / kế hoạch. Cần làm rõ quyền đang có.
+- **Báo cáo 3:** chưa rõ người viết. Có cách làm đúng hướng: để quản lý tự khắc phục và gửi ảnh. Nhưng 61% dòng chép lại và có 4 việc hẹn kiểm tra lại mà không thấy theo dõi.
+
+## Giới hạn
+
+- Giờ là giờ tự khai theo khung cố định.
+- Số phút cho mỗi lượt việc và quy mô đánh giá là giả định (ô vàng trong sheet DinhBien và NoiDungThucChat). Nên đo bằng chụp ảnh làm việc (work sampling): 20–30 thời điểm ngẫu nhiên mỗi ngày trong 10 ngày.
 
 ## File Excel
 
 | Sheet | Nội dung |
 |---|---|
-| KetLuan | Chỉ số chính theo người, kết luận |
-| ThoiGian | Phút/ngày, % thời gian, số ngày có cho 13 mã việc × 3 người |
-| TrungLap | Ma trận việc × bộ phận (chủ trì, phối hợp, ISO làm thay) và hệ quả |
-| GiuChuyenBo | Đề xuất giữ / chuyển / bỏ: người nhận, quyền quyết định, đầu ra, tiêu chí nghiệm thu, điểm cần xác minh, ô chốt khi họp |
-| ChatLuongKiemTra | Kiểu biện pháp, trạng thái, chủ đề lỗi, tỷ lệ tái diễn |
-| DinhBien | Mô hình số người ISO cần, giả định sửa được, so sánh phương án 3 / 2 / 1 |
-| DoiChieuBTP | Mẫu đối chiếu hồ sơ cấp BTP theo mã với phản hồi kỹ thuật (bước tiếp theo) |
-| LoiHienTruong, NhatKy | Dữ liệu từng dòng, có ô nguồn |
-| GhiChuDuLieu | Giả định, sai lệch dữ liệu, khác biệt với handoff |
-
-## Khác với handoff
-
-- File hiện có thêm ngày 10/11. Trong kỳ 03–09/11 có 18 ngày công, không phải 17. Báo cáo 3 ghi "vải thử máy" 4 ngày, không phải 3/5.
-- Báo cáo 3 ghi "đăng ký BTP cho ngày 5-11" ở các ngày 03–06/11, kể cả ngày 06/11.
-- Vương ghi ngày 10/11 thành 2026-10-11.
+| KetLuan | Trả lời ngắn theo 3 kịch bản, chỉ số chính, kết luận |
+| ThoiGian | Phút/ngày, % thời gian của 13 mã việc × 3 người |
+| PhanBien | 15 điểm phản biện bố trí hiện nay và handoff; gợi ý bố trí từng người |
+| TrungLap | Ma trận việc × bộ phận (chủ trì, phối hợp, ISO làm thay) |
+| GiuChuyenBo | Giữ / chuyển / bỏ: người nhận, quyền, đầu ra, tiêu chí nghiệm thu, ô chốt |
+| ChatLuongKiemTra | Biện pháp, trạng thái, chủ đề lỗi, tỷ lệ tái diễn |
+| NoiDungThucChat | Khối lượng việc ước tính theo số lượt, so với giờ khai |
+| DinhBien | 3 kịch bản, so sánh phương án PA1 / PA2 / PA3 |
+| NhatKy, LoiHienTruong | Dữ liệu từng dòng, có ô nguồn |
+| DoiChieuBTP | Mẫu đối chiếu hồ sơ cấp BTP |
+| GhiChuDuLieu | Giả định, sai lệch dữ liệu |

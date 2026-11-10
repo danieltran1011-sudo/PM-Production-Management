@@ -296,7 +296,7 @@ MT = {
            "đúng vai trò nếu chỉ đánh giá xác suất"],
     "I2": ["Chủ trì", "", "", "", "", "", "Phối hợp", "", "", "", "Làm thay phần kiểm hằng ngày; đúng vai trò khi xác minh xác suất"],
     "I3": ["", "", "", "", "", "", "", "Chủ trì", "Phối hợp", "", "Làm thay (việc nhập số liệu)"],
-    "I4": ["", "", "Phối hợp", "", "", "", "", "Phối hợp", "", "", "Đúng chức năng nhưng 3 người làm song song ở 3 xưởng"],
+    "I4": ["", "", "Chủ trì", "", "", "", "", "Chủ trì", "", "", "Đúng chức năng với tài liệu hệ thống; làm thay khi phân phối tài liệu sản xuất theo mã"],
     "I5": ["", "", "", "", "", "", "", "", "", "", "Đúng chức năng"],
     "P1": ["Chủ trì", "", "Chủ trì", "Phối hợp", "", "", "", "", "", "", "Làm thay"],
     "P2": ["", "", "Chủ trì", "Chủ trì", "Chủ trì", "", "", "", "", "", "Làm thay, tạo kênh hối thúc thứ hai"],
@@ -311,7 +311,7 @@ TAC_DONG = {
     "I1": "Quản lý chuyền dựa vào ISO để phát hiện lỗi; phần lớn biện pháp là nhắc nhở và lỗi tái diễn theo cùng chủ đề (nón, bao tay, BTP chạm đất, rập) – xem ChatLuongKiemTra.",
     "I2": "Kết quả ghi 'Đạt' chung chung, không ghi số chuyền, số túi đã kiểm; không chứng minh được độ bao phủ. Vương còn kiểm bóp VDKL cuối ngày thay quản lý.",
     "I3": "Nhập 2 lần/ngày ở 3 xưởng; có thể dùng thiết bị ghi tự động hoặc giao người tại chỗ.",
-    "I4": "Thân và báo cáo 3 ghi 2 khung giờ/ngày cho ban hành tài liệu; 3 đầu mối làm cùng một việc, khó kiểm soát phiên bản.",
+    "I4": "Tài liệu ban hành hằng ngày là tài liệu sản xuất theo mã (list đổ hàng, TCC) – luồng Kỹ thuật / Kế hoạch. 3 người làm song song ở 3 xưởng.",
     "I5": "Báo cáo ngày chép mẫu 52–61% dòng; không có danh sách lỗi mở, hạn đóng, quá hạn.",
     "P1": "Chuyền trưởng không trực tiếp chịu trách nhiệm số đăng ký; phòng cắt nhận yêu cầu qua người trung gian; báo cáo 3 ghi ngày đăng ký '5-11' lặp sau ngày đó.",
     "P2": "Cắt, in, thêu nhận hối thúc từ ISO song song với Kế hoạch; không rõ ai quyết thứ tự ưu tiên.",
@@ -364,8 +364,8 @@ GCB = {
     "I3": ("Tổ mẫu / thống kê chuyền nhập tại chỗ, hoặc lắp thiết bị ghi tự động.", "Quản đốc phân công người nhập.",
            "Số liệu nhiệt độ, độ ẩm đủ các lần đo/ngày.", "Không thiếu lần đo trong 10 ngày. ISO xem lại hằng tuần, xử lý khi vượt ngưỡng.",
            "Ngưỡng nhiệt độ, độ ẩm và tần suất đo theo yêu cầu."),
-    "I4": ("Một đầu mối kiểm soát tài liệu chung cho 3 xưởng (thuộc ISO). Kỹ thuật / kế hoạch chịu trách nhiệm nội dung tài liệu.",
-           "Trưởng ISO duyệt ban hành, thu hồi, hủy. Kỹ thuật duyệt nội dung kỹ thuật.",
+    "I4": ("Tài liệu sản xuất theo mã (list đổ hàng, TCC…): Kế hoạch / Kỹ thuật phân phối cho 3 xưởng. ISO chỉ kiểm soát tài liệu hệ thống và quy tắc phân phối.",
+           "ISO duyệt ban hành, thu hồi, hủy tài liệu hệ thống. Kỹ thuật duyệt nội dung tài liệu sản xuất.",
            "Danh mục tài liệu hiệu lực theo mã hàng; sổ phân phối, thu hồi, hủy.",
            "Kiểm xác suất tại chuyền: 0 tài liệu hết hiệu lực. Tài liệu đến chuyền trước ngày vào chuyền.",
            "Số tài liệu ban hành/ngày ở mỗi xưởng (đếm trong 10 ngày thử)."),
@@ -522,139 +522,363 @@ for t in [
     put(wsQ, r, 1, t, color=MUTED, italic=True, border=False, align=Alignment(vertical="top"))
     r += 1
 
+# --------------------------------------------------------------------------- NoiDungThucChat
+L = get_column_letter
+wsW = wb.create_sheet("NoiDungThucChat", 4)
+title(wsW, "Khối lượng việc thực chất ước tính từ số lượt việc ghi trong báo cáo (không dùng giờ tự khai)",
+      "Lượt/ngày đếm từ NhatKy và LoiHienTruong. Phút/lượt là giả định thấp – cao (ô vàng), sửa theo số đo thực tế.")
+WH = ["Mã", "Đơn vị đếm", "Phút/lượt thấp", "Phút/lượt cao"] + \
+     [f"Lượt/ngày {NGUON[p][1]}" for p in NGUOI] + \
+     [f"Phút thấp {NGUON[p][1]}" for p in NGUOI] + [f"Phút cao {NGUON[p][1]}" for p in NGUOI]
+header(wsW, 4, WH, [7, 44, 10, 10] + [12] * 9)
+DON_VI = {
+    "I1": ("Lượt tuần tra 1 xưởng (8–11 chuyền)", 20, 35), "I2": ("Lượt kiểm bảng / bóp VDKL", 15, 30),
+    "I3": ("Lần nhập nhiệt độ, độ ẩm", 5, 10), "I4": ("Lượt ban hành / photo / đóng mộc tài liệu", 20, 40),
+    "I5": ("Lần lập, gửi báo cáo", 10, 20), "P1": ("Lần kiểm vốn, đăng ký BTP", 15, 25),
+    "P2": ("Lượt theo dõi cấp BTP / in / thêu / laze", 15, 30), "P3": ("Lần làm phiếu phụ liệu", 10, 20),
+    "P4": ("Lần theo dõi năng suất, kế hoạch", 10, 20), "P5": ("Lượt làm list / bảng biểu", 15, 30),
+    "P6": ("Lần ứng, nhận vải thử máy", 10, 20), "P7": ("Lượt đọc mail, chuyển tin", 15, 30),
+    "M1": ("Lần cấp vật tư phụ trợ", 10, 20),
+}
+r = 5
+W_FIRST = r
+for ma in list(VIEC) + ["LOI"]:
+    if ma == "LOI":
+        dv_, lo, hi = "Ghi nhận 1 lỗi (xem, chụp ảnh, gửi nhóm, nhắc)", 3, 6
+    else:
+        dv_, lo, hi = DON_VI[ma]
+    put(wsW, r, 1, ma, bold=True, align=CENTER)
+    put(wsW, r, 2, dv_)
+    put(wsW, r, 3, lo, bg=INPUT_FILL, align=CENTER, color="0000FF")
+    put(wsW, r, 4, hi, bg=INPUT_FILL, align=CENTER, color="0000FF")
+    for i, p in enumerate(NGUOI):
+        days = f"ThoiGian!${L(PC[p])}$6"
+        if ma == "LOI":
+            fx = f'=COUNTIFS({frng("A")},"{p}",{frng("F")},"Lỗi")/{days}'
+        else:
+            fx = f'=COUNTIFS({rng("A")},"{p}",{rng("G")},$A{r},{rng("F")},">0")/{days}'
+        put(wsW, r, 5 + i, fx, fmt="0.0", align=CENTER)
+        put(wsW, r, 8 + i, f"={L(5 + i)}{r}*$C{r}", fmt="0", align=CENTER)
+        put(wsW, r, 11 + i, f"={L(5 + i)}{r}*$D{r}", fmt="0", align=CENTER)
+    r += 1
+W_LAST = r - 1
+W = {}
+for key, label, fn in [
+    ("lo", "Khối lượng thực chất – giả định thấp (phút/ngày)", lambda i: f"=SUM({L(8 + i)}{W_FIRST}:{L(8 + i)}{W_LAST})"),
+    ("hi", "Khối lượng thực chất – giả định cao (phút/ngày)", lambda i: f"=SUM({L(11 + i)}{W_FIRST}:{L(11 + i)}{W_LAST})"),
+    ("kh", "Giờ tự khai (phút/ngày)", lambda i: f"=ThoiGian!{L(PC[NGUOI[i]])}7*60"),
+    ("pl", "Tỷ lệ lấp đầy giờ khai – thấp", None),
+    ("ph", "Tỷ lệ lấp đầy giờ khai – cao", None),
+]:
+    wsW.merge_cells(start_row=r, start_column=1, end_row=r, end_column=4)
+    put(wsW, r, 1, label, bold=True)
+    for i in range(3):
+        if key == "pl":
+            fx, fmt = f"=IFERROR({L(5 + i)}{W['lo']}/{L(5 + i)}{W['kh']},0)", "0%"
+        elif key == "ph":
+            fx, fmt = f"=IFERROR({L(5 + i)}{W['hi']}/{L(5 + i)}{W['kh']},0)", "0%"
+        else:
+            fx, fmt = fn(i), "0"
+        put(wsW, r, 5 + i, fx, fmt=fmt, align=CENTER, bold=True)
+    W[key] = r
+    r += 1
+r += 1
+for t in [
+    "Đọc kết quả: với giả định cao, nội dung việc ghi được gần lấp đầy giờ khai; với giả định thấp chỉ khoảng một nửa.",
+    "Vì vậy báo cáo KHÔNG chứng minh được nhân sự thiếu việc hay ngồi không. Dư người nằm ở chỗ làm thay việc của người khác "
+    "và kiểm tra lặp lại nhiều lượt, không nằm ở thời gian trống.",
+    "Muốn biết chính xác cần chụp ảnh làm việc (work sampling): ghi việc đang làm tại 20–30 thời điểm ngẫu nhiên mỗi ngày trong 10 ngày.",
+]:
+    put(wsW, r, 1, t, color=MUTED, italic=True, border=False, align=Alignment(vertical="top"))
+    r += 1
+wsW.freeze_panes = "C5"
+
 # --------------------------------------------------------------------------- DinhBien
-wsB = wb.create_sheet("DinhBien", 4)
-title(wsB, "Mô hình định biên ISO sau sắp xếp (ô vàng là giả định, sửa được)",
-      "Khối lượng ISO cần làm khi đã chuyển việc kế hoạch / văn thư / trung gian ra và đổi tuần tra sang đánh giá xác suất.")
-for col, w in zip("ABCDEF", [58, 14, 14, 16, 16, 40]):
+wsB = wb.create_sheet("DinhBien", 5)
+title(wsB, "Định biên theo 3 kịch bản (ô vàng là giả định, sửa được)",
+      "Tính số người cần cho đúng chức năng ISO và cho phần việc kế hoạch đang nằm trong 3 vị trí, rồi so với 3 người hiện có.")
+for col, w in zip("ABCDEFGHIJK", [56, 10, 10, 10, 10, 10, 10, 12, 12, 12, 44]):
     wsB.column_dimensions[col].width = w
 r = 4
 put(wsB, r, 1, "Thông số chung", bold=True, bg=HEAD)
 put(wsB, r, 2, "Giá trị", bold=True, bg=HEAD, align=CENTER)
-put(wsB, r, 3, "Ghi chú", bold=True, bg=HEAD)
 r += 1
 B = {}
-for key, label, v, fmt, note in [
-    ("gio", "Giờ làm việc / người / ngày", 8, "0.0", "Giờ hành chính"),
-    ("hs", "Tỷ lệ thời gian dùng được cho công việc", 0.85, "0%", "Trừ họp, di chuyển, việc phát sinh"),
-    ("chuyen", "Số chuyền may", 30, "0", "Theo handoff: 30 chuyền, 3 xưởng"),
-    ("xuong", "Số xưởng", 3, "0", ""),
-]:
+for key, label, v, fmt in [("gio", "Giờ làm việc / người / ngày", 8, "0.0"),
+                           ("hs", "Tỷ lệ thời gian dùng được cho công việc (trừ họp, phát sinh)", 0.85, "0%"),
+                           ("hien_co", "Số người hiện có (ISO kiêm kế hoạch)", 3, "0"),
+                           ("chuyen", "Số chuyền may", 30, "0")]:
     put(wsB, r, 1, label)
     put(wsB, r, 2, v, bg=INPUT_FILL, fmt=fmt, align=CENTER, color="0000FF")
-    put(wsB, r, 3, note, color=MUTED)
-    wsB.merge_cells(start_row=r, start_column=3, end_row=r, end_column=6)
     B[key] = f"$B${r}"
     r += 1
-put(wsB, r, 1, "Phút làm việc hiệu dụng / người / ngày", bold=True)
+put(wsB, r, 1, "Phút hiệu dụng / người / ngày", bold=True)
 put(wsB, r, 2, f"={B['gio']}*60*{B['hs']}", fmt="0", align=CENTER)
-B["phut_fte"] = f"$B${r}"
+B["fte"] = f"$B${r}"
 r += 2
 
-put(wsB, r, 1, "A. Hiện trạng (giờ tự ghi/ngày, 3 người)", bold=True, bg=HEAD)
-for c, t in enumerate(["Giờ/ngày", "Tương đương người"], 2):
-    put(wsB, r, c, t, bold=True, bg=HEAD, align=CENTER)
+SC = ["Thấp", "Cơ sở", "Cao"]
+put(wsB, r, 1, "A. Việc ISO đúng chức năng (cả 3 xưởng)", bold=True, bg=HEAD)
+for j, s in enumerate(SC):
+    put(wsB, r, 2 + 2 * j, f"{s}: SL", bold=True, bg=HEAD, align=CENTER)
+    put(wsB, r, 3 + 2 * j, f"{s}: phút", bold=True, bg=HEAD, align=CENTER)
+for j, s in enumerate(SC):
+    put(wsB, r, 8 + j, f"Phút/ngày {s.lower()}", bold=True, bg=HEAD, align=CENTER)
+put(wsB, r, 11, "Căn cứ", bold=True, bg=HEAD)
 r += 1
-for h, nhan in [("GIỮ", "Việc ISO giữ lại (theo cách làm hiện nay)"), ("CHUYỂN", "Việc nên chuyển về bộ phận khác"),
-                ("BỎ", "Việc nên bỏ (trung gian chuyển tin)")]:
-    put(wsB, r, 1, nhan, bg=HUONG_FILL[h])
-    put(wsB, r, 2, f"=ThoiGian!N{T_SUM[h]}", fmt="0.0", align=CENTER, color="008000")
-    put(wsB, r, 3, f"=B{r}*60/{B['phut_fte']}", fmt="0.00", align=CENTER)
-    B["a_" + h] = r
-    r += 1
-put(wsB, r, 1, "Tổng", bold=True)
-put(wsB, r, 2, f"=SUM(B{r - 3}:B{r - 1})", fmt="0.0", align=CENTER, bold=True)
-put(wsB, r, 3, f"=SUM(C{r - 3}:C{r - 1})", fmt="0.00", align=CENTER, bold=True)
-r += 2
-
-put(wsB, r, 1, "B. Khối lượng ISO sau sắp xếp (cho cả 3 xưởng)", bold=True, bg=HEAD)
-for c, t in enumerate(["Số lượng / ngày", "Phút / đơn vị", "Phút / ngày", "", "Căn cứ"], 2):
-    put(wsB, r, c, t, bold=True, bg=HEAD, align=CENTER)
-r += 1
-b_first = r
-for label, sl, ph, can_cu in [
-    ("Đánh giá xác suất 5S / BHLĐ / nội quy (số chuyền/ngày)", 10, 8, "Mỗi chuyền ≥ 1 lần/3 ngày; quản lý chuyền tự kiểm hằng ngày"),
-    ("Xác minh VDKL xác suất (số chuyền/ngày)", 10, 6, "Kiểm bảng ký + một số túi; kiểm 100% khi có sự cố"),
-    ("Di chuyển giữa 3 xưởng (lượt/ngày)", 2, 10, ""),
-    ("Theo dõi lỗi mở, kiểm tra tái diễn (lỗi/ngày)", 8, 5, "Danh sách lỗi mở dùng chung"),
-    ("Đánh giá nội bộ, đào tạo, làm việc khách hàng, báo cáo tuần (phút/ngày)", 1, 60, "Bình quân ngày"),
+a_first = r
+I4_ROW = T_FIRST + list(VIEC).index("I4")
+for label, vals, can_cu in [
+    ("Đánh giá xác suất 5S / BHLĐ / nội quy (chuyền/ngày × phút/chuyền)", [(6, 8), (10, 8), (15, 10)],
+     "Quản lý chuyền tự kiểm hằng ngày; ISO xoay vòng mỗi chuyền 2–5 ngày/lần"),
+    ("Xác minh VDKL xác suất (chuyền/ngày × phút/chuyền)", [(6, 6), (10, 6), (15, 8)],
+     "Kiểm bảng ký + đếm một số túi; sự cố kim gãy kiểm 100% (đã gồm trong kịch bản cao)"),
+    ("Di chuyển giữa 3 xưởng (lượt × phút)", [(2, 10), (2, 10), (3, 10)], ""),
+    ("Theo dõi lỗi mở, kiểm tra tái diễn (lỗi/ngày × phút)", [(6, 5), (8, 5), (12, 6)], "Một danh sách lỗi mở chung"),
+    ("Đánh giá nội bộ, đào tạo, làm việc khách hàng, báo cáo tuần (phút/ngày)", [(1, 45), (1, 60), (1, 90)], "Bình quân ngày"),
+    ("Kiểm soát tài liệu hệ thống: phút I4 hiện nay × % ISO giữ lại",
+     [(f"=ThoiGian!N{I4_ROW}*60", 0.2), (f"=ThoiGian!N{I4_ROW}*60", 0.3), (f"=ThoiGian!N{I4_ROW}*60", 0.5)],
+     "Tài liệu sản xuất theo mã (list đổ hàng, TCC) do Kỹ thuật / Kế hoạch phân phối; ISO chỉ giữ tài liệu hệ thống"),
 ]:
     put(wsB, r, 1, label)
-    put(wsB, r, 2, sl, bg=INPUT_FILL, align=CENTER, color="0000FF")
-    put(wsB, r, 3, ph, bg=INPUT_FILL, align=CENTER, color="0000FF")
-    put(wsB, r, 4, f"=B{r}*C{r}", fmt="0", align=CENTER)
-    put(wsB, r, 6, can_cu, color=MUTED)
+    for j, (q, m) in enumerate(vals):
+        isf = isinstance(q, str)
+        put(wsB, r, 2 + 2 * j, q, fmt="0", align=CENTER, bg=None if isf else INPUT_FILL, color="008000" if isf else "0000FF")
+        put(wsB, r, 3 + 2 * j, m, fmt="0%" if isinstance(m, float) and m < 1 else "0", align=CENTER, bg=INPUT_FILL, color="0000FF")
+        put(wsB, r, 8 + j, f"={L(2 + 2 * j)}{r}*{L(3 + 2 * j)}{r}", fmt="0", align=CENTER)
+    put(wsB, r, 11, can_cu, color=MUTED)
     r += 1
-put(wsB, r, 1, "Kiểm soát tài liệu tập trung: phút hiện tại × (1 − % giảm khi gộp)")
-put(wsB, r, 2, f"=ThoiGian!N{T_FIRST + list(VIEC).index('I4')}*60", fmt="0", align=CENTER, color="008000")
-put(wsB, r, 3, 0.3, bg=INPUT_FILL, fmt="0%", align=CENTER, color="0000FF")
-put(wsB, r, 4, f"=B{r}*(1-C{r})", fmt="0", align=CENTER)
-put(wsB, r, 6, "Cột B = phút/ngày I4 hiện nay của 3 người; cột C = % giảm do một đầu mối", color=MUTED)
+B["share_row"] = r - 1
+put(wsB, r, 1, "Tổng phút ISO / ngày", bold=True)
+for j in range(3):
+    put(wsB, r, 8 + j, f"=SUM({L(8 + j)}{a_first}:{L(8 + j)}{r - 1})", fmt="0", align=CENTER, bold=True)
 r += 1
-put(wsB, r, 1, "Tổng phút ISO cần / ngày", bold=True)
-put(wsB, r, 4, f"=SUM(D{b_first}:D{r - 1})", fmt="0", align=CENTER, bold=True)
-B["iso_phut"] = f"$D${r}"
-r += 1
-put(wsB, r, 1, "Số người ISO chuyên trách cần (tương đương)", bold=True)
-put(wsB, r, 4, f"={B['iso_phut']}/{B['phut_fte']}", fmt="0.00", align=CENTER, bold=True, bg="E1F3E9")
-B["iso_fte"] = f"$D${r}"
+put(wsB, r, 1, "Số người ISO cần (tương đương)", bold=True)
+for j in range(3):
+    put(wsB, r, 8 + j, f"={L(8 + j)}{r - 1}/{B['fte']}", fmt="0.00", align=CENTER, bold=True, bg="E1F3E9")
+B["iso_row"] = r
 r += 2
 
-put(wsB, r, 1, "C. Việc chuyển đi phải có nơi nhận", bold=True, bg=HEAD)
-put(wsB, r, 2, "Phút/ngày", bold=True, bg=HEAD, align=CENTER)
-put(wsB, r, 3, "Tương đương người", bold=True, bg=HEAD, align=CENTER)
+put(wsB, r, 1, "B. Việc kế hoạch đang nằm trong 3 vị trí, cần người nhận tập trung", bold=True, bg=HEAD)
+for j, s in enumerate(SC):
+    put(wsB, r, 8 + j, f"Phút/ngày {s.lower()}", bold=True, bg=HEAD, align=CENTER)
+put(wsB, r, 11, "Căn cứ", bold=True, bg=HEAD)
+r += 1
+b_first = r
+for ma, nhan in [("P2", "Đồng bộ cắt – in – thêu – laze – keo"), ("P4", "Năng suất, phân chuyền"),
+                 ("P5", "Biểu mẫu chuyền (list đánh chéo, giấy số, bảng năng suất)")]:
+    put(wsB, r, 1, f"{ma} – {nhan}")
+    for j in range(3):
+        put(wsB, r, 8 + j, f"=ThoiGian!N{T_FIRST + list(VIEC).index(ma)}*60", fmt="0", align=CENTER, color="008000")
+    put(wsB, r, 11, "Giờ tự khai hiện nay (giữ nguyên, có thể thừa)", color=MUTED)
+    r += 1
+put(wsB, r, 1, "Phân phối tài liệu sản xuất theo mã (phần I4 không còn ở ISO)")
+for j in range(3):
+    put(wsB, r, 8 + j, f"={L(2 + 2 * j)}{B['share_row']}*(1-{L(3 + 2 * j)}{B['share_row']})", fmt="0", align=CENTER)
+r += 1
+put(wsB, r, 1, "Tổng phút kế hoạch / ngày", bold=True)
+for j in range(3):
+    put(wsB, r, 8 + j, f"=SUM({L(8 + j)}{b_first}:{L(8 + j)}{r - 1})", fmt="0", align=CENTER, bold=True)
+r += 1
+put(wsB, r, 1, "Số người kế hoạch cần thêm (tương đương)", bold=True)
+for j in range(3):
+    put(wsB, r, 8 + j, f"={L(8 + j)}{r - 1}/{B['fte']}", fmt="0.00", align=CENTER, bold=True, bg="FFF1D6")
+B["kh_row"] = r
+r += 2
+
+put(wsB, r, 1, "C. Việc trả về từng chuyền / bộ phận (chia nhỏ, không cần thêm người)", bold=True, bg=HEAD)
+put(wsB, r, 8, "Phút/ngày", bold=True, bg=HEAD, align=CENTER)
+put(wsB, r, 9, "Phút/chuyền/ngày", bold=True, bg=HEAD, align=CENTER)
 r += 1
 c_first = r
-for ma, nhan in [("P2", "Kế hoạch / điều độ: đồng bộ cắt – in – thêu – laze"),
-                 ("P4", "Kế hoạch / quản đốc: năng suất, phân chuyền"),
-                 ("P5", "Thống kê / kế hoạch: biểu mẫu chuyền"),
-                 ("P1", "Chuyền trưởng (30 người): đăng ký BTP"),
-                 ("P3", "Chuyền trưởng ↔ kho: phụ liệu"),
-                 ("P6", "Kỹ thuật chuyền: vải thử máy"),
-                 ("I3", "Tổ mẫu / thống kê: nhiệt độ, độ ẩm"),
-                 ("M1", "Kho / hành chính: vật tư phụ trợ")]:
+for ma, nhan in [("P1", "Chuyền trưởng: đăng ký BTP"), ("P3", "Chuyền trưởng ↔ kho: phụ liệu"),
+                 ("P6", "Kỹ thuật chuyền: vải thử máy"), ("I3", "Tổ mẫu / thống kê: nhiệt độ, độ ẩm"),
+                 ("M1", "Kho / hành chính: vật tư phụ trợ"), ("P7", "Bỏ trung gian: chuyền báo thẳng bộ phận xử lý")]:
     put(wsB, r, 1, f"{ma} – {nhan}")
-    put(wsB, r, 2, f"=ThoiGian!N{T_FIRST + list(VIEC).index(ma)}*60", fmt="0", align=CENTER, color="008000")
-    put(wsB, r, 3, f"=B{r}/{B['phut_fte']}", fmt="0.00", align=CENTER)
+    put(wsB, r, 8, f"=ThoiGian!N{T_FIRST + list(VIEC).index(ma)}*60", fmt="0", align=CENTER, color="008000")
+    put(wsB, r, 9, f"=H{r}/{B['chuyen']}", fmt="0.0", align=CENTER)
     r += 1
-put(wsB, r, 1, "Trong đó dồn về Kế hoạch / thống kê (P2 + P4 + P5)", bold=True)
-put(wsB, r, 2, f"=SUM(B{c_first}:B{c_first + 2})", fmt="0", align=CENTER, bold=True)
-put(wsB, r, 3, f"=B{r}/{B['phut_fte']}", fmt="0.00", align=CENTER, bold=True, bg="FFF1D6")
-B["kh_fte"] = f"$C${r}"
-r += 1
-put(wsB, r, 1, "Tổng việc chuyển đi")
-put(wsB, r, 2, f"=SUM(B{c_first}:B{r - 2})", fmt="0", align=CENTER)
-put(wsB, r, 3, f"=B{r}/{B['phut_fte']}", fmt="0.00", align=CENTER)
+put(wsB, r, 1, "Tổng", bold=True)
+put(wsB, r, 8, f"=SUM(H{c_first}:H{r - 1})", fmt="0", align=CENTER, bold=True)
+put(wsB, r, 9, f"=H{r}/{B['chuyen']}", fmt="0.0", align=CENTER, bold=True)
 r += 2
 
-put(wsB, r, 1, "D. So sánh phương án số người ISO chuyên trách", bold=True, bg=HEAD)
-for c, t in enumerate(["Số người", "Công suất (phút/ngày)", "Dư (+) / thiếu (−) so với nhu cầu", "Đánh giá"], 2):
-    put(wsB, r, c, t, bold=True, bg=HEAD, align=CENTER)
+put(wsB, r, 1, "D. Tổng nhu cầu so với hiện có", bold=True, bg=HEAD)
+for j, s in enumerate(SC):
+    put(wsB, r, 8 + j, s, bold=True, bg=HEAD, align=CENTER)
 r += 1
-for n, nhan in [(3, "Giữ 3 (hiện trạng, 1 người/xưởng)"), (2, "Giảm còn 2"), (1, "Giảm còn 1 đầu mối chung")]:
+put(wsB, r, 1, "Tổng người cần (ISO + kế hoạch)", bold=True)
+for j in range(3):
+    put(wsB, r, 8 + j, f"={L(8 + j)}{B['iso_row']}+{L(8 + j)}{B['kh_row']}", fmt="0.00", align=CENTER, bold=True)
+B["tong_row"] = r
+r += 1
+put(wsB, r, 1, "Dư so với số người hiện có", bold=True)
+for j in range(3):
+    put(wsB, r, 8 + j, f"={B['hien_co']}-{L(8 + j)}{B['tong_row']}", fmt="0.00", align=CENTER, bold=True, bg=HUONG_FILL["BỎ"])
+B["du_row"] = r
+r += 2
+
+put(wsB, r, 1, "E. Phương án bố trí", bold=True, bg=HEAD)
+put(wsB, r, 2, "Người ISO", bold=True, bg=HEAD, align=CENTER)
+put(wsB, r, 3, "Người kế hoạch", bold=True, bg=HEAD, align=CENTER)
+for j, s in enumerate(SC):
+    put(wsB, r, 8 + j, f"Đủ? ({s.lower()})", bold=True, bg=HEAD, align=CENTER)
+put(wsB, r, 11, "Ghi chú", bold=True, bg=HEAD)
+r += 1
+for nhan, n_iso, n_kh, note in [
+    ("PA1 – Giữ 3 người ISO kiêm kế hoạch, mỗi xưởng 1 người", 3, 0, "Hiện trạng: dư người, ISO không độc lập, kênh chỉ đạo song song"),
+    ("PA2 – 1 ISO chung 3 xưởng + 1 điều độ / tài liệu sản xuất thuộc Kế hoạch; điều chuyển 1 người", 1, 1,
+     "Đề xuất: tách hai vai trò, báo cáo cho hai cấp khác nhau"),
+    ("PA3 – 1 ISO chung; Kế hoạch hiện có tự nhận phần kế hoạch; điều chuyển 2 người", 1, 0,
+     "Chỉ khi Kế hoạch xác nhận còn công suất ≈ số người ở mục B"),
+]:
     put(wsB, r, 1, nhan)
-    put(wsB, r, 2, n, align=CENTER)
-    put(wsB, r, 3, f"=B{r}*{B['phut_fte']}", fmt="0", align=CENTER)
-    put(wsB, r, 4, f"=C{r}-{B['iso_phut']}", fmt='+0;-0;0', align=CENTER)
-    put(wsB, r, 5, f'=IF(D{r}<0,"Thiếu – không đủ phủ",IF(D{r}>{B["phut_fte"]}*0.5,"Dư > nửa người","Vừa đủ"))',
-        align=CENTER)
+    put(wsB, r, 2, n_iso, align=CENTER)
+    put(wsB, r, 3, n_kh, align=CENTER)
+    for j in range(3):
+        iso_need = f"{L(8 + j)}${B['iso_row']}"
+        kh_need = f"{L(8 + j)}${B['kh_row']}"
+        if n_kh == 0 and n_iso == 3:
+            fx = f'=IF($B{r}-{iso_need}-{kh_need}>0.05,"Dư "&TEXT($B{r}-{iso_need}-{kh_need},"0.0")&" người","Vừa đủ")'
+        elif n_kh == 0:
+            fx = f'=IF($B{r}>={iso_need},"ISO đủ; KH phải nhận "&TEXT({kh_need},"0.0"),"ISO thiếu")'
+        else:
+            fx = (f'=IF(AND($B{r}>={iso_need},$C{r}>={kh_need}),"Đủ",IF($B{r}+$C{r}>={iso_need}+{kh_need}-0.1,'
+                  f'"Vừa đủ tổng: ISO thiếu "&TEXT({iso_need}-$B{r},"0.0")&", KH dư "&TEXT($C{r}-{kh_need},"0.0"),'
+                  f'"Thiếu "&TEXT({iso_need}+{kh_need}-$B{r}-$C{r},"0.0")))')
+        put(wsB, r, 8 + j, fx, align=CENTER)
+    put(wsB, r, 11, note, color=MUTED)
     r += 1
 r += 1
 for t in [
-    "Cách dùng: sửa ô vàng theo số đo thực tế của 10 ngày thử nghiệm (số chuyền đánh giá/ngày, phút/chuyền, số lỗi mở, phút kiểm soát tài liệu).",
-    "Mục C cho biết việc chuyển đi không biến mất: phần dồn về Kế hoạch / thống kê phải có người nhận, nếu không sẽ quay lại ISO.",
+    "Kịch bản cao đã cộng dồn mọi giả định bất lợi (đánh giá 15 chuyền/ngày, giữ 50% việc tài liệu ở ISO, giữ nguyên giờ tự khai của việc kế hoạch).",
+    "Mục C: việc trả về chuyền chỉ vài phút mỗi chuyền mỗi ngày, không phải lý do để giữ người.",
 ]:
     put(wsB, r, 1, t, color=MUTED, italic=True, border=False, align=Alignment(vertical="top"))
     r += 1
 
+# --------------------------------------------------------------------------- PhanBien
+wsP = wb.create_sheet("PhanBien", 1)
+title(wsP, "Phản biện bố trí hiện nay và đề xuất trong handoff",
+      "Handoff chỉ dùng để tham khảo. Mỗi dòng: nhận định, phản biện, bằng chứng, ảnh hưởng tới quyết định.")
+header(wsP, 4, ["#", "Nhận định / cách bố trí đang có", "Phản biện", "Bằng chứng", "Ảnh hưởng tới quyết định"],
+       [5, 40, 56, 44, 40])
+PB = [
+    ("Bố trí hiện nay: mỗi xưởng một người 'ISO kiêm kế hoạch'.",
+     "Chia người theo xưởng, không theo khối lượng: A3 chỉ 8 chuyền nhưng vẫn 1 người như xưởng 10–11 chuyền. Ghép hai chức năng "
+     "ngược nhau – ISO phải kiểm tra độc lập, kế hoạch là việc vận hành – vào một người nằm trong xưởng.",
+     "Chuyền nhắc trong báo cáo: Thân 1A–6A (11), báo cáo 3 6B–11B (10), Vương 12A–15B (8).",
+     "Bỏ mô hình 1 người/xưởng. Tách vai trò ISO và vai trò kế hoạch."),
+    ("ISO tự làm việc vận hành rồi tự kiểm.",
+     "Người kiểm đang tự làm việc mình kiểm: tự kiểm bảng đánh chéo, bóp VDKL thay quản lý chuyền, tự đăng ký BTP, tự cấp vật tư. "
+     "Như vậy không còn kiểm tra độc lập (ISO 9001 mục 9.2.2 c yêu cầu đánh giá khách quan, vô tư).",
+     "ThoiGian: I2, P1, P5, M1. Vương kiểm bóp VDKL 16h30–17h mỗi ngày.",
+     "ISO phải trực thuộc cấp trên xưởng và không làm việc vận hành."),
+    ("Kiểm tra 5S / nội quy 2–4 lượt mỗi ngày.",
+     "Đây là giám sát thay quản lý chuyền. Kết quả: lỗi báo 'đạt' trong ngày nhưng lặp lại theo cùng chủ đề – kiểm nhiều không làm hệ thống tốt lên.",
+     "ChatLuongKiemTra: nhắc nhở 60%, báo đạt trong ngày 84%, tái diễn 46%.",
+     "Giảm còn đánh giá xác suất; quản lý chuyền chịu trách nhiệm hằng ngày có chỉ tiêu."),
+    ("Kiểm VDKL xác suất mỗi ngày, kết quả 'Đạt'.",
+     "Không ghi số chuyền, số túi đã kiểm, số lệch. 20 ngày công không phát hiện lệch số lượng nào: hoặc kiểm soát rất tốt, hoặc kiểm hình thức. "
+     "Không có số liệu thì không chứng minh được với khách hàng.",
+     "NhatKy, mã I2: kết quả 'ĐẠT' / 'Đạt' / để trống, không có số lượng.",
+     "Bắt buộc ghi số lượng trong phiếu xác minh."),
+    ("Nhập nhiệt độ, độ ẩm hằng ngày.",
+     "Chuyền 14A ghi đúng 26°C / 73% cả 5 ngày. Cần kiểm tra thiết bị hoặc cách ghi. Việc này nên tự động hoặc giao người tại chỗ.",
+     "Báo cáo Vương 05, 06, 07, 09, 10/11.", "Chuyển khỏi ISO."),
+    ("Báo cáo công việc hằng ngày.",
+     "Phần lớn là mẫu chép lại, khung giờ cố định, có lỗi chép (đăng ký BTP 'cho ngày 5-11' ghi cả ngày 06/11). Báo cáo không dùng để quản lý được.",
+     "GhiChuDuLieu: 52–61% dòng chép nguyên văn.",
+     "Thay bằng danh sách lỗi mở và báo cáo tuần có chỉ số."),
+    ("Handoff: 'Chưa chốt giảm người; thử 10 ngày rồi xem giữ 3, 2 hay 1'.",
+     "Trong cả 3 kịch bản (kể cả kịch bản cao), tổng nhu cầu ISO + kế hoạch vẫn dưới 3 người. Phương án 'giữ 3' có thể loại ngay; "
+     "chạy thử chỉ để chọn giữa 1 và 2.",
+     "DinhBien mục D.",
+     "Quyết định cấu trúc ngay, chạy thử để hiệu chỉnh."),
+    ("Handoff: 'Một đầu mối ISO chung và một người liên hệ tại mỗi xưởng từ nhân sự sẵn có'.",
+     "Nếu 'người liên hệ' lại là chính các nhân sự này thì vị trí cũ vẫn còn nguyên, chỉ đổi tên. Đầu mối tại xưởng phải là quản đốc / phó quản đốc, "
+     "như một trách nhiệm có chỉ tiêu, không phải một người làm thay.",
+     "TrungLap: I1, I2 – chủ trì là quản lý chuyền.",
+     "Ghi rõ người liên hệ = quản đốc / phó quản đốc."),
+    ("Handoff: bước tiếp theo là đối chiếu hồ sơ cấp BTP với phản hồi thực địa.",
+     "Việc này giúp thiết kế quy trình BTP, nhưng không ảnh hưởng câu hỏi 'ISO có dư không'. Đăng ký BTP không thuộc ISO dù hồ sơ ra sao. "
+     "Không nên để quyết định tổ chức chờ bước này.",
+     "TrungLap P1, P2.", "Chạy song song, không phải điều kiện."),
+    ("Handoff giữ 'ban hành tài liệu' là việc ISO.",
+     "Tài liệu đang ban hành hằng ngày là tài liệu sản xuất theo mã hàng (list đổ hàng, TCC) – thuộc luồng Kỹ thuật / Kế hoạch. "
+     "ISO chỉ cần kiểm soát tài liệu hệ thống (quy trình, biểu mẫu) và quy tắc phân phối.",
+     "Báo cáo Vương 03/11: 'list đổ hàng, tcc, tài liệu liên quan'.",
+     "Phần lớn việc tài liệu chuyển ra khỏi ISO (DinhBien: ISO giữ 20–50%)."),
+    ("Handoff đo bằng tần suất ghi nhận (số ngày có việc).",
+     "Tần suất không cho biết khối lượng hay giá trị, nên không đủ để định biên. Cần đo theo thời gian, số lượt và đầu ra.",
+     "ThoiGian, NoiDungThucChat, DinhBien.", "Dùng mô hình 3 kịch bản."),
+    ("Handoff: 'Duy trì đủ các lượt kiểm tra bắt buộc'.",
+     "Chưa xác định lượt nào là bắt buộc. 4 lượt tuần tra mỗi ngày hiện nay là thói quen, chưa thấy căn cứ yêu cầu khách hàng.",
+     "Không có danh mục yêu cầu trong hồ sơ.",
+     "Lập danh mục yêu cầu bắt buộc của khách hàng (Toray) trước khi chốt tần suất."),
+    ("Handoff chưa kiểm tra công suất nơi nhận việc.",
+     "Phần kế hoạch đang nằm trong 3 vị trí ≈ 0,7–0,8 người. Nếu Kế hoạch không có người nhận, việc sẽ quay lại ISO hoặc rơi rớt.",
+     "DinhBien mục B.", "Xác nhận công suất Kế hoạch trước khi rút người (PA2 hay PA3)."),
+    ("Handoff chưa nêu rủi ro an toàn bị trì hoãn.",
+     "Vạch lối thoát hiểm ghi 'sẽ thực hiện sau khi khách gần tới'; vòng chắn kim gãy 12A, 15A, 15B; ổ điện rớt ở nhiều chuyền; "
+     "ba hạng mục ngày 06/11 ghi 'kiểm tra lại' nhưng các ngày sau không thấy theo dõi.",
+     "LoiHienTruong; báo cáo 3 ngày 06/11; Vương 10/11.", "Giao cơ điện có hạn sửa, không phụ thuộc lịch khách."),
+    ("Gốc vấn đề.",
+     "Ba vị trí này tồn tại vì quản đốc, chuyền trưởng chưa chịu trách nhiệm trực tiếp về BTP, 5S, VDKL. Rút người mà không giao trách nhiệm "
+     "và chỉ tiêu cho tuyến chuyền thì kỷ luật hiện trường sẽ tụt.",
+     "TrungLap: chủ trì đúng là quản lý chuyền / Kế hoạch.",
+     "Giao trách nhiệm + chỉ tiêu cho tuyến chuyền trước, rút người sau."),
+]
+r = 5
+for i, (a, b, c, d) in enumerate(PB, 1):
+    for col, v in enumerate([i, a, b, c, d], 1):
+        put(wsP, r, col, v, align=CENTER if col == 1 else WRAP, bold=col == 2)
+    r += 1
+r += 1
+put(wsP, r, 1, "Gợi ý bố trí người – chỉ dựa trên báo cáo, cần quản đốc và chị Miền xác nhận", bold=True, color=ACCENT, border=False)
+r += 1
+header(wsP, r, ["", "Người", "Điểm thấy được trong báo cáo", "Điểm cần lưu ý", "Vai trò có thể phù hợp"])
+r += 1
+for row in [
+    ("Thân", "79% thời gian là việc kiểu ISO. Là người duy nhất ghi rõ lỗi gốc từ ngày nào và hẹn giờ kiểm tra lại "
+             "(5 dòng kiểm tra lại); 15% lỗi có hẹn kiểm tra lại.",
+     "72% biện pháp là nhắc nhở, hay dùng đe dọa xử lý ABC. Lỗi tủ VDNH 3B báo 'cải thiện' 3 ngày liền rồi vẫn lặp.",
+     "ISO chung 3 xưởng, nếu được đào tạo đánh giá xác suất và xử lý nguyên nhân."),
+    ("Vương (A3)", "40% thời gian là điều phối kế hoạch: in / thêu / laze, năng suất, biểu mẫu, phụ liệu. Có biện pháp xử lý gốc "
+                   "(cài nhắc trả rập tự động, đổi ra bàn ủi màu tối).",
+     "Ghi 'phân chia kế hoạch chuyền' – cần làm rõ quyền. Nhiệt độ 14A ghi giống hệt 5 ngày. Ngày 10/11 ghi sai thành 2026-10-11.",
+     "Điều độ / kế hoạch xưởng hoặc phân phối tài liệu sản xuất (PA2)."),
+    ("Báo cáo 3 (chưa rõ tên)", "42% lỗi do quản lý tự khắc phục và gửi ảnh – đẩy trách nhiệm về quản lý (đúng hướng).",
+     "61% dòng chép nguyên văn; lỗi chép ngày '5-11'; 4 hạng mục hẹn kiểm tra lại không thấy theo dõi.",
+     "Cần xác định người viết trước khi bố trí."),
+]:
+    put(wsP, r, 1, "")
+    for col, v in enumerate(row, 2):
+        put(wsP, r, col, v, bold=col == 2)
+    r += 1
+wsP.freeze_panes = "C5"
+
 # --------------------------------------------------------------------------- KetLuan
 wsK = wb.create_sheet("KetLuan", 0)
-title(wsK, "APIC – Phân tích công việc 3 nhân sự ISO kiêm kế hoạch (báo cáo 03–10/11/2026)",
-      "Nguồn: 3 báo cáo công việc hằng ngày (Thân, Vương – A3, báo cáo thứ ba chưa rõ tên). Số liệu là công thức từ các sheet chi tiết.")
+title(wsK, "APIC – 3 nhân sự ISO kiêm kế hoạch: bố trí có hợp lý không, có dư người không?",
+      "Nguồn: 3 báo cáo công việc hằng ngày 03–10/11/2026. Số liệu là công thức từ các sheet chi tiết.")
 wsK.column_dimensions["A"].width = 70
 for col in "BCDE":
     wsK.column_dimensions[col].width = 15
 r = 4
+put(wsK, r, 1, "Trả lời ngắn", bold=True, bg=HEAD)
+for j, s in enumerate(SC):
+    put(wsK, r, 2 + j, f"Kịch bản {s.lower()}", bold=True, bg=HEAD, align=CENTER)
+r += 1
+for label, row_key, fmt, bg in [("Số người ISO cần (đúng chức năng, cả 3 xưởng)", "iso_row", "0.00", None),
+                                ("Số người kế hoạch cần thêm (phần việc đang nằm trong 3 vị trí)", "kh_row", "0.00", None),
+                                ("Tổng người cần", "tong_row", "0.00", None),
+                                ("Dư so với 3 người hiện có", "du_row", "0.00", HUONG_FILL["BỎ"])]:
+    put(wsK, r, 1, label, bold=row_key in ("tong_row", "du_row"))
+    for j in range(3):
+        put(wsK, r, 2 + j, f"=DinhBien!{L(8 + j)}{B[row_key]}", fmt=fmt, align=CENTER, color="008000", bold=True, bg=bg)
+    r += 1
+r += 1
 put(wsK, r, 1, "Chỉ số chính", bold=True, bg=HEAD)
 for i, p in enumerate(NGUOI):
     put(wsK, r, 2 + i, NGUON[p][1], bold=True, bg=HEAD, align=CENTER)
@@ -671,14 +895,15 @@ def krow(label, fn, fmt, tot=None):
     r += 1
 
 
-L = get_column_letter
 krow("Số ngày có báo cáo", lambda p: f"=ThoiGian!{L(PC[p])}6", "0",
      "=" + "+".join(f"ThoiGian!{L(PC[p])}6" for p in NGUOI))
 krow("Giờ tự ghi / ngày", lambda p: f"=ThoiGian!{L(PC[p])}7", "0.0")
-krow("% thời gian cho việc nên CHUYỂN về bộ phận khác", lambda p: f"=ThoiGian!{L(PC[p] + 1)}{T_SUM['CHUYỂN']}", "0%")
-krow("% thời gian cho việc nên BỎ (trung gian chuyển tin)", lambda p: f"=ThoiGian!{L(PC[p] + 1)}{T_SUM['BỎ']}", "0%")
-krow("% thời gian tuần tra 5S + kiểm VDKL (trùng việc hằng ngày của quản lý chuyền)",
+krow("% thời gian làm việc của bộ phận khác (nên CHUYỂN)", lambda p: f"=ThoiGian!{L(PC[p] + 1)}{T_SUM['CHUYỂN']}", "0%")
+krow("% thời gian trung gian chuyển tin (nên BỎ)", lambda p: f"=ThoiGian!{L(PC[p] + 1)}{T_SUM['BỎ']}", "0%")
+krow("% thời gian tuần tra 5S + kiểm VDKL (làm thay kiểm tra hằng ngày của quản lý chuyền)",
      lambda p: f"=ThoiGian!{L(PC[p] + 1)}{T_I12}", "0%")
+krow("Nội dung việc ghi được lấp đầy giờ khai – giả định thấp", lambda p: f"=NoiDungThucChat!{L(5 + NGUOI.index(p))}{W['pl']}", "0%")
+krow("Nội dung việc ghi được lấp đầy giờ khai – giả định cao", lambda p: f"=NoiDungThucChat!{L(5 + NGUOI.index(p))}{W['ph']}", "0%")
 krow("Số lỗi hiện trường ghi nhận", lambda p: f"=ChatLuongKiemTra!{L(2 + NGUOI.index(p))}{Q['n']}", "0",
      f"=ChatLuongKiemTra!E{Q['n']}")
 krow("% lỗi xử lý bằng nhắc nhở chung", lambda p: f"=ChatLuongKiemTra!{L(2 + NGUOI.index(p))}{Q['bp_Nhắc nhở / yêu cầu chung']}",
@@ -688,38 +913,34 @@ krow("% lỗi báo 'đạt' ngay trong ngày", lambda p: f"=ChatLuongKiemTra!{L(
 krow("% lỗi tái diễn (cùng khu vực + chủ đề ≥ 2 lần)", lambda p: f"=ChatLuongKiemTra!{L(2 + NGUOI.index(p))}{Q['lap_pct']}",
      "0%", f"=ChatLuongKiemTra!E{Q['lap_pct']}")
 r += 1
-put(wsK, r, 1, "Định biên (từ sheet DinhBien)", bold=True, bg=HEAD)
-put(wsK, r, 2, "Giá trị", bold=True, bg=HEAD, align=CENTER)
-r += 1
-put(wsK, r, 1, "Số người ISO chuyên trách cần sau sắp xếp (tương đương)")
-put(wsK, r, 2, f"=DinhBien!{B['iso_fte']}", fmt="0.00", align=CENTER, color="008000", bold=True)
-r += 1
-put(wsK, r, 1, "Việc kế hoạch / thống kê phải có người nhận (tương đương người)")
-put(wsK, r, 2, f"=DinhBien!{B['kh_fte']}", fmt="0.00", align=CENTER, color="008000", bold=True)
-r += 2
 put(wsK, r, 1, "Kết luận", bold=True, color=ACCENT, border=False, size=12)
 r += 1
 KL = [
-    "1. Vị trí 'ISO kiêm kế hoạch, mỗi xưởng một người' đang làm ba loại việc trộn lẫn: (a) việc ISO, (b) việc kế hoạch – văn thư của "
-    "chuyền trưởng, kế hoạch, phòng cắt, kho, (c) trung gian chuyển tin. Loại (b) và (c) không thuộc chức năng ISO và tạo kênh chỉ đạo song song.",
-    "2. Ngay cả phần 'ISO' cũng chủ yếu là tuần tra 2–4 lượt/ngày và nhắc nhở – tức làm thay việc kiểm tra hằng ngày của quản lý chuyền. "
-    "Lỗi được báo 'đạt' trong ngày nhưng cùng chủ đề lặp lại ở nhiều chuyền, nhiều ngày: kiểm tra không tạo thay đổi hệ thống.",
-    "3. Báo cáo ngày phần lớn chép lại mẫu (52–61% dòng giống nguyên văn ngày khác, khung giờ cố định). Không có mục tiêu, chỉ tiêu, "
-    "danh sách lỗi mở, hạn đóng – đúng với nhận định 'thấy gì làm đó, thấy đâu nói đó'.",
-    "4. Về số người: nếu ISO chỉ làm đúng chức năng (đánh giá xác suất, xác minh VDKL, kiểm soát tài liệu tập trung, theo dõi khắc phục), "
-    "khối lượng ước tính ở sheet DinhBien tương đương khoảng 1 người cho cả 3 xưởng. Ba vị trí hiện nay là dư so với chức năng ISO.",
-    "5. Nhưng việc kế hoạch đang nằm trong 3 vị trí này không tự biến mất. Phần dồn về Kế hoạch / thống kê (đồng bộ cắt – in – thêu, "
-    "năng suất, biểu mẫu) cần người nhận; nếu Kế hoạch không có công suất, có thể điều chuyển một người sang Kế hoạch / điều độ thay vì để lại trong ISO.",
-    "6. Đề xuất: không giữ mô hình 3 ISO kiêm kế hoạch. Mục tiêu 1 đầu mối ISO chuyên trách (+ đầu mối kiểm soát tài liệu nếu chưa gộp được), "
-    "chuyển việc theo sheet GiuChuyenBo, chạy thử 10 ngày làm việc để đo lại giờ thực tế rồi chốt 1 hay 2.",
-    "Lưu ý: số giờ là giờ tự ghi theo khung cố định, không phải giờ đo. Báo cáo thứ ba chưa xác định người viết. Kết luận về năng lực từng người "
-    "cần thêm phản hồi của quản đốc và đối chiếu hồ sơ cấp BTP (sheet DoiChieuBTP).",
+    "1. CÓ DƯ NGƯỜI. Ngay cả kịch bản cao (mọi giả định bất lợi), tổng nhu cầu cho đúng chức năng ISO cộng phần việc kế hoạch đang nằm trong "
+    "3 vị trí vẫn chỉ khoảng 2 người; kịch bản cơ sở khoảng 1,5 người. Ba người là dư khoảng 1 người (kịch bản cao) đến 1,5 người (cơ sở).",
+    "2. Dư không phải vì ngồi không – báo cáo vẫn kín giờ và nội dung việc ghi được lấp khoảng 50–95% giờ khai tùy giả định. Dư vì LÀM THAY: "
+    "tuần tra 2–4 lượt/ngày thay quản lý chuyền, đăng ký BTP thay chuyền trưởng, hối thúc cắt – in – thêu thay Kế hoạch, gom phiếu thay kho, "
+    "chuyển tin thay kênh báo lỗi. Bỏ phần làm thay thì công việc ISO còn lại nhỏ.",
+    "3. BỐ TRÍ CHƯA HỢP LÝ về nguyên tắc: (a) chia người theo xưởng chứ không theo khối lượng (A3 chỉ 8 chuyền); (b) ghép việc kiểm tra độc lập "
+    "với việc vận hành vào một người nằm trong xưởng – tự làm rồi tự kiểm; (c) không có mục tiêu, chỉ tiêu, danh sách lỗi mở, hạn đóng.",
+    "4. KIỂM TRA KÉM HIỆU QUẢ: 60% lỗi chỉ nhắc nhở, 84% báo đạt trong ngày nhưng 46% lặp lại; kiểm VDKL luôn 'Đạt' không có số lượng; "
+    "nhiệt độ 14A ghi y hệt 5 ngày; 52–61% dòng báo cáo chép lại. Đúng là 'thấy gì làm đó, thấy đâu nói đó'.",
+    "5. ĐỀ XUẤT (PA2): 1 ISO chung cho 3 xưởng, trực thuộc cấp trên xưởng, chỉ đánh giá xác suất, xác minh VDKL, kiểm soát tài liệu hệ thống, "
+    "theo dõi khắc phục. 1 người sang Kế hoạch làm điều độ đầu vào và phân phối tài liệu sản xuất cho 3 xưởng. 1 người điều chuyển. "
+    "Nếu Kế hoạch xác nhận tự nhận được phần kế hoạch thì PA3: chỉ giữ 1.",
+    "6. ĐIỀU KIỆN: giao trách nhiệm và chỉ tiêu cho quản đốc, chuyền trưởng (5S, VDKL hằng ngày, đăng ký BTP) trước khi rút người. "
+    "Rút người trước khi giao trách nhiệm thì kỷ luật hiện trường sẽ tụt.",
+    "7. KHÁC HANDOFF: không cần chờ thử 10 ngày mới loại phương án giữ 3; đối chiếu hồ sơ BTP không phải điều kiện của quyết định định biên; "
+    "'người liên hệ mỗi xưởng' phải là quản đốc, không phải các nhân sự này. Xem sheet PhanBien.",
+    "Giới hạn: giờ là giờ tự khai; phút/lượt và quy mô đánh giá là giả định (ô vàng ở DinhBien, NoiDungThucChat). Báo cáo 3 chưa rõ người viết. "
+    "Gợi ý bố trí từng người chỉ dựa trên báo cáo, cần quản đốc xác nhận.",
 ]
 for t in KL:
     wsK.merge_cells(start_row=r, start_column=1, end_row=r, end_column=5)
     put(wsK, r, 1, t, border=False, align=Alignment(wrap_text=True, vertical="top"))
-    wsK.row_dimensions[r].height = 44
+    wsK.row_dimensions[r].height = 46
     r += 1
+
 
 # --------------------------------------------------------------------------- DoiChieuBTP
 wsC = wb.create_sheet("DoiChieuBTP")

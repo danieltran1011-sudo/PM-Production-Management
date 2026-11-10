@@ -19,7 +19,7 @@ Số ngày chuẩn lấy từ file rà soát 20260722, cập nhật theo cuộc 
 | `docs/Leadtime-TIJ.xlsx` | File Excel song ngữ Nhật–Việt: 概要 (tổng hợp, so sánh chuẩn), フロー (Gantt chọn được điều kiện), 理由・依頼 (lý do, đề nghị TIJ), 標準日数 (thời gian chuẩn, sửa được), 計算 (công thức tính). Tạo lại bằng `python3 scripts/xuat_excel.py`. |
 | `docs/quy-trinh-lead-time.md` | Tài liệu quy trình, bảng thời gian chuẩn, bảng so sánh, việc cần làm sau họp, các điểm còn mở. |
 | `data/nguon/` | File Excel gốc (lead time; `iso/`: 3 báo cáo công việc hằng ngày của nhân sự ISO kiêm kế hoạch). |
-| `docs/iso-ke-hoach/phan-tich-cong-viec-iso.md` | Phân tích công việc 3 nhân sự ISO kiêm kế hoạch: trùng lặp với bộ phận khác, việc giữ / chuyển / bỏ, định biên. |
+| `docs/iso-ke-hoach/phan-tich-cong-viec-iso.md` | Phân tích, phản biện bố trí 3 nhân sự ISO kiêm kế hoạch: trùng lặp với bộ phận khác, có dư người không (3 kịch bản), phương án bố trí, phản biện handoff. |
 | `docs/iso-ke-hoach/Phan-tich-cong-viec-ISO.xlsx` | File Excel phân tích (thời gian, ma trận trùng lặp, giữ / chuyển / bỏ, chất lượng kiểm tra, định biên, mẫu đối chiếu cấp BTP). Tạo lại bằng `python3 scripts/xuat_phan_tich_iso.py`. |
 
 ## Sử dụng
