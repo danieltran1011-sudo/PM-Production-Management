@@ -394,11 +394,42 @@
       if (r) runs.push(r);
     });
 
+    // Số theo ngày cho báo cáo tuần (~70 ngày trước ngày update): mã × chuyền có TH, lao động ngày
+    var dFrom = addDays(updateDate, -70), daily = { from: null, sl: [], days: [] }, slIdx = {};
+    for (var jd = 0; jd < nd; jd++) {
+      if (dates[jd] < dFrom || dates[jd] > updateDate) continue;
+      if (!daily.from) daily.from = dates[jd];
+      var parts = [], hcDay = 0;
+      styles.forEach(function (st, idx) {
+        hcDay += aT.pd[idx][jd] || 0;
+        if (!(st.th[jd] > 0)) return;
+        var key = st.style + '|' + st.lineRaw;
+        if (!(key in slIdx)) { slIdx[key] = daily.sl.length; daily.sl.push([st.style, st.lineRaw, st.sam || 0, st.aggLot > 0 ? st.aggLot : (st.qty || 0), st.item, st.brandRaw, st.qty || 0]); }
+        parts.push(slIdx[key] + ':' + st.th[jd]);
+      });
+      daily.days.push((off[jd] ? 'o' : '') + Math.round(hcDay * 10) / 10 + '|' + parts.join(','));
+    }
+
+    // Kế hoạch từng chuyền (プランテーブル): mã đang may và ngày kết thúc kế hoạch cuối cùng
+    var lineEnd = {};
+    styles.forEach(function (st) {
+      var L = lineEnd[st.lineRaw] || (lineEnd[st.lineRaw] = { end: null, style: null, brand: null, cur: null, curBrand: null, curDay: null });
+      for (var je = nd - 1; je >= 0; je--) if (st.kh[je] > 0 || st.th[je] > 0) {
+        if (!L.end || dates[je] > L.end) { L.end = dates[je]; L.style = st.style; L.brand = st.brandRaw; }
+        break;
+      }
+      for (var jt = cut; jt >= 0; jt--) if (st.th[jt] > 0) {
+        if (!L.curDay || dates[jt] > L.curDay) { L.curDay = dates[jt]; L.cur = st.style; L.curBrand = st.brandRaw; }
+        break;
+      }
+    });
+
     return {
       v: DATA_VERSION, name: opts.name || '', factory: factory, updateDate: updateDate, updateFrom: updateFrom,
       firstDate: dates[0], lastDate: dates[nd - 1], months: months,
       styleCount: styles.length, facts: facts, runs: runs, warnings: warnings,
-      lineDays: { off: off.map(function (o) { return o ? '1' : '0'; }).join(''), brands: lineDays.brands, lines: lineDays.lines, plan: 1 }
+      lineDays: { off: off.map(function (o) { return o ? '1' : '0'; }).join(''), brands: lineDays.brands, lines: lineDays.lines, plan: 1 },
+      daily: daily, lineEnd: lineEnd
     };
   }
 
@@ -735,9 +766,39 @@
       }
     });
     var lineLife = computeLineLife(lineDay, dayOff, opts && opts.lineOverrides);
+    // Số theo ngày (báo cáo tuần): mỗi xưởng × tháng lấy từ file nguồn của tháng đó (kể cả tháng đang chạy)
+    var stagedMap = {};
+    (staged || []).forEach(function (sg) { sg.stages.forEach(function (code) { var n = +code.slice(sg.base.length + 1); stagedMap[sg.f + '|' + code] = { base: sg.base, last: n === sg.last, sam: sg.totalSam }; }); });
+    var daily = {}, dailyEnd = {}, noDaily = {};
+    Object.keys(meta).forEach(function (k) {
+      var me = meta[k];
+      var src = files.filter(function (fl) { return fl.factory === me.f && fl.updateDate === me.srcDate; })[0];
+      if (!src) return;
+      if (!src.daily) { noDaily[src.factory + '|' + src.updateDate] = { factory: src.factory, updateDate: src.updateDate }; return; }
+      var D = src.daily, df = daily[me.f] || (daily[me.f] = {});
+      D.days.forEach(function (str, j) {
+        var iso = addDays(D.from, j);
+        if (iso.slice(0, 7) !== me.m || iso > src.updateDate) return;
+        var off = str.charAt(0) === 'o', body = off ? str.slice(1) : str, bar = body.indexOf('|');
+        var rec = { off: off, hc: +body.slice(0, bar), sl: [] };
+        body.slice(bar + 1).split(',').forEach(function (pt) {
+          if (!pt) return;
+          var q = pt.split(':'), sl = D.sl[+q[0]], th = +q[1];
+          var sg = stagedMap[me.f + '|' + String(sl[0]).toUpperCase()];
+          if (sg && !sg.last) th = 0;
+          rec.sl.push({ key: me.f + '|' + (sg ? sg.base : sl[0]) + '|' + sl[1], th: th, sam: sg && sg.sam ? sg.sam : sl[2], lot: sl[3], qty: sl[6] || sl[3], item: sl[4], brandRaw: sl[5] });
+        });
+        df[iso] = rec;
+        if (!dailyEnd[me.f] || iso > dailyEnd[me.f]) dailyEnd[me.f] = iso;
+      });
+    });
+    // Kế hoạch từng chuyền: file mới nhất của mỗi xưởng
+    var latest = {};
+    files.forEach(function (fl) { if (fl.lineEnd && (!latest[fl.factory] || fl.updateDate > latest[fl.factory].updateDate)) latest[fl.factory] = fl; });
     return {
       facts: facts, meta: meta, months: Object.keys(monthsAll).sort(), lineLife: lineLife,
-      factories: Object.keys(byF).sort(), runs: runs, staged: staged, lineDay: lineDay, linePlan: linePlan, noPlanFiles: Object.keys(noPlanFiles).sort().map(function (k) { return noPlanFiles[k]; }),
+      factories: Object.keys(byF).sort(), runs: runs, staged: staged, lineDay: lineDay, linePlan: linePlan,
+      daily: daily, dailyEnd: dailyEnd, noDaily: Object.keys(noDaily).sort().map(function (k) { return noDaily[k]; }), latestPlan: latest, noPlanFiles: Object.keys(noPlanFiles).sort().map(function (k) { return noPlanFiles[k]; }),
       dayOff: dayOff, lineMonthOk: lineMonthOk, lineMonthAny: lineMonthAny, ownerOf: ownerOf,
       oldFiles: files.filter(function (fl) { return (fl.v || 0) < DATA_VERSION; }).length,
       oldFileList: files.filter(function (fl) { return (fl.v || 0) < DATA_VERSION; }).map(function (fl) { return { factory: fl.factory, updateDate: fl.updateDate, name: fl.name }; })
@@ -1640,6 +1701,122 @@
     return out;
   }
 
+  // ---------- Báo cáo kiểu TIVN (週報 APIC課): cơ cấu 工程時間 / lot / アイテム, số tuần, kế hoạch chuyền ----------
+  var HORI_SAM_BANDS = [
+    { id: 's1', label: 'Dưới 5.000 giây', ja: '5,000秒未満', max: 5000 }, { id: 's2', label: '5.000–10.000 giây', ja: '5,000～10,000秒未満', max: 10000 },
+    { id: 's3', label: '10.000–15.000 giây', ja: '10,000～15,000秒未満', max: 15000 }, { id: 's4', label: '15.000–20.000 giây', ja: '15,000～20,000秒未満', max: 20000 },
+    { id: 's5', label: 'Từ 20.000 giây', ja: '20,000秒以上', max: Infinity }];
+  var HORI_LOT_BANDS = [
+    { id: 'l1', label: 'Dưới 500 sp', ja: '500枚未満', max: 500 }, { id: 'l2', label: '500–1.000 sp', ja: '500～1,000枚未満', max: 1000 },
+    { id: 'l3', label: '1.000–2.000 sp', ja: '1,000～2,000枚未満', max: 2000 }, { id: 'l4', label: '2.000–3.000 sp', ja: '2,000～3,000枚未満', max: 3000 },
+    { id: 'l5', label: '3.000–4.000 sp', ja: '3,000～4,000枚未満', max: 4000 }, { id: 'l6', label: '4.000–5.000 sp', ja: '4,000～5,000枚未満', max: 5000 },
+    { id: 'l7', label: 'Từ 5.000 sp', ja: '5,000枚以上', max: Infinity }];
+  var ITEM_GROUPS = [
+    { id: 'seamJK', label: 'Áo seam', ja: 'シームJK' }, { id: 'seamPT', label: 'Quần seam', ja: 'シームPT' }, { id: 'down', label: 'Hàng lông vũ', ja: 'ダウン製品' },
+    { id: 'nsJK', label: 'Áo không seam', ja: 'ノンシームJK' }, { id: 'nsPT', label: 'Quần không seam', ja: 'ノンシームPT' }, { id: 'shirt', label: 'Sơ mi', ja: 'シャツ' },
+    { id: 'other', label: 'Khác', ja: 'その他' }];
+  // Chủng loại trong file → nhóm của báo cáo: D-… lông vũ; S-… seam (S-PANTS/SHORTS là quần); JKT, VEST áo; PANTS, SHORTS, OVERALLS quần
+  function itemGroup(item) {
+    var t = norm(item).toUpperCase().replace(/\s+/g, '');
+    if (/^D-/.test(t)) return 'down';
+    if (/^S-(PANTS|SHORTS|PT)/.test(t)) return 'seamPT';
+    if (/^S-/.test(t)) return 'seamJK';
+    if (/^(PANTS|SHORTS|OVERALLS|PT)/.test(t)) return 'nsPT';
+    if (/^(JKT|VEST|JK|COAT|PARKA)/.test(t)) return 'nsJK';
+    if (/^SHIRT/.test(t)) return 'shirt';
+    return 'other';
+  }
+  function bandOf(bands, v) { for (var i = 0; i < bands.length; i++) if (v < bands[i].max) return bands[i].id; return bands[bands.length - 1].id; }
+  // Cơ cấu sản lượng TH theo nhóm (kind: 'sam' | 'lot' | 'item') của từng tháng
+  function composition(ds, opts, months, kind) {
+    var ids = (kind === 'sam' ? HORI_SAM_BANDS : kind === 'lot' ? HORI_LOT_BANDS : ITEM_GROUPS).map(function (b) { return b.id; });
+    return months.map(function (m) {
+      var parts = {}, total = 0;
+      ids.forEach(function (id) { parts[id] = 0; });
+      filterFacts(ds.facts, { factory: opts.factory, brand: opts.brand, owner: opts.owner, months: [m] }).forEach(function (x) {
+        if (x.open || !(x.th > 0)) return;
+        var id = kind === 'sam' ? bandOf(HORI_SAM_BANDS, x.sam || 0) : kind === 'lot' ? bandOf(HORI_LOT_BANDS, x.aggLot > 0 ? x.aggLot : (x.qty || 0)) : itemGroup(x.item);
+        parts[id] += x.th; total += x.th;
+      });
+      return { month: m, total: total, parts: parts };
+    });
+  }
+  // Số kế hoạch của tháng (dự báo / 見通し): KH, 工程時間 và lot bình quân theo các mã có KH, lao động theo KH
+  function monthPlan(ds, opts, m) {
+    var list = filterFacts(ds.facts, { factory: opts.factory, brand: opts.brand, owner: opts.owner, months: [m] }).filter(function (x) { return !x.open && x.kh > 0; });
+    if (!list.length) return null;
+    var kh = 0, qs = 0, qsam = 0, lots = [], pd = 0, wd = 0, seen = {};
+    list.forEach(function (x) {
+      kh += x.kh; pd += x.pdK || 0;
+      if (x.qty > 0 && x.sam > 0) { qs += x.qty; qsam += x.qty * x.sam; }
+      if (x.theo) lots.push(x.aggLot > 0 ? x.aggLot : (x.qty || 0));
+      if (!seen[x.f]) { seen[x.f] = 1; wd = Math.max(wd, x.wd || 0); }
+    });
+    return { kh: kh, wd: wd, avgSam: qs ? qsam / qs : null, avgLot: lots.length ? lots.reduce(function (a, b) { return a + b; }, 0) / lots.length : null, labor: wd ? pd / wd : null };
+  }
+  // Tuần: bắt đầu thứ Hai; tuần 1 của năm tài chính là tuần có ngày 1 tháng bắt đầu năm tài chính
+  function weekInfo(iso, startMonth) {
+    var sm = startMonth || 4, ym = iso.slice(0, 7), fy = fiscalYear(ym, sm);
+    var fyStart = fy + '-' + pad(sm) + '-01';
+    var monday = function (d) { var w = weekday(d); return addDays(d, w === 0 ? -6 : 1 - w); };
+    var w1 = monday(fyStart), ws = monday(iso);
+    var n = Math.round((Date.parse(ws) - Date.parse(w1)) / 864e5 / 7) + 1;
+    return { fy: fy, week: n, from: ws, to: addDays(ws, 6) };
+  }
+  // Số từng tuần (gộp các xưởng): ngày có số của mọi xưởng được chọn
+  function weekly(ds, opts, count) {
+    var facs = (ds.factories || []).filter(function (f) { return !opts.factory || f === opts.factory; }).filter(function (f) { return ds.daily && ds.daily[f]; });
+    if (!facs.length) return { weeks: [], end: null };
+    var end = facs.map(function (f) { return ds.dailyEnd[f]; }).sort()[0];
+    var byW = {};
+    facs.forEach(function (f) {
+      Object.keys(ds.daily[f]).forEach(function (iso) {
+        if (iso > end) return;
+        var rec = ds.daily[f][iso], wi = weekInfo(iso, opts.startMonth);
+        var key = wi.fy + '-' + pad(wi.week);
+        var w = byW[key] || (byW[key] = { fy: wi.fy, week: wi.week, from: wi.from, to: wi.to, last: iso, th: 0, days: {}, hcDays: {}, sl: {} });
+        if (iso > w.last) w.last = iso;
+        var dayTh = 0;
+        rec.sl.forEach(function (q) {
+          if (opts.brand && normBrand(q.brandRaw) !== opts.brand) return;
+          if (opts.owner && ds.ownerOf && ds.ownerOf(q.brandRaw) !== opts.owner) return;
+          if (!(q.th > 0)) return;
+          dayTh += q.th; w.th += q.th;
+          var s = w.sl[q.key] || (w.sl[q.key] = { th: 0, sam: q.sam, lot: q.lot, qty: q.qty });
+          s.th += q.th;
+        });
+        if (!rec.off && dayTh > 0) w.days[iso] = 1;
+        if (!rec.off) w.hcDays[iso] = (w.hcDays[iso] || 0) + rec.hc;
+      });
+    });
+    var weeks = Object.keys(byW).sort().map(function (k) {
+      var w = byW[k], sls = Object.keys(w.sl).map(function (q) { return w.sl[q]; });
+      var qs = 0, qsam = 0, lots = [], thSam = 0;
+      sls.forEach(function (s) { if (s.qty > 0 && s.sam > 0) { qs += s.qty; qsam += s.qty * s.sam; } if (s.lot > 0) lots.push(s.lot); thSam += s.th * (s.sam || 0); });
+      var hd = Object.keys(w.hcDays).filter(function (d) { return w.days[d]; });
+      return { fy: w.fy, week: w.week, from: w.from, to: w.to, last: w.last, partial: w.last < addDays(w.to, -1), wd: Object.keys(w.days).length, th: w.th,
+        avgSam: qs ? qsam / qs : null, avgSamTh: w.th ? thSam / w.th : null, avgLot: lots.length ? lots.reduce(function (a, b) { return a + b; }, 0) / lots.length : null,
+        labor: hd.length ? hd.reduce(function (a, d) { return a + w.hcDays[d]; }, 0) / hd.length : null, styles: sls.length };
+    }).filter(function (w) { return w.th > 0; });
+    return { weeks: count ? weeks.slice(-count) : weeks, end: end };
+  }
+  // Kế hoạch từng chuyền từ file mới nhất (プランテーブル): mã đang may, mã cuối và ngày kết thúc kế hoạch
+  function lineOutlook(ds, opts) {
+    var out = [];
+    Object.keys(ds.latestPlan || {}).sort().forEach(function (f) {
+      if (opts.factory && f !== opts.factory) return;
+      var fl = ds.latestPlan[f];
+      Object.keys(fl.lineEnd).forEach(function (ln) {
+        var L = fl.lineEnd[ln];
+        if (!L.end || L.end < fl.updateDate) return;
+        var wdLeft = 0;
+        for (var d = addDays(fl.updateDate, 1); d <= L.end; d = addDays(d, 1)) if (weekday(d) !== 0) wdLeft++;
+        out.push({ f: f, line: ln, update: fl.updateDate, cur: L.cur, curBrand: L.curBrand, end: L.end, endStyle: L.style, endBrand: L.brand, wdLeft: wdLeft });
+      });
+    });
+    return out.sort(function (a, b) { return a.f < b.f ? -1 : a.f > b.f ? 1 : a.line.localeCompare(b.line, 'en', { numeric: true }); });
+  }
+
   // Năng suất theo cách của TI: sản lượng hàng TI ÷ chuyền-ngày may hàng TI, quy về giờ hành chính (trừ tăng ca)
   function tiProductivity(ds, opts, months) {
     months = months.filter(function (m) { return (ds.lineMonthOk || {})[m]; });
@@ -1758,6 +1935,8 @@
 
   return {
     __test: { buildLineDays: buildLineDays },
+    HORI_SAM_BANDS: HORI_SAM_BANDS, HORI_LOT_BANDS: HORI_LOT_BANDS, ITEM_GROUPS: ITEM_GROUPS, itemGroup: itemGroup, composition: composition, monthPlan: monthPlan,
+    weekInfo: weekInfo, weekly: weekly, lineOutlook: lineOutlook,
     STAGED_DEFAULT: STAGED_DEFAULT, parseStaged: parseStaged, applyStaged: applyStaged,
     HOURS_PER_DAY: HOURS_PER_DAY, BRAND_ALIASES: BRAND_ALIASES, DIMS: DIMS,
     toISO: toISO, serialToISO: serialToISO, addDays: addDays, addMonths: addMonths, monthEnd: monthEnd, monthLabel: monthLabel,

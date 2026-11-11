@@ -700,3 +700,20 @@ test('Sổ ライン空き: dòng không nằm trong công thức 小計 là chi
   assert.deepStrictEqual(m.checks, []);
   assert.strictEqual(m.days, 13);
 });
+
+test('Báo cáo TIVN: nhóm sản phẩm, tuần năm tài chính, nhóm 工程時間 / lot', () => {
+  assert.deepStrictEqual(['S-JKT', 'S-PANTS', 'D-JKT', 'JKT', 'VEST', 'SHORTS', 'OVERALLS', 'SHIRTS', 'ACC', 'S-JKT (3L)'].map(R.itemGroup),
+    ['seamJK', 'seamPT', 'down', 'nsJK', 'nsJK', 'nsPT', 'nsPT', 'shirt', 'other', 'seamJK']);
+  assert.deepStrictEqual(R.weekInfo('2026-11-02', 4), { fy: 2026, week: 32, from: '2026-11-02', to: '2026-11-08' });
+  assert.strictEqual(R.weekInfo('2026-04-01', 4).week, 1);
+  assert.strictEqual(R.weekInfo('2027-03-31', 4).fy, 2026);
+  const ds = { facts: [
+    { m: '2026-10', th: 100, sam: 4000, aggLot: 400, item: 'JKT' }, { m: '2026-10', th: 300, sam: 25000, aggLot: 6000, item: 'D-JKT' },
+    { m: '2026-10', th: 50, sam: 9000, aggLot: 0, qty: 1500, item: 'S-PANTS', open: true }] };
+  const [sam] = R.composition(ds, {}, ['2026-10'], 'sam');
+  assert.strictEqual(sam.total, 400); assert.strictEqual(sam.parts.s1, 100); assert.strictEqual(sam.parts.s5, 300);
+  const [lot] = R.composition(ds, {}, ['2026-10'], 'lot');
+  assert.strictEqual(lot.parts.l1, 100); assert.strictEqual(lot.parts.l7, 300);
+  const [it] = R.composition(ds, {}, ['2026-10'], 'item');
+  assert.strictEqual(it.parts.nsJK, 100); assert.strictEqual(it.parts.down, 300); assert.strictEqual(it.parts.seamPT, 0);
+});
