@@ -73,7 +73,7 @@
       '<c:autoTitleDeleted val="0"/><c:plotArea><c:layout/>' + plot +
       '<c:catAx><c:axId val="50010"/><c:scaling><c:orientation val="minMax"/></c:scaling><c:delete val="0"/><c:axPos val="b"/><c:numFmt formatCode="General" sourceLinked="0"/>' +
       '<c:majorTickMark val="none"/><c:minorTickMark val="none"/><c:tickLblPos val="low"/>' + axLine + txt(900, '5B6482') + '<c:crossAx val="50020"/><c:crosses val="autoZero"/><c:auto val="1"/><c:lblAlgn val="ctr"/><c:lblOffset val="100"/><c:noMultiLvlLbl val="0"/></c:catAx>' +
-      '<c:valAx><c:axId val="50020"/><c:scaling><c:orientation val="minMax"/>' + (yMin != null ? '<c:min val="' + yMin + '"/>' : '') + '</c:scaling><c:delete val="0"/><c:axPos val="l"/>' +
+      '<c:valAx><c:axId val="50020"/><c:scaling><c:orientation val="minMax"/>' + (ch.yMax != null ? '<c:max val="' + ch.yMax + '"/>' : '') + (yMin != null ? '<c:min val="' + yMin + '"/>' : '') + '</c:scaling><c:delete val="0"/><c:axPos val="l"/>' +
       '<c:majorGridlines><c:spPr><a:ln w="6350"><a:solidFill><a:srgbClr val="E3E7EF"/></a:solidFill></a:ln></c:spPr></c:majorGridlines>' +
       '<c:numFmt formatCode="' + x(fmt) + '" sourceLinked="0"/><c:majorTickMark val="none"/><c:minorTickMark val="none"/><c:tickLblPos val="nextTo"/><c:spPr><a:ln><a:noFill/></a:ln></c:spPr>' + txt(900, '5B6482') +
       '<c:crossAx val="50010"/><c:crosses val="autoZero"/><c:crossBetween val="between"/></c:valAx></c:plotArea>' +
