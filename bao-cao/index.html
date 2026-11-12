@@ -685,8 +685,8 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
     if (list.length) {
       var by = {};
       list.forEach(function (f) { (by[f.factory] = by[f.factory] || []).push(f.updateDate); });
-      html = '<div><b>⚠ ' + list.length + ' file được nạp bằng bản trang cũ, nên thiếu số liệu: lot bình quân (生産ロット), hàng khó / lot nhỏ, lên năng suất, lead time, sử dụng chuyền.</b></div>' +
-        '<div>Kéo thả lại các file này (hoặc cả thư mục KH_UPDATE) để có đủ số. File mới tự thay file cũ, các file khác giữ nguyên.</div>' +
+      html = '<div><b>⚠ ' + list.length + ' file được nạp bằng bản trang cũ, nên thiếu số liệu: số theo tuần (báo cáo TIVN), chuyền gộp 4AB / ngày có KH không ghi TH, kế hoạch từng chuyền, lot bình quân, hàng khó / lot nhỏ, lên năng suất, lead time.</b></div>' +
+        '<div>Tải lại trang trước (Ctrl + F5) để chắc đang dùng bản mới, rồi kéo thả lại các file này (hoặc cả thư mục KH_UPDATE). File mới tự thay file cũ, các file khác giữ nguyên.</div>' +
         '<div>' + Object.keys(by).sort().map(function (f) {
           return '<b>' + esc(f) + '</b>: ' + by[f].sort().map(function (d) { return 'update ' + fmtDate(d); }).join(', ');
         }).join('<br>') + '</div>';
@@ -2768,6 +2768,10 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
       add('工程分析時間 bình quân theo tuần (giây)', ['Tuần', '工程時間'], ws.map(function (w, i) { return [wl[i], num(w.avgSamTh)]; }), { type: 'line', yFmt: '#,##0', series: [{ col: 1, color: XC.aqua }] });
       add('Lot bình quân theo tuần (sp)', ['Tuần', 'Lot'], ws.map(function (w, i) { return [wl[i], num(w.avgLot)]; }), { type: 'line', yFmt: '#,##0', series: [{ col: 1, color: XC.orange }] });
       add('Lao động trực tiếp theo tuần (縫直)', ['Tuần', '縫直'], ws.map(function (w, i) { return [wl[i], num(w.labor)]; }), { type: 'line', yFmt: '#,##0', series: [{ col: 1, color: XC.blue }] });
+    } else {
+      mk.section('C. Theo tuần · NTC ' + dy.fy);
+      mk.aoa.push(xr('note', ['Chưa có số theo tuần: các file update đang dùng được nạp từ bản trang cũ (chưa lưu số theo ngày).']));
+      mk.aoa.push(xr('note', ['Cách sửa: tải lại trang (Ctrl + F5) rồi kéo thả lại các file KH_UPDATE của năm tài chính' + (ds.noDaily && ds.noDaily.length ? ' (' + ds.noDaily.length + ' file, gần nhất: ' + ds.noDaily.slice(-4).map(function (x) { return x.factory + ' ' + fmtDate(x.updateDate); }).join(', ') + ')' : '') + '.']));
     }
     return mk.finish();
   }

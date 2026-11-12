@@ -493,7 +493,7 @@
   }
 
   // ---------- Lượt may: lên năng suất (習熟), lead time ----------
-  var DATA_VERSION = 4; // tăng khi file đã nạp cần nạp lại để có đủ chỉ tiêu
+  var DATA_VERSION = 5; // tăng khi file đã nạp cần nạp lại để có đủ chỉ tiêu (5: số theo ngày cho báo cáo tuần, KH theo ngày, kế hoạch từng chuyền)
   var CURVE_DAYS = [1, 2, 3, 5, 7, 10];
   var RAMP_LEVEL = 0.9; // đạt 90% sản lượng ổn định là xong giai đoạn lên năng suất
   var RAMP_MAX_DAYS = 30;
