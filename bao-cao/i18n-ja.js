@@ -276,6 +276,8 @@
     'Chuyền-ngày TI tính': 'TI請求日数',
     'Trang tính (chuyền có dữ liệu)': '当システム算出（データのあるライン）',
     'Lệch': '差異',
+    'So sánh các năm': '年度比較', 'Biểu đồ so sánh các năm': '年度比較グラフ', 'Từng tháng của mỗi năm tài chính': '年度別・月別推移', 'Sản lượng theo nhãn hàng qua các năm': 'ブランド別生産枚数（年度別）',
+    'Cả năm': '通期', 'Sản lượng theo tháng (sp)': '月別生産枚数', 'Hiệu suất theo tháng': '月別稼働効率', '8 nhãn hàng lớn nhất năm gần nhất': '直近年度上位8ブランド',
     'Báo cáo tuần · tháng · năm (mẫu TIVN)': '週報・月報・年報（TIVNフォーマット）', 'Năm tài chính (lũy kế)': '年度（累計）',
     'Tỷ lệ hàng từ 20.000 giây': '20,000秒以上比率', 'Tỷ lệ lot dưới 500 sp': '500枚未満ロット比率', 'Số mã sản xuất': '生産品番数', 'Mã mới vào chuyền (chuyển mã)': '投入品番数（切替）',
     'Dự báo cả năm': '通期見込み', 'So năm trước': '前年度比', 'Sản lượng theo nhãn hàng': 'ブランド別生産枚数', 'Chênh (sp)': '差（枚）',
