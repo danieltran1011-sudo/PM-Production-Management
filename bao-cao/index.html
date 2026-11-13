@@ -222,7 +222,9 @@ details.ct-list > summary { cursor: pointer; font-weight: 600; color: var(--acce
 .ex-foot { display: flex; justify-content: space-between; align-items: center; gap: 6px; margin-top: 6px; }
 .ex-st { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 600; padding: 2px 8px; border-radius: 999px; white-space: nowrap; }
 .ex-st.good { background: var(--good-soft); color: var(--good); } .ex-st.warn { background: var(--warn-soft); color: var(--warn); }
-.ex-st.bad { background: var(--bad-soft); color: var(--bad); } .ex-st.none { background: var(--surface-2); color: var(--muted); }
+.ex-st.bad { background: var(--bad-soft); color: var(--bad); }
+.ex-st .ja { display: inline; margin-left: 5px; font-size: 0.92em; }
+.ex-tgt .ja, .ex-delta .ja { display: block; font-size: 0.92em; } .ex-st.none { background: var(--surface-2); color: var(--muted); }
 .ex-cols { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr); gap: 20px; }
 @media (max-width: 900px) { .ex-cols { grid-template-columns: 1fr; } }
 td.cellwrap { white-space: normal; min-width: 140px; }
@@ -262,7 +264,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
   <header class="top">
     <span class="eyebrow">Báo cáo sản xuất · 生産月次報告</span>
     <h1>Báo cáo tháng từ file KH_UPDATE</h1>
-    <p>Chọn các file KH_UPDATE (mỗi xưởng, mỗi lần update một file; càng nhiều tháng, nhiều năm càng tốt). Trang tự gộp, lấy số chốt của từng tháng và so sánh với tháng trước, cùng kỳ năm trước, lũy kế năm tài chính. Dữ liệu chỉ lưu trong trình duyệt này, không gửi đi đâu.</p>
+    <p data-jt="KH_UPDATEファイルを選択（工場ごと・更新ごとに1ファイル、月数・年数が多いほど良い）。各月の確定値を自動集計し、前月・前年同月・年度累計と比較。データはこのブラウザ内のみに保存され、外部へ送信されません。">Chọn các file KH_UPDATE (mỗi xưởng, mỗi lần update một file; càng nhiều tháng, nhiều năm càng tốt). Trang tự gộp, lấy số chốt của từng tháng và so sánh với tháng trước, cùng kỳ năm trước, lũy kế năm tài chính. Dữ liệu chỉ lưu trong trình duyệt này, không gửi đi đâu.</p>
     <div class="seg" id="langSeg" role="group" aria-label="Ngôn ngữ / 言語">
       <button type="button" data-lang="bi" aria-pressed="true">Việt + 日本語</button>
       <button type="button" data-lang="vi" aria-pressed="false">Chỉ tiếng Việt</button>
@@ -276,7 +278,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
   <section class="panel" id="du-lieu">
     <div class="section-head">
       <h2>Dữ liệu</h2>
-      <p>Chọn lại một file cùng xưởng, cùng ngày update thì file mới thay file cũ.</p>
+      <p data-jt="同じ工場・同じ更新日のファイルを再選択すると、新しいファイルに置き換わります。">Chọn lại một file cùng xưởng, cùng ngày update thì file mới thay file cũ.</p>
     </div>
     <label class="drop" id="drop">
       <input type="file" id="fileInput" multiple accept=".xlsm,.xlsx,.xls">
@@ -307,7 +309,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
     <details class="settings">
       <summary>Nhãn hàng của TI (còn lại là hàng APIC tự bán)</summary>
       <div class="inner" style="max-width:900px">
-        <p class="muted">Mỗi dòng một nhãn hàng của TI theo hợp đồng. Tên trong file được so khớp không phân biệt hoa/thường, dấu cách, ký tự đặc biệt; tự nhận HELLY HANSEN = HH, Neutral Work(s), N/W = NW, DESCSENTE = DESCENTE, Woorich = WOOLRICH; tên bắt đầu bằng nhãn trong danh sách (ALLTERRAIN81, YONEX WC) cũng là hàng TI. Bảng bên dưới cho biết từng tên trong file được xếp vào nhóm nào.</p>
+        <p class="muted" data-jt="契約上のTIブランドを1行に1つ。ファイル内の名称は大文字小文字・空白・記号を区別せず照合。HELLY HANSEN＝HH、Neutral Work(s)・N/W＝NW、DESCSENTE＝DESCENTE、Woorich＝WOOLRICHを自動認識。リストの名称で始まる名称（ALLTERRAIN81、YONEX WC）もTI品。下の表でファイル内の各名称の区分を確認できます。">Mỗi dòng một nhãn hàng của TI theo hợp đồng. Tên trong file được so khớp không phân biệt hoa/thường, dấu cách, ký tự đặc biệt; tự nhận HELLY HANSEN = HH, Neutral Work(s), N/W = NW, DESCSENTE = DESCENTE, Woorich = WOOLRICH; tên bắt đầu bằng nhãn trong danh sách (ALLTERRAIN81, YONEX WC) cũng là hàng TI. Bảng bên dưới cho biết từng tên trong file được xếp vào nhóm nào.</p>
         <textarea id="tiBrands" spellcheck="false" style="min-height:140px"></textarea>
         <div><button id="btnTi">Áp dụng</button> <button class="link" id="btnTiReset" type="button">Trả về danh sách mặc định</button></div>
         <div id="tiClass"></div>
@@ -316,7 +318,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
     <details class="settings">
       <summary>Gộp tên nhãn hàng viết khác nhau</summary>
       <div class="inner">
-        <p class="muted">Mỗi dòng một cặp <span class="mono">TÊN TRONG FILE = TÊN DÙNG TRONG BÁO CÁO</span>. Chữ hoa/thường và khoảng trắng thừa đã được gộp sẵn; ALLTERAIN → ALLTERRAIN và DESCSENTE → DESCENTE cũng đã có sẵn.</p>
+        <p class="muted" data-jt="1行に「ファイル内の名称 ＝ 報告で使う名称」の1組。大文字小文字・余分な空白は統合済み、ALLTERAIN→ALLTERRAIN、DESCSENTE→DESCENTEも登録済み。">Mỗi dòng một cặp <span class="mono">TÊN TRONG FILE = TÊN DÙNG TRONG BÁO CÁO</span>. Chữ hoa/thường và khoảng trắng thừa đã được gộp sẵn; ALLTERAIN → ALLTERRAIN và DESCSENTE → DESCENTE cũng đã có sẵn.</p>
         <textarea id="aliases" spellcheck="false" placeholder="TNF = THE NORTH FACE"></textarea>
         <div><button id="btnAliases">Áp dụng</button></div>
         <div id="brandRaw" class="warn"></div>
@@ -325,7 +327,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
     <details class="settings">
       <summary>Mã hàng chia công đoạn (tính là một mã)</summary>
       <div class="inner">
-        <p class="muted">Mỗi dòng một mã gốc. Các mã <span class="mono">MÃ-01, MÃ-02 …</span> là các công đoạn gia công của cùng một sản phẩm: tính là một mã (số mã, mã mới, chuyển mã, lot), sản lượng KH/TH lấy công đoạn cuối (thành phẩm), 工程分析時間 = tổng các công đoạn.</p>
+        <p class="muted" data-jt="1行に元品番を1つ。品番-01、-02…は同一製品の加工工程として1品番扱い（品番数・新規投入・切替・ロット）、計画・実績数量は最終工程（完成品）、工程分析時間は全工程の合計。">Mỗi dòng một mã gốc. Các mã <span class="mono">MÃ-01, MÃ-02 …</span> là các công đoạn gia công của cùng một sản phẩm: tính là một mã (số mã, mã mới, chuyển mã, lot), sản lượng KH/TH lấy công đoạn cuối (thành phẩm), 工程分析時間 = tổng các công đoạn.</p>
         <textarea id="stagedText" spellcheck="false" placeholder="ND92625"></textarea>
         <div><button id="btnStaged">Áp dụng</button> <button class="link" id="btnStagedReset" type="button">Trả về mặc định</button></div>
         <div id="stagedInfo" class="muted"></div>
@@ -345,7 +347,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
     <details class="settings">
       <summary>Mục tiêu nội bộ (tùy chọn)</summary>
       <div class="inner">
-        <p class="muted">Để trống thì so với hợp đồng TI hoặc cùng kỳ năm trước. Mục tiêu áp dụng cho năm tài chính đang xem.</p>
+        <p class="muted" data-jt="空欄の場合はTI契約または前年同期と比較。目標は表示中の年度に適用。">Để trống thì so với hợp đồng TI hoặc cùng kỳ năm trước. Mục tiêu áp dụng cho năm tài chính đang xem.</p>
         <div class="ex-targets">
           <div class="field"><label for="exT_th">Sản lượng cả năm (sp)</label><input type="number" id="exT_th" min="0" step="1000"></div>
           <div class="field"><label for="exT_eff">Hiệu suất (%)</label><input type="number" id="exT_eff" min="0" max="200" step="0.1"></div>
@@ -382,7 +384,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
     </div>
     <div class="mcharts" id="thCharts"></div>
     <div class="tbl-wrap" id="thTable"></div>
-    <p class="an-note" style="margin-top:10px">Cột "Cả năm" chỉ gồm các tháng đã có TH; "Cùng kỳ" là đúng các tháng đó của năm trước. Tháng kế hoạch chỉ hiện KH. Lên năng suất và lead time tính cho các lượt may xong trong tháng. Cách tính từng chỉ tiêu xem ở cuối trang.</p>
+    <p class="an-note" style="margin-top:10px" data-jt="「通期」は実績のある月のみ、「前年同期」は前年の同じ月。計画月は計画のみ表示。習熟・リードタイムは当月完了分。各指標の算定方法はページ末尾を参照。">Cột "Cả năm" chỉ gồm các tháng đã có TH; "Cùng kỳ" là đúng các tháng đó của năm trước. Tháng kế hoạch chỉ hiện KH. Lên năng suất và lead time tính cho các lượt may xong trong tháng. Cách tính từng chỉ tiêu xem ở cuối trang.</p>
   </section>
 
   <section class="panel" id="bao-cao-tivn" hidden>
@@ -404,7 +406,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
   <section class="panel" id="cam-ket" hidden>
     <div class="section-head">
       <h2>Cam kết với TI · hợp đồng 4/2026–3/2029</h2>
-      <p>Năng suất tăng 5%/năm so với năm chuẩn NTC 2025 (25年度生産実績). Hàng khó (工程時間 trên 20.000 giây) tối đa 2% và lot nhỏ (500 sp trở xuống trên mỗi chuyền) tối đa 10% tổng số lượng sản xuất trong năm.</p>
+      <p data-jt="生産性は25年度生産実績（ベンチマーク）比で年5%向上。高難易度品（工程時間20,000秒超）は年間総生産数量の2%以内、小ロット品（ライン当たり500枚以下）は10%以内。">Năng suất tăng 5%/năm so với năm chuẩn NTC 2025 (25年度生産実績). Hàng khó (工程時間 trên 20.000 giây) tối đa 2% và lot nhỏ (500 sp trở xuống trên mỗi chuyền) tối đa 10% tổng số lượng sản xuất trong năm.</p>
     </div>
     <div class="filters" style="margin-bottom:14px">
       <div class="field"><label for="ctFy">Năm hợp đồng</label><select id="ctFy"></select></div>
@@ -419,14 +421,14 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
   <section class="panel" id="su-dung-chuyen" hidden>
     <div class="section-head">
       <h2>Sử dụng chuyền: hàng TI, hàng APIC, chuyền trống</h2>
-      <p>Mỗi nửa chuyền A/B mỗi ngày làm việc là 1 chuyền-ngày (như 29 chuyền trong cách tính của TI). Chuyền ghép AB tính cả hai nửa; chuyền tách A1, A2 mỗi cái nửa chuyền.</p>
+      <p data-jt="A/B各半ラインの1稼働日を1ライン日とする（TI算定の29ラインと同様）。ABの合同ラインは両方の半ライン、A1・A2の分割ラインは各0.5ライン。">Mỗi nửa chuyền A/B mỗi ngày làm việc là 1 chuyền-ngày (như 29 chuyền trong cách tính của TI). Chuyền ghép AB tính cả hai nửa; chuyền tách A1, A2 mỗi cái nửa chuyền.</p>
     </div>
     <div class="row-tools"><div class="field"><label for="luFy">Năm tài chính</label><select id="luFy"></select></div></div>
     <div id="luLines"></div>
     <details class="settings" style="margin-bottom:14px">
       <summary>Khai báo ngày mở / ngừng chuyền (khi trang tự nhận sai)</summary>
       <div class="inner">
-        <p class="muted">Mỗi dòng: nửa chuyền, ngày bắt đầu, (ngày ngừng nếu có). Ví dụ <span class="mono">15B 1/10/2026</span> hoặc <span class="mono">7A 1/4/2023 31/12/2025</span>. Dòng khai báo thay cho ngày trang tự nhận.</p>
+        <p class="muted" data-jt="1行に「半ライン、開始日、（停止日）」。例：15B 1/10/2026、7A 1/4/2023 31/12/2025。入力した日付が自動判定より優先されます。">Mỗi dòng: nửa chuyền, ngày bắt đầu, (ngày ngừng nếu có). Ví dụ <span class="mono">15B 1/10/2026</span> hoặc <span class="mono">7A 1/4/2023 31/12/2025</span>. Dòng khai báo thay cho ngày trang tự nhận.</p>
         <textarea id="lineOv" spellcheck="false" placeholder="15B 1/10/2026"></textarea>
         <div><button id="btnLineOv">Áp dụng</button></div>
       </div>
@@ -437,7 +439,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
   <section class="panel" id="theo-chieu" hidden>
     <div class="section-head">
       <h2>Theo nhãn hàng, chuyền, chủng loại</h2>
-      <p>Số của tháng báo cáo, so với tháng trước, cùng kỳ năm trước và lũy kế năm tài chính.</p>
+      <p data-jt="報告月の数値と、前月・前年同月・年度累計との比較。">Số của tháng báo cáo, so với tháng trước, cùng kỳ năm trước và lũy kế năm tài chính.</p>
     </div>
     <div class="row-tools">
       <div class="seg" id="dimSeg" role="group" aria-label="Chiều tổng hợp"></div>
@@ -451,7 +453,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
   <section class="panel" id="theo-thang" hidden>
     <div class="section-head">
       <h2>Theo tháng</h2>
-      <p>Biểu đồ: sản lượng TH từng tháng của năm tài chính đang xem so với năm trước. Bảng: mọi tháng có dữ liệu.</p>
+      <p data-jt="グラフ：表示中の年度の月別実績と前年度の比較。表：データのある全ての月。">Biểu đồ: sản lượng TH từng tháng của năm tài chính đang xem so với năm trước. Bảng: mọi tháng có dữ liệu.</p>
     </div>
     <div class="chart" id="chart"></div>
     <div class="tbl-wrap" id="monthTable"></div>
@@ -460,7 +462,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
   <section class="panel" id="theo-nam" hidden>
     <div class="section-head">
       <h2>Theo năm tài chính</h2>
-      <p>% đạt tính trên các tháng đã có TH. Cùng kỳ năm trước = đúng các tháng đó của năm trước, nên năm đang chạy vẫn so được.</p>
+      <p data-jt="達成率は実績のある月で算出。前年同期＝前年の同じ月のため、進行中の年度も比較可能。">% đạt tính trên các tháng đã có TH. Cùng kỳ năm trước = đúng các tháng đó của năm trước, nên năm đang chạy vẫn so được.</p>
     </div>
     <div class="tbl-wrap" id="fyTable"></div>
     <div class="row-tools" style="margin-top:20px">
@@ -473,7 +475,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
   <section class="panel" id="phan-tich" hidden>
     <div class="section-head">
       <h2>Phân tích</h2>
-      <p>Theo xưởng và nhãn hàng đang chọn ở bộ lọc. Chọn kỳ phân tích rồi chọn chủ đề.</p>
+      <p data-jt="フィルターで選択した工場・ブランドが対象。分析期間とテーマを選択してください。">Theo xưởng và nhãn hàng đang chọn ở bộ lọc. Chọn kỳ phân tích rồi chọn chủ đề.</p>
     </div>
     <div class="row-tools">
       <div class="seg" id="anSeg" role="group" aria-label="Chủ đề phân tích"></div>
@@ -486,7 +488,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
   <section class="panel" id="ma-hang" hidden>
     <div class="section-head">
       <h2>Mã hàng trong tháng</h2>
-      <p>Mỗi dòng là một mã trên một chuyền gốc, trong tháng báo cáo; trong ngoặc là chuyền tách ghi trong file.</p>
+      <p data-jt="報告月の「品番×元ライン」ごとに1行。括弧内はファイル記載の分割ライン。">Mỗi dòng là một mã trên một chuyền gốc, trong tháng báo cáo; trong ngoặc là chuyền tách ghi trong file.</p>
     </div>
     <div class="row-tools"><div class="field"><label for="styleSearch">Tìm mã, nhãn hàng, chuyền</label><input type="text" id="styleSearch" placeholder="Ví dụ: NP12704 hoặc 4A"></div></div>
     <div class="tbl-wrap" id="styleTable"></div>
@@ -495,20 +497,20 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
   <section class="panel" id="cach-tinh">
     <div class="section-head"><h2>Cách tính</h2></div>
     <ul class="notes">
-      <li><b>Số của mỗi tháng</b> lấy từ file chốt tháng đó: file update sớm nhất từ ngày làm việc cuối cùng của tháng trở đi, theo lịch nghỉ trong file (ví dụ file 20261031 chốt tháng 10; file 20230428 chốt tháng 4/2023 nếu 29–30/4 nghỉ). Tháng chưa có file chốt thì lấy file mới nhất, ghi "Đang chạy" (tháng đang làm) hoặc "Kế hoạch" (tháng sau).</li>
-      <li><b>KH đầu tháng</b>: KH của tháng trong file update mới nhất trước ngày 1 của tháng (ví dụ file 20260930 cho tháng 10). Cần có file của tháng trước. Trong file update, KH của các tháng đã qua thường được sửa bằng đúng số TH, nên <b>tỷ lệ đạt nên xem theo KH đầu tháng</b>; thẻ "Tỷ lệ đạt" tự dùng KH đầu tháng khi có.</li>
-      <li><b>KH, TH</b>: cộng sản lượng theo ngày ở hàng KH và TH của từng mã (hàng "dự định" lý thuyết không tính). Khớp ô 計画 / 実績 của sheet TORAY.</li>
-      <li><b>Ngày làm việc</b>: số ngày của tháng trừ ngày đánh dấu "x" (hàng ngày nghỉ trong file).</li>
-      <li><b>Lao động</b>: mỗi chuyền, mỗi ngày có sản lượng TH tính một lần số người bố trí (ライン編成人数); nếu chuyền chạy 2 mã cùng ngày thì lấy số lớn hơn và chia cho 2 mã theo sản lượng. Chuyền tách (4A1, 4A2…) gộp về chuyền gốc (4A): ngày chuyền tách đôi thì cộng số người hai nửa, ngày vừa có chuyền chính vừa có chuyền tách (chuyển mã) thì lấy số lớn hơn để không đếm trùng. <i>Ngày công</i> = tổng người × ngày. <i>Lao động bình quân/ngày</i> = ngày công ÷ ngày làm việc của tháng (nhiều tháng thì lấy bình quân các tháng). <i>Lao động bình quân/chuyền</i> = ngày công ÷ số chuyền-ngày. Đây là số người bố trí theo kế hoạch, không phải số có mặt thực tế.</li>
-      <li><b>Năng suất</b> = TH ÷ ngày công (sp/người/ngày). <b>Giờ chuẩn (SAH)</b> = TH × thời gian may (工程分析時間, giây) ÷ 3.600. <b>Hiệu suất</b> = giờ chuẩn ÷ (ngày công × 8 giờ).</li>
-      <li><b>工程分析時間 bình quân</b> (giây/sp) = bình quân thời gian công đoạn của các mã có TH trong tháng, trọng số theo số lượng đơn (生産数). <b>生産ロット bình quân</b> (sp) = bình quân lot sau gộp đơn (集約ロット) của các mã có lịch lý thuyết (hàng "dự định") trong tháng. Cả hai tính giống sheet TORAY (平均工程分析時間, 平均ロット), đã đối chiếu khớp với các file có công thức đúng. Nhiều tháng: tính chung trên mọi mã của các tháng đó.</li>
-      <li><b>Tổng hợp toàn xưởng</b>: gộp các xưởng (hoặc theo xưởng, nhãn hàng ở bộ lọc). Số chuyền = chuyền gốc có sản lượng (đã gộp A1, A2). Số mã chạy trên chuyền (切替数) = số dòng mã × chuyền có TH, như sheet TORAY. Mã mới vào chuyền = số lượt mã bắt đầu may trên một chuyền trong tháng. Ngày làm việc = bình quân các xưởng. Tỷ lệ đạt KH đầu tháng của cả năm chỉ tính các tháng có KH đầu tháng.</li>
-      <li><b>Hàng TI / hàng APIC tự bán</b>: theo danh sách nhãn hàng TI (sửa ở bộ lọc, mục "Nhãn hàng của TI"); nhãn ngoài danh sách là hàng APIC tự bán. <b>Sử dụng chuyền</b>: mỗi nửa chuyền A/B mỗi ngày làm việc là 1 chuyền-ngày; có mã chạy ở chuyền chính hoặc chuyền ghép AB thì chiếm cả ngày, chỉ chuyền tách A1/A2 thì mỗi chuyền tách 0,5; phần chiếm chia cho TI/APIC theo sản lượng; còn lại là trống. Chỉ tính tháng mà mọi xưởng đã chốt, vì số chuyền là chung giữa các xưởng.</li>
-      <li><b>Cam kết với TI</b>: năm chuẩn = NTC 2025 (4/2025–3/2026), tính trên các tháng đã chốt. Mục tiêu năm 2026/2027/2028 = chuẩn × 1,05 / 1,05² / 1,05³ (lũy tiến) hoặc chuẩn × 1,05 / 1,10 / 1,15 (tuyến tính). Hàng khó = mã có 工程時間 trên 20.000 giây. Lot nhỏ = mã có lot trên chuyền (集約ロット) từ 500 sp trở xuống, kể cả khi cùng mã chia ra nhiều chuyền. Tỷ lệ = số lượng sản xuất của nhóm đó ÷ tổng số lượng sản xuất trong năm.</li>
-      <li><b>Phân tích</b>: lượt may = một mã trên một chuyền (chuyền tách tính riêng). Sản lượng ổn định = phân vị 75% sản lượng ngày, bỏ ngày cuối. Ngày lên năng suất = ngày sản xuất đầu tiên đạt 90% mức ổn định (trong 30 ngày đầu). Lead time thực tế = số ngày làm việc từ ngày may đầu đến ngày cuối. Lý thuyết lấy từ file: 習熟日数 (cột AP) và 縫製リードタイム (cột AT, hàng "dự định"). Lượt may bắt đầu ngay ngày đầu dữ liệu của file bị bỏ qua vì có thể đã may từ trước.</li>
-      <li><b>Mã mới vào chuyền</b>: tháng có ngày sản lượng đầu tiên của mã. <b>Mã hoàn thành</b>: tháng có ngày kết thúc (ô END ở hàng TH, không muộn hơn ngày update).</li>
-      <li><b>Năm tài chính</b> đặt tên theo năm bắt đầu; tháng bắt đầu chọn ở bộ lọc (mặc định tháng 4: NTC 2026 = 4/2026–3/2027). <b>Cùng kỳ</b> = cùng tháng năm trước; <b>lũy kế cùng kỳ</b> = các tháng tương ứng của năm tài chính trước.</li>
-      <li>Mức tăng/giảm tô xanh/đỏ cho sản lượng, tỷ lệ đạt, năng suất, hiệu suất. Tỷ lệ đạt và hiệu suất so sánh bằng điểm phần trăm (đ).</li>
+      <li data-jt="各月の数値はその月の確定ファイルから取得：月末最終稼働日以降の最も早い更新ファイル（ファイル内の休日カレンダーによる。例：20261031は10月確定、4/29～30が休日なら20230428は2023年4月確定）。確定ファイルがない月は最新ファイルを使い「進行中」（当月）または「計画」（翌月以降）と表示。"><b>Số của mỗi tháng</b> lấy từ file chốt tháng đó: file update sớm nhất từ ngày làm việc cuối cùng của tháng trở đi, theo lịch nghỉ trong file (ví dụ file 20261031 chốt tháng 10; file 20230428 chốt tháng 4/2023 nếu 29–30/4 nghỉ). Tháng chưa có file chốt thì lấy file mới nhất, ghi "Đang chạy" (tháng đang làm) hoặc "Kế hoạch" (tháng sau).</li>
+      <li data-jt="月初計画：その月の1日より前の最新更新ファイルにある当月計画（例：10月は20260930）。前月のファイルが必要。更新ファイルでは過去月の計画が実績で上書きされることが多いため、達成率は月初計画で見ること。「達成率」カードは月初計画があれば自動で使用。"><b>KH đầu tháng</b>: KH của tháng trong file update mới nhất trước ngày 1 của tháng (ví dụ file 20260930 cho tháng 10). Cần có file của tháng trước. Trong file update, KH của các tháng đã qua thường được sửa bằng đúng số TH, nên <b>tỷ lệ đạt nên xem theo KH đầu tháng</b>; thẻ "Tỷ lệ đạt" tự dùng KH đầu tháng khi có.</li>
+      <li data-jt="計画・実績：各品番の計画行・実績行の日別数量を合計（理論の「予定」行は含めない）。TORAYシートの計画／実績と一致。"><b>KH, TH</b>: cộng sản lượng theo ngày ở hàng KH và TH của từng mã (hàng "dự định" lý thuyết không tính). Khớp ô 計画 / 実績 của sheet TORAY.</li>
+      <li data-jt="稼働日数：月の日数から「x」印の日（ファイルの休日行）を除いた日数。"><b>Ngày làm việc</b>: số ngày của tháng trừ ngày đánh dấu "x" (hàng ngày nghỉ trong file).</li>
+      <li data-jt="人員：実績のある日ごとにラインの編成人数（ライン編成人数）を1回計上。同日に2品番ある場合は大きい方を数量比で配分。分割ライン（4A1、4A2…）は元ライン（4A）に統合：分割日は両半分の人数を合計、本ラインと分割ラインが混在する日（切替）は大きい方を採用し重複計上しない。延べ人日＝人数×日数。1日平均人員＝延べ人日÷当月稼働日数（複数月は月平均）。ライン当たり人員＝延べ人日÷ライン日数。計画上の編成人数であり、実際の出勤者数ではない。"><b>Lao động</b>: mỗi chuyền, mỗi ngày có sản lượng TH tính một lần số người bố trí (ライン編成人数); nếu chuyền chạy 2 mã cùng ngày thì lấy số lớn hơn và chia cho 2 mã theo sản lượng. Chuyền tách (4A1, 4A2…) gộp về chuyền gốc (4A): ngày chuyền tách đôi thì cộng số người hai nửa, ngày vừa có chuyền chính vừa có chuyền tách (chuyển mã) thì lấy số lớn hơn để không đếm trùng. <i>Ngày công</i> = tổng người × ngày. <i>Lao động bình quân/ngày</i> = ngày công ÷ ngày làm việc của tháng (nhiều tháng thì lấy bình quân các tháng). <i>Lao động bình quân/chuyền</i> = ngày công ÷ số chuyền-ngày. Đây là số người bố trí theo kế hoạch, không phải số có mặt thực tế.</li>
+      <li data-jt="生産性＝実績÷延べ人日（枚/人/日）。標準時間（SAH）＝実績×工程分析時間（秒）÷3,600。稼働効率＝標準時間÷（延べ人日×8時間）。"><b>Năng suất</b> = TH ÷ ngày công (sp/người/ngày). <b>Giờ chuẩn (SAH)</b> = TH × thời gian may (工程分析時間, giây) ÷ 3.600. <b>Hiệu suất</b> = giờ chuẩn ÷ (ngày công × 8 giờ).</li>
+      <li data-jt="平均工程分析時間（秒/枚）＝当月実績のある品番の工程時間を生産数で加重平均。平均生産ロット（枚）＝当月に理論日程（「予定」行）のある品番の集約ロットの平均。いずれもTORAYシート（平均工程分析時間、平均ロット）と同じ算定で、正しい数式のファイルと一致を確認済み。複数月はその期間の全品番で算出。"><b>工程分析時間 bình quân</b> (giây/sp) = bình quân thời gian công đoạn của các mã có TH trong tháng, trọng số theo số lượng đơn (生産数). <b>生産ロット bình quân</b> (sp) = bình quân lot sau gộp đơn (集約ロット) của các mã có lịch lý thuyết (hàng "dự định") trong tháng. Cả hai tính giống sheet TORAY (平均工程分析時間, 平均ロット), đã đối chiếu khớp với các file có công thức đúng. Nhiều tháng: tính chung trên mọi mã của các tháng đó.</li>
+      <li data-jt="全工場集計：全工場を合算（フィルターで工場・ブランド別も可）。ライン数＝実績のある元ライン数（A1・A2統合済み）。ライン稼働品番数（切替数）＝実績のある品番×ラインの行数（TORAYシートと同様）。新規投入品番＝当月にラインで縫製を開始した延べ品番数。稼働日数＝工場平均。年間の月初計画達成率は月初計画のある月のみで算出。"><b>Tổng hợp toàn xưởng</b>: gộp các xưởng (hoặc theo xưởng, nhãn hàng ở bộ lọc). Số chuyền = chuyền gốc có sản lượng (đã gộp A1, A2). Số mã chạy trên chuyền (切替数) = số dòng mã × chuyền có TH, như sheet TORAY. Mã mới vào chuyền = số lượt mã bắt đầu may trên một chuyền trong tháng. Ngày làm việc = bình quân các xưởng. Tỷ lệ đạt KH đầu tháng của cả năm chỉ tính các tháng có KH đầu tháng.</li>
+      <li data-jt="TI品／APIC自販品：TIブランドリスト（フィルターの「TIブランド」で編集）による、リスト外はAPIC自販品。ライン稼働：A/B各半ラインの1稼働日を1ライン日とし、本ラインまたはAB合同ラインで生産があれば終日、分割ラインA1/A2のみなら各0.5。占有分を数量比でTI/APICに配分、残りは空き。ライン数は工場共通のため、全工場が確定した月のみ集計。"><b>Hàng TI / hàng APIC tự bán</b>: theo danh sách nhãn hàng TI (sửa ở bộ lọc, mục "Nhãn hàng của TI"); nhãn ngoài danh sách là hàng APIC tự bán. <b>Sử dụng chuyền</b>: mỗi nửa chuyền A/B mỗi ngày làm việc là 1 chuyền-ngày; có mã chạy ở chuyền chính hoặc chuyền ghép AB thì chiếm cả ngày, chỉ chuyền tách A1/A2 thì mỗi chuyền tách 0,5; phần chiếm chia cho TI/APIC theo sản lượng; còn lại là trống. Chỉ tính tháng mà mọi xưởng đã chốt, vì số chuyền là chung giữa các xưởng.</li>
+      <li data-jt="TIとの契約：基準年＝2025年度（2025年4月～2026年3月）、確定月で算出。2026/2027/2028年度の目標＝基準×1.05／1.05²／1.05³（複利）または基準×1.05／1.10／1.15（単利）。高難易度品＝工程時間20,000秒超の品番。小ロット品＝ライン上のロット（集約ロット）500枚以下の品番（同一品番を複数ラインに分けた場合も含む）。比率＝該当区分の生産数量÷年間総生産数量。"><b>Cam kết với TI</b>: năm chuẩn = NTC 2025 (4/2025–3/2026), tính trên các tháng đã chốt. Mục tiêu năm 2026/2027/2028 = chuẩn × 1,05 / 1,05² / 1,05³ (lũy tiến) hoặc chuẩn × 1,05 / 1,10 / 1,15 (tuyến tính). Hàng khó = mã có 工程時間 trên 20.000 giây. Lot nhỏ = mã có lot trên chuyền (集約ロット) từ 500 sp trở xuống, kể cả khi cùng mã chia ra nhiều chuyền. Tỷ lệ = số lượng sản xuất của nhóm đó ÷ tổng số lượng sản xuất trong năm.</li>
+      <li data-jt="分析：縫製ロット＝1品番×1ライン（分割ラインは別計上）。安定生産数＝日別数量の75パーセンタイル（最終日除く）。習熟日数＝安定水準の90%に初めて達した生産日（最初の30日以内）。実績リードタイム＝縫製開始日から終了日までの稼働日数。理論値はファイルの習熟日数（AP列）と縫製リードタイム（AT列、「予定」行）。ファイルのデータ初日に始まる縫製ロットは、それ以前から縫製している可能性があるため除外。"><b>Phân tích</b>: lượt may = một mã trên một chuyền (chuyền tách tính riêng). Sản lượng ổn định = phân vị 75% sản lượng ngày, bỏ ngày cuối. Ngày lên năng suất = ngày sản xuất đầu tiên đạt 90% mức ổn định (trong 30 ngày đầu). Lead time thực tế = số ngày làm việc từ ngày may đầu đến ngày cuối. Lý thuyết lấy từ file: 習熟日数 (cột AP) và 縫製リードタイム (cột AT, hàng "dự định"). Lượt may bắt đầu ngay ngày đầu dữ liệu của file bị bỏ qua vì có thể đã may từ trước.</li>
+      <li data-jt="新規投入品番：品番の最初の生産日がある月。完了品番：終了日（実績行のEND、更新日以前）がある月。"><b>Mã mới vào chuyền</b>: tháng có ngày sản lượng đầu tiên của mã. <b>Mã hoàn thành</b>: tháng có ngày kết thúc (ô END ở hàng TH, không muộn hơn ngày update).</li>
+      <li data-jt="年度は開始年で命名、開始月はフィルターで選択（初期値4月：2026年度＝2026年4月～2027年3月）。前年同月＝前年の同じ月、前年同期累計＝前年度の対応する月。"><b>Năm tài chính</b> đặt tên theo năm bắt đầu; tháng bắt đầu chọn ở bộ lọc (mặc định tháng 4: NTC 2026 = 4/2026–3/2027). <b>Cùng kỳ</b> = cùng tháng năm trước; <b>lũy kế cùng kỳ</b> = các tháng tương ứng của năm tài chính trước.</li>
+      <li data-jt="生産数・達成率・生産性・稼働効率の増減を緑／赤で表示。達成率と稼働効率はポイント差（đ）で比較。">Mức tăng/giảm tô xanh/đỏ cho sản lượng, tỷ lệ đạt, năng suất, hiệu suất. Tỷ lệ đạt và hiệu suất so sánh bằng điểm phần trăm (đ).</li>
     </ul>
   </section>
 </div>
@@ -622,11 +624,11 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
   };
 
   // ---------- Đọc file ----------
-  function setStatus(msg, err) { var el = $('status'); el.textContent = msg || ''; el.className = 'status' + (err ? ' err' : ''); }
+  function setStatus(msg, err, ja) { var el = $('status'); el.textContent = msg || ''; el.className = 'status' + (err ? ' err' : ''); if (ja) el.setAttribute('data-jt', ja); else el.removeAttribute('data-jt'); }
   // Thông báo khi xuất Excel: hiện cả ở phần Dữ liệu và ngay dưới nút ở thanh bộ lọc
-  function exportMsg(msg, err) {
-    setStatus(msg, err);
-    var el = $('exportStatus'); el.textContent = msg || ''; el.className = 'status' + (err ? ' err' : '');
+  function exportMsg(msg, err, ja) {
+    setStatus(msg, err, ja);
+    var el = $('exportStatus'); el.textContent = msg || ''; el.className = 'status' + (err ? ' err' : ''); if (ja) el.setAttribute('data-jt', ja); else el.removeAttribute('data-jt');
   }
 
   var XL_ERR = { 0: '#NULL!', 7: '#DIV/0!', 15: '#VALUE!', 23: '#REF!', 29: '#NAME?', 36: '#NUM!', 42: '#N/A' };
@@ -641,12 +643,12 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
   function pause() { return new Promise(function (r) { setTimeout(r, 30); }); }
 
   async function addFiles(list) {
-    if (!window.XLSX) { setStatus('Chưa tải được thư viện đọc Excel (cần mạng để tải lần đầu). Kiểm tra kết nối rồi tải lại trang.', true); return; }
+    if (!window.XLSX) { setStatus('Chưa tải được thư viện đọc Excel (cần mạng để tải lần đầu). Kiểm tra kết nối rồi tải lại trang.', true, 'Excel読込ライブラリを読み込めません（初回はネット接続が必要）。接続を確認してページを再読込してください。'); return; }
     list = Array.prototype.slice.call(list);
     var ok = 0, errs = [];
     for (var i = 0; i < list.length; i++) {
       var file = list[i];
-      setStatus('Đang đọc file ' + (i + 1) + '/' + list.length + ': ' + file.name + '…');
+      setStatus('Đang đọc file ' + (i + 1) + '/' + list.length + ': ' + file.name + '…', false, 'ファイル読込中 ' + (i + 1) + '/' + list.length + '：' + file.name + '…');
       await pause();
       try {
         var buf = await readFile(file);
@@ -709,7 +711,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
         errs.push(file.name + ': ' + (e && e.message ? e.message : e));
       }
     }
-    setStatus((ok ? 'Đã thêm ' + ok + ' file.' : '') + (errs.length ? ' Lỗi: ' + errs.join(' · ') : ''), errs.length > 0 && !ok);
+    setStatus((ok ? 'Đã thêm ' + ok + ' file.' : '') + (errs.length ? ' Lỗi: ' + errs.join(' · ') : ''), errs.length > 0 && !ok, (ok ? ok + '件のファイルを追加しました。' : '') + (errs.length ? ' エラー：' + errs.join('・') : ''));
     rebuild();
   }
 
@@ -735,8 +737,8 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
     if (list.length) {
       var by = {};
       list.forEach(function (f) { (by[f.factory] = by[f.factory] || []).push(f.updateDate); });
-      html = '<div><b>⚠ ' + list.length + ' file được nạp bằng bản trang cũ, nên thiếu số liệu: số theo tuần (báo cáo TIVN), chuyền gộp 4AB / ngày có KH không ghi TH, kế hoạch từng chuyền, lot bình quân, hàng khó / lot nhỏ, lên năng suất, lead time.</b></div>' +
-        '<div>Tải lại trang trước (Ctrl + F5) để chắc đang dùng bản mới, rồi kéo thả lại các file này (hoặc cả thư mục KH_UPDATE). File mới tự thay file cũ, các file khác giữ nguyên.</div>' +
+      html = '<div' + jt('⚠ ' + list.length + '件のファイルは旧版のページで読み込まれたため、週別数量（TIVN報告）、統合ライン4AB・KHありTH記載なしの日、ライン別計画、平均ロット、高難易度・小ロット、習熟、リードタイムのデータが不足しています。') + '><b>⚠ ' + list.length + ' file được nạp bằng bản trang cũ, nên thiếu số liệu: số theo tuần (báo cáo TIVN), chuyền gộp 4AB / ngày có KH không ghi TH, kế hoạch từng chuyền, lot bình quân, hàng khó / lot nhỏ, lên năng suất, lead time.</b></div>' +
+        '<div' + jt('先にページを再読込（Ctrl + F5）して最新版を使用し、これらのファイル（またはKH_UPDATEフォルダごと）をもう一度ドラッグ＆ドロップしてください。新しいファイルが古いものを自動で置き換え、他のファイルはそのまま。') + '>Tải lại trang trước (Ctrl + F5) để chắc đang dùng bản mới, rồi kéo thả lại các file này (hoặc cả thư mục KH_UPDATE). File mới tự thay file cũ, các file khác giữ nguyên.</div>' +
         '<div>' + Object.keys(by).sort().map(function (f) {
           return '<b>' + esc(f) + '</b>: ' + by[f].sort().map(function (d) { return 'update ' + fmtDate(d); }).join(', ');
         }).join('<br>') + '</div>';
@@ -751,8 +753,8 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
     if (noLab.length) {
       var bf = {};
       noLab.forEach(function (me) { (bf[me.f] = bf[me.f] || []).push(me); });
-      html += '<div style="margin-top:8px"><b>⚠ ' + noLab.length + ' tháng có sản lượng nhưng không có số lao động (縫直), nên lao động, năng suất, hiệu suất của các tháng đó bị sai.</b></div>' +
-        '<div>Tải lại trang (Ctrl + F5) rồi kéo thả lại các file sau: ' + Object.keys(bf).sort().map(function (f) {
+      html += '<div style="margin-top:8px"' + jt('⚠ ' + noLab.length + 'か月は生産数量があるが人員（縫直）がないため、その月の人員・生産性・稼働効率が正しくありません。') + '><b>⚠ ' + noLab.length + ' tháng có sản lượng nhưng không có số lao động (縫直), nên lao động, năng suất, hiệu suất của các tháng đó bị sai.</b></div>' +
+        '<div' + jt('ページを再読込（Ctrl + F5）し、次のファイルを再度ドラッグ＆ドロップしてください：' + Object.keys(bf).sort().map(function (f) { var src = {}; bf[f].forEach(function (me) { src[me.srcDate] = 1; }); return f + ' 更新' + Object.keys(src).sort().map(dJ).join('、') + '（' + bf[f].map(function (me) { return mJ(me.m); }).sort().join('、') + '）'; }).join('；') + '。') + '>Tải lại trang (Ctrl + F5) rồi kéo thả lại các file sau: ' + Object.keys(bf).sort().map(function (f) {
           var src = {}; bf[f].forEach(function (me) { src[me.srcDate] = 1; });
           return '<b>' + esc(f) + '</b> update ' + Object.keys(src).sort().map(fmtDate).join(', ') + ' (tháng ' + bf[f].map(function (me) { return R.monthLabel(me.m); }).sort().join(', ') + ')';
         }).join('; ') + '.</div>';
@@ -761,10 +763,11 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
   }
   function renderFiles() {
     if (!files.length && !bills.length && !regs.length) { $('fileList').innerHTML = ''; return; }
-    var usedBy = {};
+    var usedBy = {}, usedJ = {}, STJ = { chot: '確定', dang: '進行中', kh: '計画' };
     if (ds) Object.keys(ds.meta).forEach(function (k) {
       var m = ds.meta[k];
       var id = m.f + '|' + m.srcDate;
+      (usedJ[id] = usedJ[id] || []).push(mJ(m.m) + (m.status === 'chot' ? '' : '（' + STJ[m.status] + '）'));
       (usedBy[id] = usedBy[id] || []).push(R.monthLabel(m.m) + (m.status === 'chot' ? '' : ' (' + STATUS[m.status].toLowerCase() + ')'));
     });
     var html = '<div class="tbl-wrap" style="margin-top:14px"><table><thead><tr><th>Xưởng</th><th class="txt">Ngày update</th><th class="txt">Tên file</th><th>Số mã</th><th class="txt">Dữ liệu ngày</th><th class="txt">Dùng cho tháng</th><th class="txt">Ghi chú</th><th></th></tr></thead><tbody>';
@@ -773,25 +776,25 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
       html += '<tr><td>' + esc(f.factory) + '</td><td class="txt num">' + fmtDate(f.updateDate) + (f.updateFrom === 'data' ? ' <span class="sub">theo dữ liệu</span>' : '') + '</td>' +
         '<td class="txt">' + esc(f.name) + '</td><td class="num">' + fmtN(f.styleCount) + '</td>' +
         '<td class="txt num">' + fmtDate(f.firstDate) + ' → ' + fmtDate(f.lastDate) + '</td>' +
-        '<td class="txt" style="white-space:normal;min-width:180px">' + (used.length ? esc(used.join(', ')) : '<span class="muted">Không dùng (đã có file khác chốt)</span>') + '</td>' +
+        '<td class="txt" style="white-space:normal;min-width:180px"' + jt(used.length ? (usedJ[f.id] || []).join('、') : '') + '>' + (used.length ? esc(used.join(', ')) : '<span class="muted"' + jt('未使用（他のファイルで確定済み）') + '>Không dùng (đã có file khác chốt)</span>') + '</td>' +
         '<td class="txt warn" style="white-space:normal;min-width:160px">' + checkNote(f) + esc((f.warnings || []).join(' ')) + '</td>' +
         '<td><button class="link" data-del="' + esc(f.id) + '">Xóa</button></td></tr>';
     });
     var bad = files.filter(hasProblem).length;
     var billBox = bills.length ? '<div class="coverage"><h3>File APIC負担金額 của TI (' + bills.length + ')</h3><p>' + bills.slice().sort(function (a, b) { return a.month < b.month ? -1 : 1; }).map(function (b) {
       return '<span style="margin-right:14px;white-space:nowrap"><b>' + R.monthLabel(b.month) + '</b> <span class="muted">' + fmtN(b.days, 1) + ' ngày · ' + fmtN(b.charge, 0) + ' USD</span> <button class="link" data-del="' + esc(b.id) + '">Xóa</button></span>';
-    }).join('') + '</p><p class="muted">Đối chiếu xem ở phần "Sử dụng chuyền" (chọn tháng ở thanh bộ lọc).</p></div>' : '';
+    }).join('') + '</p><p class="muted"' + jt('照合は「ライン使用」の項で（フィルターで月を選択）。') + '>Đối chiếu xem ở phần "Sử dụng chuyền" (chọn tháng ở thanh bộ lọc).</p></div>' : '';
     var regSorted = regs.slice().sort(function (a, b) { return a.month < b.month ? -1 : 1; });
     var regBad = regSorted.filter(function (r) { return r.checks && r.checks.length; });
     var regBox = regs.length ? '<div class="coverage"><h3>Sổ ライン空き原価配分表 của TI (' + regs.length + ' tháng)</h3><p>' + regSorted.map(function (r) {
       return '<span style="margin-right:14px;white-space:nowrap"><b>' + R.monthLabel(r.month) + '</b> <span class="muted">' + fmtN(r.days, 1) + ' chuyền-ngày · ' + fmtN(r.amount, 0) + ' USD' + (r.amountLinked ? ' (+ ' + fmtN(r.amountLinked, 0) + ' USD gắn mã hàng)' : '') + '</span>' +
         (r.checks && r.checks.length ? ' <span class="down">⚠</span>' : '') + ' <button class="link" data-del="' + esc(r.id) + '">Xóa</button></span>';
-    }).join('') + '</p>' + (regBad.length ? '<p class="warn">⚠ ' + regBad.map(function (r) {
+    }).join('') + '</p>' + (regBad.length ? '<p class="warn"' + jt('⚠ ' + regBad.map(function (r) { return mJ(r.month) + '（シート ' + r.sheet + '）：' + r.checks.map(function (c) { return '工場計 ' + c.factory + ' ' + (c.what === 'amount' ? '費用 ' + jN(c.sheet, 0) + ' USD、行合計 ' + jN(c.rows, 0) + ' USD' : '日数 ' + jN(c.sheet, 1) + '、行合計 ' + jN(c.rows, 1)) + ' → 合計式の行漏れ'; }).join('；'); }).join('・')) + '>⚠ ' + regBad.map(function (r) {
       return R.monthLabel(r.month) + ' (sheet ' + esc(r.sheet) + '): ' + r.checks.map(function (c) {
         return 'ô 工場計 ' + c.factory + ' ' + (c.what === 'amount' ? 'chi phí ' + fmtN(c.sheet, 0) + ' USD, cộng các dòng ra ' + fmtN(c.rows, 0) + ' USD' : 'số ngày ' + fmtN(c.sheet, 1) + ', cộng các dòng ra ' + fmtN(c.rows, 1)) + ' → công thức tổng thiếu dòng';
       }).join('; ');
-    }).join(' · ') + '</p>' : '') + (regs.some(function (r) { return !r.formulasRead; }) ? '<p class="warn">Sổ nạp từ bản trước: nạp lại file sổ để tách chi phí 当該品番に紐付け (gắn vào mã hàng).</p>' : '') +
-      '<p class="muted">Đối chiếu xem ở phần "Sử dụng chuyền". Chuyền A1/A2/B1/B2 tính nửa chuyền-ngày. Số tiền không nằm trong công thức 小計 của sổ (chữ đỏ, 当該品番に紐付け) là chi phí gắn vào mã hàng, không tính vào chi phí trống.</p></div>' : '';
+    }).join(' · ') + '</p>' : '') + (regs.some(function (r) { return !r.formulasRead; }) ? '<p class="warn"' + jt('旧版で読み込んだ台帳：当該品番に紐付けの費用を分けるため、台帳ファイルを再読込してください。') + '>Sổ nạp từ bản trước: nạp lại file sổ để tách chi phí 当該品番に紐付け (gắn vào mã hàng).</p>' : '') +
+      '<p class="muted"' + jt('照合は「ライン使用」の項で。A1/A2/B1/B2ラインは0.5ライン日。台帳の小計式に含まれない金額（赤字、当該品番に紐付け）は品番に紐付く費用で、空き費用に含めない。') + '>Đối chiếu xem ở phần "Sử dụng chuyền". Chuyền A1/A2/B1/B2 tính nửa chuyền-ngày. Số tiền không nằm trong công thức 小計 của sổ (chữ đỏ, 当該品番に紐付け) là chi phí gắn vào mã hàng, không tính vào chi phí trống.</p></div>' : '';
     $('fileList').innerHTML = coverageBox() + billBox + regBox + checkTable() +
       '<details class="filelist"' + (fileListOpen ? ' open' : '') + '><summary>Danh sách ' + files.length + ' file đã nạp' + (bad ? ' (' + bad + ' file cần sửa công thức)' : '') + ' — bấm để xem</summary>' +
       html.replace('style="margin-top:14px"', 'style="margin-top:8px"') + '</tbody></table></div></details>';
@@ -803,43 +806,46 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
   function coverageBox() {
     var cov = R.coverage(files, ds);
     var rows = cov.map(function (c) {
-      if (!c.first) return '<li><b>' + esc(c.factory) + '</b>: chưa có file cuối tháng nào.</li>';
+      if (!c.first) return '<li' + jt(c.factory + '：月末ファイルなし。') + '><b>' + esc(c.factory) + '</b>: chưa có file cuối tháng nào.</li>';
+      var headJ = c.factory + '：' + c.have + '/' + c.expected + 'か月（' + mJ(c.first) + '→' + mJ(c.last) + '）';
       var head = '<b>' + esc(c.factory) + '</b>: ' + c.have + '/' + c.expected + ' tháng (' + R.monthLabel(c.first) + ' → ' + R.monthLabel(c.last) + ')';
-      if (!c.missing.length) return '<li class="ok">' + head + ' <span class="up">✓ đủ file cuối tháng</span></li>';
+      if (!c.missing.length) return '<li class="ok"' + jt(headJ + ' ✓ 月末ファイル揃い') + '>' + head + ' <span class="up">✓ đủ file cuối tháng</span></li>';
       // gộp các tháng liền nhau có cùng ghi chú thành một khoảng
       var groups = [];
       c.missing.forEach(function (x) {
         var note = x.status === 'chot' ? 'số chốt lấy từ file ' + fmtDate(x.srcDate) : 'chưa có số chốt';
+        var noteJ = x.status === 'chot' ? '確定値は' + dJ(x.srcDate) + 'のファイルより' : '確定値なし';
         var g = groups[groups.length - 1];
         if (g && g.note === note && R.addMonths(g.to, 1) === x.m) g.to = x.m;
-        else groups.push({ from: x.m, to: x.m, note: note });
+        else groups.push({ from: x.m, to: x.m, note: note, noteJ: noteJ });
       });
       var list = groups.map(function (g) {
         var label = g.from === g.to ? R.monthLabel(g.from) : R.monthLabel(g.from) + '–' + R.monthLabel(g.to);
         return '<span class="miss"><b>' + label + '</b> <span class="muted">(' + g.note + ')</span></span>';
       }).join('');
-      return '<li>' + head + ' <span class="down">⚠ thiếu ' + c.missing.length + ' tháng:</span><div class="miss-list">' + list + '</div></li>';
+      var listJ = groups.map(function (g) { return (g.from === g.to ? mJ(g.from) : mJ(g.from) + '～' + mJ(g.to)) + '（' + g.noteJ + '）'; }).join('、');
+      return '<li' + jt(headJ + ' ⚠ ' + c.missing.length + 'か月不足：' + listJ) + '>' + head + ' <span class="down">⚠ thiếu ' + c.missing.length + ' tháng:</span><div class="miss-list">' + list + '</div></li>';
     }).join('');
     var mid = cov.filter(function (c) { return c.mid.length; }).map(function (c) {
       return esc(c.factory) + ': ' + c.mid.map(fmtDate).join(', ');
     });
     var allOk = cov.every(function (c) { return c.first && !c.missing.length; });
     return '<div class="coverage' + (allOk ? ' all-ok' : '') + '"><h3>Kiểm tra đủ file cuối tháng</h3><ul>' + rows + '</ul>' +
-      (mid.length ? '<p class="muted">File update giữa tháng (không dùng để chốt tháng, vẫn được giữ): ' + mid.join(' · ') + '</p>' : '') +
-      '<p class="muted">Mỗi tháng cần một file update từ ngày làm việc cuối tháng đến ngày 10 tháng sau. Thiếu file thì tháng đó lấy số từ file sau (nếu có) và tháng kế tiếp không có KH đầu tháng.</p></div>';
+      (mid.length ? '<p class="muted"' + jt('月中更新ファイル（月の確定には使わないが保持）：' + cov.filter(function (c) { return c.mid.length; }).map(function (c) { return c.factory + '：' + c.mid.map(dJ).join('、'); }).join('・')) + '>File update giữa tháng (không dùng để chốt tháng, vẫn được giữ): ' + mid.join(' · ') + '</p>' : '') +
+      '<p class="muted"' + jt('各月、月末最終稼働日から翌月10日までの更新ファイルが1つ必要。ファイルが無い月は後のファイル（あれば）から数値を取り、翌月は月初計画がなくなる。') + '>Mỗi tháng cần một file update từ ngày làm việc cuối tháng đến ngày 10 tháng sau. Thiếu file thì tháng đó lấy số từ file sau (nếu có) và tháng kế tiếp không có KH đầu tháng.</p></div>';
   }
 
   // ---------- Kiểm tra công thức tổng (sheet TORAY) của từng file ----------
   var CHECK_FMT = { kh: 0, th: 0, changes: 0, lot: 0, people: 1, sam: 0 };
   function hasProblem(f) { return f.check && ((f.check.cells || []).length || f.check.issues.length); }
   function checkNote(f) {
-    if ((f.v || 0) < R.DATA_VERSION) return '<span class="down">⚠ Nạp lại file này (nạp bằng bản trang cũ).</span> ' + checkNote2(f);
+    if ((f.v || 0) < R.DATA_VERSION) return '<span class="down"' + jt('⚠ このファイルを再読込してください（旧版で読込）。') + '>⚠ Nạp lại file này (nạp bằng bản trang cũ).</span> ' + checkNote2(f);
     return checkNote2(f);
   }
   function checkNote2(f) {
-    if (!f.check || !f.check.cells) return '<span class="muted">Chưa kiểm tra công thức (nạp lại file để kiểm tra).</span> ';
-    if (!hasProblem(f)) return '<span class="up">✓ Công thức tổng (A1:R3) đủ vùng, không có ô lỗi.</span> ';
-    return '<span class="down">⚠ Công thức tổng cần sửa: ' + esc(f.check.cells.map(function (c) { return c.cell; }).join(', ')) + ' (dữ liệu đến hàng ' + f.check.lastRow + ').</span> ';
+    if (!f.check || !f.check.cells) return '<span class="muted"' + jt('数式未チェック（再読込でチェック）。') + '>Chưa kiểm tra công thức (nạp lại file để kiểm tra).</span> ';
+    if (!hasProblem(f)) return '<span class="up"' + jt('✓ 合計式（A1:R3）は範囲OK、エラーセルなし。') + '>✓ Công thức tổng (A1:R3) đủ vùng, không có ô lỗi.</span> ';
+    return '<span class="down"' + jt('⚠ 合計式の修正が必要：' + f.check.cells.map(function (c) { return c.cell; }).join(', ') + '（データは' + f.check.lastRow + '行まで）。') + '>⚠ Công thức tổng cần sửa: ' + esc(f.check.cells.map(function (c) { return c.cell; }).join(', ')) + ' (dữ liệu đến hàng ' + f.check.lastRow + ').</span> ';
   }
   // Hướng dẫn sửa, gộp theo số hàng cần thay (dùng Ctrl+H trong vùng A1:R3)
   function fixHint(c) {
@@ -856,11 +862,23 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
     if (errs.length) out.push('Ô đang lỗi: ' + errs.join(', '));
     return out.join('<br>');
   }
+  function fixHintJ(c) {
+    var byEnd = {}, mism = [], errs = [];
+    (c.cells || []).forEach(function (x) {
+      (x.shortEnds || []).forEach(function (e) { (byEnd[e] = byEnd[e] || []).push(x.cell); });
+      if (x.mismatch) mism.push(x.cell + '（' + x.mismatch + '）');
+      if (x.error) errs.push(x.cell + ' ' + x.error);
+    });
+    var out = Object.keys(byEnd).map(Number).sort(function (a, b) { return a - b; }).map(function (e) { return '行' + e + '→14871に変更：' + byEnd[e].join(', '); });
+    if (mism.length) out.push('範囲の行数不一致：' + mism.join(', '));
+    if (errs.length) out.push('エラーセル：' + errs.join(', '));
+    return out.join(' / ');
+  }
   function checkTable() {
     var bad = files.filter(hasProblem);
     var checked = files.filter(function (f) { return f.check && f.check.cells; }).length;
     if (!checked) return '';
-    var h = '<h3 style="margin:20px 0 6px">Kiểm tra công thức sheet TORAY</h3><p class="muted" style="margin-bottom:10px">' +
+    var h = '<h3 style="margin:20px 0 6px">Kiểm tra công thức sheet TORAY</h3><p class="muted" style="margin-bottom:10px"' + jt(bad.length ? bad.length + '/' + checked + '件のファイルで合計式（XN1AB!A1:R3）の修正が必要：範囲がデータ行をカバーしていない、範囲の行数不一致、またはエラーセル。下表はファイル値と全行で計算した値を比較。本ページの報告は日別数値から計算するため影響なし。' : checked + '件チェック済み：合計式はすべてデータ行をカバーし、エラーセルなし。') + '>' +
       (bad.length ? bad.length + '/' + checked + ' file có công thức tổng (XN1AB!A1:R3) cần sửa: vùng không phủ hết hàng dữ liệu, vùng không cùng số hàng, hoặc ô đang lỗi. Bảng dưới so số trong file với số tính đủ mọi hàng. Báo cáo trên trang này không bị ảnh hưởng (tính từ số từng ngày).'
         : 'Đã kiểm tra ' + checked + ' file: công thức tổng đều phủ hết hàng dữ liệu, không có ô lỗi.') + '</p>';
     if (!bad.length) return h;
@@ -870,7 +888,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
       var c = f.check, wrong = {};
       c.issues.forEach(function (i) { wrong[i.key] = i; });
       h += '<tr><td>' + esc(f.factory) + '</td><td class="txt num">' + fmtDate(f.updateDate) + '</td><td class="txt">' + (c.month ? R.monthLabel(c.month) : '—') + '</td>' +
-        '<td class="num">' + fmtN(c.lastRow) + '</td><td class="txt" style="white-space:normal;min-width:280px">' + fixHint(c) + '</td>' +
+        '<td class="num">' + fmtN(c.lastRow) + '</td><td class="txt" style="white-space:normal;min-width:280px"' + jt(fixHintJ(c)) + '>' + fixHint(c) + '</td>' +
         R.SUMMARY_CELLS.map(function (sc) {
           var a = c.file[sc.key], b = c.full[sc.key], d = CHECK_FMT[sc.key];
           if (!wrong[sc.key]) return '<td class="num bl muted">' + fmtN(a, d) + ' ✓</td>';
@@ -942,6 +960,18 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
   }
   function opts(extra) { return Object.assign({ month: state.month, factory: state.factory || null, brand: state.brand || null, owner: state.owner || null, startMonth: state.startMonth }, extra || {}); }
   var OWNER_LABEL = { TI: 'hàng TI', APIC: 'hàng APIC tự bán' };
+  // Bản tiếng Nhật của tháng, năm tài chính, phạm vi lọc, kỳ
+  function mJ(ym) { return ym ? ym.slice(0, 4) + '年' + (+ym.slice(5, 7)) + '月' : ''; }
+  function fyJ(fy) { var s = state.startMonth || 4; return fy + '年度' + (s === 1 ? '' : '（' + fy + '年' + s + '月～' + (fy + 1) + '年' + (s - 1) + '月）'); }
+  function dJ(iso) { return iso ? iso.slice(0, 4) + '/' + (+iso.slice(5, 7)) + '/' + (+iso.slice(8, 10)) : ''; }
+  function scopeJa() {
+    return (state.factory || '全工場') + '・' + (state.owner ? (state.owner === 'TI' ? 'TI品' : 'APIC自販品') + '・' : '') + (state.brand ? state.brand : '全ブランド') + '・' + fyJ(R.fiscalYear(state.month, state.startMonth));
+  }
+  function periodJa(months) {
+    if (!months.length) return '対象月なし';
+    return months.length === 1 ? mJ(months[0]) : mJ(months[0]) + '～' + mJ(months[months.length - 1]) + '（' + months.length + 'か月）';
+  }
+  function pJ(a, b) { return b ? jN(a / b * 100, 1) + '%' : '—'; }
   function scopeText() {
     return (state.factory || 'Tất cả xưởng') + ' · ' + (state.owner ? OWNER_LABEL[state.owner] + ' · ' : '') + (state.brand || 'tất cả nhãn hàng') + ' · ' + R.fiscalLabel(R.fiscalYear(state.month, state.startMonth), state.startMonth);
   }
@@ -965,7 +995,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
     var s = R.summarize(ds, opts());
     var T = s.totals, P = s.periods;
     $('ovTitle').textContent = 'Tổng quan tháng ' + R.monthLabel(state.month);
-    $('ovScope').textContent = scopeText();
+    $('ovScope').textContent = scopeText(); $('ovScope').setAttribute('data-jt', scopeJa());
     var metas = ds.factories.filter(function (f) { return !state.factory || f === state.factory; }).map(function (f) { return ds.meta[f + '|' + state.month]; }).filter(Boolean);
     $('ovMeta').innerHTML = metas.map(function (m) {
       return '<b>' + esc(m.f) + '</b> ' + chip(m.status) + ' số theo file update ' + fmtDate(m.srcDate) + ' · ' + m.wd + ' ngày làm việc' +
@@ -1025,7 +1055,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
     var rows = sortRows(s.rows, state.sort, 'key');
     var T = s.totals, P = s.periods, lab = R.DIMS[state.dim].label;
     var th = function (r, p) { return P[p].length ? r[p].th : null; };
-    if (!rows.length) { $('dimTable').innerHTML = '<div class="empty">Không có số liệu.</div>'; return; }
+    if (!rows.length) { $('dimTable').innerHTML = '<div class="empty"' + jt('データなし。') + '>Không có số liệu.</div>'; return; }
     var head = '<table><thead><tr><th>' + lab + '</th><th>TH tháng</th><th>KH tháng</th><th>% đạt</th><th>Tỷ trọng</th>' +
       '<th class="bl">TH tháng trước</th><th>±</th><th class="bl">TH cùng kỳ</th><th>±</th>' +
       '<th class="bl">Lũy kế NTC</th><th>Lũy kế cùng kỳ</th><th>±</th>' +
@@ -1081,7 +1111,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
     chartData = data;
     var box = $('chart');
     var any = data.series.some(function (s) { return s.values.some(function (v) { return v > 0; }); });
-    if (!any) { box.innerHTML = '<div class="empty">Năm tài chính này chưa có sản lượng thực hiện.</div>'; return; }
+    if (!any) { box.innerHTML = '<div class="empty"' + jt('この年度はまだ生産実績がありません。') + '>Năm tài chính này chưa có sản lượng thực hiện.</div>'; return; }
     var W = Math.max(320, box.clientWidth || 800), H = 260, padL = 48, padR = 8, padT = 10, padB = 26;
     var max = 0;
     data.series.forEach(function (s) { s.values.forEach(function (v) { if (v > max) max = v; }); });
@@ -1148,7 +1178,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
     });
     $('fyTable').innerHTML = h + '</tbody></table>';
     $('fyDimSeg').innerHTML = segHtml(state.fyDim, 'data-fydim');
-    if (!r.matrix || !r.matrix.length) { $('fyMatrix').innerHTML = '<div class="empty">Chưa có sản lượng thực hiện.</div>'; return; }
+    if (!r.matrix || !r.matrix.length) { $('fyMatrix').innerHTML = '<div class="empty"' + jt('生産実績がまだありません。') + '>Chưa có sản lượng thực hiện.</div>'; return; }
     var yrs = r.years, ly = r.lastTh >= 0 ? yrs[r.lastTh] : null, cmp = !!(ly && ly.same);
     var m = '<table><thead><tr><th>' + R.DIMS[state.fyDim].label + '</th>' + yrs.map(function (y) { return '<th>NTC ' + y.fy + '</th>'; }).join('') +
       (cmp ? '<th class="bl">NTC ' + (ly.fy - 1) + ' cùng kỳ<span class="sub">' + span(ly.sameMonths) + '</span></th><th>NTC ' + ly.fy + ' so cùng kỳ</th>' : '') + '</tr></thead><tbody>';
@@ -1180,7 +1210,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
     var vals = [];
     sp.series.forEach(function (s) { s.values.forEach(function (v) { if (v != null && isFinite(v)) vals.push(v); }); });
     var legend = sp.series.length > 1 ? '<div class="legend">' + sp.series.map(function (s) { return '<span><i style="background:' + s.color + '"></i>' + esc(s.name) + '</span>'; }).join('') + '</div>' : '';
-    var title = '<h4>' + esc(sp.title) + (sp.sub ? '<span class="sub">' + esc(sp.sub) + '</span>' : '') + '</h4>';
+    var title = '<h4' + jt(sp.titleJa) + '>' + esc(sp.title) + (sp.sub ? '<span class="sub"' + jt(sp.subJa) + '>' + esc(sp.sub) + '</span>' : '') + '</h4>';
     if (!vals.length) { el.innerHTML = title + '<div class="muted" style="font-size:12px;padding:18px 0">Chưa có số liệu.</div>'; return; }
     var W = Math.max(260, el.clientWidth - 24 || 320), H = sp.height || 160, padL = 44, padR = 8, padT = 8, padB = 22;
     if (sp.type === 'stack') {
@@ -1327,6 +1357,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
   function renderSummary() {
     var startMonth = state.startMonth;
     $('thScope').textContent = (state.factory ? 'Xưởng ' + state.factory : 'Toàn xưởng (gộp tất cả xưởng)') + (state.owner ? ' · ' + OWNER_LABEL[state.owner] : '') + (state.brand ? ' · nhãn hàng ' + state.brand : '') + '. Đổi xưởng, nhóm hàng, nhãn hàng ở thanh bộ lọc.';
+    $('thScope').setAttribute('data-jt', (state.factory ? '工場 ' + state.factory : '全工場（合算）') + (state.owner ? '・' + (state.owner === 'TI' ? 'TI品' : 'APIC自販品') : '') + (state.brand ? '・ブランド ' + state.brand : '') + '。工場・品目区分・ブランドはフィルターで変更。');
     var years = {};
     ds.months.forEach(function (m) { years[R.fiscalYear(m, startMonth)] = 1; });
     var fys = Object.keys(years).map(Number).sort();
@@ -1455,21 +1486,24 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
       var lp = partOf(d.row.line), regRows = d.reg.rows.filter(function (q) { return q.line + q.part.charAt(0) === d.row.line || (q.part === 'AB' && (q.line + 'A' === d.row.line || q.line + 'B' === d.row.line)); });
       var myTxt = d.row.periods.map(function (p) { return (p.kind === 'apic' ? 'APIC ' : 'trống ') + fmtDate(p.from).slice(0, -5) + '–' + fmtDate(p.to).slice(0, -5) + ' (' + fmtN(p.days, 1) + ')'; }).join('; ');
       return '<tr><td>' + R.monthLabel(d.m) + '</td>' + td(lp[0]) + td(lp[1], 'txt') + td(fmtN(d.row.tiDays, 1)) + td(fmtN(d.row.mine, 1)) + td(delta2(d.row.diff)) +
-        '<td class="txt" style="white-space:normal;min-width:200px;font-size:12px">' + (regRows.length ? esc(regRows.map(regRowText).join('; ')) : '<span class="muted">không ghi</span>') + '</td>' +
-        '<td class="txt" style="white-space:normal;min-width:180px;font-size:12px">' + (myTxt ? esc(myTxt) : '<span class="muted">có sản lượng hàng TI</span>') + '</td></tr>';
-    })) : '<p class="up">Các tháng có dữ liệu: sổ và trang khớp từng chuyền.</p>';
+        '<td class="txt" style="white-space:normal;min-width:200px;font-size:12px">' + (regRows.length ? esc(regRows.map(regRowText).join('; ')) : '<span class="muted"' + jt('記載なし') + '>không ghi</span>') + '</td>' +
+        '<td class="txt" style="white-space:normal;min-width:180px;font-size:12px">' + (myTxt ? esc(myTxt) : '<span class="muted"' + jt('TI品の生産あり') + '>có sản lượng hàng TI</span>') + '</td></tr>';
+    })) : '<p class="up"' + jt('データがある月：台帳とページはライン毎に一致。') + '>Các tháng có dữ liệu: sổ và trang khớp từng chuyền.</p>';
     var cur = cmp.filter(function (x) { return x.r.month === state.month; })[0];
     var bad = regs.filter(function (r) { return r.checks && r.checks.length; });
     return '<h3>Đối chiếu sổ ライン空き原価配分表 của TI (' + R.monthLabel(cmp[0].r.month) + ' – ' + R.monthLabel(cmp[cmp.length - 1].r.month) + ')</h3>' +
-      '<p class="an-note">Sổ: chuyền trống theo nguyên nhân; dòng "投入物なし(NYABEオーダー縫製)" là chuyền may hàng Nhà Bè (APIC tự bán), so với "Trang: may APIC". Chuyền A1/A2/B1/B2 tính nửa chuyền-ngày. Lệch = trang − sổ, chỉ ở các chuyền trang có dữ liệu. ' +
+      '<p class="an-note"' + jt('台帳：原因別のライン空き。「投入物なし(NYABEオーダー縫製)」の行はNHABE品（APIC自販）を縫製したラインで、「ページ：APIC品縫製」と比較。A1/A2/B1/B2ラインは0.5ライン日。差異＝ページ－台帳（ページにデータがあるラインのみ）。' +
+        '空き費用（台帳の黒字）はTIが原価管理ファイルで同じ部署コードの品番に⑥月単位実績単価(空き配分)として、各品番の⑤費用比率で配分。' +
+        '「品番紐付け」（赤字、当該品番に紐付け）は空きを発生させた品番の当月⑤費用全体であり、空き日分の費用だけではない：待機日はその品番の生産時間に含まれる。' +
+        (cur ? '' : 'フィルターで台帳の月を選ぶと、その月の行が強調表示されます。')) + '>Sổ: chuyền trống theo nguyên nhân; dòng "投入物なし(NYABEオーダー縫製)" là chuyền may hàng Nhà Bè (APIC tự bán), so với "Trang: may APIC". Chuyền A1/A2/B1/B2 tính nửa chuyền-ngày. Lệch = trang − sổ, chỉ ở các chuyền trang có dữ liệu. ' +
       'Chi phí trống (số đen trong sổ) được TI phân bổ vào các mã cùng bộ phận (部署コード) ở file 原価管理, cột ⑥月単位実績単価(空き配分), theo tỷ lệ chi phí ⑤ của từng mã. ' +
       '"Gắn mã hàng" (số đỏ, 当該品番に紐付け) là chi phí ⑤ của cả mã hàng gây ra trống trong tháng, không phải riêng chi phí các ngày trống: các ngày chờ được tính vào thời gian sản xuất của chính mã đó. ' +
       (cur ? '' : 'Chọn một tháng trong sổ ở thanh bộ lọc để tô đậm dòng tháng đó.') + '</p>' + t0 +
-      (bad.length ? '<p class="warn">⚠ Sổ cộng thiếu: ' + bad.map(function (r) { return R.monthLabel(r.month) + ' ' + r.checks.map(function (c) { return c.factory + ' ' + (c.what === 'amount' ? 'chi phí ghi ' + fmtN(c.sheet, 0) + ' USD, đúng ra ' + fmtN(c.rows, 0) + ' USD' : 'ngày ghi ' + fmtN(c.sheet, 1) + ', đúng ra ' + fmtN(c.rows, 1)); }).join(', '); }).join(' · ') + '. Bảng trên dùng tổng các dòng.</p>' : '') +
+      (bad.length ? '<p class="warn"' + jt('⚠ 台帳の合計漏れ：' + bad.map(function (r) { return mJ(r.month) + ' ' + r.checks.map(function (c) { return c.factory + ' ' + (c.what === 'amount' ? '費用 記載' + jN(c.sheet, 0) + ' USD、正しくは' + jN(c.rows, 0) + ' USD' : '日数 記載' + jN(c.sheet, 1) + '、正しくは' + jN(c.rows, 1)); }).join('、'); }).join('・') + '。上表は行の合計を使用。') + '>⚠ Sổ cộng thiếu: ' + bad.map(function (r) { return R.monthLabel(r.month) + ' ' + r.checks.map(function (c) { return c.factory + ' ' + (c.what === 'amount' ? 'chi phí ghi ' + fmtN(c.sheet, 0) + ' USD, đúng ra ' + fmtN(c.rows, 0) + ' USD' : 'ngày ghi ' + fmtN(c.sheet, 1) + ', đúng ra ' + fmtN(c.rows, 1)); }).join(', '); }).join(' · ') + '. Bảng trên dùng tổng các dòng.</p>' : '') +
       '<h3>Nguyên nhân chuyền trống theo sổ</h3>' + t1 +
       '<h3>Chuyền lệch giữa sổ và trang</h3>' + t2 +
-      (diffs.length > 40 ? '<p class="muted">Hiện 40 / ' + diffs.length + ' dòng lệch nhiều nhất; đủ danh sách ở file Excel.</p>' : '') +
-      '<p class="an-note">Trang thấy trống nhưng sổ không ghi: chuyền không có sản lượng trong file KH_UPDATE mà sổ không tính là trống (vd. chuyền ngừng, gộp chuyền, may mẫu, hỗ trợ xưởng khác). Nếu chuyền ngừng thật, khai báo ngày ngừng ở mục "Khai báo ngày mở / ngừng chuyền" để không tính vào chuyền-ngày.</p>';
+      (diffs.length > 40 ? '<p class="muted"' + jt('差異の大きい上位40行を表示（全' + diffs.length + '行）。全リストはExcelファイル参照。') + '>Hiện 40 / ' + diffs.length + ' dòng lệch nhiều nhất; đủ danh sách ở file Excel.</p>' : '') +
+      '<p class="an-note"' + jt('ページでは空きだが台帳に記載なし：KH_UPDATEで生産数量がないが、台帳では空きとしないライン（例：ライン停止、ライン統合、サンプル縫製、他工場応援）。実際に停止したラインは「ライン開設・停止日の登録」で停止日を登録すると、ライン日に含まれません。') + '>Trang thấy trống nhưng sổ không ghi: chuyền không có sản lượng trong file KH_UPDATE mà sổ không tính là trống (vd. chuyền ngừng, gộp chuyền, may mẫu, hỗ trợ xưởng khác). Nếu chuyền ngừng thật, khai báo ngày ngừng ở mục "Khai báo ngày mở / ngừng chuyền" để không tính vào chuyền-ngày.</p>';
   }
 
   // ---------- Đối chiếu file APIC負担金額 của TI ----------
@@ -1491,22 +1525,24 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
     if (cur) {
       var c = cur.c, b = cur.b, pr = price(b), ra = ratio(b);
       var rows = c.rows.map(function (r) {
-        var lp = partOf(r.line), note = !r.hasData ? 'Không có dữ liệu chuyền này trong tháng (thiếu file xưởng)' : Math.abs(r.diff) < 0.01 ? 'Khớp' : r.diff > 0 ? 'Trang thấy nhiều hơn TI tính' : 'TI tính nhiều hơn trang thấy';
+        var lp = partOf(r.line), noteJ = !r.hasData ? '当月このラインのデータなし（工場ファイル不足）' : Math.abs(r.diff) < 0.01 ? '一致' : r.diff > 0 ? 'ページの方がTIより多い' : 'TIの方がページより多い', note = !r.hasData ? 'Không có dữ liệu chuyền này trong tháng (thiếu file xưởng)' : Math.abs(r.diff) < 0.01 ? 'Khớp' : r.diff > 0 ? 'Trang thấy nhiều hơn TI tính' : 'TI tính nhiều hơn trang thấy';
         var cls = !r.hasData ? 'muted' : Math.abs(r.diff) < 0.01 ? 'up' : 'down';
         var tiTxt = r.tiRows.map(function (x) { return x.part + ' ' + fmtDate(x.from).slice(0, -5) + '–' + fmtDate(x.to).slice(0, -5) + ' (' + x.days + ')' + (R.billingSelf(b, x) ? ' 自販' : ''); }).join('; ');
         var myTxt = r.periods.map(function (p) { return (p.kind === 'apic' ? 'APIC ' : 'trống ') + fmtDate(p.from).slice(0, -5) + '–' + fmtDate(p.to).slice(0, -5) + ' (' + fmtN(p.days, 1) + ')'; }).join('; ');
         return '<tr><td>' + lp[0] + '</td>' + td(lp[1], 'txt') + td(fmtN(r.tiDays, 1)) + td(r.tiSelf ? fmtN(r.tiSelf, 1) : '—') + td(r.hasData ? fmtN(r.idle, 1) : '—') + td(r.hasData ? fmtN(r.apic, 1) : '—') +
-          td(r.hasData ? delta2(r.diff) : '—') + td('<span class="' + cls + '">' + note + '</span>', 'txt') +
+          td(r.hasData ? delta2(r.diff) : '—') + td('<span class="' + cls + '"' + jt(noteJ) + '>' + note + '</span>', 'txt') +
           '<td class="txt" style="white-space:normal;min-width:220px;font-size:12px">' + esc(tiTxt) + (myTxt ? '<span class="sub">Trang: ' + esc(myTxt) + '</span>' : '') + '</td></tr>';
       });
       var est = pr && ra ? c.mine * pr * ra : null;
       detail = '<h3>Đối chiếu tháng ' + R.monthLabel(b.month) + ' với file ' + esc(b.name) + '</h3>' +
-        '<p class="an-note">TI tính ' + fmtN(b.days, 1) + ' chuyền-ngày, 金額 ' + fmtN(b.amount, 0) + ' USD, 請求額 (APIC chịu) ' + fmtN(b.charge, 0) + ' USD. ' +
+        '<p class="an-note"' + jt('TI計上 ' + jN(b.days, 1) + 'ライン日、金額 ' + jN(b.amount, 0) + ' USD、請求額（APIC負担）' + jN(b.charge, 0) + ' USD。' +
+          (c.dataOk ? 'データがあるラインで、ページは空き＋APIC品縫製を' + jN(c.mine, 1) + 'ライン日と計算' + (est != null ? '→ 請求額の試算 ' + jN(est, 0) + ' USD（単価 ' + jN(pr, 2) + ' × 比率 ' + jN(ra * 100, 1) + '%）' : '') + '。' : '当月の確定ファイルがまだありません。') +
+          'TIのPart A1/A2/B1/B2は0.5ライン日。「APIC自販分」の行、またはファイル名にNHABEを含むものはAPIC自販品の縫製、その他の行はライン空き。') + '>TI tính ' + fmtN(b.days, 1) + ' chuyền-ngày, 金額 ' + fmtN(b.amount, 0) + ' USD, 請求額 (APIC chịu) ' + fmtN(b.charge, 0) + ' USD. ' +
         (c.dataOk ? 'Ở các chuyền có dữ liệu, trang tính ' + fmtN(c.mine, 1) + ' chuyền-ngày trống + may hàng APIC' + (est != null ? ' → ước tính 請求額 ' + fmtN(est, 0) + ' USD (đơn giá ' + fmtN(pr, 2) + ' × tỷ lệ ' + fmtP(ra) + ')' : '') + '.' : 'Chưa có file chốt tháng này.') +
         ' Part A1/A2/B1/B2 của TI tính nửa chuyền-ngày. Dòng ghi "APIC自販分" hoặc file có chữ NHABE trong tên là may hàng APIC tự bán; dòng còn lại là chuyền trống.</p>' +
         table(['Chuyền', 'Part', 'TI tính<span class="sub">chuyền-ngày</span>', 'Trong đó 自販', 'Trang: trống', 'Trang: may APIC', 'Lệch', 'Kết quả', 'Chi tiết (TI / trang)'], rows);
     }
-    return '<h3>Đối chiếu với file APIC負担金額 của TI</h3>' + t0 + detail + '<p class="an-note">Lệch dương: trang thấy chuyền trống hoặc may hàng APIC nhiều ngày hơn TI tính; lệch âm: TI tính nhiều hơn. Tháng thiếu file của một xưởng chỉ đối chiếu được các chuyền có dữ liệu.</p>';
+    return '<h3>Đối chiếu với file APIC負担金額 của TI</h3>' + t0 + detail + '<p class="an-note"' + jt('差異プラス：ページがTIより空き・APIC品縫製の日数を多く計上；マイナス：TIの方が多い。工場ファイルが欠けている月は、データがあるラインのみ照合。') + '>Lệch dương: trang thấy chuyền trống hoặc may hàng APIC nhiều ngày hơn TI tính; lệch âm: TI tính nhiều hơn. Tháng thiếu file của một xưởng chỉ đối chiếu được các chuyền có dữ liệu.</p>';
   }
   function delta2(v) { if (v == null) return '—'; if (Math.abs(v) < 0.01) return '<span class="up">0</span>'; return '<span class="down">' + (v > 0 ? '+' : '') + fmtN(v, 1) + '</span>'; }
 
@@ -1517,18 +1553,18 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
     var life = Object.keys(ds.lineLife || {}).map(function (k) { return ds.lineLife[k]; });
     var ch = life.filter(function (l) { return l.opened || l.closed || l.manual; }).sort(function (a, b) { return a.from < b.from ? -1 : 1; });
     var all = life.length;
-    $('luLines').innerHTML = '<div class="coverage" style="margin:0 0 12px"><h3>Số nửa chuyền theo thời gian</h3><p>' + all + ' nửa chuyền trong dữ liệu. ' +
+    $('luLines').innerHTML = '<div class="coverage" style="margin:0 0 12px"><h3>Số nửa chuyền theo thời gian</h3><p' + jt(all + '半ライン（データ内）。' + (ch.length ? '変更：' + ch.map(function (l) { return l.line + ' ' + (l.opened ? dJ(l.from) + 'から開設' : '') + (l.opened && l.closed ? '、' : '') + (l.closed ? dJ(l.to) + '以降停止' : '') + (l.manual ? '（手動登録）' : ''); }).join('・') : 'データ期間中に新設・停止したラインはありません。')) + '>' + all + ' nửa chuyền trong dữ liệu. ' +
       (ch.length ? 'Thay đổi: ' + ch.map(function (l) {
         return '<b>' + esc(l.line) + '</b> ' + (l.opened ? 'mở từ ' + fmtDate(l.from) : '') + (l.opened && l.closed ? ', ' : '') + (l.closed ? 'ngừng sau ' + fmtDate(l.to) : '') + (l.manual ? ' <span class="muted">(khai báo tay)</span>' : '');
       }).join(' · ') : 'Không có chuyền mở mới hay ngừng trong khoảng dữ liệu.') +
-      '</p><p class="muted">Chuyền chỉ được tính từ ngày có sản lượng đầu tiên đến ngày có sản lượng cuối cùng; trước khi mở và sau khi ngừng không tính là trống. Chuyền có sản lượng trong 31 ngày đầu (hoặc cuối) của dữ liệu thì coi như có từ đầu (vẫn còn đến cuối).</p></div>';
+      '</p><p class="muted"' + jt('ラインは最初に生産数量がある日から最後の日までを計算。開設前と停止後は空きとしない。データの最初（または最後）31日以内に生産数量があるラインは、最初からある（最後まである）とみなす。') + '>Chuyền chỉ được tính từ ngày có sản lượng đầu tiên đến ngày có sản lượng cuối cùng; trước khi mở và sau khi ngừng không tính là trống. Chuyền có sản lượng trong 31 ngày đầu (hoặc cuối) của dữ liệu thì coi như có từ đầu (vẫn còn đến cuối).</p></div>';
   }
   function renderLineUsage() {
     renderLineLife();
     var sm = state.startMonth, years = {};
     ds.months.forEach(function (m) { if (ds.lineMonthOk[m]) years[R.fiscalYear(m, sm)] = 1; });
     var fys = Object.keys(years).map(Number).sort();
-    if (!fys.length) { $('luFy').innerHTML = ''; $('luBody').innerHTML = billingBlock() + '<div class="empty">Chưa có tháng nào mà mọi xưởng đều có file chốt, nên chưa thống kê được chuyền (chuyền là chung giữa các xưởng). Nạp đủ file cuối tháng của cả APA1 và APA2.</div>'; return; }
+    if (!fys.length) { $('luFy').innerHTML = ''; $('luBody').innerHTML = billingBlock() + '<div class="empty"' + jt('全工場の確定ファイルが揃った月がまだないため、ライン統計ができません（ラインは工場共通）。APA1とAPA2の月末ファイルを両方読み込んでください。') + '>Chưa có tháng nào mà mọi xưởng đều có file chốt, nên chưa thống kê được chuyền (chuyền là chung giữa các xưởng). Nạp đủ file cuối tháng của cả APA1 và APA2.</div>'; return; }
     if (fys.indexOf(state.luFy) < 0) state.luFy = fys.indexOf(R.fiscalYear(state.month, sm)) >= 0 ? R.fiscalYear(state.month, sm) : fys[fys.length - 1];
     $('luFy').innerHTML = fys.slice().reverse().map(function (fy) { return '<option value="' + fy + '"' + (fy === state.luFy ? ' selected' : '') + '>' + esc(R.fiscalLabel(fy, sm)) + '</option>'; }).join('');
     var o = { startMonth: sm };
@@ -1538,6 +1574,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
     var th = function (m, owner) { return R.filterFacts(ds.facts, { months: [m], owner: owner }).filter(function (x) { return !x.open; }).reduce(function (a, x) { return a + x.th; }, 0); };
     var ok = u.byMonth.filter(function (a) { return !a.noData; });
     var lc = ok.map(function (a) { return a.lines; }), lcTxt = lc.length ? (Math.min.apply(null, lc) === Math.max.apply(null, lc) ? lc[0] : Math.min.apply(null, lc) + '–' + Math.max.apply(null, lc)) : '—';
+    var headJ = T.total ? state.luFy + '年度（データが揃った' + ok.length + 'か月）：' + lcTxt + '半ライン、' + jN(T.total) + 'ライン日。TI品縫製 ' + pJ(T.ti, T.total) + '（' + jN(T.ti) + '）、APIC自販品 ' + pJ(T.apic, T.total) + '（' + jN(T.apic) + '）、ライン空き ' + pJ(T.idle, T.total) + '（' + jN(T.idle) + '）。' : 'この年度はデータが揃った月がまだありません。';
     var head = T.total ? 'NTC ' + state.luFy + ' (' + ok.length + ' tháng có đủ số): ' + lcTxt + ' nửa chuyền, ' + fmtN(T.total) + ' chuyền-ngày. May hàng TI ' + pc1(T.ti, T.total) +
       ' (' + fmtN(T.ti) + '), hàng APIC tự bán ' + pc1(T.apic, T.total) + ' (' + fmtN(T.apic) + '), chuyền trống ' + pc1(T.idle, T.total) + ' (' + fmtN(T.idle) + ').' : 'Năm này chưa có tháng nào đủ số liệu.';
     // biểu đồ
@@ -1559,8 +1596,8 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
           td(pc1(a.idle, a.total)) + td(a.offWork ? fmtN(a.offWork, 1) : '—') + td(fmtN(tth)) + td(fmtN(th(a.month, 'APIC'))) + td(a.ti > 0 ? fmtN(tth / a.ti, 1) : '—') + td(a.plan ? fmtN(a.plan, 1) : '—') + '</tr>';
       }).concat(['<tr class="total"><td>Cả năm</td>' + td(T.wd) + td('') + td(fmtN(T.total)) + td(fmtN(T.ti, 1)) + td(fmtN(T.apic, 1)) + td(fmtN(T.idle, 1)) + td(pc1(T.idle, T.total)) + td(T.offWork ? fmtN(T.offWork, 1) : '—') + td('') + td('') + td('') + td(T.plan ? fmtN(T.plan, 1) : '—') + '</tr>']));
     var npf = (ds.noPlanFiles || []).filter(function (x) { return x.months.some(function (m) { return R.fiscalYear(m, sm) === state.luFy; }); });
-    var planNote = '<p class="an-note">Ngày đã qua mà chuyền / tổ có KH nhưng không ghi TH (vd. tổ 4AB1 may ND92625, hàng 工程時間 rất dài chưa ghi TH hằng ngày) được tính là có may, ghi ở cột "Có KH, không ghi TH". Chuyền gộp 4AB, 12AB…: tổ 4AB1 hoặc 4AB2 có may là cả 4A và 4B có may; tổ của nửa chuyền (4A1, 4A2) tính nửa chuyền-ngày.' +
-      (npf.length ? ' <span class="warn">File nạp trước bản này chưa có KH theo ngày: nạp lại ' + npf.map(function (x) { return esc(x.factory) + ' update ' + fmtDate(x.updateDate); }).join(', ') + ' để tính phần này.</span>' : '') + '</p>';
+    var planNote = '<p class="an-note"' + jt('経過日でライン・班にKHがあるがTHの記載がない日（例：4AB1班のND92625、工程時間が非常に長く毎日THを記載しない）は縫製ありとし、「KHあり・TH記載なし」列に表示。統合ライン4AB、12AB…：4AB1または4AB2班が縫製していれば4A・4Bとも縫製あり；半ラインの班（4A1、4A2）は0.5ライン日。') + '>Ngày đã qua mà chuyền / tổ có KH nhưng không ghi TH (vd. tổ 4AB1 may ND92625, hàng 工程時間 rất dài chưa ghi TH hằng ngày) được tính là có may, ghi ở cột "Có KH, không ghi TH". Chuyền gộp 4AB, 12AB…: tổ 4AB1 hoặc 4AB2 có may là cả 4A và 4B có may; tổ của nửa chuyền (4A1, 4A2) tính nửa chuyền-ngày.' +
+      (npf.length ? ' <span class="warn"' + jt('この版より前に読み込んだファイルには日別KHがありません：' + npf.map(function (x) { return x.factory + ' 更新' + dJ(x.updateDate); }).join('、') + 'を再読込してください。') + '>File nạp trước bản này chưa có KH theo ngày: nạp lại ' + npf.map(function (x) { return esc(x.factory) + ' update ' + fmtDate(x.updateDate); }).join(', ') + ' để tính phần này.</span>' : '') + '</p>';
     // so sánh các năm
     var yRows = fys.map(function (fy) {
       var uu = R.lineUsage(ds, o, R.fiscalMonths(fy, sm)), tt = uu.total;
@@ -1587,10 +1624,10 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
       }).concat(['<tr class="total"><td>Tổng</td><td></td><td></td><td></td>' + td(list.reduce(function (a, p) { return a + p.workDays; }, 0)) + td(fmtN(list.reduce(function (a, p) { return a + p.days; }, 0), 1)) + (kind === 'apic' ? '<td></td>' : '') + '</tr>']));
     };
     var monthBlock = (ds.lineMonthOk[mm] ? '<h3>Tháng ' + R.monthLabel(mm) + ': giai đoạn may hàng APIC tự bán (APIC自販分)</h3>' + per('apic') + '<h3>Tháng ' + R.monthLabel(mm) + ': giai đoạn chuyền trống</h3>' + per('idle') +
-      '<p class="an-note">Hai bảng này tương ứng danh sách APIC負担金額 hằng tháng của TI (dòng "APIC自販分 生産期間" và dòng chuyền trống). Ngày làm việc không tính Chủ nhật, ngày lễ. Chuyền-ngày = 0,5 khi chỉ một nửa chuyền tách (A1 hoặc A2) trống hoặc may hàng APIC. Đổi tháng ở thanh bộ lọc.</p>'
-      : '<p class="muted">Tháng ' + R.monthLabel(mm) + ' chưa đủ file chốt của mọi xưởng nên chưa lập được giai đoạn chuyền.</p>');
-    $('luBody').innerHTML = billingBlock() + regBlock() + '<p class="headline">' + head + '</p>' + charts + '<h3>Theo tháng</h3>' + t1 + planNote + '<h3>So sánh các năm</h3>' + t2 +
-      '<p class="an-note">Số nửa chuyền = nửa chuyền A/B có sản lượng trong năm. Tài liệu TI tính 29 chuyền × 297 ngày. Năm thiếu tháng thì số chuyền-ngày nhỏ hơn.</p>' +
+      '<p class="an-note"' + jt('この2つの表はTIの毎月のAPIC負担金額リスト（「APIC自販分 生産期間」行とライン空き行）に対応。稼働日は日曜・祝日を除く。半ライン（A1またはA2）のみ空き・APIC品縫製の場合は0.5ライン日。月はフィルターで変更。') + '>Hai bảng này tương ứng danh sách APIC負担金額 hằng tháng của TI (dòng "APIC自販分 生産期間" và dòng chuyền trống). Ngày làm việc không tính Chủ nhật, ngày lễ. Chuyền-ngày = 0,5 khi chỉ một nửa chuyền tách (A1 hoặc A2) trống hoặc may hàng APIC. Đổi tháng ở thanh bộ lọc.</p>'
+      : '<p class="muted"' + jt(mJ(mm) + 'は全工場の確定ファイルが揃っていないため、ライン期間を作成できません。') + '>Tháng ' + R.monthLabel(mm) + ' chưa đủ file chốt của mọi xưởng nên chưa lập được giai đoạn chuyền.</p>');
+    $('luBody').innerHTML = billingBlock() + regBlock() + '<p class="headline"' + jt(headJ) + '>' + head + '</p>' + charts + '<h3>Theo tháng</h3>' + t1 + planNote + '<h3>So sánh các năm</h3>' + t2 +
+      '<p class="an-note"' + jt('半ライン数＝年間に生産数量があるA/B半ライン。TI資料は29ライン×297日。月が欠けている年はライン日が少なくなります。') + '>Số nửa chuyền = nửa chuyền A/B có sản lượng trong năm. Tài liệu TI tính 29 chuyền × 297 ngày. Năm thiếu tháng thì số chuyền-ngày nhỏ hơn.</p>' +
       '<h3>Theo chuyền · NTC ' + state.luFy + '</h3>' + t3 + monthBlock;
     drawCharts($('luBody'));
   }
@@ -1635,51 +1672,6 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
       soon: lines.filter(function (l) { return l.wdLeft <= 20; }), idleM: hrIdle([m]), idleY: hrIdle(F.cur.months), lossY: hrLoss(F.cur.months) };
   }
   function exPct(a, b) { return a != null && b ? a / b - 1 : null; }
-  function exTiles(D) {
-    var c = D.cur, p = D.prev, Fc = D.F.cur.v, Fp = D.F.prev.v, cy = D.cy, cfg = D.ct.cfg, T = D.T, tiles = [];
-    var isEff = state.ctMetric === 'efficiency', mfmt = function (v) { return isEff ? fmtP(v) : fmtN(v, 2); };
-    var sp = function (f) { return D.s12.map(function (v) { return v && v.th > 0 ? f(v) : null; }); };
-    // 1. Sản lượng tháng
-    if (c) {
-      var t1 = c.khOpen > 0 ? c.khOpen : (p && p.th ? p.th : null);
-      tiles.push({ label: 'Sản lượng tháng ' + R.monthLabel(D.m), value: fmtN(c.th), unit: 'sp', target: t1 != null ? (c.khOpen > 0 ? 'KH đầu tháng ' : 'Cùng kỳ ') + fmtN(t1) : '—',
-        st: exRag(c.th, t1, 'hi'), delta: p && p.th ? 'So cùng kỳ ' + hrDiff(exPct(c.th, p.th), 1, true) : '', spark: sp(function (v) { return v.th; }) });
-    }
-    // 2. Sản lượng lũy kế năm tài chính
-    if (Fc) {
-      var fc = D.F.forecast;
-      tiles.push({ label: 'Lũy kế NTC ' + D.fy + (D.F.cur.sub ? ' (' + D.F.cur.sub + ')' : ''), value: fmtN(Fc.th), unit: 'sp',
-        target: T.th ? 'Mục tiêu năm ' + fmtN(T.th) + (fc && fc.th ? ' · dự báo ' + fmtN(fc.th) : '') : 'Cùng kỳ ' + (Fp ? fmtN(Fp.th) : '—') + (fc && fc.th ? ' · dự báo năm ' + fmtN(fc.th) : ''),
-        st: T.th ? exRag(fc && fc.th, T.th, 'hi') : exRag(Fc.th, Fp && Fp.th, 'hi'), delta: Fp && Fp.th ? 'So cùng kỳ ' + hrDiff(exPct(Fc.th, Fp.th), 1, true) : '' });
-    }
-    // 3–6. Cam kết với TI
-    if (cy && cy.actual != null) tiles.push({ label: (isEff ? 'Hiệu suất' : 'Năng suất') + ' hàng TI (lũy kế)', value: mfmt(cy.actual), unit: '', target: 'Mục tiêu ' + mfmt(cy.target),
-      st: exRag(cy.actual, cy.target, 'hi'), delta: cy.vsTarget != null ? 'So mục tiêu ' + hrDiff(cy.vsTarget, 1, true) : '', spark: cy.monthly.map(function (x) { return x.value; }) });
-    if (cy && cy.ti && cy.ti.per8h != null) tiles.push({ label: 'Năng suất theo cách tính TI', value: fmtN(cy.ti.per8h, 1), unit: 'sp/chuyền-ngày', target: 'Mục tiêu ' + fmtN(cy.tiTarget, 1),
-      st: exRag(cy.ti.per8h, cy.tiTarget, 'hi'), delta: 'Quy năm ' + fmtN(cy.ti.annualEq) + ' / ' + fmtN(cy.tiTargetQty) + ' sp' });
-    if (cy) {
-      var hf = cy.forecast && cy.forecast.hardShare != null ? cy.forecast.hardShare : cy.hardShare;
-      tiles.push({ label: 'Hàng khó hàng TI (dự báo năm)', value: fmtP(hf), unit: '', target: 'Giới hạn ≤ ' + fmtP(cfg.hardMax), st: exRag(hf, cfg.hardMax, 'lo'),
-        delta: 'Lũy kế ' + fmtP(cy.hardShare), spark: cy.monthly.map(function (x) { return x.basis === 'TH' ? x.hardShare : null; }) });
-      var sf = cy.forecast && cy.forecast.smallShare != null ? cy.forecast.smallShare : cy.smallShare;
-      tiles.push({ label: 'Lot nhỏ hàng TI (dự báo năm)', value: fmtP(sf), unit: '', target: 'Giới hạn ≤ ' + fmtP(cfg.smallMax), st: exRag(sf, cfg.smallMax, 'lo'),
-        delta: 'Lũy kế ' + fmtP(cy.smallShare), spark: cy.monthly.map(function (x) { return x.basis === 'TH' ? x.smallShare : null; }) });
-    }
-    // 7. Hiệu suất toàn xưởng tháng
-    if (c && c.efficiency != null) tiles.push({ label: 'Hiệu suất tháng (mọi hàng)', value: fmtP(c.efficiency), unit: '', target: T.eff ? 'Mục tiêu ' + fmtP(T.eff) : 'Cùng kỳ ' + (p ? fmtP(p.efficiency) : '—'),
-      st: exRag(c.efficiency, T.eff || (p && p.efficiency), 'hi', 0.04), delta: p && p.efficiency != null ? 'So cùng kỳ ' + hrDiff(c.efficiency - p.efficiency, 1, true) : '', spark: sp(function (v) { return v.efficiency; }) });
-    // 8. Lao động trực tiếp
-    if (c && c.labor) tiles.push({ label: 'Lao động trực tiếp (縫直)', value: fmtN(c.labor), unit: 'người', target: T.labor ? 'Mục tiêu ' + fmtN(T.labor) : 'Cùng kỳ ' + (p && p.labor ? fmtN(p.labor) : '—'),
-      st: T.labor ? exRag(c.labor, T.labor, 'hi', 0.03) : null, delta: p && p.labor ? 'So cùng kỳ ' + hrDiff(c.labor - p.labor) + ' người' : '', spark: sp(function (v) { return v.labor; }) });
-    // 9. Chuyền trống
-    if (D.idleY != null) tiles.push({ label: 'Chuyền trống lũy kế NTC', value: fmtP(D.idleY), unit: '', target: 'Mục tiêu ≤ ' + fmtP(T.idle), st: exRag(D.idleY, T.idle, 'lo', 0.5),
-      delta: D.lossY != null ? 'Chi phí ' + fmtN(D.lossY, 1) + ' nghìn USD' : (D.idleM != null ? 'Tháng này ' + fmtP(D.idleM) : '') });
-    // 10. Kế hoạch 3 tháng tới
-    var nk = D.next.filter(function (x) { return x.p; }), avgN = nk.length ? nk.reduce(function (a, x) { return a + x.p.kh; }, 0) / 3 : null;
-    if (avgN != null && D.avgM) tiles.push({ label: 'KH 3 tháng tới (bình quân/tháng)', value: fmtN(avgN), unit: 'sp', target: 'BQ lũy kế ' + fmtN(D.avgM) + '/tháng',
-      st: exRag(avgN / D.avgM, 1, 'hi', 0.15), delta: D.soon.length + ' chuyền còn ≤ 20 ngày KH', spark: D.next.map(function (x) { return x.p ? x.p.kh : null; }) });
-    return tiles;
-  }
   // Thông điệp chính: chuyện gì → vì sao → ảnh hưởng (vi + ja)
   function exMessages(D) {
     var out = [], c = D.cur, p = D.prev, cy = D.cy, cfg = D.ct.cfg, mL = R.monthLabel(D.m), mJ = (+D.m.slice(5)) + '月';
@@ -1731,17 +1723,95 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
       ja: D.fy + '年度累計ライン空き率' + jN(D.idleY * 100, 1) + '%' + (D.lossY != null ? '、空きロス' + jN(D.lossY, 1) + '千USD' : '') + '。' });
     return out.sort(function (a, b) { return b.sev - a.sev; }).slice(0, 5);
   }
-  // Rủi ro và hành động đề xuất
+  function exTiles(D) {
+    var c = D.cur, p = D.prev, Fc = D.F.cur.v, Fp = D.F.prev.v, cy = D.cy, cfg = D.ct.cfg, T = D.T, tiles = [];
+    var isEff = state.ctMetric === 'efficiency', mfmt = function (v) { return isEff ? fmtP(v) : fmtN(v, 2); }, mfj = function (v) { return isEff ? jN(v * 100, 1) + '%' : jN(v, 2); };
+    var sp = function (f) { return D.s12.map(function (v) { return v && v.th > 0 ? f(v) : null; }); };
+    var pj = function (v) { return jN(v * 100, 1) + '%'; };
+    // 1. Sản lượng tháng
+    if (c) {
+      var t1 = c.khOpen > 0 ? c.khOpen : (p && p.th ? p.th : null);
+      tiles.push({ label: 'Sản lượng tháng ' + R.monthLabel(D.m), value: fmtN(c.th), unit: 'sp',
+        target: t1 != null ? (c.khOpen > 0 ? 'KH đầu tháng ' : 'Cùng kỳ ') + fmtN(t1) : '—', tj: t1 != null ? (c.khOpen > 0 ? '月初計画 ' : '前年同月 ') + jN(t1) : '',
+        st: exRag(c.th, t1, 'hi'), delta: p && p.th ? 'So cùng kỳ ' + hrDiff(exPct(c.th, p.th), 1, true) : '', dj: p && p.th ? '前年同月比 ' + jDiff(exPct(c.th, p.th), 1, true) : '', spark: sp(function (v) { return v.th; }) });
+    }
+    // 2. Sản lượng lũy kế năm tài chính
+    if (Fc) {
+      var fc = D.F.forecast;
+      tiles.push({ label: 'Lũy kế NTC ' + D.fy + (D.F.cur.sub ? ' (' + D.F.cur.sub + ')' : ''), value: fmtN(Fc.th), unit: 'sp',
+        target: T.th ? 'Mục tiêu năm ' + fmtN(T.th) + (fc && fc.th ? ' · dự báo ' + fmtN(fc.th) : '') : 'Cùng kỳ ' + (Fp ? fmtN(Fp.th) : '—') + (fc && fc.th ? ' · dự báo năm ' + fmtN(fc.th) : ''),
+        tj: T.th ? '年間目標 ' + jN(T.th) + (fc && fc.th ? '・見込み ' + jN(fc.th) : '') : '前年同期 ' + (Fp ? jN(Fp.th) : '—') + (fc && fc.th ? '・通期見込み ' + jN(fc.th) : ''),
+        st: T.th ? exRag(fc && fc.th, T.th, 'hi') : exRag(Fc.th, Fp && Fp.th, 'hi'), delta: Fp && Fp.th ? 'So cùng kỳ ' + hrDiff(exPct(Fc.th, Fp.th), 1, true) : '', dj: Fp && Fp.th ? '前年同期比 ' + jDiff(exPct(Fc.th, Fp.th), 1, true) : '' });
+    }
+    // 3–6. Cam kết với TI
+    if (cy && cy.actual != null) tiles.push({ label: (isEff ? 'Hiệu suất' : 'Năng suất') + ' hàng TI (lũy kế)', value: mfmt(cy.actual), unit: '', target: 'Mục tiêu ' + mfmt(cy.target), tj: '目標 ' + mfj(cy.target),
+      st: exRag(cy.actual, cy.target, 'hi'), delta: cy.vsTarget != null ? 'So mục tiêu ' + hrDiff(cy.vsTarget, 1, true) : '', dj: cy.vsTarget != null ? '目標比 ' + jDiff(cy.vsTarget, 1, true) : '', spark: cy.monthly.map(function (x) { return x.value; }) });
+    if (cy && cy.ti && cy.ti.per8h != null) tiles.push({ label: 'Năng suất theo cách tính TI', value: fmtN(cy.ti.per8h, 1), unit: 'sp/chuyền-ngày', target: 'Mục tiêu ' + fmtN(cy.tiTarget, 1), tj: '目標 ' + jN(cy.tiTarget, 1),
+      st: exRag(cy.ti.per8h, cy.tiTarget, 'hi'), delta: 'Quy năm ' + fmtN(cy.ti.annualEq) + ' / ' + fmtN(cy.tiTargetQty) + ' sp', dj: '年換算 ' + jN(cy.ti.annualEq) + ' / ' + jN(cy.tiTargetQty) + '枚' });
+    if (cy) {
+      var hf = cy.forecast && cy.forecast.hardShare != null ? cy.forecast.hardShare : cy.hardShare;
+      tiles.push({ label: 'Hàng khó hàng TI (dự báo năm)', value: fmtP(hf), unit: '', target: 'Giới hạn ≤ ' + fmtP(cfg.hardMax), tj: '上限 ≤ ' + pj(cfg.hardMax), st: exRag(hf, cfg.hardMax, 'lo'),
+        delta: 'Lũy kế ' + fmtP(cy.hardShare), dj: '累計 ' + pj(cy.hardShare), spark: cy.monthly.map(function (x) { return x.basis === 'TH' ? x.hardShare : null; }) });
+      var sf = cy.forecast && cy.forecast.smallShare != null ? cy.forecast.smallShare : cy.smallShare;
+      tiles.push({ label: 'Lot nhỏ hàng TI (dự báo năm)', value: fmtP(sf), unit: '', target: 'Giới hạn ≤ ' + fmtP(cfg.smallMax), tj: '上限 ≤ ' + pj(cfg.smallMax), st: exRag(sf, cfg.smallMax, 'lo'),
+        delta: 'Lũy kế ' + fmtP(cy.smallShare), dj: '累計 ' + pj(cy.smallShare), spark: cy.monthly.map(function (x) { return x.basis === 'TH' ? x.smallShare : null; }) });
+    }
+    // 7. Hiệu suất toàn xưởng tháng
+    if (c && c.efficiency != null) tiles.push({ label: 'Hiệu suất tháng (mọi hàng)', value: fmtP(c.efficiency), unit: '', target: T.eff ? 'Mục tiêu ' + fmtP(T.eff) : 'Cùng kỳ ' + (p ? fmtP(p.efficiency) : '—'),
+      tj: T.eff ? '目標 ' + pj(T.eff) : '前年同月 ' + (p && p.efficiency != null ? pj(p.efficiency) : '—'),
+      st: exRag(c.efficiency, T.eff || (p && p.efficiency), 'hi', 0.04), delta: p && p.efficiency != null ? 'So cùng kỳ ' + hrDiff(c.efficiency - p.efficiency, 1, true) : '',
+      dj: p && p.efficiency != null ? '前年同月比 ' + jDiff(c.efficiency - p.efficiency, 1, true) : '', spark: sp(function (v) { return v.efficiency; }) });
+    // 8. Lao động trực tiếp
+    if (c && c.labor) tiles.push({ label: 'Lao động trực tiếp (縫直)', value: fmtN(c.labor), unit: 'người', target: T.labor ? 'Mục tiêu ' + fmtN(T.labor) : 'Cùng kỳ ' + (p && p.labor ? fmtN(p.labor) : '—'),
+      tj: T.labor ? '目標 ' + jN(T.labor) + '名' : '前年同月 ' + (p && p.labor ? jN(p.labor) + '名' : '—'),
+      st: T.labor ? exRag(c.labor, T.labor, 'hi', 0.03) : null, delta: p && p.labor ? 'So cùng kỳ ' + hrDiff(c.labor - p.labor) + ' người' : '', dj: p && p.labor ? '前年同月比 ' + jDiff(c.labor - p.labor) + '名' : '', spark: sp(function (v) { return v.labor; }) });
+    // 9. Chuyền trống
+    if (D.idleY != null) tiles.push({ label: 'Chuyền trống lũy kế NTC', value: fmtP(D.idleY), unit: '', target: 'Mục tiêu ≤ ' + fmtP(T.idle), tj: '目標 ≤ ' + pj(T.idle), st: exRag(D.idleY, T.idle, 'lo', 0.5),
+      delta: D.lossY != null ? 'Chi phí ' + fmtN(D.lossY, 1) + ' nghìn USD' : (D.idleM != null ? 'Tháng này ' + fmtP(D.idleM) : ''),
+      dj: D.lossY != null ? '空きロス ' + jN(D.lossY, 1) + '千USD' : (D.idleM != null ? '当月 ' + pj(D.idleM) : '') });
+    // 10. Kế hoạch 3 tháng tới
+    var nk = D.next.filter(function (x) { return x.p; }), avgN = nk.length ? nk.reduce(function (a, x) { return a + x.p.kh; }, 0) / 3 : null;
+    if (avgN != null && D.avgM) tiles.push({ label: 'KH 3 tháng tới (bình quân/tháng)', value: fmtN(avgN), unit: 'sp', target: 'BQ lũy kế ' + fmtN(D.avgM) + '/tháng', tj: '累計月平均 ' + jN(D.avgM) + '枚',
+      st: exRag(avgN / D.avgM, 1, 'hi', 0.15), delta: D.soon.length + ' chuyền còn ≤ 20 ngày KH', dj: '計画残り20稼働日以下 ' + D.soon.length + 'ライン', spark: D.next.map(function (x) { return x.p ? x.p.kh : null; }) });
+    return tiles;
+  }
+  // Rủi ro và hành động đề xuất (vi + ja)
   function exRisks(D) {
-    var r = [], cy = D.cy, cfg = D.ct.cfg, c = D.cur, p = D.prev;
-    if (cy && cy.forecast && cy.forecast.hardShare > cfg.hardMax) r.push({ sev: exRag(cy.forecast.hardShare, cfg.hardMax, 'lo'), risk: 'Hàng khó (> 20.000 giây) dự báo ' + fmtP(cy.forecast.hardShare) + ', vượt giới hạn ' + fmtP(cfg.hardMax), impact: 'Không đạt điều khoản hợp đồng TI; hiệu suất bị kéo xuống', act: 'Thống nhất với TI về các mã khó trong KH; đề nghị loại trừ / điều chỉnh mục tiêu năng suất tương ứng', owner: 'Kinh doanh (TI) + Kế hoạch' });
-    if (cy && cy.forecast && cy.forecast.smallShare > cfg.smallMax) r.push({ sev: exRag(cy.forecast.smallShare, cfg.smallMax, 'lo'), risk: 'Lot nhỏ (≤ 500 sp) dự báo ' + fmtP(cy.forecast.smallShare) + ', vượt giới hạn ' + fmtP(cfg.smallMax), impact: 'Tăng chuyển mã, giảm năng suất', act: 'Đề nghị TI gộp lot / ghép mã cùng kiểu dáng trên một chuyền', owner: 'Kế hoạch' });
-    if (cy && cy.vsTarget != null && cy.vsTarget < -0.05) r.push({ sev: cy.vsTarget < -0.1 ? 'bad' : 'warn', risk: 'Năng suất hàng TI thấp hơn mục tiêu ' + fmtP(-cy.vsTarget), impact: cy.ti && cy.ti.annualEq != null ? 'Quy năm thiếu ' + fmtN(Math.max(0, cy.tiTargetQty - cy.ti.annualEq)) + ' sp so mục tiêu' : 'Không đạt cam kết +5%/năm', act: 'Rà soát chuyền hiệu suất thấp (mục Phân tích → Xếp hạng chuyền), rút ngắn lên năng suất mã mới, giảm chuyển mã', owner: 'Sản xuất' });
-    if (c && p && c.efficiency != null && p.efficiency != null && c.efficiency - p.efficiency < -0.03) r.push({ sev: 'warn', risk: 'Hiệu suất tháng thấp hơn cùng kỳ ' + fmtN((p.efficiency - c.efficiency) * 100, 1) + ' điểm %', impact: 'Tăng chi phí trên mỗi sản phẩm', act: 'Xác định chuyền / mã gây giảm; kiểm tra lao động, cân bằng chuyền', owner: 'Sản xuất' });
+    var r = [], cy = D.cy, cfg = D.ct.cfg, c = D.cur, p = D.prev, pj = function (v) { return jN(v * 100, 1) + '%'; };
+    if (cy && cy.forecast && cy.forecast.hardShare > cfg.hardMax) r.push({ sev: exRag(cy.forecast.hardShare, cfg.hardMax, 'lo'),
+      risk: 'Hàng khó (> 20.000 giây) dự báo ' + fmtP(cy.forecast.hardShare) + ', vượt giới hạn ' + fmtP(cfg.hardMax), riskJ: '高難易度品（20,000秒超）の見込み' + pj(cy.forecast.hardShare) + '、上限' + pj(cfg.hardMax) + 'を超過',
+      impact: 'Không đạt điều khoản hợp đồng TI; hiệu suất bị kéo xuống', impactJ: 'TI契約条件の未達、稼働効率の低下',
+      act: 'Thống nhất với TI về các mã khó trong KH; đề nghị loại trừ / điều chỉnh mục tiêu năng suất tương ứng', actJ: '計画中の高難易度品番についてTIと協議し、生産性目標からの除外・調整を依頼',
+      owner: 'Kinh doanh (TI) + Kế hoạch', ownerJ: '営業（TI）＋計画' });
+    if (cy && cy.forecast && cy.forecast.smallShare > cfg.smallMax) r.push({ sev: exRag(cy.forecast.smallShare, cfg.smallMax, 'lo'),
+      risk: 'Lot nhỏ (≤ 500 sp) dự báo ' + fmtP(cy.forecast.smallShare) + ', vượt giới hạn ' + fmtP(cfg.smallMax), riskJ: '小ロット（500枚以下）の見込み' + pj(cy.forecast.smallShare) + '、上限' + pj(cfg.smallMax) + 'を超過',
+      impact: 'Tăng chuyển mã, giảm năng suất', impactJ: '切替増加による生産性低下',
+      act: 'Đề nghị TI gộp lot / ghép mã cùng kiểu dáng trên một chuyền', actJ: 'TIへロット集約・同型品番の同一ライン集約を依頼', owner: 'Kế hoạch', ownerJ: '計画' });
+    if (cy && cy.vsTarget != null && cy.vsTarget < -0.05) r.push({ sev: cy.vsTarget < -0.1 ? 'bad' : 'warn',
+      risk: 'Năng suất hàng TI thấp hơn mục tiêu ' + fmtP(-cy.vsTarget), riskJ: 'TI品の生産性が目標を' + pj(-cy.vsTarget) + '下回る',
+      impact: cy.ti && cy.ti.annualEq != null ? 'Quy năm thiếu ' + fmtN(Math.max(0, cy.tiTargetQty - cy.ti.annualEq)) + ' sp so mục tiêu' : 'Không đạt cam kết +5%/năm',
+      impactJ: cy.ti && cy.ti.annualEq != null ? '年換算で目標に対し' + jN(Math.max(0, cy.tiTargetQty - cy.ti.annualEq)) + '枚不足' : '年5%向上の約束未達',
+      act: 'Rà soát chuyền hiệu suất thấp (mục Phân tích → Xếp hạng chuyền), rút ngắn lên năng suất mã mới, giảm chuyển mã', actJ: '低効率ラインの確認（分析→ラインランキング）、新規品番の習熟期間短縮、切替削減',
+      owner: 'Sản xuất', ownerJ: '生産' });
+    if (c && p && c.efficiency != null && p.efficiency != null && c.efficiency - p.efficiency < -0.03) r.push({ sev: 'warn',
+      risk: 'Hiệu suất tháng thấp hơn cùng kỳ ' + fmtN((p.efficiency - c.efficiency) * 100, 1) + ' điểm %', riskJ: '当月の稼働効率が前年同月を' + jN((p.efficiency - c.efficiency) * 100, 1) + 'ポイント下回る',
+      impact: 'Tăng chi phí trên mỗi sản phẩm', impactJ: '1枚当たりコストの上昇',
+      act: 'Xác định chuyền / mã gây giảm; kiểm tra lao động, cân bằng chuyền', actJ: '低下要因のライン・品番を特定し、人員配置とラインバランスを確認', owner: 'Sản xuất', ownerJ: '生産' });
     var thin = D.avgM ? D.next.filter(function (x) { return !x.p || x.p.kh < 0.6 * D.avgM; }) : [];
-    if (thin.length) r.push({ sev: thin.length > 1 ? 'bad' : 'warn', risk: 'Thiếu đơn tháng ' + thin.map(function (x) { return R.monthLabel(x.month); }).join(', '), impact: 'Nguy cơ chuyền trống, phát sinh chi phí ライン空き', act: 'Đề nghị TI bổ sung / dời đơn sớm; chuẩn bị hàng APIC tự bán (Nhà Bè) để lấp chuyền', owner: 'Kinh doanh + Kế hoạch' });
-    if (D.soon.length) r.push({ sev: D.soon.length > 5 ? 'bad' : 'warn', risk: D.soon.length + ' chuyền còn ≤ 20 ngày làm việc có KH (' + D.soon.slice(0, 6).map(function (l) { return l.line; }).join(', ') + (D.soon.length > 6 ? '…' : '') + ')', impact: 'Có thể trống chuyền nếu không xếp mã kịp', act: 'Xếp mã tiếp theo và kiểm tra nguyên phụ liệu cho các chuyền này', owner: 'Kế hoạch' });
-    if (D.idleY != null && D.idleY > D.T.idle) r.push({ sev: 'warn', risk: 'Tỷ lệ chuyền trống ' + fmtP(D.idleY) + ' (mục tiêu ≤ ' + fmtP(D.T.idle) + ')', impact: D.lossY != null ? 'Chi phí ' + fmtN(D.lossY, 1) + ' nghìn USD' : 'Phát sinh chi phí chuyền trống', act: 'Phân tích nguyên nhân (chậm nguyên phụ liệu, thiếu đơn) ở mục Sử dụng chuyền', owner: 'Kế hoạch + Mua hàng' });
+    if (thin.length) r.push({ sev: thin.length > 1 ? 'bad' : 'warn',
+      risk: 'Thiếu đơn tháng ' + thin.map(function (x) { return R.monthLabel(x.month); }).join(', '), riskJ: thin.map(function (x) { return x.month.slice(0, 4) + '年' + (+x.month.slice(5)) + '月'; }).join('・') + 'の受注不足',
+      impact: 'Nguy cơ chuyền trống, phát sinh chi phí ライン空き', impactJ: 'ライン空きとライン空き原価発生の懸念',
+      act: 'Đề nghị TI bổ sung / dời đơn sớm; chuẩn bị hàng APIC tự bán (Nhà Bè) để lấp chuyền', actJ: 'TIへ追加受注・前倒しを依頼、APIC自販品（NYABE）での補填を準備',
+      owner: 'Kinh doanh + Kế hoạch', ownerJ: '営業＋計画' });
+    if (D.soon.length) r.push({ sev: D.soon.length > 5 ? 'bad' : 'warn',
+      risk: D.soon.length + ' chuyền còn ≤ 20 ngày làm việc có KH (' + D.soon.slice(0, 6).map(function (l) { return l.line; }).join(', ') + (D.soon.length > 6 ? '…' : '') + ')',
+      riskJ: '計画残り20稼働日以下のライン' + D.soon.length + '本（' + D.soon.slice(0, 6).map(function (l) { return l.line; }).join('・') + (D.soon.length > 6 ? ' 他' : '') + '）',
+      impact: 'Có thể trống chuyền nếu không xếp mã kịp', impactJ: '次品番の投入が間に合わない場合ライン空きが発生',
+      act: 'Xếp mã tiếp theo và kiểm tra nguyên phụ liệu cho các chuyền này', actJ: '該当ラインの次品番を計画し、資材を確認', owner: 'Kế hoạch', ownerJ: '計画' });
+    if (D.idleY != null && D.idleY > D.T.idle) r.push({ sev: 'warn',
+      risk: 'Tỷ lệ chuyền trống ' + fmtP(D.idleY) + ' (mục tiêu ≤ ' + fmtP(D.T.idle) + ')', riskJ: 'ライン空き率' + pj(D.idleY) + '（目標' + pj(D.T.idle) + '以下）',
+      impact: D.lossY != null ? 'Chi phí ' + fmtN(D.lossY, 1) + ' nghìn USD' : 'Phát sinh chi phí chuyền trống', impactJ: D.lossY != null ? '空きロス' + jN(D.lossY, 1) + '千USD' : 'ライン空き原価の発生',
+      act: 'Phân tích nguyên nhân (chậm nguyên phụ liệu, thiếu đơn) ở mục Sử dụng chuyền', actJ: 'ライン稼働状況で原因（資材遅延・受注不足）を分析', owner: 'Kế hoạch + Mua hàng', ownerJ: '計画＋購買' });
     var order = { bad: 0, warn: 1, good: 2 };
     return r.sort(function (a, b) { return order[a.sev] - order[b.sev]; });
   }
@@ -1749,24 +1819,29 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
     ['Năng suất theo cách tính TI', 'TI算定生産性（ライン日当り）'], ['Hàng khó hàng TI', 'TI品高難易度品比率（年間見込み）'], ['Lot nhỏ hàng TI', 'TI品小ロット比率（年間見込み）'],
     ['Hiệu suất tháng', '当月稼働効率（全品）'], ['Lao động trực tiếp', '縫直人員'], ['Chuyền trống lũy kế', 'ライン空き率（年度累計）'], ['KH 3 tháng tới', '今後3か月計画（月平均）']];
   function exJa(label) { for (var i = 0; i < EX_JA.length; i++) if (label.indexOf(EX_JA[i][0]) === 0) return EX_JA[i][1]; return null; }
-  function exStatusChip(st) { if (!st) return '<span class="ex-st none">So sánh</span>'; var s = EX_ST[st]; return '<span class="ex-st ' + st + '"><b aria-hidden="true">' + s.icon + '</b> ' + s.vi + '</span>'; }
+  function exStatusChip(st, vi, ja) {
+    if (!st) return '<span class="ex-st none"' + jt('比較') + '>So sánh</span>';
+    var s = EX_ST[st]; return '<span class="ex-st ' + st + '"' + jt(ja || s.ja) + '><b aria-hidden="true">' + s.icon + '</b> ' + (vi || s.vi) + '</span>';
+  }
   function renderExec() {
     var D = exData(), tiles = exTiles(D), msgs = exMessages(D), risks = exRisks(D);
     var nb = tiles.filter(function (t) { return t.st === 'bad'; }).length, nw = tiles.filter(function (t) { return t.st === 'warn'; }).length, ng = tiles.filter(function (t) { return t.st === 'good'; }).length;
-    $('exScope').textContent = scopeText() + ' · tháng ' + R.monthLabel(D.m) + ' · NTC ' + D.fy + '. Dữ liệu đến ' + Object.keys(ds.latestPlan || {}).map(function (f) { return f + ' ' + fmtDate(ds.latestPlan[f].updateDate); }).join(', ') + '.';
+    $('exScope').textContent = scopeText() + ' · tháng ' + R.monthLabel(D.m) + '. Dữ liệu đến ' + Object.keys(ds.latestPlan || {}).map(function (f) { return f + ' ' + fmtDate(ds.latestPlan[f].updateDate); }).join(', ') + '.';
+    $('exScope').setAttribute('data-jt', scopeJa() + '・' + mJ(D.m) + '。データ：' + Object.keys(ds.latestPlan || {}).map(function (f) { return f + ' ' + dJ(ds.latestPlan[f].updateDate); }).join('、') + 'まで。');
     var html = '<div id="exPrint">' +
-      '<div class="ex-head"><div><div class="ex-title">Tóm tắt điều hành · tháng ' + R.monthLabel(D.m) + '</div><div class="muted" style="font-size:12.5px">' + esc(scopeText()) + ' · NTC ' + D.fy + '</div></div>' +
-      '<div class="ex-count"><span class="ex-st good"><b>✓</b> ' + ng + ' đạt</span><span class="ex-st warn"><b>!</b> ' + nw + ' theo dõi</span><span class="ex-st bad"><b>✕</b> ' + nb + ' chưa đạt</span></div></div>' +
+      '<div class="ex-head"><div><div class="ex-title">Tóm tắt điều hành · tháng ' + R.monthLabel(D.m) + (state.lang === 'bi' ? '<span class="ja" lang="ja" style="display:block;font-size:0.55em">エグゼクティブサマリー・' + mJ(D.m) + '</span>' : '') + '</div>' +
+      '<div class="muted" style="font-size:12.5px"' + jt(scopeJa()) + '>' + esc(scopeText()) + '</div></div>' +
+      '<div class="ex-count">' + exStatusChip('good', ng + ' đạt', '達成 ' + ng) + exStatusChip('warn', nw + ' theo dõi', '要注意 ' + nw) + exStatusChip('bad', nb + ' chưa đạt', '未達 ' + nb) + '</div></div>' +
       '<div class="ex-grid">' + tiles.map(function (t) {
         var tj = exJa(t.label);
         return '<div class="ex-tile' + (t.st ? ' ' + t.st : '') + '"><div class="ex-lbl">' + esc(t.label) + (tj && state.lang === 'bi' ? '<span class="ja">' + esc(tj) + '</span>' : '') + '</div><div class="ex-val">' + t.value + (t.unit ? '<small> ' + esc(t.unit) + '</small>' : '') + '</div>' +
-          '<div class="ex-tgt">' + esc(t.target) + '</div><div class="ex-foot">' + exStatusChip(t.st) + (t.spark ? exSpark(t.spark) : '') + '</div>' + (t.delta ? '<div class="ex-delta">' + esc(t.delta) + '</div>' : '') + '</div>';
+          '<div class="ex-tgt"' + jt(t.tj) + '>' + esc(t.target) + '</div><div class="ex-foot">' + exStatusChip(t.st) + (t.spark ? exSpark(t.spark) : '') + '</div>' + (t.delta ? '<div class="ex-delta"' + jt(t.dj) + '>' + esc(t.delta) + '</div>' : '') + '</div>';
       }).join('') + '</div>' +
       '<div class="ex-cols"><div><h3>Thông điệp chính</h3><ol class="hr-comments">' + msgs.map(function (x) { return '<li>' + '<div>' + esc(x.vi) + '</div>' + (state.lang === 'bi' ? '<div lang="ja">' + esc(x.ja) + '</div>' : '') + '</li>'; }).join('') + '</ol></div>' +
       '<div><h3>Rủi ro và hành động đề xuất</h3>' + (risks.length ? table(['Mức', 'Rủi ro', 'Ảnh hưởng', 'Hành động đề xuất', 'Phụ trách (gợi ý)'], risks.map(function (x) {
-        return '<tr><td class="txt">' + exStatusChip(x.sev === 'bad' ? 'bad' : 'warn').replace('Chưa đạt', 'Cao').replace('Theo dõi', 'Trung bình') + '</td>' + td(esc(x.risk), 'txt cellwrap') + td(esc(x.impact), 'txt cellwrap') + td(esc(x.act), 'txt cellwrap') + td(esc(x.owner), 'txt') + '</tr>';
-      })) : '<p class="up">Không có rủi ro lớn theo số liệu hiện có.</p>') + '</div></div>' +
-      '<p class="an-note">Đèn trạng thái: so với mục tiêu (hợp đồng TI hoặc mục tiêu nội bộ đặt ở dưới); chỉ số chưa có mục tiêu thì so cùng kỳ năm trước. Ngưỡng "Theo dõi": thấp hơn mục tiêu dưới 5% (giới hạn tối đa: vượt dưới 25%). Chi tiết ở các mục bên dưới.</p></div>';
+        return '<tr><td class="txt">' + (x.sev === 'bad' ? exStatusChip('bad', 'Cao', '高') : exStatusChip('warn', 'Trung bình', '中')) + '</td>' + td(bi2(esc(x.risk), x.riskJ), 'txt cellwrap') + td(bi2(esc(x.impact), x.impactJ), 'txt cellwrap') + td(bi2(esc(x.act), x.actJ), 'txt cellwrap') + td(bi2(esc(x.owner), x.ownerJ), 'txt') + '</tr>';
+      })) : '<p class="up"' + jt('現データでは大きなリスクはありません。') + '>Không có rủi ro lớn theo số liệu hiện có.</p>') + '</div></div>' +
+      '<p class="an-note"' + jt('状況表示：目標（TI契約または下の社内目標）との比較。目標がない指標は前年同期と比較。「要注意」は目標を5%未満下回る場合（上限型は25%未満の超過）。詳細は下の各項目を参照。') + '>Đèn trạng thái: so với mục tiêu (hợp đồng TI hoặc mục tiêu nội bộ đặt ở dưới); chỉ số chưa có mục tiêu thì so cùng kỳ năm trước. Ngưỡng "Theo dõi": thấp hơn mục tiêu dưới 5% (giới hạn tối đa: vượt dưới 25%). Chi tiết ở các mục bên dưới.</p></div>';
     $('exBody').innerHTML = html;
     var T = state.exTargets || {};
     ['th', 'eff', 'labor', 'idle'].forEach(function (k) { var el = $('exT_' + k); if (el && document.activeElement !== el) el.value = T[k] != null && T[k] !== '' ? T[k] : ''; });
@@ -2015,18 +2090,22 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
     $('hrFyField').hidden = mode !== 'fy';
     if (mode === 'years') { renderYears(); return; }
     var d = hrData(mode), html = '', n = 0;
-    var H = function (t) { n++; return '<h3>' + n + '. ' + t + '</h3>'; };
+    var H = function (t, ja) { n++; ja = ja || jaOf(t); return '<h3' + jt(ja ? n + '. ' + ja : '') + '>' + n + '. ' + t + '</h3>'; };
     $('hrScope').textContent = scopeText() + ' · ' + d.label + '. Theo mẫu 週報 của TIVN APIC課; phần không có trong file KH_UPDATE được bỏ qua.';
+    $('hrScope').setAttribute('data-jt', scopeJa() + '・' + (mode === 'fy' ? d.fy + '年度' + (d.cur.sub ? '（' + (d.forecast ? '累計 ' : '通期 ') + d.cur.sub + '）' : '') : mJ(d.m)) + '。TIVN APIC課の週報フォーマットに準拠、KH_UPDATEにない項目は省略。');
     // Tổng hợp
-    html += H(mode === 'fy' ? 'Tổng hợp năm tài chính ' + d.fy : 'Tình hình sản xuất tháng ' + R.monthLabel(d.m)) + hrSummary(d) +
-      '<p class="an-note">' + (mode === 'fy' && !d.forecast ? 'Năm tài chính đã qua: số cả năm (các tháng có TH); cùng kỳ = đúng các tháng đó năm trước. ' : mode === 'fy' ? 'Lũy kế = các tháng của năm tài chính đã có TH, đến tháng đang chọn; cùng kỳ = đúng các tháng đó năm trước. Dự báo cả năm = lũy kế + KH các tháng còn lại trong file update mới nhất (' + d.forecast.plans.map(function (q) { return R.monthLabel(q.month) + ': ' + (q.p ? fmtN(q.p.kh) : '—'); }).join(', ') + ')' +
+    var noteJa = (mode === 'fy' && !d.forecast ? '過去年度：通期実績（実績のある月）、前年同期＝前年の同じ月。' : mode === 'fy' ? '累計＝年度内の実績月（選択月まで）、前年同期＝前年の同じ月。通期見込み＝累計＋最新ファイルの残り月計画（' + d.forecast.plans.map(function (q) { return mJ(q.month) + '：' + (q.p ? jN(q.p.kh) : '—'); }).join('、') + '）' +
+        (d.forecast.thin.length ? '。' + d.forecast.thin.map(function (q) { return mJ(q.month); }).join('・') + 'は計画未確定（月平均の60%未満）のため見込みは低め' : '') + '。' : '今後の月の計画は最新ファイルより。') +
+      '平均工程分析時間は実績数量加重（TIVN報告と同じ）、平均ロットはTORAYシートの算定方法。20,000秒以上・500枚未満の比率はフィルター範囲内全品の実績数量ベース。縫直＝ラインの1日平均人数。空き率は全工場の月末確定月のみ。';
+    html += H(mode === 'fy' ? 'Tổng hợp năm tài chính ' + d.fy : 'Tình hình sản xuất tháng ' + R.monthLabel(d.m), mode === 'fy' ? d.fy + '年度 集計' : mJ(d.m) + ' 生産状況') + hrSummary(d) +
+      '<p class="an-note"' + jt(noteJa) + '>' + (mode === 'fy' && !d.forecast ? 'Năm tài chính đã qua: số cả năm (các tháng có TH); cùng kỳ = đúng các tháng đó năm trước. ' : mode === 'fy' ? 'Lũy kế = các tháng của năm tài chính đã có TH, đến tháng đang chọn; cùng kỳ = đúng các tháng đó năm trước. Dự báo cả năm = lũy kế + KH các tháng còn lại trong file update mới nhất (' + d.forecast.plans.map(function (q) { return R.monthLabel(q.month) + ': ' + (q.p ? fmtN(q.p.kh) : '—'); }).join(', ') + ')' +
         (d.forecast.thin.length ? '; <span class="warn">KH tháng ' + d.forecast.thin.map(function (q) { return R.monthLabel(q.month); }).join(', ') + ' chưa xếp đủ (dưới 60% sản lượng bình quân tháng) nên dự báo đang thấp hơn thực tế</span>' : '') + '. ' : 'KH các tháng tới lấy từ file update mới nhất. ') +
       '工程分析時間 bình quân theo sản lượng TH (như báo cáo TIVN); lot bình quân theo cách của sheet TORAY. Tỷ lệ hàng từ 20.000 giây và lot dưới 500 sp tính theo sản lượng TH của mọi hàng trong phạm vi lọc. Lao động trực tiếp = số người trên chuyền bình quân/ngày. Tỷ lệ chuyền trống chỉ tính tháng đủ file chốt.</p>';
     // Bảng từng tháng của năm tài chính
     if (mode === 'fy') {
       var mcols = d.fyMonths.map(function (x) { return { m: x, c: hrCol(d.so, R.monthLabel(x), [x]), p: hrCol(d.so, '', [R.addMonths(x, -12)]) }; });
       var mr = function (label, f, fmt) { return '<tr><td>' + label + '</td>' + mcols.map(function (q) { return td(hrFmt(f(q), fmt)); }).join('') + td(hrFmt(f({ c: d.cur, p: d.prev }), fmt)) + '</tr>'; };
-      html += H('Từng tháng của NTC ' + d.fy) + table(['Chỉ tiêu'].concat(mcols.map(function (q) { return 'T' + (+q.m.slice(5)); }), ['Lũy kế']), [
+      html += H('Từng tháng của NTC ' + d.fy, d.fy + '年度 月別') + table(['Chỉ tiêu'].concat(mcols.map(function (q) { return 'T' + (+q.m.slice(5)); }), ['Lũy kế']), [
         mr('Sản lượng (sp)', function (q) { return q.c.v && q.c.v.th > 0 ? q.c.v.th : null; }, 'n0'),
         mr('Cùng kỳ năm trước (sp)', function (q) { return q.p.v && q.p.v.th > 0 ? q.p.v.th : null; }, 'n0'),
         mr('Chênh so cùng kỳ (sp)', function (q) { return q.c.v && q.p.v && q.c.v.th > 0 && q.p.v.th > 0 ? q.c.v.th - q.p.v.th : null; }, 'n0'),
@@ -2055,7 +2134,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
         aP += pp || 0; aF += c != null ? c : (thSer[2].values[i] || 0);
         cC.push(run && c != null ? aC : null); cP.push(aP || null); cF.push(aF || null);
       });
-      cumChart = chartBox({ title: 'Lũy kế sản lượng NTC ' + d.fy + ' (sp)', type: 'line', labels: lab, tipLabels: tips, height: 200, fmt: nf, zero: true,
+      cumChart = chartBox({ title: 'Lũy kế sản lượng NTC ' + d.fy + ' (sp)', titleJa: d.fy + '年度 生産枚数累計', type: 'line', labels: lab, tipLabels: tips, height: 200, fmt: nf, zero: true,
         series: [{ name: 'Năm nay (TH)', color: 'var(--series-1)', values: cC }, { name: 'Năm trước', color: 'var(--series-2)', values: cP }, { name: 'Dự báo (TH + KH)', color: 'var(--muted)', values: cF }] });
     }
     html += H('Sản lượng theo tháng (so cùng kỳ)') + '<div class="mcharts">' + cumChart +
@@ -2067,7 +2146,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
     var pa = d.prev, pb = d.cur;
     [['sam', 'Cơ cấu 工程分析時間', HR_SAM_COLORS], ['item', 'Cơ cấu sản phẩm (アイテム)', HR_CAT_COLORS], ['lot', 'Cơ cấu lot sản xuất', HR_CAT_COLORS]].forEach(function (k) {
       var bands = hrBands(k[0]), tr = d.trend[k[0]], a = pa.comp[k[0]], b = pb.comp[k[0]];
-      var chart = chartBox({ title: k[1] + ' theo tháng', sub: '% sản lượng TH', type: 'stack', labels: lab, tipLabels: tips, height: 220, axisFmt: pctAxis, yMax: 1,
+      var chart = chartBox({ title: k[1] + ' theo tháng', titleJa: (jaOf(k[1]) || k[1]) + '（月別）', sub: '% sản lượng TH', subJa: '実績数量比', type: 'stack', labels: lab, tipLabels: tips, height: 220, axisFmt: pctAxis, yMax: 1,
         series: bands.map(function (bd, i) { return { name: bd.label, color: k[2][i], values: tr.map(function (t) { return t.total ? t.parts[bd.id] / t.total : null; }) }; }),
         fmt: function (v) { return fmtP(v); } });
       var t = table(['Nhóm', pa.h + (pa.sub ? '<span class="sub">' + esc(pa.sub) + '</span>' : ''), 'Cơ cấu', pb.h + (pb.sub ? '<span class="sub">' + esc(pb.sub) + '</span>' : ''), 'Cơ cấu', 'Chênh (điểm %)'], bands.map(function (bd) {
@@ -2076,7 +2155,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
       }).concat(['<tr class="total"><td>Tổng</td>' + td(a.total ? fmtN(a.total) : '—') + td(a.total ? '100%' : '—') + td(b.total ? fmtN(b.total) : '—') + td(b.total ? '100%' : '—') + td('') + '</tr>']));
       html += H(k[1]) + '<div class="mcharts hr-wide">' + chart + '</div>' + t;
     });
-    html += '<p class="an-note">Nhóm sản phẩm theo cột chủng loại (ITEM) của file: D-… lông vũ; S-JKT, S-VEST áo seam; S-PANTS quần seam; JKT, VEST áo không seam; PANTS, SHORTS, OVERALLS quần không seam; SHIRTS sơ mi. Lot = 集約ロット của mã. Cơ cấu tính theo sản lượng TH.</p>';
+    html += '<p class="an-note"' + jt('アイテム区分はファイルのITEM列による：D-…ダウン製品、S-JKT・S-VEST シームJK、S-PANTS シームPT、JKT・VEST ノンシームJK、PANTS・SHORTS・OVERALLS ノンシームPT、SHIRTS シャツ。ロット＝品番の集約ロット。構成比は実績数量ベース。') + '>Nhóm sản phẩm theo cột chủng loại (ITEM) của file: D-… lông vũ; S-JKT, S-VEST áo seam; S-PANTS quần seam; JKT, VEST áo không seam; PANTS, SHORTS, OVERALLS quần không seam; SHIRTS sơ mi. Lot = 集約ロット của mã. Cơ cấu tính theo sản lượng TH.</p>';
     // Nhãn hàng
     if (d.brands.length) {
       var top = d.brands.slice(0, 12), rest = d.brands.slice(12), sumC = d.brands.reduce(function (a, b) { return a + b.cur; }, 0), sumP = d.brands.reduce(function (a, b) { return a + b.prev; }, 0);
@@ -2085,7 +2164,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
       if (rest.length) rows.push(brow('Các nhãn khác (' + rest.length + ')', rest.reduce(function (a, b) { return a + b.cur; }, 0), rest.reduce(function (a, b) { return a + b.prev; }, 0)));
       rows.push('<tr class="total"><td>Tổng</td>' + td(fmtN(sumP)) + td(sumP ? '100%' : '—') + td(fmtN(sumC)) + td(sumC ? '100%' : '—') + td(hrDiff(sumC - sumP)) + '</tr>');
       var tb = d.brands.slice(0, 8);
-      html += H('Sản lượng theo nhãn hàng') + '<div class="mcharts hr-wide">' + chartBox({ title: 'Sản lượng theo nhãn hàng (8 nhãn lớn nhất)', type: 'bar', labels: tb.map(function (b) { return b.brand; }), height: 220, fmt: nf,
+      html += H('Sản lượng theo nhãn hàng') + '<div class="mcharts hr-wide">' + chartBox({ title: 'Sản lượng theo nhãn hàng (8 nhãn lớn nhất)', titleJa: 'ブランド別生産枚数（上位8ブランド）', type: 'bar', labels: tb.map(function (b) { return b.brand; }), height: 220, fmt: nf,
         series: [{ name: pa.h, color: 'var(--series-2)', values: tb.map(function (b) { return b.prev || null; }) }, { name: pb.h, color: 'var(--series-1)', values: tb.map(function (b) { return b.cur || null; }) }] }) + '</div>' +
         table(['Nhãn hàng', pa.h, 'Cơ cấu', pb.h, 'Cơ cấu', 'Chênh (sp)'], rows);
     }
@@ -2098,7 +2177,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
         var a1 = last5.length > 1 ? f(last5[last5.length - 2]) : null, b1 = f(last5[last5.length - 1]);
         return '<tr><td>' + label + '</td>' + last5.map(function (w) { return td(f(w) == null ? '—' : fmtN(f(w))); }).join('') + td(a1 != null && b1 != null ? hrDiff(b1 - a1) : '—') + '</tr>';
       };
-      html += H('Theo tuần' + (mode === 'fy' ? ' (cả năm tài chính ' + d.fy + ')' : '')) +
+      html += H('Theo tuần' + (mode === 'fy' ? ' (cả năm tài chính ' + d.fy + ')' : ''), '週別' + (mode === 'fy' ? '（' + d.fy + '年度）' : '')) +
         table(['Chỉ tiêu'].concat(last5.map(function (w) { return 'W' + w.week + '<span class="sub">' + hrWeekLabel(w) + (w.partial ? ' (chưa đủ tuần)' : '') + '</span>'; }), ['So tuần trước']), [
           wrow('Ngày làm việc', function (w) { return w.wd; }), wrow('Sản lượng (sp)', function (w) { return w.th; }), wrow('工程分析時間 bình quân (giây)', function (w) { return w.avgSamTh; }),
           wrow('Lot bình quân (sp)', function (w) { return w.avgLot; }), wrow('Lao động trực tiếp (縫直)', function (w) { return w.labor; })]) +
@@ -2107,21 +2186,21 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
         chartBox({ title: '工程分析時間 bình quân (giây)', type: 'line', labels: wl, tipLabels: wt, series: one('工程時間', function (w) { return w.avgSamTh; }, 'var(--series-3)'), fmt: nf, height: 190 }) +
         chartBox({ title: 'Lot bình quân (sp)', type: 'line', labels: wl, tipLabels: wt, series: one('Lot', function (w) { return w.avgLot; }, 'var(--series-2)'), fmt: nf, height: 190 }) +
         chartBox({ title: 'Lao động trực tiếp (縫直)', type: 'line', labels: wl, tipLabels: wt, series: one('縫直', function (w) { return w.labor; }), fmt: nf, height: 190 }) + '</div>' +
-        '<p class="an-note">Tuần từ thứ Hai, tuần 1 là tuần có ngày 1/' + state.startMonth + ' (như 26年度32週目 = 2/11–7/11/2026). Số đến ngày update của file mới nhất' + (d.wk.end ? ' (' + fmtDate(d.wk.end) + ')' : '') + (mode === 'fy' ? '; tuần nào chưa có số theo ngày thì không hiện (nạp lại file của tháng đó)' : '') + '. 工程時間 bình quân theo sản lượng TH; lot bình quân của các mã × chuyền có may trong tuần.</p>';
-    } else html += H('Theo tuần') + '<p class="muted">Chưa có số theo ngày.</p>';
-    if (ds.noDaily && ds.noDaily.length) html += '<p class="warn">Để có số tuần, nạp lại các file update (file nạp từ bản trước chưa lưu số theo ngày): ' + ds.noDaily.slice(-6).map(function (x) { return esc(x.factory) + ' ' + fmtDate(x.updateDate); }).join(', ') + (ds.noDaily.length > 6 ? '… (' + ds.noDaily.length + ' file)' : '') + '.</p>';
+        '<p class="an-note"' + jt('週は月曜始まり、第1週は' + state.startMonth + '月1日を含む週（例：26年度32週目＝2026/11/2～11/7）。最新ファイルの更新日' + (d.wk.end ? '（' + dJ(d.wk.end) + '）' : '') + 'までの数値' + (mode === 'fy' ? '、日別データのない週は非表示（該当月のファイルを再読込）' : '') + '。工程時間は実績数量加重平均、ロットは当週生産の品番×ラインの平均。') + '>Tuần từ thứ Hai, tuần 1 là tuần có ngày 1/' + state.startMonth + ' (như 26年度32週目 = 2/11–7/11/2026). Số đến ngày update của file mới nhất' + (d.wk.end ? ' (' + fmtDate(d.wk.end) + ')' : '') + (mode === 'fy' ? '; tuần nào chưa có số theo ngày thì không hiện (nạp lại file của tháng đó)' : '') + '. 工程時間 bình quân theo sản lượng TH; lot bình quân của các mã × chuyền có may trong tuần.</p>';
+    } else html += H('Theo tuần') + '<p class="muted"' + jt('日別データがまだありません。') + '>Chưa có số theo ngày.</p>';
+    if (ds.noDaily && ds.noDaily.length) html += '<p class="warn"' + jt('週別データには更新ファイルの再読込が必要（旧版で読み込んだファイルは日別データなし）：' + ds.noDaily.slice(-6).map(function (x) { return x.factory + ' ' + dJ(x.updateDate); }).join('、') + (ds.noDaily.length > 6 ? ' 他（計' + ds.noDaily.length + 'ファイル）' : '') + '。') + '>Để có số tuần, nạp lại các file update (file nạp từ bản trước chưa lưu số theo ngày): ' + ds.noDaily.slice(-6).map(function (x) { return esc(x.factory) + ' ' + fmtDate(x.updateDate); }).join(', ') + (ds.noDaily.length > 6 ? '… (' + ds.noDaily.length + ' file)' : '') + '.</p>';
     // Kế hoạch từng chuyền
     if (d.lines.length) {
       html += H('Kế hoạch từng chuyền (プランテーブル)') + table(['Xưởng', 'Chuyền', 'Đang may', 'Mã cuối trong KH', 'KH đến ngày', 'Ngày làm việc còn lại'], d.lines.map(function (l) {
         var soon = l.wdLeft <= 20;
         return '<tr><td>' + esc(l.f) + '</td>' + td(esc(l.line), 'txt') + td(esc((l.cur || '—') + (l.curBrand ? ' · ' + l.curBrand : '')), 'txt') + td(esc((l.endStyle || '—') + (l.endBrand ? ' · ' + l.endBrand : '')), 'txt') +
-          td(fmtDate(l.end), 'txt num') + td('<span class="' + (soon ? 'down' : '') + '">' + l.wdLeft + (soon ? ' · sắp hết KH' : '') + '</span>') + '</tr>';
-      })) + '<p class="an-note">Từ file update mới nhất của mỗi xưởng (' + Object.keys(ds.latestPlan || {}).map(function (f) { return esc(f) + ' ' + fmtDate(ds.latestPlan[f].updateDate); }).join(', ') + '). "KH đến ngày" = ngày cuối có KH của chuyền; ≤ 20 ngày làm việc tô đỏ. File không có tình trạng nguyên phụ liệu nên chưa lọc được "材料確定品番" như bảng của TIVN.</p>';
+          td(fmtDate(l.end), 'txt num') + td('<span class="' + (soon ? 'down' : '') + '">' + l.wdLeft + (soon ? ' · ' + bi2('sắp hết KH', '計画終了間近') : '') + '</span>') + '</tr>';
+      })) + '<p class="an-note"' + jt('各工場の最新更新ファイルより（' + Object.keys(ds.latestPlan || {}).map(function (f) { return f + ' ' + dJ(ds.latestPlan[f].updateDate); }).join('、') + '）。「縫製END」＝ラインの計画最終日、残り20稼働日以下は赤字。ファイルに資材状況がないため、TIVNの「材料確定品番」での絞り込みは未対応。') + '>Từ file update mới nhất của mỗi xưởng (' + Object.keys(ds.latestPlan || {}).map(function (f) { return esc(f) + ' ' + fmtDate(ds.latestPlan[f].updateDate); }).join(', ') + '). "KH đến ngày" = ngày cuối có KH của chuyền; ≤ 20 ngày làm việc tô đỏ. File không có tình trạng nguyên phụ liệu nên chưa lọc được "材料確定品番" như bảng của TIVN.</p>';
     }
     // Lời bình
     var cm = hrComments(d);
     if (cm.length) html += H('Lời bình tự động') + '<ol class="hr-comments">' + cm.map(function (x) { return '<li>' + (state.lang === 'bi' ? '<div lang="ja">' + esc(x.ja) + '</div>' : '') + '<div>' + esc(x.vi) + '</div></li>'; }).join('') + '</ol>';
-    html += '<h3>Phần làm ở báo cáo riêng</h3><p class="an-note">ライン保証費・縫直単価・加工単価, 工賃・生産日数実績, 縫直以外・要員・縫直率・欠勤率, 1次/2次不良率, サンプル受注, 裁断, 来客: không có trong file KH_UPDATE, làm ở báo cáo riêng.</p>';
+    html += '<h3>Phần làm ở báo cáo riêng</h3><p class="an-note"' + jt('ライン保証費・縫直単価・加工単価、工賃・生産日数実績、縫直以外・要員・縫直率・欠勤率、1次/2次不良率、サンプル受注、裁断、来客：KH_UPDATEにないため別報告で対応。') + '>ライン保証費・縫直単価・加工単価, 工賃・生産日数実績, 縫直以外・要員・縫直率・欠勤率, 1次/2次不良率, サンプル受注, 裁断, 来客: không có trong file KH_UPDATE, làm ở báo cáo riêng.</p>';
     $('hrBody').innerHTML = html;
     drawCharts($('hrBody'));
   }
@@ -2169,9 +2248,10 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
   }
   function renderYears() {
     var Y = hrYearsData(), html = '', n = 0, nf = function (v) { return fmtN(v); };
-    var H = function (t) { n++; return '<h3>' + n + '. ' + t + '</h3>'; };
+    var H = function (t, ja) { n++; ja = ja || jaOf(t); return '<h3' + jt(ja ? n + '. ' + ja : '') + '>' + n + '. ' + t + '</h3>'; };
     $('hrScope').textContent = scopeText() + ' · so sánh các năm tài chính ' + Y.years.join(', ') + '. Theo mẫu 週報 của TIVN APIC課.';
-    if (!Y.full.length) { $('hrBody').innerHTML = '<p class="muted">Chưa có năm tài chính nào có TH.</p>'; return; }
+    $('hrScope').setAttribute('data-jt', scopeJa() + '・年度比較 ' + Y.years.map(function (f) { return f + '年度'; }).join('、') + '。TIVN APIC課の週報フォーマットに準拠。');
+    if (!Y.full.length) { $('hrBody').innerHTML = '<p class="muted"' + jt('実績のある年度がまだありません。') + '>Chưa có năm tài chính nào có TH.</p>'; return; }
     var tbl = function (cols) {
       var last = cols.length - 1;
       return table(['Chỉ tiêu'].concat(cols.map(function (c) { return c.h + '<span class="sub">' + esc(c.sub) + '</span>'; }), cols.length > 1 ? ['So năm trước'] : []), hrRows().map(function (r) {
@@ -2180,8 +2260,8 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
           (cols.length > 1 ? td(vs[last] != null && vs[last - 1] != null ? hrDiff(vs[last] - vs[last - 1], r.fmt === 'n2' ? 2 : r.fmt === 'n1' ? 1 : 0, r.fmt === 'p1') : '—') : '') + '</tr>';
       }));
     };
-    html += H('Các năm tài chính: cả năm') + tbl(Y.full) + '<p class="an-note">Năm đang chạy chỉ gồm các tháng đã có TH đến tháng đang chọn, nên chưa so được trọn năm: xem bảng cùng kỳ bên dưới.</p>';
-    html += H('Các năm tài chính: cùng kỳ ' + Y.same[0].sub) + tbl(Y.same) + '<p class="an-note">Cùng kỳ = các tháng từ đầu năm tài chính đến tháng ' + (+state.month.slice(5)) + ' của mỗi năm, để so công bằng với năm đang chạy.</p>';
+    html += H('Các năm tài chính: cả năm', '年度別：通期') + tbl(Y.full) + '<p class="an-note"' + jt('進行中の年度は選択月までの実績月のみのため通期比較はできない：下の同期間比較を参照。') + '>Năm đang chạy chỉ gồm các tháng đã có TH đến tháng đang chọn, nên chưa so được trọn năm: xem bảng cùng kỳ bên dưới.</p>';
+    html += H('Các năm tài chính: cùng kỳ ' + Y.same[0].sub, '年度別：同期間 ' + Y.same[0].sub) + tbl(Y.same) + '<p class="an-note"' + jt('同期間＝各年度の期首から' + (+state.month.slice(5)) + '月まで。進行中の年度と公平に比較するため。') + '>Cùng kỳ = các tháng từ đầu năm tài chính đến tháng ' + (+state.month.slice(5)) + ' của mỗi năm, để so công bằng với năm đang chạy.</p>';
     var labs = Y.full.map(function (c) { return c.h; });
     var two = function (f) { return [{ name: 'Cả năm', color: 'var(--series-1)', values: Y.full.map(f) }, { name: 'Cùng kỳ ' + Y.same[0].sub, color: 'var(--series-2)', values: Y.same.map(f) }]; };
     html += H('Biểu đồ so sánh các năm') + '<div class="mcharts">' +
@@ -2203,7 +2283,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
     // Cơ cấu theo năm
     [['sam', 'Cơ cấu 工程分析時間', HR_SAM_COLORS], ['item', 'Cơ cấu sản phẩm (アイテム)', HR_CAT_COLORS], ['lot', 'Cơ cấu lot sản xuất', HR_CAT_COLORS]].forEach(function (kk) {
       var bands = hrBands(kk[0]);
-      html += H(kk[1] + ' theo năm') + '<div class="mcharts hr-wide">' + chartBox({ title: kk[1] + ' (cả năm)', sub: '% sản lượng TH', type: 'stack', labels: labs, height: 220, axisFmt: pctAxis, yMax: 1,
+      html += H(kk[1] + ' theo năm', (jaOf(kk[1]) || kk[1]) + '（年度別）') + '<div class="mcharts hr-wide">' + chartBox({ title: kk[1] + ' (cả năm)', titleJa: (jaOf(kk[1]) || kk[1]) + '（通期）', sub: '% sản lượng TH', subJa: '実績数量比', type: 'stack', labels: labs, height: 220, axisFmt: pctAxis, yMax: 1,
         series: bands.map(function (b, i) { return { name: b.label, color: kk[2][i], values: Y.full.map(function (c) { return hrShare(c, kk[0], b.id); }) }; }), fmt: function (v) { return fmtP(v); } }) + '</div>' +
         table(['Nhóm'].concat(Y.full.map(function (c) { return c.h; }), Y.full.length > 1 ? ['Chênh năm gần nhất (điểm %)'] : []), bands.map(function (b) {
           var vs = Y.full.map(function (c) { return hrShare(c, kk[0], b.id); }), L = vs.length - 1;
@@ -2241,8 +2321,9 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
       .concat(t.years.map(function (x) { return row('NTC ' + x.fy, x.ti, x.tiTarget, x.tiTargetQty, x.fy === y.fy ? 'sel' : ''); }));
     var hl = y.ti && y.ti.per8h != null ? 'Theo cách tính của TI, NTC ' + y.fy + ' đạt ' + f1(y.ti.per8h) + ' sp hàng TI/chuyền-ngày (giờ hành chính), quy ra ' + fmtN(y.ti.annualEq) + ' sp/năm, ' +
       (y.ti.per8h >= y.tiTarget ? 'đạt' : 'thấp hơn') + ' mục tiêu ' + f1(y.tiTarget) + ' sp (' + fmtN(y.tiTargetQty) + ' sp/năm).' : 'Chưa có tháng nào của NTC ' + y.fy + ' đủ số liệu chuyền của mọi xưởng.';
-    return '<h3>Theo cách tính của TI (ベンチマーク 647.091 sp)</h3><p class="headline">' + hl + '</p>' +
-      '<p class="an-note">Sản lượng hàng TI ÷ chuyền-ngày may hàng TI (nửa chuyền A/B, ngày làm việc; trừ chuyền-ngày may hàng APIC tự bán và chuyền trống), × (1 − 5,9% tăng ca; chính xác là 0,5 giờ ÷ 8,5 giờ = 5,88%, như TI tính) = sản lượng/chuyền-ngày giờ hành chính. Quy đổi năm = × 8.613 chuyền-ngày (29 chuyền × 297 ngày). Năm chuẩn theo tài liệu TI: 654.487 sp, 8.613 − 330 (APIC) − 84 (trống) = 8.199 chuyền-ngày TI → 647.091 sp. Chỉ tính các tháng mọi xưởng đã chốt.</p>' +
+    var hlJ = y.ti && y.ti.per8h != null ? 'TIの算定方法で' + y.fy + '年度はTI品' + jN(y.ti.per8h, 2) + '枚/ライン日（定時換算）、年換算' + jN(y.ti.annualEq) + '枚、目標' + jN(y.tiTarget, 2) + '枚（年' + jN(y.tiTargetQty) + '枚）' + (y.ti.per8h >= y.tiTarget ? 'を達成。' : 'を下回る。') : y.fy + '年度は全工場のライン数値が揃った月がまだありません。';
+    return '<h3>Theo cách tính của TI (ベンチマーク 647.091 sp)</h3><p class="headline"' + jt(hlJ) + '>' + hl + '</p>' +
+      '<p class="an-note"' + jt('TI品生産数÷TI品のライン日（A/B半ライン・稼働日、APIC自販品と空きを除く）×（1−残業5.9%：正確には0.5時間÷8.5時間＝5.88%、TIと同じ）＝定時換算のライン日当たり生産数。年換算＝×8,613ライン日（29ライン×297日）。TI資料の基準年：654,487枚、8,613−330（APIC）−84（空き）＝8,199 TIライン日→647,091枚。全工場確定月のみ。') + '>Sản lượng hàng TI ÷ chuyền-ngày may hàng TI (nửa chuyền A/B, ngày làm việc; trừ chuyền-ngày may hàng APIC tự bán và chuyền trống), × (1 − 5,9% tăng ca; chính xác là 0,5 giờ ÷ 8,5 giờ = 5,88%, như TI tính) = sản lượng/chuyền-ngày giờ hành chính. Quy đổi năm = × 8.613 chuyền-ngày (29 chuyền × 297 ngày). Năm chuẩn theo tài liệu TI: 654.487 sp, 8.613 − 330 (APIC) − 84 (trống) = 8.199 chuyền-ngày TI → 647.091 sp. Chỉ tính các tháng mọi xưởng đã chốt.</p>' +
       table(['Năm', 'Tháng có số', 'SL hàng TI', 'Chuyền-ngày TI', 'Chuyền-ngày APIC', 'Chuyền-ngày trống', 'SL/chuyền-ngày', 'Giờ hành chính', 'Mục tiêu', 'So mục tiêu', 'Quy đổi năm', 'Mục tiêu năm'], rows);
   }
   function renderContract() {
@@ -2256,11 +2337,13 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
     var mf = state.ctMetric === 'efficiency' ? function (v) { return fmtP(v); } : function (v) { return fmtN(v, 2); };
     var chip = function (ok, text) { return '<span class="chip ' + (ok == null ? 'na' : ok ? 'ok' : 'bad') + '">' + text + '</span>'; };
     var scope = 'Chỉ hàng của TI (nhãn hàng ngoài danh sách TI không tính)' + (state.factory ? ' · xưởng ' + state.factory : ' · toàn xưởng') + (state.brand ? ' · nhãn hàng ' + state.brand : '');
-    var warn = [];
-    if (!b.months.length) warn.push('Chưa có số liệu năm chuẩn NTC 2025: nạp các file của 4/2025–3/2026 để có mục tiêu năng suất.');
-    else if (!b.full) warn.push('Năm chuẩn NTC 2025 mới có ' + b.months.length + '/12 tháng đã chốt (' + b.months.map(R.monthLabel).join(', ') + '). Mục tiêu sẽ thay đổi khi nạp đủ 12 tháng.');
-    if (state.brand) warn.push('Đang lọc theo nhãn hàng ' + state.brand + ': cam kết trong hợp đồng tính trên toàn bộ hàng TI.');
-    if (state.factory) warn.push('Đang lọc theo xưởng ' + state.factory + ': cam kết trong hợp đồng tính chung cả APIC.');
+    var warn = [], warnJ = [];
+    if (!b.months.length) { warn.push('Chưa có số liệu năm chuẩn NTC 2025: nạp các file của 4/2025–3/2026 để có mục tiêu năng suất.'); warnJ.push('基準年2025年度のデータがありません：生産性目標のため2025年4月～2026年3月のファイルを読み込んでください。'); }
+    else if (!b.full) { warn.push('Năm chuẩn NTC 2025 mới có ' + b.months.length + '/12 tháng đã chốt (' + b.months.map(R.monthLabel).join(', ') + '). Mục tiêu sẽ thay đổi khi nạp đủ 12 tháng.'); warnJ.push('基準年2025年度の確定月は' + b.months.length + '/12か月（' + b.months.map(mJ).join('、') + '）。12か月揃うと目標が変わります。'); }
+    if (state.brand) { warn.push('Đang lọc theo nhãn hàng ' + state.brand + ': cam kết trong hợp đồng tính trên toàn bộ hàng TI.'); warnJ.push('ブランド' + state.brand + 'で絞り込み中：契約条件はTI品全体で判定。'); }
+    if (state.factory) { warn.push('Đang lọc theo xưởng ' + state.factory + ': cam kết trong hợp đồng tính chung cả APIC.'); warnJ.push('工場' + state.factory + 'で絞り込み中：契約条件はAPIC全体で判定。'); }
+    var scopeJ = 'TI品のみ（TIリスト外のブランドは含めない）' + (state.factory ? '・工場 ' + state.factory : '・全工場') + (state.brand ? '・ブランド ' + state.brand : '');
+    var mLabelJ = state.ctMetric === 'efficiency' ? '稼働効率' : '生産性（枚/人/日）', mfJ = state.ctMetric === 'efficiency' ? function (v) { return jN(v * 100, 1) + '%'; } : function (v) { return jN(v, 2); };
     // Thẻ chỉ tiêu
     var prodOk = y.actual == null || y.target == null ? null : y.actual >= y.target;
     var hardNow = y.hardShare, hardFc = y.forecast.hardShare, smallNow = y.smallShare, smallFc = y.forecast.smallShare;
@@ -2295,13 +2378,13 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
         { name: 'Theo kế hoạch (KH)', color: 'var(--series-2)', values: y.monthly.map(function (m) { return m.basis === 'KH' ? m[key] : null; }) }];
     };
     var charts = '<div class="mcharts">' +
-      chartBox({ title: mLabel + ' theo tháng', sub: 'đường gạch = mục tiêu NTC ' + y.fy, type: 'line', labels: labels, tipLabels: tips,
+      chartBox({ title: mLabel + ' theo tháng', titleJa: mLabelJ + '（月別）', sub: 'đường gạch = mục tiêu NTC ' + y.fy, subJa: '破線＝' + y.fy + '年度目標', type: 'line', labels: labels, tipLabels: tips,
         series: [{ name: 'NTC ' + y.fy, color: 'var(--series-1)', values: y.monthly.map(function (m) { return m.value; }) },
           { name: 'NTC 2025 (chuẩn)', color: 'var(--series-2)', values: b.monthly.map(function (m) { return m.value; }) }],
         fmt: mf, axisFmt: state.ctMetric === 'efficiency' ? pctAxis : smartAxis, ref: y.target != null ? { value: y.target, label: 'mục tiêu ' + mf(y.target) } : null, height: 190 }) +
-      chartBox({ title: 'Tỷ lệ hàng khó theo tháng', sub: 'giới hạn 2% cả năm', type: 'bar', labels: labels, tipLabels: tips, series: shareSeries('hardShare'),
+      chartBox({ title: 'Tỷ lệ hàng khó theo tháng', titleJa: '高難易度品比率（月別）', sub: 'giới hạn 2% cả năm', subJa: '年間上限2%', type: 'bar', labels: labels, tipLabels: tips, series: shareSeries('hardShare'),
         fmt: function (v) { return fmtP(v, 2); }, axisFmt: function (v) { return fmtN(v * 100, v * 100 % 1 ? 1 : 0) + '%'; }, ref: { value: c.hardMax, label: '2%' }, height: 190 }) +
-      chartBox({ title: 'Tỷ lệ lot nhỏ theo tháng', sub: 'giới hạn 10% cả năm', type: 'bar', labels: labels, tipLabels: tips, series: shareSeries('smallShare'),
+      chartBox({ title: 'Tỷ lệ lot nhỏ theo tháng', titleJa: '小ロット品比率（月別）', sub: 'giới hạn 10% cả năm', subJa: '年間上限10%', type: 'bar', labels: labels, tipLabels: tips, series: shareSeries('smallShare'),
         fmt: function (v) { return fmtP(v); }, axisFmt: pctAxis, ref: { value: c.smallMax, label: '10%' }, height: 190 }) + '</div>';
     // Bảng tháng
     var t2 = table(['Tháng', 'Số liệu', 'Sản lượng (sp)', mLabel, 'Mục tiêu', 'Hàng khó', 'Lot nhỏ'], y.monthly.map(function (m) {
@@ -2319,26 +2402,33 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
       return '<tr><td>' + esc(h.style) + '</td>' + td(esc(h.f) + ' · ' + esc(h.line), 'txt') + td(esc(h.brand), 'txt') + td(esc(h.item), 'txt') + td(fmtN(h.lot)) + td(fmtN(h.sam)) + td(fmtN(h.th)) + td(fmtP(y.th ? h.th / y.th : null, 2)) + '</tr>';
     })) : '<p class="muted">Không có lot nhỏ trong các tháng đã chốt.</p>';
     // Câu kết luận
-    var hl = [];
-    if (y.actual != null && y.target != null) hl.push(mLabel + ' NTC ' + y.fy + ' (lũy kế ' + y.doneMonths.length + ' tháng) là ' + mf(y.actual) + ', ' + (y.actual >= y.target ? 'đạt' : 'thấp hơn') + ' mục tiêu ' + mf(y.target) + ' (năm chuẩn ' + mf(b.value) + ').');
+    var hl = [], hlJ = [];
+    if (y.actual != null && y.target != null) {
+      hl.push(mLabel + ' NTC ' + y.fy + ' (lũy kế ' + y.doneMonths.length + ' tháng) là ' + mf(y.actual) + ', ' + (y.actual >= y.target ? 'đạt' : 'thấp hơn') + ' mục tiêu ' + mf(y.target) + ' (năm chuẩn ' + mf(b.value) + ').');
+      hlJ.push(y.fy + '年度の' + mLabelJ + '（累計' + y.doneMonths.length + 'か月）は' + mfJ(y.actual) + '、目標' + mfJ(y.target) + (y.actual >= y.target ? 'を達成' : 'を下回る') + '（基準年' + mfJ(b.value) + '）。');
+    }
     var room = function (name, share, roomQty, planQty, max) {
       if (share == null) return;
       var txt = name + ' dự báo cả năm ' + fmtP(share, 2) + (share > max ? ', vượt' : ', trong') + ' giới hạn ' + fmtP(max, 0) + '. ';
+      var nj = name === 'Hàng khó' ? '高難易度品' : '小ロット品';
+      var tj = nj + 'の通期見込み' + jN(share * 100, 2) + '%、上限' + jN(max * 100, 0) + '%' + (share > max ? 'を超過。' : '以内。');
       if (y.planMonths.length && roomQty != null) {
         txt += roomQty < 0 ? 'Kể cả các tháng còn lại không làm thêm, cả năm vẫn vượt (thừa khoảng ' + fmtN(-roomQty) + ' sp).'
           : 'Các tháng còn lại được làm thêm tối đa khoảng ' + fmtN(roomQty) + ' sp' +
             (planQty > roomQty ? '; KH hiện có ' + fmtN(planQty) + ' sp, cần giảm khoảng ' + fmtN(planQty - roomQty) + ' sp.' : planQty > 0 ? ' (KH hiện có ' + fmtN(planQty) + ' sp).' : '.');
+        tj += roomQty < 0 ? '残り月で追加しなくても年間で超過（約' + jN(-roomQty) + '枚超過）。'
+          : '残り月で追加できるのは最大約' + jN(roomQty) + '枚' + (planQty > roomQty ? '、現計画' + jN(planQty) + '枚のため約' + jN(planQty - roomQty) + '枚の削減が必要。' : planQty > 0 ? '（現計画' + jN(planQty) + '枚）。' : '。');
       }
-      hl.push(txt);
+      hl.push(txt); hlJ.push(tj);
     };
     room('Hàng khó', hardFc, y.forecast.hardRoom, y.forecast.planHard, c.hardMax);
     room('Lot nhỏ', smallFc, y.forecast.smallRoom, y.forecast.planSmall, c.smallMax);
-    $('ctBody').innerHTML = (warn.length ? '<p class="warn">⚠ ' + warn.join(' ') + '</p>' : '') +
-      '<p class="headline">' + (hl.length ? hl.join(' ') : 'Chưa có tháng nào của NTC ' + y.fy + ' được chốt.') + '</p>' +
-      '<p class="an-note">' + esc(scope) + '. Thực tế = các tháng đã chốt. Dự báo cả năm = TH các tháng đã chốt + KH các tháng còn lại. KH các tháng xa thường chưa đủ mã, nhất là mã khó và lot nhỏ, nên dự báo dễ thấp hơn thực tế; xem thêm hạn mức còn lại. Tỷ lệ tính trên số lượng sản xuất (sp), không phải số mã.</p>' +
+    $('ctBody').innerHTML = (warn.length ? '<p class="warn"' + jt('⚠ ' + warnJ.join('')) + '>⚠ ' + warn.join(' ') + '</p>' : '') +
+      '<p class="headline"' + jt(hlJ.length ? hlJ.join('') : y.fy + '年度の確定月はまだありません。') + '>' + (hl.length ? hl.join(' ') : 'Chưa có tháng nào của NTC ' + y.fy + ' được chốt.') + '</p>' +
+      '<p class="an-note"' + jt(scopeJ + '。実績＝確定月。通期見込み＝確定月の実績＋残り月の計画。先の月の計画は品番が揃っていないことが多く（特に高難易度品・小ロット）、見込みは実績より低めになりやすい：残り枠も参照。比率は品番数ではなく生産数量（枚）ベース。') + '>' + esc(scope) + '. Thực tế = các tháng đã chốt. Dự báo cả năm = TH các tháng đã chốt + KH các tháng còn lại. KH các tháng xa thường chưa đủ mã, nhất là mã khó và lot nhỏ, nên dự báo dễ thấp hơn thực tế; xem thêm hạn mức còn lại. Tỷ lệ tính trên số lượng sản xuất (sp), không phải số mã.</p>' +
       cards + '<h3>Các năm hợp đồng</h3>' + t1 + tiBlock(t, y, c) + charts + '<h3>Theo tháng · NTC ' + y.fy + '</h3>' + t2 +
-      '<details class="ct-list"><summary>Mã hàng khó trên 20.000 giây · NTC ' + y.fy + ' (' + L.hard.length + ' mã)</summary>' + t3 + '</details>' +
-      '<details class="ct-list"><summary>Lot nhỏ (≤ 500 sp trên chuyền) · NTC ' + y.fy + ' (' + L.small.length + ' mã × chuyền' + (L.small.length > 60 ? ', hiện 60 dòng lớn nhất' : '') + ')</summary>' + t4 + '</details>';
+      '<details class="ct-list"><summary' + jt('高難易度品（20,000秒超）・' + y.fy + '年度（' + L.hard.length + '品番）') + '>Mã hàng khó trên 20.000 giây · NTC ' + y.fy + ' (' + L.hard.length + ' mã)</summary>' + t3 + '</details>' +
+      '<details class="ct-list"><summary' + jt('小ロット品（ライン当たり500枚以下）・' + y.fy + '年度（' + L.small.length + '品番×ライン' + (L.small.length > 60 ? '、上位60行を表示' : '') + '）') + '>Lot nhỏ (≤ 500 sp trên chuyền) · NTC ' + y.fy + ' (' + L.small.length + ' mã × chuyền' + (L.small.length > 60 ? ', hiện 60 dòng lớn nhất' : '') + ')</summary>' + t4 + '</details>';
     drawCharts($('ctBody'));
   }
 
@@ -2370,14 +2460,16 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
     $('anOld').textContent = old ? '⚠ ' + old + ' file được nạp bằng bản trang cũ, thiếu số liệu cho phân tích (lot, lên năng suất, lead time, chuyển mã). Nạp lại các file đó (kéo thả lại cả thư mục) để có đủ số.' : '';
     var o = opts({ period: state.anPeriod });
     var fn = { lot: anLot, learn: anLearn, lt: anLt, co: anCo, plan: anPlan, rank: anRank, load: anLoad }[state.anTab];
-    try { $('anBody').innerHTML = fn(o); drawCharts($('anBody')); } catch (e) { $('anBody').innerHTML = '<div class="empty">Không tính được: ' + esc(e.message) + '</div>'; }
+    try { $('anBody').innerHTML = fn(o); drawCharts($('anBody')); } catch (e) { $('anBody').innerHTML = '<div class="empty"' + jt('計算できません：' + e.message) + '>Không tính được: ' + esc(e.message) + '</div>'; }
   }
 
   function anLot(o) {
     var r = R.lotEfficiency(ds, o);
-    if (!r.rows.length) return '<div class="empty">Không có sản lượng trong ' + periodText(r.months) + '.</div>';
+    if (!r.rows.length) return '<div class="empty"' + jt(periodJa(r.months) + 'に生産数量がありません。') + '>Không có sản lượng trong ' + periodText(r.months) + '.</div>';
     var known = r.rows.filter(function (x) { return x.band.id != null && x.v.efficiency != null; });
     var lo = known[0], hi = known[known.length - 1];
+    var bl = function (b) { return jaOf(b.label) || b.label; };
+    var headJ = lo && hi && lo !== hi ? 'ロット' + bl(lo.band) + 'の稼働効率は' + jN(lo.v.efficiency * 100, 1) + '%、ロット' + bl(hi.band) + 'は' + jN(hi.v.efficiency * 100, 1) + '%（差' + jN((hi.v.efficiency - lo.v.efficiency) * 100, 1) + 'ポイント）。生産性は' + jN(lo.v.productivity, 2) + '対' + jN(hi.v.productivity, 2) + '枚/人/日。' : '期間内のロット区分は1つのみ。';
     var head = lo && hi && lo !== hi ? 'Lot ' + lo.band.label.toLowerCase() + ' đạt hiệu suất ' + fmtP(lo.v.efficiency) + ', lot ' + hi.band.label.toLowerCase() + ' đạt ' + fmtP(hi.v.efficiency) +
       ' (chênh ' + fmtN((hi.v.efficiency - lo.v.efficiency) * 100, 1) + ' điểm). ' + 'Năng suất ' + fmtN(lo.v.productivity, 2) + ' so với ' + fmtN(hi.v.productivity, 2) + ' sp/người/ngày.' : 'Chỉ có một nhóm lot trong kỳ.';
     var maxEff = Math.max.apply(null, r.rows.map(function (x) { return x.v.efficiency || 0; }));
@@ -2393,13 +2485,14 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
     var SC = ['var(--series-1)', 'var(--series-2)', 'var(--series-3)'];
     var c1 = '<div class="mcharts">' + chartBox({ title: 'Hiệu suất theo cỡ lot và mức thời gian may', type: 'bar', labels: r.matrix.map(function (x) { return x.band.label; }),
       series: R.SAM_BANDS.map(function (b, i) { return { name: b.label, color: SC[i], values: r.matrix.map(function (x) { return x.cells[i].efficiency; }) }; }), fmt: pc, axisFmt: pctAxis, height: 190 }, 'wide') + '</div>';
-    return '<p class="headline">' + head + '</p>' + c1 + '<p class="an-note">Kỳ: ' + periodText(r.months) + '. Mỗi mã có TH trong tháng được xếp theo lot sau gộp đơn (集約ロット).</p>' + t1 +
-      '<h3>Hiệu suất theo cỡ lot và mức thời gian may</h3><p class="an-note">So sánh trong cùng một cột (cùng độ khó sản phẩm) để thấy riêng ảnh hưởng của cỡ lot.</p>' + t2;
+    return '<p class="headline"' + jt(headJ) + '>' + head + '</p>' + c1 + '<p class="an-note"' + jt('期間：' + periodJa(r.months) + '。当月実績のある品番を集約ロットで区分。') + '>Kỳ: ' + periodText(r.months) + '. Mỗi mã có TH trong tháng được xếp theo lot sau gộp đơn (集約ロット).</p>' + t1 +
+      '<h3>Hiệu suất theo cỡ lot và mức thời gian may</h3><p class="an-note"' + jt('同じ列（同じ難易度）で比較すると、ロットサイズのみの影響が分かる。') + '>So sánh trong cùng một cột (cùng độ khó sản phẩm) để thấy riêng ảnh hưởng của cỡ lot.</p>' + t2;
   }
 
   function anLearn(o) {
     var r = R.learning(ds, o), t = r.total;
-    if (!t.n) return '<div class="empty">Chưa có lượt may nào xong trong ' + periodText(r.months) + ' (cần ít nhất 5 ngày may).</div>';
+    if (!t.n) return '<div class="empty"' + jt(periodJa(r.months) + 'に完了した縫製ロットがありません（5日以上の縫製が必要）。') + '>Chưa có lượt may nào xong trong ' + periodText(r.months) + ' (cần ít nhất 5 ngày may).</div>';
+    var headJ = '安定生産数の90%到達まで平均' + jN(t.ramp, 1) + '生産日（理論習熟日数' + jN(t.theo, 1) + '日）。' + jN(t.slower * 100, 1) + '%の縫製ロットが理論より遅い。この期間の標準時間ロスは約' + jN(t.loss) + '時間。';
     var head = 'Bình quân ' + fmtN(t.ramp, 1) + ' ngày sản xuất để đạt 90% sản lượng ổn định (lý thuyết 習熟日数 ' + fmtN(t.theo, 1) + ' ngày). ' +
       fmtP(t.slower) + ' lượt may chậm hơn lý thuyết. Giờ chuẩn mất trong giai đoạn này khoảng ' + fmtN(t.loss) + ' giờ.';
     var t1 = table(['Mức thời gian may', 'Số lượt may', 'Ngày lên NS<span class="sub">bình quân</span>', 'Trung vị', '習熟日数 lý thuyết', '% chậm hơn lý thuyết', 'Mã mới<span class="sub">ngày (số lượt)</span>', 'Mã lặp lại<span class="sub">ngày (số lượt)</span>', 'Giờ chuẩn mất'],
@@ -2423,14 +2516,15 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
       chartBox({ title: 'Ngày lên năng suất: thực tế và lý thuyết', sub: 'ngày', type: 'bar', labels: r.rows.map(function (x) { return x.band.label; }),
       series: [{ name: 'Thực tế', color: 'var(--series-1)', values: r.rows.map(function (x) { return x.v.ramp; }) }, { name: '習熟日数 lý thuyết', color: 'var(--series-2)', values: r.rows.map(function (x) { return x.v.theo; }) }],
       fmt: n1, axisFmt: smartAxis, height: 200 }) + '</div>';
-    return '<p class="headline">' + head + '</p>' + c2 + '<p class="an-note">Lượt may = một mã trên một chuyền (chuyền tách tính riêng), xong trong ' + periodText(r.months) + ', may ít nhất 5 ngày. Sản lượng ổn định = phân vị 75% sản lượng ngày (bỏ ngày cuối). ' +
+    return '<p class="headline"' + jt(headJ) + '>' + head + '</p>' + c2 + '<p class="an-note"' + jt('縫製ロット＝1品番×1ライン（分割ラインは別計上）、' + periodJa(r.months) + 'に完了、5日以上縫製。安定生産数＝日別数量の75パーセンタイル（最終日除く）。' + (r.notReached ? r.notReached + 'ロットは最初の' + r.maxDays + '日で90%に達せず、表に含めない。' : '') + 'リピート品番＝読込データ内で以前に縫製完了した品番。') + '>Lượt may = một mã trên một chuyền (chuyền tách tính riêng), xong trong ' + periodText(r.months) + ', may ít nhất 5 ngày. Sản lượng ổn định = phân vị 75% sản lượng ngày (bỏ ngày cuối). ' +
       (r.notReached ? r.notReached + ' lượt không đạt 90% trong ' + r.maxDays + ' ngày đầu, không tính vào bảng. ' : '') + 'Mã lặp lại = mã đã may xong trước đó trong dữ liệu đã nạp.</p>' + t1 +
       '<h3>Sản lượng các ngày đầu so với mức ổn định</h3>' + t2 + '<h3>Lượt may lên năng suất chậm nhất so với lý thuyết</h3>' + t3;
   }
 
   function anLt(o) {
     var r = R.leadTime(ds, o), t = r.total;
-    if (!t.n) return '<div class="empty">Chưa có lượt may nào xong trong ' + periodText(r.months) + '.</div>';
+    if (!t.n) return '<div class="empty"' + jt(periodJa(r.months) + 'に完了した縫製ロットがありません。') + '>Chưa có lượt may nào xong trong ' + periodText(r.months) + '.</div>';
+    var headJ = '縫製リードタイム実績は平均' + jN(t.span, 1) + '稼働日、理論（縫製リードタイム）' + jN(t.theo, 1) + '日。' + jN(t.overRate * 100, 1) + '%の縫製ロットが理論より' + r.tolerance + '日超遅れ' + (t.overDays ? '、平均' + jN(t.overDays, 1) + '日遅れ。' : '。');
     var head = 'Lead time may thực tế bình quân ' + fmtN(t.span, 1) + ' ngày làm việc, lý thuyết (縫製リードタイム) ' + fmtN(t.theo, 1) + ' ngày. ' +
       fmtP(t.overRate) + ' lượt may chậm hơn lý thuyết quá ' + r.tolerance + ' ngày' + (t.overDays ? ', chậm bình quân ' + fmtN(t.overDays, 1) + ' ngày.' : '.');
     var row = function (name, v, cls) {
@@ -2448,13 +2542,14 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
       fmt: n1, axisFmt: smartAxis, height: 190 }) +
       chartBox({ title: 'Tỷ lệ lượt may chậm hơn lý thuyết', sub: '> ' + r.tolerance + ' ngày', type: 'bar', labels: r.rows.map(function (x) { return x.band.label; }),
       series: [{ name: '% chậm', color: 'var(--series-1)', values: r.rows.map(function (x) { return x.v.overRate; }) }], fmt: pc, axisFmt: pctAxis, height: 190 }) + '</div>';
-    return '<p class="headline">' + head + '</p>' + c3 + '<p class="an-note">Lead time thực tế = số ngày làm việc từ ngày may đầu tiên đến ngày cuối cùng của lượt may. Lượt may xong trong ' + periodText(r.months) + '.</p>' + t1 +
+    return '<p class="headline"' + jt(headJ) + '>' + head + '</p>' + c3 + '<p class="an-note"' + jt('リードタイム実績＝縫製ロットの初日から最終日までの稼働日数。' + periodJa(r.months) + 'に完了した縫製ロット。') + '>Lead time thực tế = số ngày làm việc từ ngày may đầu tiên đến ngày cuối cùng của lượt may. Lượt may xong trong ' + periodText(r.months) + '.</p>' + t1 +
       '<h3>Theo nhãn hàng</h3>' + t2 + '<h3>Lượt may chậm nhất so với lý thuyết</h3>' + t3;
   }
 
   function anCo(o) {
     var r = R.changeover(ds, o), t = r.total;
-    if (!t.sah) return '<div class="empty">Không có sản lượng trong ' + periodText(r.months) + '.</div>';
+    if (!t.sah) return '<div class="empty"' + jt(periodJa(r.months) + 'に生産数量がありません。') + '>Không có sản lượng trong ' + periodText(r.months) + '.</div>';
+    var headJ = '新規投入品番は' + jN(t.starts) + '件。立上り期間の標準時間ロスは約' + jN(t.loss) + '時間、可能標準時間合計の' + jN(t.lossRate * 100, 1) + '%。';
     var head = 'Có ' + fmtN(t.starts) + ' lượt mã mới vào chuyền. Giờ chuẩn mất trong giai đoạn lên năng suất khoảng ' + fmtN(t.loss) + ' giờ, bằng ' + fmtP(t.lossRate) + ' tổng giờ chuẩn có thể làm.';
     var maxRate = Math.max.apply(null, r.lines.map(function (x) { return x.v.lossRate || 0; }).concat(r.byMonth.map(function (x) { return x.v.lossRate || 0; })));
     var cols = ['Mã mới vào chuyền', 'Số mã chạy<span class="sub">切替数</span>', 'Lot bq mã mới', 'Giờ chuẩn mất', 'Giờ chuẩn làm ra', '% mất'];
@@ -2468,13 +2563,14 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
       series: [{ name: 'Mã mới vào chuyền', color: 'var(--series-1)', values: r.byMonth.map(function (x) { return x.v.starts; }) }], fmt: n0, axisFmt: smartAxis }) +
       chartBox({ title: 'Tỷ lệ giờ chuẩn mất khi lên năng suất', type: 'line', labels: ml,
       series: [{ name: '% mất', color: 'var(--series-1)', values: r.byMonth.map(function (x) { return x.v.lossRate; }) }], fmt: pc, axisFmt: pctAxis, zero: true }) + '</div>' : '';
-    return '<p class="headline">' + head + '</p>' + c4 + '<p class="an-note">Giờ chuẩn mất = phần sản lượng thiếu so với mức ổn định trong những ngày đầu của mỗi mã mới, nhân thời gian may. % mất = giờ chuẩn mất ÷ (giờ chuẩn làm ra + giờ chuẩn mất). Số mã chạy tính như 切替数 ở sheet TORAY (số mã có TH trong tháng).</p>' +
+    return '<p class="headline"' + jt(headJ) + '>' + head + '</p>' + c4 + '<p class="an-note"' + jt('標準時間ロス＝新規品番の初期日における安定水準との差の数量×工程時間。ロス率＝ロス÷（生産標準時間＋ロス）。稼働品番数はTORAYシートの切替数と同じ（当月実績のある品番数）。') + '>Giờ chuẩn mất = phần sản lượng thiếu so với mức ổn định trong những ngày đầu của mỗi mã mới, nhân thời gian may. % mất = giờ chuẩn mất ÷ (giờ chuẩn làm ra + giờ chuẩn mất). Số mã chạy tính như 切替数 ở sheet TORAY (số mã có TH trong tháng).</p>' +
       '<h3>Theo tháng</h3>' + t1 + '<h3>Theo chuyền</h3>' + t2;
   }
 
   function anPlan(o) {
     var r = R.planStability(ds, o), t = r.total;
-    if (!r.byMonth.length) return '<div class="empty">Chưa có tháng nào trong kỳ có đủ file cuối tháng trước (để lấy KH đầu tháng) và file chốt tháng.</div>';
+    if (!r.byMonth.length) return '<div class="empty"' + jt('期間内に前月末ファイル（月初計画用）と確定ファイルが揃った月がありません。') + '>Chưa có tháng nào trong kỳ có đủ file cuối tháng trước (để lấy KH đầu tháng) và file chốt tháng.</div>';
+    var headJ = '実績は月初計画の' + jN(t.rate * 100, 1) + '%（' + jN(t.th) + '／' + jN(t.khOpen) + '枚）。月初計画に対し追加' + t.added + '品番、未実施' + t.dropped + '品番、計画品番の' + jN(t.changeRate * 100, 1) + '%が変更。';
     var head = 'TH đạt ' + fmtP(t.rate) + ' KH đầu tháng (' + fmtN(t.th) + ' / ' + fmtN(t.khOpen) + ' sp). So với KH đầu tháng: ' + t.added + ' mã được thêm vào, ' + t.dropped + ' mã không làm, tức thay đổi ' + fmtP(t.changeRate) + ' số mã trong KH.';
     var cols = ['KH đầu tháng', 'TH', '% đạt', 'Chênh TH − KH', 'Mã trong KH đầu tháng', 'Mã thêm vào', 'Mã không làm', '% mã thay đổi'];
     var row = function (name, v, cls) {
@@ -2489,14 +2585,15 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
       series: [{ name: '% đạt', color: 'var(--series-1)', values: r.byMonth.map(function (x) { return x.v.rate; }) }], fmt: pc, axisFmt: pctAxis, ref: { value: 1, label: '100%' } }) +
       chartBox({ title: 'Mã thay đổi so với KH đầu tháng', sub: 'mã', type: 'bar', labels: pl,
       series: [{ name: 'Thêm vào', color: 'var(--series-1)', values: r.byMonth.map(function (x) { return x.v.added; }) }, { name: 'Không làm', color: 'var(--series-2)', values: r.byMonth.map(function (x) { return x.v.dropped; }) }], fmt: n0, axisFmt: smartAxis }) + '</div>' : '';
-    return '<p class="headline">' + head + '</p>' + c5 + '<p class="an-note">Chỉ tính các tháng đã chốt và có file cuối tháng trước (update trong 10 ngày trước ngày 1).' + (skipped > 0 ? ' ' + skipped + ' tháng trong kỳ bị bỏ qua vì thiếu một trong hai file.' : '') +
+    return '<p class="headline"' + jt(headJ) + '>' + head + '</p>' + c5 + '<p class="an-note"' + jt('確定月で、前月末ファイル（1日前10日以内の更新）がある月のみ。' + (skipped > 0 ? '期間内の' + skipped + 'か月はどちらかのファイルが無いため除外。' : '') + '追加品番＝当月実績があるが月初計画に無い品番；未実施＝月初計画にあるが実績が無い品番。') + '>Chỉ tính các tháng đã chốt và có file cuối tháng trước (update trong 10 ngày trước ngày 1).' + (skipped > 0 ? ' ' + skipped + ' tháng trong kỳ bị bỏ qua vì thiếu một trong hai file.' : '') +
       ' Mã thêm vào = có TH trong tháng nhưng không có trong KH đầu tháng; mã không làm = có trong KH đầu tháng nhưng không có TH.</p>' + '<h3>Theo tháng</h3>' + t1 + '<h3>Theo nhãn hàng</h3>' + t2;
   }
 
   function anRank(o) {
     var r = R.lineRanking(ds, o);
-    if (!r.rows.length) return '<div class="empty">Không có chuyền nào đủ ' + r.minPd + ' ngày công trong ' + periodText(r.months) + '.</div>';
+    if (!r.rows.length) return '<div class="empty"' + jt(periodJa(r.months) + 'に' + r.minPd + '人日以上のラインがありません。') + '>Không có chuyền nào đủ ' + r.minPd + ' ngày công trong ' + periodText(r.months) + '.</div>';
     var best = r.rows[0], worst = r.rows[r.rows.length - 1];
+    var headJ = '最高：' + best.key + '（稼働効率' + jN(best.v.efficiency * 100, 1) + '%）。最低：' + worst.key + '（' + jN(worst.v.efficiency * 100, 1) + '%）。' + r.rows.length + 'ラインを順位付け。';
     var head = 'Cao nhất: ' + esc(best.key) + ' (hiệu suất ' + fmtP(best.v.efficiency) + '). Thấp nhất: ' + esc(worst.key) + ' (' + fmtP(worst.v.efficiency) + '). ' + r.rows.length + ' chuyền được xếp hạng.';
     var maxEff = best.v.efficiency;
     var t1 = table(['Hạng', 'Chuyền', 'TH', 'Ngày công', 'LĐ/chuyền', 'Năng suất<span class="sub">sp/người/ngày</span>', 'Hiệu suất', '工程分析時間', 'Số tháng', 'Thấp nhất – cao nhất<span class="sub">hiệu suất tháng</span>', 'Dao động<span class="sub">độ lệch chuẩn</span>'],
@@ -2504,14 +2601,15 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
         return '<tr>' + td(x.rank) + td(esc(x.key), 'txt') + td(fmtN(x.v.th)) + td(fmtN(x.v.pdT)) + td(fmtN(x.v.perLine, 1)) + td(fmtN(x.v.productivity, 2)) + td(bar(x.v.efficiency, maxEff, fmtP(x.v.efficiency))) +
           td(fmtN(x.v.avgSam)) + td(fmtN(x.monthly.length)) + td(x.min == null ? '—' : fmtP(x.min, 0) + ' – ' + fmtP(x.max, 0)) + td(x.sd == null ? '—' : fmtN(x.sd * 100, 1) + ' đ') + '</tr>';
       }));
-    return '<p class="headline">' + head + '</p><p class="an-note">Kỳ: ' + periodText(r.months) + '. Xếp theo hiệu suất (giờ chuẩn ÷ giờ công). Chuyền dưới ' + r.minPd + ' ngày công không xếp hạng. Chuyền ghép (AB) có số người gấp đôi nên năng suất/người khác chuyền thường. Dao động lớn = hiệu suất các tháng chênh nhau nhiều.</p>' + t1;
+    return '<p class="headline"' + jt(headJ) + '>' + head + '</p><p class="an-note"' + jt('期間：' + periodJa(r.months) + '。稼働効率（標準時間÷投入時間）で順位付け。' + r.minPd + '人日未満のラインは対象外。統合ライン（AB）は人数が倍のため一人当たり生産性が通常ラインと異なる。変動大＝月別稼働効率の差が大きい。') + '>Kỳ: ' + periodText(r.months) + '. Xếp theo hiệu suất (giờ chuẩn ÷ giờ công). Chuyền dưới ' + r.minPd + ' ngày công không xếp hạng. Chuyền ghép (AB) có số người gấp đôi nên năng suất/người khác chuyền thường. Dao động lớn = hiệu suất các tháng chênh nhau nhiều.</p>' + t1;
   }
 
   function anLoad(o) {
     var r = R.capacityLoad(ds, o);
-    if (!r.rows.length) return '<div class="empty">Chưa có tháng kế hoạch sau tháng đã chốt gần nhất.</div>';
+    if (!r.rows.length) return '<div class="empty"' + jt('直近の確定月以降の計画月がありません。') + '>Chưa có tháng kế hoạch sau tháng đã chốt gần nhất.</div>';
     var list = r.totals.length ? r.totals : r.rows;
     var over = list.filter(function (x) { return x.load > 1.05; });
+    var headJ = over.length ? '過負荷：' + over.map(function (x) { return mJ(x.month) + '（' + jN(x.load * 100, 0) + '%、必要人員約' + jN(x.laborNeed) + '名、現有' + jN(x.labor) + '名）'; }).join('、') + '。' : '能力の105%を超える月はありません。';
     var head = over.length ? 'Quá tải: ' + over.map(function (x) { return R.monthLabel(x.month) + ' (' + fmtP(x.load, 0) + ', cần khoảng ' + fmtN(x.laborNeed) + ' người so với ' + fmtN(x.labor) + ')'; }).join('; ') + '.'
       : 'Không có tháng nào vượt 105% năng lực.';
     var maxLoad = Math.max.apply(null, r.rows.concat(r.totals).map(function (x) { return x.load || 0; }).concat([1.2]));
@@ -2531,7 +2629,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
     var c7 = '<div class="mcharts">' + chartBox({ title: 'Tải so với năng lực', sub: 'giờ chuẩn KH ÷ năng lực', type: 'bar', labels: lm.map(R.monthLabel),
       series: lf.slice(0, 3).map(function (f, i) { return { name: f, color: SC7[i], values: lm.map(function (m) { var x = r.rows.filter(function (q) { return q.f === f && q.month === m; })[0]; return x ? x.load : null; }) }; }),
       fmt: function (v) { return fmtP(v, 0); }, axisFmt: pctAxis, ref: { value: 1, label: '100% năng lực' }, height: 200 }, 'wide') + '</div>';
-    return '<p class="headline">' + head + '</p>' + c7 + '<p class="an-note">Năng lực = LĐ bình quân/ngày × ngày làm việc × 8 giờ × hiệu suất, theo ' + r.baseMonths + ' tháng đã chốt gần nhất của từng xưởng (' + esc(base) + '). Tải = giờ chuẩn của KH ÷ năng lực. Vừa: 85–105%. KH các tháng xa thường chưa nhận đủ đơn nên tải thấp. Phần này không lọc theo nhãn hàng.</p>' + t1;
+    return '<p class="headline"' + jt(headJ) + '>' + head + '</p>' + c7 + '<p class="an-note"' + jt('能力＝平均人員/日×稼働日×8時間×稼働効率（各工場の直近' + r.baseMonths + 'か月の確定月：' + r.rows.map(function (x) { return x.f + '：' + x.base.map(mJ).join('、') + '（稼働効率' + jN(x.efficiency * 100, 1) + '%）'; }).filter(function (v, i, a) { return a.indexOf(v) === i; }).join('・') + '）。負荷＝計画の標準時間÷能力。適正：85～105%。先の月の計画は受注が揃っておらず負荷が低く出やすい。ブランドで絞り込まない。') + '>Năng lực = LĐ bình quân/ngày × ngày làm việc × 8 giờ × hiệu suất, theo ' + r.baseMonths + ' tháng đã chốt gần nhất của từng xưởng (' + esc(base) + '). Tải = giờ chuẩn của KH ÷ năng lực. Vừa: 85–105%. KH các tháng xa thường chưa nhận đủ đơn nên tải thấp. Phần này không lọc theo nhãn hàng.</p>' + t1;
   }
 
   function renderStyles() {
@@ -2540,7 +2638,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
       .filter(function (x) { return !x.open; })
       .filter(function (x) { return !q || [x.style, x.brand, x.line, x.lineRaw, x.item, x.f, x.po].join(' ').toLowerCase().indexOf(q) >= 0; })
       .sort(function (a, b) { return a.f.localeCompare(b.f) || a.line.localeCompare(b.line, 'vi', { numeric: true }) || b.th - a.th; });
-    if (!list.length) { $('styleTable').innerHTML = '<div class="empty">Không có mã hàng.</div>'; return; }
+    if (!list.length) { $('styleTable').innerHTML = '<div class="empty"' + jt('品番なし。') + '>Không có mã hàng.</div>'; return; }
     var h = '<table><thead><tr><th>Mã hàng</th><th class="txt">Xưởng</th><th class="txt">Chuyền</th><th class="txt">Nhãn hàng</th><th class="txt">Chủng loại</th><th>工程分析時間 (giây)</th><th>生産ロット</th><th>LĐ chuyền</th><th>KH</th><th>TH</th><th>% đạt</th><th>Ngày chạy</th><th>Ngày công</th><th>Năng suất</th><th>Hiệu suất</th><th class="txt">Ghi chú</th></tr></thead><tbody>';
     list.forEach(function (x) {
       var v = R.derive(R.aggregate([x]), 1), note = [];
@@ -2585,8 +2683,11 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
     if (state.lang !== 'bi' || typeof v !== 'string') return v;
     var parts = v.split(' · ');
     if (parts.length < 2) return biText(v);
-    var j = jaOf(parts[0]);
-    return j ? v + ' / ' + j : v;
+    var VI = /[àáảãạăằắẳẵặâầấẩẫậèéẻẽẹêềếểễệìíỉĩịòóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựỳýỷỹỵđ]/i;
+    var js = parts.map(function (p) { var j = jaOf(p); return j || (VI.test(p) ? null : p); });
+    if (!jaOf(parts[0])) return v;
+    js = js.filter(Boolean);
+    return v + ' / ' + js.join('・');
   }
   function vlen(t) { t = String(t); var n = 0; for (var i = 0; i < t.length; i++) n += t.charCodeAt(i) > 0x2e80 ? 1.9 : 1; return n; }
   // rows → { ws, spec } (spec dùng cho PMXlsxStyle.applyStyles)
@@ -2646,6 +2747,11 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
         if (typeof val === 'number') {
           st.fmt = XF[f] || f; fit(widths, c, numLen(val, f) + 2);
           if (/^d/.test(f) && val) st.color = val > 0 ? '15803D' : 'C2410C'; // tăng xanh, giảm đỏ
+        }
+        else if (typeof val === 'string' && val.indexOf('\n') >= 0) {
+          var parts = val.split('\n'); st.wrap = 1; st.v = 'top';
+          parts.forEach(function (p) { fit(widths, c, Math.min(vlen(p), 60) + 2); });
+          heights[ri + 1] = Math.max(heights[ri + 1] || 0, Math.min(parts.length, 6) * 14 + 4);
         }
         else if (val != null && val !== '' && kind !== 'group') fit(widths, c, Math.min(vlen(val), 70) + 2);
         if (r.cs && r.cs[c]) for (var k in r.cs[c]) st[k] = r.cs[c][k];
@@ -2996,13 +3102,15 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
     var exr = [['Tóm tắt điều hành · tháng ' + R.monthLabel(ED.m) + ' · NTC ' + ED.fy + ' · ' + scopeText()], []];
     exr.push(xr('head', ['Chỉ số', 'Giá trị', 'Mục tiêu / so sánh', 'Trạng thái', 'Ghi chú'], { fmts: ['g', 'g', 'g', 'g', 'g'] }));
     var stStyle = { good: XS.good, bad: XS.bad, warn: { b: 1, color: '8A5A00' } };
-    et.forEach(function (t) { var tj = exJa(t.label); exr.push(xr('data', [t.label + (tj ? ' / ' + tj : ''), t.value + (t.unit ? ' ' + t.unit : ''), t.target, t.st ? EX_ST[t.st].icon + ' ' + EX_ST[t.st].vi + ' / ' + EX_ST[t.st].ja : 'So sánh', t.delta || ''], { cs: t.st ? { 3: stStyle[t.st] } : null })); });
+    var bj = function (vi, ja) { return state.lang === 'bi' && ja ? vi + '\n' + ja : vi; };
+    var unitJ = { 'sp': '枚', 'người': '名', 'sp/chuyền-ngày': '枚/ライン日' };
+    et.forEach(function (t) { var tj = exJa(t.label); exr.push(xr('data', [t.label + (tj ? ' / ' + tj : ''), t.value + (t.unit ? ' ' + t.unit : '') + (state.lang === 'bi' && unitJ[t.unit] ? ' / ' + unitJ[t.unit] : ''), bj(t.target, t.tj), t.st ? EX_ST[t.st].icon + ' ' + EX_ST[t.st].vi + ' / ' + EX_ST[t.st].ja : 'So sánh / 比較', bj(t.delta || '', t.dj)], { cs: t.st ? { 3: stStyle[t.st] } : null })); });
     exr.push([]); exr.push(['Thông điệp chính']);
     em.forEach(function (x, i) { exr.push(xr('note', [(i + 1) + '. ' + x.vi])); exr.push(xr('note', ['    ' + x.ja])); });
     if (er.length) {
       exr.push([]); exr.push(['Rủi ro và hành động đề xuất']);
       exr.push(xr('head', ['Mức', 'Rủi ro', 'Ảnh hưởng', 'Hành động đề xuất', 'Phụ trách (gợi ý)'], { fmts: ['g', 'g', 'g', 'g', 'g'] }));
-      er.forEach(function (x) { exr.push(xr('data', [x.sev === 'bad' ? '✕ Cao' : '! Trung bình', x.risk, x.impact, x.act, x.owner], { cs: { 0: stStyle[x.sev === 'bad' ? 'bad' : 'warn'] } })); });
+      er.forEach(function (x) { exr.push(xr('data', [x.sev === 'bad' ? '✕ Cao / 高' : '! Trung bình / 中', bj(x.risk, x.riskJ), bj(x.impact, x.impactJ), bj(x.act, x.actJ), bj(x.owner, x.ownerJ)], { cs: { 0: stStyle[x.sev === 'bad' ? 'bad' : 'warn'] } })); });
     }
     add('Tom tat dieu hanh', exr, { freeze: false });
 
@@ -3047,14 +3155,14 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
     if (window.claude && window.claude.use) {
       var dl = null;
       try { dl = await window.claude.use('downloads'); } catch (e) { dl = null; }
-      if (!dl) { exportMsg('Trang này chưa được phép lưu file. Tải trang về máy để xuất Excel.', true); return; }
+      if (!dl) { exportMsg('Trang này chưa được phép lưu file. Tải trang về máy để xuất Excel.', true, 'このページはファイル保存が許可されていません。ページをPCに保存してExcel出力してください。'); return; }
       try {
         await dl.save({ filename: filename, data: new Blob([data]) });
-        exportMsg('Đã lưu ' + filename + chartNote + '.');
+        exportMsg('Đã lưu ' + filename + chartNote + '.', false, filename + 'を保存しました。');
       } catch (e) {
-        if (e && e.code === 'declined') exportMsg('Đã hủy lưu file.');
-        else if (e && e.code === 'rate_limited') exportMsg('Đang có một yêu cầu lưu file chờ xác nhận. Xác nhận hoặc đóng nó rồi bấm lại.', true);
-        else exportMsg('Không lưu được file: ' + (e && e.message ? e.message : e), true);
+        if (e && e.code === 'declined') exportMsg('Đã hủy lưu file.', false, '保存を取り消しました。');
+        else if (e && e.code === 'rate_limited') exportMsg('Đang có một yêu cầu lưu file chờ xác nhận. Xác nhận hoặc đóng nó rồi bấm lại.', true, '確認待ちの保存要求があります。確認または閉じてから再度押してください。');
+        else exportMsg('Không lưu được file: ' + (e && e.message ? e.message : e), true, 'ファイルを保存できません：' + (e && e.message ? e.message : e));
       }
       return;
     }
@@ -3062,7 +3170,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
     var url = URL.createObjectURL(new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }));
     var a = document.createElement('a'); a.href = url; a.download = filename; document.body.appendChild(a); a.click();
     setTimeout(function () { URL.revokeObjectURL(url); a.remove(); }, 1000);
-    exportMsg('Đã tạo ' + filename + chartNote + ', xem thư mục Tải xuống (Downloads).');
+    exportMsg('Đã tạo ' + filename + chartNote + ', xem thư mục Tải xuống (Downloads).', false, filename + 'を作成しました。ダウンロードフォルダをご確認ください。');
   }
 
   // ---------- Sheet "Bieu do": bảng số + biểu đồ Excel ----------
@@ -3260,7 +3368,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
     bills = bills.filter(function (b) { return b.id !== id; });
     regs = regs.filter(function (r) { return r.id !== id; });
     await DB.del(id);
-    setStatus('Đã xóa 1 file.');
+    setStatus('Đã xóa 1 file.', false, '1件のファイルを削除しました。');
     rebuild();
   });
   // Xóa: bấm 2 lần để xác nhận (không dùng hộp thoại confirm)
@@ -3274,12 +3382,12 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
       return;
     }
     clearTimeout(clearTimer); delete b.dataset.armed; b.textContent = 'Xóa toàn bộ dữ liệu';
-    files = []; bills = []; regs = []; await DB.clear(); setStatus('Đã xóa toàn bộ dữ liệu.'); rebuild();
+    files = []; bills = []; regs = []; await DB.clear(); setStatus('Đã xóa toàn bộ dữ liệu.', false, '全データを削除しました。'); rebuild();
   });
   async function onExport() {
-    exportMsg('Đang tạo file Excel…');
+    exportMsg('Đang tạo file Excel…', false, 'Excelファイル作成中…');
     try { await exportExcel(); }
-    catch (e) { exportMsg('Không xuất được Excel: ' + e.message, true); }
+    catch (e) { exportMsg('Không xuất được Excel: ' + e.message, true, 'Excel出力できません：' + e.message); }
   }
   $('btnExport').addEventListener('click', onExport);
   $('btnExport2').addEventListener('click', onExport);
@@ -3319,7 +3427,12 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
   $('styleSearch').addEventListener('input', function () { clearTimeout(searchTimer); searchTimer = setTimeout(renderStyles, 150); });
 
   // ---------- Song ngữ Việt / Nhật ----------
-  var JA_SEL = 'h1, h2, h3, h4, th, label, button, summary, nav.jump a, .chip, .kpi .lbl, .legend span, td.lbl, tr.grp td, td:first-child, .eyebrow';
+  var JA_SEL = 'h1, h2, h3, h4, th, label, button, summary, nav.jump a, .chip, .kpi .lbl, .legend span, td.lbl, tr.grp td, td:first-child, .eyebrow, ' +
+    'p, li, td.txt, span.sub, .ex-tgt, .ex-delta, .ex-st, .warn, [data-jt]';
+  // Câu tạo tự động mang sẵn bản tiếng Nhật: thuộc tính data-jt="…"
+  function jt(ja) { return ja ? ' data-jt="' + esc(ja) + '"' : ''; }
+  // Đoạn chữ song ngữ cho chỗ không có phần tử riêng (vd. trong ô bảng)
+  function bi2(vi, ja) { return state.lang === 'bi' && ja ? vi + '<span class="ja fixed" lang="ja">' + esc(ja) + '</span>' : vi; }
   function jaOf(t) { return window.PMJa ? window.PMJa.ja(t) : null; }
   function directText(el) {
     var t = '';
@@ -3330,11 +3443,13 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
     if (state.lang !== 'bi') return;
     Array.prototype.forEach.call((root || document).querySelectorAll(JA_SEL), function (el) {
       // Ghi nhớ chữ đã dịch; nếu chữ tiếng Việt đổi (ví dụ tiêu đề có tháng) thì dịch lại
-      var key = directText(el);
-      if (el.getAttribute('data-ja') === key) return;
-      el.setAttribute('data-ja', key);
+      if (el.closest('.ja') || el.querySelector(':scope > .ja.fixed')) return;
+      var key = directText(el), given = el.getAttribute('data-jt');
+      if (!key && !given) return;
+      if (el.getAttribute('data-ja') === (given || key) && el.querySelector(':scope > .ja')) return;
+      el.setAttribute('data-ja', given || key);
       Array.prototype.forEach.call(el.querySelectorAll(':scope > .ja'), function (x) { x.remove(); });
-      var j = jaOf(key);
+      var j = given || jaOf(key);
       if (!j) return;
       var sp = document.createElement('span'); sp.className = 'ja'; sp.textContent = j; sp.setAttribute('lang', 'ja');
       var sub = el.querySelector(':scope > .sub, :scope > .muted');
@@ -3368,7 +3483,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
   // Excel: "tiếng Việt / tiếng Nhật" cho tiêu đề, tên chỉ tiêu
   var biCache = {};
   function biText(v) {
-    if (state.lang !== 'bi' || typeof v !== 'string' || v.length > 120) return v;
+    if (state.lang !== 'bi' || typeof v !== 'string' || v.length > 2000) return v;
     if (!(v in biCache)) { var j = jaOf(v); biCache[v] = j ? v + ' / ' + j : v; }
     return biCache[v];
   }
@@ -3378,7 +3493,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
     files = (saved || []).filter(function (f) { return f && f.facts; });
     bills = (saved || []).filter(function (f) { return f && f.kind === 'billing'; });
     regs = (saved || []).filter(function (f) { return f && f.kind === 'idlereg'; });
-    if (files.length) setStatus('Đã mở lại ' + files.length + ' file đã nạp trước đây.');
+    if (files.length) setStatus('Đã mở lại ' + files.length + ' file đã nạp trước đây.', false, '以前読み込んだ' + files.length + '件のファイルを開きました。');
     rebuild();
   });
 })();
