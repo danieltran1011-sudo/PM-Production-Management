@@ -741,6 +741,22 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
           return '<b>' + esc(f) + '</b>: ' + by[f].sort().map(function (d) { return 'update ' + fmtDate(d); }).join(', ');
         }).join('<br>') + '</div>';
     }
+    // Tháng có sản lượng nhưng không có số lao động (file nạp từ bản cũ / thiếu cột 人数)
+    var noLab = [];
+    if (ds) Object.keys(ds.meta).forEach(function (k) {
+      var me = ds.meta[k], th = 0, pd = 0;
+      ds.facts.forEach(function (x) { if (x.f === me.f && x.m === me.m && !x.open) { th += x.th || 0; pd += x.pdT || 0; } });
+      if (th > 0 && pd <= 0) noLab.push(me);
+    });
+    if (noLab.length) {
+      var bf = {};
+      noLab.forEach(function (me) { (bf[me.f] = bf[me.f] || []).push(me); });
+      html += '<div style="margin-top:8px"><b>⚠ ' + noLab.length + ' tháng có sản lượng nhưng không có số lao động (縫直), nên lao động, năng suất, hiệu suất của các tháng đó bị sai.</b></div>' +
+        '<div>Tải lại trang (Ctrl + F5) rồi kéo thả lại các file sau: ' + Object.keys(bf).sort().map(function (f) {
+          var src = {}; bf[f].forEach(function (me) { src[me.srcDate] = 1; });
+          return '<b>' + esc(f) + '</b> update ' + Object.keys(src).sort().map(fmtDate).join(', ') + ' (tháng ' + bf[f].map(function (me) { return R.monthLabel(me.m); }).sort().join(', ') + ')';
+        }).join('; ') + '.</div>';
+    }
     ['oldBanner', 'oldBanner2'].forEach(function (id) { $(id).innerHTML = html; $(id).hidden = !html; });
   }
   function renderFiles() {
