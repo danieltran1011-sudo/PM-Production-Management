@@ -587,7 +587,14 @@
     "Xếp hạng chuyền": "ライン順位",
     "Sản xuất": "生産",
     "So sánh": "比較",
-    "Hàng ±: % thay đổi so với kỳ so sánh (xanh tăng, đỏ giảm); riêng Tỷ lệ đạt và Hiệu suất là chênh lệch điểm %.": "±行：比較期間との増減率（緑＝増、赤＝減）。達成率と稼働効率はポイント差。"
+    "Hàng ±: % thay đổi so với kỳ so sánh (xanh tăng, đỏ giảm); riêng Tỷ lệ đạt và Hiệu suất là chênh lệch điểm %.": "±行：比較期間との増減率（緑＝増、赤＝減）。達成率と稼働効率はポイント差。",
+    'So tháng trước': '前月比', 'So tuần trước': '前週比', 'Chuyền nhỏ': '小ライン', 'Sổ': '台帳', 'sp/chuyền-ngày': '枚/ライン日',
+    'Theo cách tính của TI (năm chuẩn 647.091 sp = 29 chuyền × 297 ngày, trừ 5,9% tăng ca = 0,5 giờ / 8,5 giờ)': 'TI算定方式（基準年 647,091枚＝29ライン×297日、残業5.9%＝0.5時間÷8.5時間を除く）',
+    'Giai đoạn may hàng APIC tự bán / chuyền trống (mọi tháng có số)': 'APIC自販品縫製・ライン空きの期間（データのある全月）',
+    'Đối chiếu file APIC負担金額 của TI với chuyền trống / may hàng APIC trang tính được': 'TIのAPIC負担金額ファイルと本ページ算出のライン空き・APIC品縫製の照合',
+    'Đối chiếu sổ ライン空き原価配分表 của TI với chuyền trống / may hàng APIC trang tính được': 'TIライン空き原価配分表と本ページ算出のライン空き・APIC品縫製の照合',
+    'Hiệu suất: cỡ lot / thời gian may': '稼働効率：ロットサイズ／工程時間',
+    'Tháng / chuyền': '月／ライン', 'Tháng / nhãn hàng': '月／ブランド'
   };
   var KEY = {};
   Object.keys(D).forEach(function (k) { KEY[k.replace(/\s+/g, ' ').trim()] = D[k]; });
@@ -660,6 +667,8 @@
     [/^W(\d+) \(chưa đủ tuần\)$/, function (m) { return 'W' + m[1] + '（週途中）'; }],
     [/^Cùng kỳ năm trước \((.+)\)$/, function (m) { return '前年同期（' + m[1].split(', ').map(function (x) { var p = x.split('/'); return p[1] + '年' + p[0] + '月'; }).join('、') + '）'; }],
     [/^(\d{1,2})\/(\d{4}) – (\d{1,2})\/(\d{4}) \((\d+) tháng\)$/, function (m) { return m[2] + '年' + m[1] + '月～' + m[4] + '年' + m[3] + '月（' + m[5] + 'か月）'; }],
+    [/^So năm chuẩn (\d{4}) \((.+)\)$/, function (m) { return m[1] + '年度（基準）比（' + m[2] + '）'; }],
+    [/^([\d.,]+) (ngày|chuyền-ngày) · ([\d.,]+) USD(?: \(\+ ([\d.,]+) USD gắn mã hàng\))?$/, function (m) { return m[1] + (m[2] === 'ngày' ? '日' : 'ライン日') + '・' + m[3] + ' USD' + (m[4] ? '（＋品番紐付け ' + m[4] + ' USD）' : ''); }],
     [/^% chậm \(> (\d+) ngày\)$/, function (m) { return '遅延率（' + m[1] + '日超）'; }],
     [/^Ngày (\d+) \(% ổn định\)$/, function (m) { return m[1] + '日目（安定比%）'; }],
     [/^([A-Z]+\d+): dừng ở hàng (\d+)$/, function (m) { return m[1] + '：' + m[2] + '行で停止'; }],

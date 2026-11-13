@@ -243,8 +243,15 @@ td.cellwrap { white-space: normal; min-width: 140px; }
 button .ja, .chip .ja, nav.jump a .ja, .legend span .ja, summary .ja, .seg button .ja { display: inline; margin-left: 0.4em; }
 button.primary .ja { color: inherit; opacity: 0.85; }
 h1 .ja { font-size: 0.45em; margin-top: 4px; }
+small .ja, span.cmp > span .ja, span.muted .ja { display: inline; margin-left: 0.3em; }
 h2 .ja, h3 .ja, h4 .ja { font-size: 0.62em; }
 .eyebrow .ja { display: inline; }
+/* Chỉ tiếng Nhật */
+body.lang-ja .vi-t { display: none !important; }
+body.lang-ja .jt-all > :not(.ja):not([data-jt]):not([aria-hidden]) { display: none !important; }
+body.lang-ja .ja { font-size: inherit !important; color: inherit; font-weight: inherit; letter-spacing: inherit; line-height: inherit; margin: 0 !important; opacity: 1; display: inline; font-family: inherit; }
+body.lang-ja .ex-lbl .ja, body.lang-ja .ex-tgt .ja, body.lang-ja .ex-delta .ja, body.lang-ja .ex-title .ja { display: block; }
+body.lang-ja .hr-comments li div + div { color: inherit; }
 .old-banner { margin-top: 12px; padding: 12px 14px; border-radius: 8px; border: 1px solid var(--bad); background: var(--bad-soft); font-size: 13px; display: grid; gap: 6px; }
 .old-banner b { color: var(--bad); }
 .export-field { align-self: end; }
@@ -262,12 +269,13 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
 
 <div class="wrap">
   <header class="top">
-    <span class="eyebrow">Báo cáo sản xuất · 生産月次報告</span>
+    <span class="eyebrow"><span class="vi-t">Báo cáo sản xuất · </span>生産月次報告</span>
     <h1>Báo cáo tháng từ file KH_UPDATE</h1>
     <p data-jt="KH_UPDATEファイルを選択（工場ごと・更新ごとに1ファイル、月数・年数が多いほど良い）。各月の確定値を自動集計し、前月・前年同月・年度累計と比較。データはこのブラウザ内のみに保存され、外部へ送信されません。">Chọn các file KH_UPDATE (mỗi xưởng, mỗi lần update một file; càng nhiều tháng, nhiều năm càng tốt). Trang tự gộp, lấy số chốt của từng tháng và so sánh với tháng trước, cùng kỳ năm trước, lũy kế năm tài chính. Dữ liệu chỉ lưu trong trình duyệt này, không gửi đi đâu.</p>
-    <div class="seg" id="langSeg" role="group" aria-label="Ngôn ngữ / 言語">
+    <div class="seg no-ja" id="langSeg" role="group" aria-label="Ngôn ngữ / 言語">
       <button type="button" data-lang="bi" aria-pressed="true">Việt + 日本語</button>
       <button type="button" data-lang="vi" aria-pressed="false">Chỉ tiếng Việt</button>
+      <button type="button" data-lang="ja" aria-pressed="false" lang="ja">日本語のみ</button>
     </div>
     <nav class="jump" aria-label="Mục">
       <a href="#du-lieu">Dữ liệu</a><a href="#dieu-hanh">Tóm tắt điều hành</a><a href="#tong-quan">Tổng quan tháng</a><a href="#tong-hop">Tổng hợp toàn xưởng</a><a href="#bao-cao-tivn">Báo cáo TIVN</a><a href="#cam-ket">Cam kết với TI</a><a href="#su-dung-chuyen">Sử dụng chuyền</a><a href="#theo-chieu">Nhãn hàng · chuyền · chủng loại</a>
@@ -282,8 +290,8 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
     </div>
     <label class="drop" id="drop">
       <input type="file" id="fileInput" multiple accept=".xlsm,.xlsx,.xls">
-      <strong>Kéo thả file KH_UPDATE vào đây, hoặc bấm để chọn</strong>
-      <span class="muted">Chọn được nhiều file một lúc, mỗi file vài giây. Nạp chung được file APIC負担金額 của TI để đối chiếu chuyền trống / hàng APIC.</span>
+      <strong data-jt="KH_UPDATEファイルをここにドラッグ＆ドロップ、またはクリックして選択">Kéo thả file KH_UPDATE vào đây, hoặc bấm để chọn</strong>
+      <span class="muted" data-jt="複数ファイルを一度に選択可（1ファイル数秒）。TIのAPIC負担金額ファイルも一緒に読み込んでライン空き・APIC品を照合できます。">Chọn được nhiều file một lúc, mỗi file vài giây. Nạp chung được file APIC負担金額 của TI để đối chiếu chuyền trống / hàng APIC.</span>
     </label>
     <p class="status" id="status" role="status" aria-live="polite"></p>
     <div id="oldBanner" class="old-banner" hidden></div>
@@ -510,7 +518,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
       <li data-jt="分析：縫製ロット＝1品番×1ライン（分割ラインは別計上）。安定生産数＝日別数量の75パーセンタイル（最終日除く）。習熟日数＝安定水準の90%に初めて達した生産日（最初の30日以内）。実績リードタイム＝縫製開始日から終了日までの稼働日数。理論値はファイルの習熟日数（AP列）と縫製リードタイム（AT列、「予定」行）。ファイルのデータ初日に始まる縫製ロットは、それ以前から縫製している可能性があるため除外。"><b>Phân tích</b>: lượt may = một mã trên một chuyền (chuyền tách tính riêng). Sản lượng ổn định = phân vị 75% sản lượng ngày, bỏ ngày cuối. Ngày lên năng suất = ngày sản xuất đầu tiên đạt 90% mức ổn định (trong 30 ngày đầu). Lead time thực tế = số ngày làm việc từ ngày may đầu đến ngày cuối. Lý thuyết lấy từ file: 習熟日数 (cột AP) và 縫製リードタイム (cột AT, hàng "dự định"). Lượt may bắt đầu ngay ngày đầu dữ liệu của file bị bỏ qua vì có thể đã may từ trước.</li>
       <li data-jt="新規投入品番：品番の最初の生産日がある月。完了品番：終了日（実績行のEND、更新日以前）がある月。"><b>Mã mới vào chuyền</b>: tháng có ngày sản lượng đầu tiên của mã. <b>Mã hoàn thành</b>: tháng có ngày kết thúc (ô END ở hàng TH, không muộn hơn ngày update).</li>
       <li data-jt="年度は開始年で命名、開始月はフィルターで選択（初期値4月：2026年度＝2026年4月～2027年3月）。前年同月＝前年の同じ月、前年同期累計＝前年度の対応する月。"><b>Năm tài chính</b> đặt tên theo năm bắt đầu; tháng bắt đầu chọn ở bộ lọc (mặc định tháng 4: NTC 2026 = 4/2026–3/2027). <b>Cùng kỳ</b> = cùng tháng năm trước; <b>lũy kế cùng kỳ</b> = các tháng tương ứng của năm tài chính trước.</li>
-      <li data-jt="生産数・達成率・生産性・稼働効率の増減を緑／赤で表示。達成率と稼働効率はポイント差（đ）で比較。">Mức tăng/giảm tô xanh/đỏ cho sản lượng, tỷ lệ đạt, năng suất, hiệu suất. Tỷ lệ đạt và hiệu suất so sánh bằng điểm phần trăm (đ).</li>
+      <li data-jt="生産数・達成率・生産性・稼働効率の増減を緑／赤で表示。達成率と稼働効率はポイント差（pt）で比較。">Mức tăng/giảm tô xanh/đỏ cho sản lượng, tỷ lệ đạt, năng suất, hiệu suất. Tỷ lệ đạt và hiệu suất so sánh bằng điểm phần trăm (đ).</li>
     </ul>
   </section>
 </div>
@@ -595,7 +603,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
   function delta(a, b, m) {
     if (a == null || b == null || !isFinite(a) || !isFinite(b)) return '<span class="muted">—</span>';
     var v, txt;
-    if (m.kind === 'pct') { v = (a - b) * 100; txt = (v > 0 ? '+' : '') + fmtN(v, 1) + ' đ'; }
+    if (m.kind === 'pct') { v = (a - b) * 100; txt = (v > 0 ? '+' : '') + fmtN(v, 1) + (jaOnly() ? 'pt' : ' đ'); }
     else { if (!b) return '<span class="muted">—</span>'; v = a / b - 1; txt = (v > 0 ? '+' : '') + fmtN(v * 100, 1) + '%'; }
     if (Math.abs(v) < 1e-9) return '<span class="muted">0</span>';
     var arrow = v > 0 ? '▲ ' : '▼ ';
@@ -935,6 +943,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
     $('fFy').innerHTML = fy;
     $('aliases').value = state.aliasText || '';
     $('stagedText').value = state.stagedText == null ? R.STAGED_DEFAULT : state.stagedText;
+    $('stagedInfo').setAttribute('data-jt', ds && ds.staged && ds.staged.length ? '統合中：' + ds.staged.map(function (x) { return x.base + '（' + x.f + '）← ' + x.stages.join(', ') + '・工程分析時間 ' + jN(x.totalSam) + '秒・完成：工程' + x.last; }).join(' / ') : '読込済みファイルにリストの品番はありません。');
     $('stagedInfo').innerHTML = ds && ds.staged && ds.staged.length ? 'Đang gộp: ' + ds.staged.map(function (x) {
       return '<b>' + esc(x.base) + '</b> (' + esc(x.f) + ') ← ' + esc(x.stages.join(', ')) + ' · 工程分析時間 ' + fmtN(x.totalSam) + ' giây · thành phẩm: công đoạn ' + x.last;
     }).join('<br>') : 'Chưa thấy mã nào trong danh sách ở các file đã nạp.';
@@ -945,6 +954,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
     var raw = {};
     files.forEach(function (f) { f.facts.forEach(function (x) { var b = R.normBrand(x.brandRaw, R.parseAliasText(state.aliasText)); (raw[b] = raw[b] || {})[x.brandRaw || '(trống)'] = 1; }); });
     var merged = Object.keys(raw).filter(function (b) { return Object.keys(raw[b]).length > 1; }).sort();
+    if (merged.length) $('brandRaw').setAttribute('data-jt', '統合中：' + merged.map(function (b) { return b + ' ← ' + Object.keys(raw[b]).join(', '); }).join('・')); else $('brandRaw').removeAttribute('data-jt');
     $('brandRaw').innerHTML = merged.length ? 'Đang gộp: ' + merged.map(function (b) { return '<b>' + esc(b) + '</b> ← ' + esc(Object.keys(raw[b]).join(', ')); }).join(' · ') : '';
   }
 
@@ -997,6 +1007,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
     $('ovTitle').textContent = 'Tổng quan tháng ' + R.monthLabel(state.month);
     $('ovScope').textContent = scopeText(); $('ovScope').setAttribute('data-jt', scopeJa());
     var metas = ds.factories.filter(function (f) { return !state.factory || f === state.factory; }).map(function (f) { return ds.meta[f + '|' + state.month]; }).filter(Boolean);
+    $('ovMeta').setAttribute('data-jt', metas.map(function (m) { return m.f + '（' + ({ chot: '確定', dang: '進行中', kh: '計画' })[m.status] + '）更新ファイル' + dJ(m.srcDate) + 'の数値・稼働日' + m.wd + '日' + (m.openDate ? '・月初計画は' + dJ(m.openDate) + 'のファイル' : '・前月ファイルがなく月初計画なし'); }).join(' / '));
     $('ovMeta').innerHTML = metas.map(function (m) {
       return '<b>' + esc(m.f) + '</b> ' + chip(m.status) + ' số theo file update ' + fmtDate(m.srcDate) + ' · ' + m.wd + ' ngày làm việc' +
         (m.openDate ? ' · KH đầu tháng theo file ' + fmtDate(m.openDate) : ' · chưa có file trước tháng để lấy KH đầu tháng');
@@ -1829,15 +1840,15 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
     $('exScope').textContent = scopeText() + ' · tháng ' + R.monthLabel(D.m) + '. Dữ liệu đến ' + Object.keys(ds.latestPlan || {}).map(function (f) { return f + ' ' + fmtDate(ds.latestPlan[f].updateDate); }).join(', ') + '.';
     $('exScope').setAttribute('data-jt', scopeJa() + '・' + mJ(D.m) + '。データ：' + Object.keys(ds.latestPlan || {}).map(function (f) { return f + ' ' + dJ(ds.latestPlan[f].updateDate); }).join('、') + 'まで。');
     var html = '<div id="exPrint">' +
-      '<div class="ex-head"><div><div class="ex-title">Tóm tắt điều hành · tháng ' + R.monthLabel(D.m) + (state.lang === 'bi' ? '<span class="ja" lang="ja" style="display:block;font-size:0.55em">エグゼクティブサマリー・' + mJ(D.m) + '</span>' : '') + '</div>' +
+      '<div class="ex-head"><div><div class="ex-title"><span class="vi-t">Tóm tắt điều hành · tháng ' + R.monthLabel(D.m) + '</span>' + (hasJa() ? '<span class="ja" lang="ja" style="display:block;font-size:0.55em">エグゼクティブサマリー・' + mJ(D.m) + '</span>' : '') + '</div>' +
       '<div class="muted" style="font-size:12.5px"' + jt(scopeJa()) + '>' + esc(scopeText()) + '</div></div>' +
       '<div class="ex-count">' + exStatusChip('good', ng + ' đạt', '達成 ' + ng) + exStatusChip('warn', nw + ' theo dõi', '要注意 ' + nw) + exStatusChip('bad', nb + ' chưa đạt', '未達 ' + nb) + '</div></div>' +
       '<div class="ex-grid">' + tiles.map(function (t) {
         var tj = exJa(t.label);
-        return '<div class="ex-tile' + (t.st ? ' ' + t.st : '') + '"><div class="ex-lbl">' + esc(t.label) + (tj && state.lang === 'bi' ? '<span class="ja">' + esc(tj) + '</span>' : '') + '</div><div class="ex-val">' + t.value + (t.unit ? '<small> ' + esc(t.unit) + '</small>' : '') + '</div>' +
+        return '<div class="ex-tile' + (t.st ? ' ' + t.st : '') + '"><div class="ex-lbl">' + (tj && hasJa() ? '<span class="vi-t">' + esc(t.label) + '</span>' : esc(t.label)) + (tj && hasJa() ? '<span class="ja">' + esc(tj) + '</span>' : '') + '</div><div class="ex-val">' + t.value + (t.unit ? '<small> ' + esc(t.unit) + '</small>' : '') + '</div>' +
           '<div class="ex-tgt"' + jt(t.tj) + '>' + esc(t.target) + '</div><div class="ex-foot">' + exStatusChip(t.st) + (t.spark ? exSpark(t.spark) : '') + '</div>' + (t.delta ? '<div class="ex-delta"' + jt(t.dj) + '>' + esc(t.delta) + '</div>' : '') + '</div>';
       }).join('') + '</div>' +
-      '<div class="ex-cols"><div><h3>Thông điệp chính</h3><ol class="hr-comments">' + msgs.map(function (x) { return '<li>' + '<div>' + esc(x.vi) + '</div>' + (state.lang === 'bi' ? '<div lang="ja">' + esc(x.ja) + '</div>' : '') + '</li>'; }).join('') + '</ol></div>' +
+      '<div class="ex-cols"><div><h3>Thông điệp chính</h3><ol class="hr-comments">' + msgs.map(function (x) { return '<li>' + '<div class="vi-t">' + esc(x.vi) + '</div>' + (hasJa() ? '<div lang="ja">' + esc(x.ja) + '</div>' : '') + '</li>'; }).join('') + '</ol></div>' +
       '<div><h3>Rủi ro và hành động đề xuất</h3>' + (risks.length ? table(['Mức', 'Rủi ro', 'Ảnh hưởng', 'Hành động đề xuất', 'Phụ trách (gợi ý)'], risks.map(function (x) {
         return '<tr><td class="txt">' + (x.sev === 'bad' ? exStatusChip('bad', 'Cao', '高') : exStatusChip('warn', 'Trung bình', '中')) + '</td>' + td(bi2(esc(x.risk), x.riskJ), 'txt cellwrap') + td(bi2(esc(x.impact), x.impactJ), 'txt cellwrap') + td(bi2(esc(x.act), x.actJ), 'txt cellwrap') + td(bi2(esc(x.owner), x.ownerJ), 'txt') + '</tr>';
       })) : '<p class="up"' + jt('現データでは大きなリスクはありません。') + '>Không có rủi ro lớn theo số liệu hiện có.</p>') + '</div></div>' +
@@ -2032,7 +2043,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
       if (eff != null || lab != null) out.push({ ja: '生産性：縫直' + jN(lab) + '名' + jd(dLb, '名') + '、稼働効率' + jN(eff * 100, 1) + '%' + (dE != null ? '（' + cmpJa + jDiff(dE, 1, true) + '）' : '') + '、1人1日' + jN(c.productivity, 2) + '枚。',
         vi: 'Năng suất: 縫直 ' + fmtN(lab) + ' người' + vd(dLb, 'người') + '; hiệu suất ' + fmtP(eff) + (dE != null ? ' (so cùng kỳ ' + hrDiff(dE, 1, true) + ')' : '') + '; ' + fmtN(c.productivity, 2) + ' sp/người/ngày.' });
       var hard = hrShare(d.cur, 'sam', 's5'), small = hrShare(d.cur, 'lot', 'l1');
-      if (hard != null) out.push({ ja: '難易度・ロット：20,000秒以上' + jN(hard * 100, 1) + '%、500枚未満ロット' + jN(small * 100, 1) + '%（TI契約：高難易度品2%以内・小ロット品10%以内、TI品のみの判定は「Cam kết với TI」参照）。',
+      if (hard != null) out.push({ ja: '難易度・ロット：20,000秒以上' + jN(hard * 100, 1) + '%、500枚未満ロット' + jN(small * 100, 1) + '%（TI契約：高難易度品2%以内・小ロット品10%以内、TI品のみの判定は「TI契約」の項を参照）。',
         vi: 'Hàng khó và lot nhỏ: hàng từ 20.000 giây ' + fmtP(hard) + ', lot dưới 500 sp ' + fmtP(small) + ' (cam kết với TI: ≤ 2% và ≤ 10%, chỉ tính hàng TI ở mục "Cam kết với TI").' });
       var idle = hrIdle(d.cur.months), loss = hrLoss(d.cur.months);
       if (idle != null || loss != null) out.push({ ja: 'ライン空き：空き率' + (idle != null ? jN(idle * 100, 1) + '%' : '—') + (loss != null ? '、空きロス' + jN(loss, 1) + '千USD' : '') + '。',
@@ -2199,7 +2210,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
     }
     // Lời bình
     var cm = hrComments(d);
-    if (cm.length) html += H('Lời bình tự động') + '<ol class="hr-comments">' + cm.map(function (x) { return '<li>' + (state.lang === 'bi' ? '<div lang="ja">' + esc(x.ja) + '</div>' : '') + '<div>' + esc(x.vi) + '</div></li>'; }).join('') + '</ol>';
+    if (cm.length) html += H('Lời bình tự động') + '<ol class="hr-comments">' + cm.map(function (x) { return '<li>' + (hasJa() ? '<div lang="ja">' + esc(x.ja) + '</div>' : '') + '<div class="vi-t">' + esc(x.vi) + '</div></li>'; }).join('') + '</ol>';
     html += '<h3>Phần làm ở báo cáo riêng</h3><p class="an-note"' + jt('ライン保証費・縫直単価・加工単価、工賃・生産日数実績、縫直以外・要員・縫直率・欠勤率、1次/2次不良率、サンプル受注、裁断、来客：KH_UPDATEにないため別報告で対応。') + '>ライン保証費・縫直単価・加工単価, 工賃・生産日数実績, 縫直以外・要員・縫直率・欠勤率, 1次/2次不良率, サンプル受注, 裁断, 来客: không có trong file KH_UPDATE, làm ở báo cáo riêng.</p>';
     $('hrBody').innerHTML = html;
     drawCharts($('hrBody'));
@@ -2300,7 +2311,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
         }));
     }
     var cm = hrYearsComments(Y);
-    if (cm.length) html += H('Lời bình tự động') + '<ol class="hr-comments">' + cm.map(function (x) { return '<li>' + (state.lang === 'bi' ? '<div lang="ja">' + esc(x.ja) + '</div>' : '') + '<div>' + esc(x.vi) + '</div></li>'; }).join('') + '</ol>';
+    if (cm.length) html += H('Lời bình tự động') + '<ol class="hr-comments">' + cm.map(function (x) { return '<li>' + (hasJa() ? '<div lang="ja">' + esc(x.ja) + '</div>' : '') + '<div class="vi-t">' + esc(x.vi) + '</div></li>'; }).join('') + '</ol>';
     $('hrBody').innerHTML = html;
     drawCharts($('hrBody'));
   }
@@ -2599,7 +2610,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
     var t1 = table(['Hạng', 'Chuyền', 'TH', 'Ngày công', 'LĐ/chuyền', 'Năng suất<span class="sub">sp/người/ngày</span>', 'Hiệu suất', '工程分析時間', 'Số tháng', 'Thấp nhất – cao nhất<span class="sub">hiệu suất tháng</span>', 'Dao động<span class="sub">độ lệch chuẩn</span>'],
       r.rows.map(function (x) {
         return '<tr>' + td(x.rank) + td(esc(x.key), 'txt') + td(fmtN(x.v.th)) + td(fmtN(x.v.pdT)) + td(fmtN(x.v.perLine, 1)) + td(fmtN(x.v.productivity, 2)) + td(bar(x.v.efficiency, maxEff, fmtP(x.v.efficiency))) +
-          td(fmtN(x.v.avgSam)) + td(fmtN(x.monthly.length)) + td(x.min == null ? '—' : fmtP(x.min, 0) + ' – ' + fmtP(x.max, 0)) + td(x.sd == null ? '—' : fmtN(x.sd * 100, 1) + ' đ') + '</tr>';
+          td(fmtN(x.v.avgSam)) + td(fmtN(x.monthly.length)) + td(x.min == null ? '—' : fmtP(x.min, 0) + ' – ' + fmtP(x.max, 0)) + td(x.sd == null ? '—' : fmtN(x.sd * 100, 1) + (jaOnly() ? 'pt' : ' đ')) + '</tr>';
       }));
     return '<p class="headline"' + jt(headJ) + '>' + head + '</p><p class="an-note"' + jt('期間：' + periodJa(r.months) + '。稼働効率（標準時間÷投入時間）で順位付け。' + r.minPd + '人日未満のラインは対象外。統合ライン（AB）は人数が倍のため一人当たり生産性が通常ラインと異なる。変動大＝月別稼働効率の差が大きい。') + '>Kỳ: ' + periodText(r.months) + '. Xếp theo hiệu suất (giờ chuẩn ÷ giờ công). Chuyền dưới ' + r.minPd + ' ngày công không xếp hạng. Chuyền ghép (AB) có số người gấp đôi nên năng suất/người khác chuyền thường. Dao động lớn = hiệu suất các tháng chênh nhau nhiều.</p>' + t1;
   }
@@ -2674,20 +2685,21 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
     return 'n0';
   }
   function biHead(v) {
-    if (state.lang !== 'bi' || typeof v !== 'string') return v;
+    if (!hasJa() || typeof v !== 'string') return v;
     var j = jaOf(v);
+    if (jaOnly()) return j || v;
     return j ? v + '\n' + j : v;
   }
   // Tiêu đề "A · B · C": chỉ dịch phần đầu, tránh lẫn tiếng Việt trong phần tiếng Nhật
   function biTitle(v) {
-    if (state.lang !== 'bi' || typeof v !== 'string') return v;
+    if (!hasJa() || typeof v !== 'string') return v;
     var parts = v.split(' · ');
     if (parts.length < 2) return biText(v);
     var VI = /[àáảãạăằắẳẵặâầấẩẫậèéẻẽẹêềếểễệìíỉĩịòóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựỳýỷỹỵđ]/i;
     var js = parts.map(function (p) { var j = jaOf(p); return j || (VI.test(p) ? null : p); });
     if (!jaOf(parts[0])) return v;
     js = js.filter(Boolean);
-    return v + ' / ' + js.join('・');
+    return jaOnly() ? js.join('・') : v + ' / ' + js.join('・');
   }
   function vlen(t) { t = String(t); var n = 0; for (var i = 0; i < t.length; i++) n += t.charCodeAt(i) > 0x2e80 ? 1.9 : 1; return n; }
   // rows → { ws, spec } (spec dùng cho PMXlsxStyle.applyStyles)
@@ -2918,7 +2930,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
       var hcm = hrComments(hd);
       if (hcm.length) {
         hrs.push([]); hrs.push(['Lời bình tự động']);
-        hcm.forEach(function (x, i) { hrs.push(xr('note', [(i + 1) + '. ' + x.ja])); hrs.push(xr('note', ['    ' + x.vi])); });
+        hcm.forEach(function (x, i) { hrs.push(xr('note', [(i + 1) + '. ' + (state.lang === 'vi' ? x.vi : x.ja)])); if (state.lang === 'bi') hrs.push(xr('note', ['    ' + x.vi])); });
       }
       if (mode === 'fy' && hd.fy === fyNow) {
         var hw = hd.wk.weeks;
@@ -2957,7 +2969,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
         YY.brands.forEach(function (b) { hrs.push(xr('data', [b.brand, b.owner === 'TI' ? 'TI' : 'APIC'].concat(b.th.map(function (v) { return v || null; })))); });
       }
       var ycm = hrYearsComments(YY);
-      if (ycm.length) { hrs.push([]); hrs.push(['Lời bình so sánh các năm']); ycm.forEach(function (x, i) { hrs.push(xr('note', [(i + 1) + '. ' + x.ja])); hrs.push(xr('note', ['    ' + x.vi])); }); }
+      if (ycm.length) { hrs.push([]); hrs.push(['Lời bình so sánh các năm']); ycm.forEach(function (x, i) { hrs.push(xr('note', [(i + 1) + '. ' + (state.lang === 'vi' ? x.vi : x.ja)])); if (state.lang === 'bi') hrs.push(xr('note', ['    ' + x.vi])); }); }
     }
     add('Bao cao TIVN', hrs, { freeze: false });
 
@@ -3102,15 +3114,15 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
     var exr = [['Tóm tắt điều hành · tháng ' + R.monthLabel(ED.m) + ' · NTC ' + ED.fy + ' · ' + scopeText()], []];
     exr.push(xr('head', ['Chỉ số', 'Giá trị', 'Mục tiêu / so sánh', 'Trạng thái', 'Ghi chú'], { fmts: ['g', 'g', 'g', 'g', 'g'] }));
     var stStyle = { good: XS.good, bad: XS.bad, warn: { b: 1, color: '8A5A00' } };
-    var bj = function (vi, ja) { return state.lang === 'bi' && ja ? vi + '\n' + ja : vi; };
+    var bj = function (vi, ja) { return jaOnly() ? ja || vi : hasJa() && ja ? vi + '\n' + ja : vi; };
     var unitJ = { 'sp': '枚', 'người': '名', 'sp/chuyền-ngày': '枚/ライン日' };
-    et.forEach(function (t) { var tj = exJa(t.label); exr.push(xr('data', [t.label + (tj ? ' / ' + tj : ''), t.value + (t.unit ? ' ' + t.unit : '') + (state.lang === 'bi' && unitJ[t.unit] ? ' / ' + unitJ[t.unit] : ''), bj(t.target, t.tj), t.st ? EX_ST[t.st].icon + ' ' + EX_ST[t.st].vi + ' / ' + EX_ST[t.st].ja : 'So sánh / 比較', bj(t.delta || '', t.dj)], { cs: t.st ? { 3: stStyle[t.st] } : null })); });
+    et.forEach(function (t) { var tj = exJa(t.label); exr.push(xr('data', [jaOnly() ? tj || t.label : t.label + (tj ? ' / ' + tj : ''), t.value + (t.unit ? ' ' + (jaOnly() ? unitJ[t.unit] || t.unit : t.unit) : '') + (state.lang === 'bi' && unitJ[t.unit] ? ' / ' + unitJ[t.unit] : ''), bj(t.target, t.tj), t.st ? EX_ST[t.st].icon + ' ' + (jaOnly() ? EX_ST[t.st].ja : EX_ST[t.st].vi + ' / ' + EX_ST[t.st].ja) : jaOnly() ? '比較' : 'So sánh / 比較', bj(t.delta || '', t.dj)], { cs: t.st ? { 3: stStyle[t.st] } : null })); });
     exr.push([]); exr.push(['Thông điệp chính']);
-    em.forEach(function (x, i) { exr.push(xr('note', [(i + 1) + '. ' + x.vi])); exr.push(xr('note', ['    ' + x.ja])); });
+    em.forEach(function (x, i) { if (jaOnly()) { exr.push(xr('note', [(i + 1) + '. ' + x.ja])); return; } exr.push(xr('note', [(i + 1) + '. ' + x.vi])); if (hasJa()) exr.push(xr('note', ['    ' + x.ja])); });
     if (er.length) {
       exr.push([]); exr.push(['Rủi ro và hành động đề xuất']);
       exr.push(xr('head', ['Mức', 'Rủi ro', 'Ảnh hưởng', 'Hành động đề xuất', 'Phụ trách (gợi ý)'], { fmts: ['g', 'g', 'g', 'g', 'g'] }));
-      er.forEach(function (x) { exr.push(xr('data', [x.sev === 'bad' ? '✕ Cao / 高' : '! Trung bình / 中', bj(x.risk, x.riskJ), bj(x.impact, x.impactJ), bj(x.act, x.actJ), bj(x.owner, x.ownerJ)], { cs: { 0: stStyle[x.sev === 'bad' ? 'bad' : 'warn'] } })); });
+      er.forEach(function (x) { exr.push(xr('data', [jaOnly() ? (x.sev === 'bad' ? '✕ 高' : '! 中') : x.sev === 'bad' ? '✕ Cao / 高' : '! Trung bình / 中', bj(x.risk, x.riskJ), bj(x.impact, x.impactJ), bj(x.act, x.actJ), bj(x.owner, x.ownerJ)], { cs: { 0: stStyle[x.sev === 'bad' ? 'bad' : 'warn'] } })); });
     }
     add('Tom tat dieu hanh', exr, { freeze: false });
 
@@ -3427,23 +3439,29 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
   $('styleSearch').addEventListener('input', function () { clearTimeout(searchTimer); searchTimer = setTimeout(renderStyles, 150); });
 
   // ---------- Song ngữ Việt / Nhật ----------
-  var JA_SEL = 'h1, h2, h3, h4, th, label, button, summary, nav.jump a, .chip, .kpi .lbl, .legend span, td.lbl, tr.grp td, td:first-child, .eyebrow, ' +
+  var JA_SEL = 'h1, h2, h3, h4, th, label, button, summary, nav.jump a, .chip, .kpi .lbl, .legend span, td.lbl, tr.grp td, td:first-child, .eyebrow, span.cmp > span, small, span.muted, ' +
     'p, li, td.txt, span.sub, .ex-tgt, .ex-delta, .ex-st, .warn, [data-jt]';
   // Câu tạo tự động mang sẵn bản tiếng Nhật: thuộc tính data-jt="…"
+  function hasJa() { return state.lang === 'bi' || state.lang === 'ja'; }
+  function jaOnly() { return state.lang === 'ja'; }
   function jt(ja) { return ja ? ' data-jt="' + esc(ja) + '"' : ''; }
   // Đoạn chữ song ngữ cho chỗ không có phần tử riêng (vd. trong ô bảng)
-  function bi2(vi, ja) { return state.lang === 'bi' && ja ? vi + '<span class="ja fixed" lang="ja">' + esc(ja) + '</span>' : vi; }
+  function bi2(vi, ja) { return hasJa() && ja ? '<span class="vi-t">' + vi + '</span><span class="ja fixed" lang="ja">' + esc(ja) + '</span>' : vi; }
   function jaOf(t) { return window.PMJa ? window.PMJa.ja(t) : null; }
   function directText(el) {
     var t = '';
-    for (var i = 0; i < el.childNodes.length; i++) if (el.childNodes[i].nodeType === 3) t += el.childNodes[i].nodeValue;
+    for (var i = 0; i < el.childNodes.length; i++) {
+      var n = el.childNodes[i];
+      if (n.nodeType === 3) t += n.nodeValue;
+      else if (n.nodeType === 1 && n.hasAttribute('data-w')) t += n.textContent;
+    }
     return t.replace(/\s+/g, ' ').trim();
   }
   function annotate(root) {
-    if (state.lang !== 'bi') return;
+    if (!hasJa()) return;
     Array.prototype.forEach.call((root || document).querySelectorAll(JA_SEL), function (el) {
       // Ghi nhớ chữ đã dịch; nếu chữ tiếng Việt đổi (ví dụ tiêu đề có tháng) thì dịch lại
-      if (el.closest('.ja') || el.querySelector(':scope > .ja.fixed')) return;
+      if (el.closest('.ja') || el.closest('.no-ja') || el.querySelector(':scope > .ja.fixed')) return;
       var key = directText(el), given = el.getAttribute('data-jt');
       if (!key && !given) return;
       if (el.getAttribute('data-ja') === (given || key) && el.querySelector(':scope > .ja')) return;
@@ -3454,16 +3472,28 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
       var sp = document.createElement('span'); sp.className = 'ja'; sp.textContent = j; sp.setAttribute('lang', 'ja');
       var sub = el.querySelector(':scope > .sub, :scope > .muted');
       if (sub) el.insertBefore(sp, sub); else el.appendChild(sp);
+      if (jaOnly()) hideVi(el, !!given);
     });
     // Ô chọn: "tiếng Việt / tiếng Nhật"
     Array.prototype.forEach.call((root || document).querySelectorAll('option'), function (op) {
       if (op.getAttribute('data-vi') != null) return;
       var j = jaOf(op.textContent);
       op.setAttribute('data-vi', op.textContent);
-      if (j) op.textContent = op.textContent + ' / ' + j;
+      if (j) op.textContent = jaOnly() ? j : op.textContent + ' / ' + j;
     });
   }
+  // Chỉ tiếng Nhật: bọc chữ tiếng Việt trực tiếp vào span ẩn; data-jt là bản dịch cả phần tử nên ẩn mọi con
+  function hideVi(el, all) {
+    Array.prototype.slice.call(el.childNodes).forEach(function (n) {
+      if (n.nodeType !== 3 || !n.nodeValue.trim()) return;
+      var w = document.createElement('span'); w.className = 'vi-t'; w.setAttribute('data-w', '1');
+      el.insertBefore(w, n); w.appendChild(n);
+    });
+    if (all) el.classList.add('jt-all');
+  }
   function clearJa() {
+    Array.prototype.forEach.call(document.querySelectorAll('span.vi-t[data-w]'), function (w) { w.parentNode.replaceChild(document.createTextNode(w.textContent), w); });
+    Array.prototype.forEach.call(document.querySelectorAll('.jt-all'), function (x) { x.classList.remove('jt-all'); });
     Array.prototype.forEach.call(document.querySelectorAll('.ja'), function (x) { x.remove(); });
     Array.prototype.forEach.call(document.querySelectorAll('[data-ja]'), function (x) { x.removeAttribute('data-ja'); });
     Array.prototype.forEach.call(document.querySelectorAll('option[data-vi]'), function (op) { op.textContent = op.getAttribute('data-vi'); op.removeAttribute('data-vi'); });
@@ -3476,16 +3506,21 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
   function setLang(l) {
     state.lang = l; saveSettings();
     Array.prototype.forEach.call(document.querySelectorAll('#langSeg [data-lang]'), function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-lang') === l)); });
-    clearJa(); annotate(document);
+    document.body.classList.toggle('lang-ja', l === 'ja');
+    document.documentElement.lang = l === 'ja' ? 'ja' : 'vi';
+    clearJa();
+    if (ds) { try { render(); } catch (e) { /* bỏ qua */ } }
+    annotate(document);
   }
   $('langSeg').addEventListener('click', function (e) { var b = e.target.closest('[data-lang]'); if (b) setLang(b.getAttribute('data-lang')); });
   setLang(state.lang || 'bi');
   // Excel: "tiếng Việt / tiếng Nhật" cho tiêu đề, tên chỉ tiêu
   var biCache = {};
   function biText(v) {
-    if (state.lang !== 'bi' || typeof v !== 'string' || v.length > 2000) return v;
-    if (!(v in biCache)) { var j = jaOf(v); biCache[v] = j ? v + ' / ' + j : v; }
-    return biCache[v];
+    if (!hasJa() || typeof v !== 'string' || v.length > 2000) return v;
+    var key = state.lang + '|' + v;
+    if (!(key in biCache)) { var j = jaOf(v); biCache[key] = j ? (jaOnly() ? j : v + ' / ' + j) : v; }
+    return biCache[key];
   }
 
   // ---------- Khởi động ----------
