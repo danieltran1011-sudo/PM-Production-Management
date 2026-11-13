@@ -596,7 +596,7 @@
     'Hiệu suất: cỡ lot / thời gian may': '稼働効率：ロットサイズ／工程時間',
     'Tháng / chuyền': '月／ライン', 'Tháng / nhãn hàng': '月／ブランド',
     // Chủng loại, tên hàng ghi bằng tiếng Việt trong file KH_UPDATE
-    'Áo': '上衣', 'Túi': 'バッグ', 'Váy': 'スカート', 'Áo khoác': 'ジャケット', 'Áo vest': 'ベスト', 'Áo gile': 'ベスト', 'Mũ': '帽子', 'Nón': '帽子', 'Găng tay': '手袋', 'Túi rời': '単品バッグ', 'Quần short': 'ショートパンツ', 'Quần dài': 'ロングパンツ', 'Áo len': 'ニット', 'Áo sơ mi': 'シャツ', 'Áo thun': 'Tシャツ', 'Phụ kiện': '付属品',
+    'Áo': 'トップス', 'Túi': 'バッグ', 'Váy': 'スカート', 'Áo khoác': 'ジャケット', 'Áo vest': 'ベスト', 'Áo gile': 'ベスト', 'Mũ': '帽子', 'Nón': '帽子', 'Găng tay': '手袋', 'Túi rời': 'スタッフバッグ', 'Quần short': 'ショートパンツ', 'Quần dài': 'ロングパンツ', 'Áo len': 'ニット', 'Áo sơ mi': 'シャツ', 'Áo thun': 'Tシャツ', 'Phụ kiện': '付属品',
     'Chênh năm gần nhất (điểm %)': '直近年度との差（ポイント）'
   };
   var KEY = {};
