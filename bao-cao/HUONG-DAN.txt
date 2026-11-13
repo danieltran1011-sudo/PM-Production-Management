@@ -1,0 +1,122 @@
+﻿BÁO CÁO SẢN XUẤT – HƯỚNG DẪN SỬ DỤNG TRÊN MÁY
+生産報告ツール – PC上での使い方
+==========================================================================
+
+1. VỊ TRÍ LƯU FILE THEO KHUNG THƯ MỤC CÔNG TY / フォルダ構成
+--------------------------------------------------------------------------
+OneDrive (công ty)\TIVN-APIC\
+├─ 00_INBOX\                          ← tải BaoCaoSanXuat.zip về đây, giải nén xong thì chuyển đi
+├─ PM_Production Management\
+│   ├─ Planning\
+│   │   └─ KH UPDATE\
+│   │       ├─ APA1\                  ← KH_UPDATE_APA1.yyyymmdd (APIC1A)
+│   │       └─ APA2\                  ← KH_UPDATE_APA2.yyyymmdd (APIC1B)
+│   ├─ Production Control\
+│   │   └─ ライン空き\                 ← sổ ライン空き原価配分表 của TI
+│   └─ Cost\                          ← giới hạn quyền truy cập
+│       ├─ APIC負担金額\               ← file APIC負担金額 TI gửi hằng tháng
+│       ├─ 原価計算\                   ← file 原価管理
+│       └─ BM-01~03\                  ← 生産数量ベンチマーク, hợp đồng
+├─ MR_Management Reporting\
+│   ├─ MR-01 Weekly\YYYY\             ← báo cáo TIVN theo tuần đã gửi
+│   ├─ MR-02 Monthly\YYYY\YYMM\       ← CHỈ bản đã gửi đi (月報, 部会資料)
+│   └─ MR-03 KPI Dashboard\
+│       └─ BaoCaoSanXuat\             ← CÔNG CỤ (thư mục này)
+│           ├─ index.html
+│           ├─ report.js
+│           ├─ i18n-ja.js
+│           ├─ xlsx-charts.js
+│           ├─ xlsx-style.js
+│           ├─ HUONG-DAN.txt
+│           └─ _Nhap\                 ← Excel/PDF xuất thử, chưa gửi
+└─ 99_Archive\                        ← bản công cụ cũ (nếu muốn giữ)
+
+Nguyên tắc:
+- Công cụ chỉ ĐỌC file gốc, không sửa file nào trong Planning / Production Control / Cost.
+- Dữ liệu gốc nằm ở đúng mảng nghiệp vụ; công cụ nằm ở MR-03.
+- Không để công cụ trong 00_INBOX (thư mục này dọn mỗi tuần).
+- Giữ nguyên tên file KH_UPDATE dạng ...APA1.20261130 để trang nhận đúng xưởng và ngày.
+
+
+2. CÀI ĐẶT LẦN ĐẦU / 初回設定
+--------------------------------------------------------------------------
+1) Tải BaoCaoSanXuat.zip vào 00_INBOX, giải nén vào
+   MR_Management Reporting\MR-03 KPI Dashboard\BaoCaoSanXuat\
+   (giữ 5 file .html/.js trong cùng một thư mục), tạo thư mục con _Nhap.
+2) Trong File Explorer, chuột phải 2 thư mục sau > "Always keep on this device"
+   (Luôn giữ trên thiết bị này):
+     - MR-03 KPI Dashboard\BaoCaoSanXuat
+     - PM_Production Management\Planning\KH UPDATE
+3) Bấm đúp index.html, mở bằng Google Chrome hoặc Microsoft Edge
+   (nếu mở ra ứng dụng khác: chuột phải > Open with > Chrome/Edge).
+   Từ nay luôn dùng CÙNG một trình duyệt.
+4) Kéo thả vào ô "Kéo thả file KH_UPDATE vào đây" (mục Dữ liệu) một lần:
+     - cả thư mục Planning\KH UPDATE (APA1 và APA2)
+     - các file trong Production Control\ライン空き
+     - các file trong Cost\APIC負担金額
+5) Tạo lối tắt (shortcut) của index.html ra màn hình hoặc lưu dấu trang.
+
+
+3. MỖI THÁNG / 毎月の作業
+--------------------------------------------------------------------------
+1) Lưu file mới vào đúng chỗ:
+     KH_UPDATE mới      → Planning\KH UPDATE\APA1 hoặc APA2
+     sổ ライン空き        → Production Control\ライン空き
+     APIC負担金額         → Cost\APIC負担金額
+2) Mở index.html (lối tắt), bấm Ctrl + F5, kéo các file MỚI vào.
+   File cùng xưởng, cùng ngày update sẽ thay file cũ; file khác giữ nguyên.
+   Xem mục "Dữ liệu": phải báo đủ file cuối tháng cho cả APIC1A và APIC1B.
+3) Chọn tháng ở thanh bộ lọc, xem các phần báo cáo.
+4) Xuất:
+     - "Xuất Excel"          → file tải về Downloads, chuyển vào BaoCaoSanXuat\_Nhap\
+     - "Xuất 1 trang PDF"     → Tóm tắt điều hành 1 trang A4 (mục Tóm tắt điều hành)
+5) Bản ĐÃ GỬI đi mới chép sang:
+     MR-02 Monthly\YYYY\YYMM\   (vd. MR-02 Monthly\2026\2611\)
+     MR-01 Weekly\YYYY\         (báo cáo theo tuần)
+6) Dọn 00_INBOX.
+
+
+4. NGÔN NGỮ / 言語
+--------------------------------------------------------------------------
+Ba nút ở đầu trang:
+- "Việt + 日本語"   : song ngữ
+- "Chỉ tiếng Việt"  : chỉ tiếng Việt
+- "日本語のみ"        : chỉ tiếng Nhật, số và ngày theo kiểu Nhật (60,265 / 76.8% / 2026/10/31)
+File Excel và PDF xuất theo chế độ đang chọn.
+Gửi phía Nhật: chọn "日本語のみ" trước khi xuất.
+
+
+5. CẬP NHẬT BẢN MỚI CỦA CÔNG CỤ / ツールの更新
+--------------------------------------------------------------------------
+1) (Tùy chọn) chép thư mục BaoCaoSanXuat hiện tại sang 99_Archive\BaoCaoSanXuat_YYMMDD.
+2) Giải nén bản mới ĐÈ LÊN đúng thư mục MR-03 KPI Dashboard\BaoCaoSanXuat.
+3) Mở index.html, bấm Ctrl + F5. Dữ liệu đã nạp vẫn còn.
+   Nếu trang báo "file nạp bằng bản trang cũ", kéo thả lại các file được liệt kê.
+
+
+6. LƯU Ý QUAN TRỌNG / 注意事項
+--------------------------------------------------------------------------
+- KHÔNG đổi tên hay di chuyển thư mục BaoCaoSanXuat sau khi đã nạp dữ liệu.
+  Dữ liệu đã nạp lưu trong trình duyệt, gắn với đường dẫn thư mục; đổi chỗ thì trang
+  trống và phải kéo thả lại (Planning\KH UPDATE + ライン空き + APIC負担金額).
+- OneDrive KHÔNG đồng bộ dữ liệu đã nạp. Sang máy khác: mở cùng thư mục OneDrive,
+  kéo thả lại thư mục KH UPDATE là có đủ số liệu.
+- Không mở index.html trên OneDrive/SharePoint/Teams bản web (chỉ thấy mã, trang không chạy).
+  Luôn mở từ thư mục đã đồng bộ trên máy.
+- Máy cần internet khi mở trang (tải thư viện đọc Excel từ cdnjs.cloudflare.com).
+  Dữ liệu KHÔNG gửi ra ngoài, chỉ lưu trong trình duyệt của máy.
+- Không dùng Internet Explorer.
+
+Bảo mật / 機密情報:
+- Cost\ (原価管理, APIC負担金額, hợp đồng BM) chỉ cho người phụ trách xem.
+- File Excel xuất ra có số tiền USD ở sheet "So trong chuyen TI" và "Doi chieu TI".
+  Trước khi đưa vào MR-02 để chia sẻ rộng, xóa 2 sheet này nếu người nhận không cần.
+
+
+7. KHI GẶP SỰ CỐ / トラブル時
+--------------------------------------------------------------------------
+- Trang trống sau khi mở        → kiểm tra có đổi thư mục/trình duyệt không; kéo thả lại file.
+- Báo "Chưa tải được thư viện"  → kiểm tra internet, tải lại trang.
+- Báo thiếu file cuối tháng     → lưu file update ngày làm việc cuối tháng (đến ngày 10 tháng sau)
+                                  vào KH UPDATE rồi kéo vào.
+- Số liệu lạ sau khi cập nhật    → Ctrl + F5; nếu trang báo file cũ, kéo thả lại file đó.
