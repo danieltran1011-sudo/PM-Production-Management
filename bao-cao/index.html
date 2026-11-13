@@ -498,7 +498,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
       <h2>Mã hàng trong tháng</h2>
       <p data-jt="報告月の「品番×元ライン」ごとに1行。括弧内はファイル記載の分割ライン。">Mỗi dòng là một mã trên một chuyền gốc, trong tháng báo cáo; trong ngoặc là chuyền tách ghi trong file.</p>
     </div>
-    <div class="row-tools"><div class="field"><label for="styleSearch">Tìm mã, nhãn hàng, chuyền</label><input type="text" id="styleSearch" placeholder="Ví dụ: NP12704 hoặc 4A"></div></div>
+    <div class="row-tools"><div class="field"><label for="styleSearch">Tìm mã, nhãn hàng, chuyền</label><input type="text" id="styleSearch" placeholder="Ví dụ: NP12704 hoặc 4A" data-ph-vi="Ví dụ: NP12704 hoặc 4A" data-ph-ja="例：NP12704 または 4A"></div></div>
     <div class="tbl-wrap" id="styleTable"></div>
   </section>
 
@@ -592,10 +592,12 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
   function fmtN(v, d) {
     if (v == null || !isFinite(v)) return '—';
     d = d || 0;
-    return v.toLocaleString('vi-VN', { minimumFractionDigits: d, maximumFractionDigits: d });
+    return v.toLocaleString(state.lang === 'ja' ? 'en-US' : 'vi-VN', { minimumFractionDigits: d, maximumFractionDigits: d });
   }
   function fmtP(v, d) { return v == null || !isFinite(v) ? '—' : fmtN(v * 100, d == null ? 1 : d) + '%'; }
-  function fmtDate(iso) { if (!iso) return '—'; var p = iso.split('-'); return +p[2] + '/' + +p[1] + '/' + p[0]; }
+  function fmtDate(iso) { if (!iso) return '—'; var p = iso.split('-'); return state.lang === 'ja' ? p[0] + '/' + +p[1] + '/' + +p[2] : +p[2] + '/' + +p[1] + '/' + p[0]; }
+  // Ngày không có năm: "d/m" (tiếng Nhật "m/d")
+  function fmtDM(iso) { if (!iso) return '—'; var p = iso.split('-'); return state.lang === 'ja' ? +p[1] + '/' + +p[2] : +p[2] + '/' + +p[1]; }
   var STATUS = { chot: 'Đã chốt', dang: 'Đang chạy', kh: 'Kế hoạch' };
   function chip(st) { return '<span class="chip ' + st + '">' + STATUS[st] + '</span>'; }
 
@@ -1217,6 +1219,13 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
     Object.keys(chartBox.specs).forEach(function (id) { if (!document.getElementById(id)) delete chartBox.specs[id]; });
     Array.prototype.forEach.call((root || document).querySelectorAll('.mchart'), function (el) { if (chartBox.specs[el.id]) drawMini(el, chartBox.specs[el.id]); });
   }
+  // Nhãn trong biểu đồ (SVG, chú thích khi rê chuột) ở chế độ chỉ tiếng Nhật
+  function jaLabel(t) {
+    if (state.lang !== 'ja' || t == null) return t;
+    t = String(t);
+    var m = t.match(/^T(\d{1,2})$/); if (m) return m[1] + '月';
+    return jaOf(t) || jaFmt(t) || t;
+  }
   function drawMini(el, sp) {
     var vals = [];
     sp.series.forEach(function (s) { s.values.forEach(function (v) { if (v != null && isFinite(v)) vals.push(v); }); });
@@ -1243,7 +1252,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
       svg += '<line class="gridl" x1="' + padL + '" x2="' + (W - padR) + '" y1="' + y(t) + '" y2="' + y(t) + '"/><text class="axis" x="' + (padL - 5) + '" y="' + (y(t) + 3.5) + '" text-anchor="end">' + af(t) + '</text>';
     }
     if (sp.ref) svg += '<line class="refl" x1="' + padL + '" x2="' + (W - padR) + '" y1="' + y(sp.ref.value) + '" y2="' + y(sp.ref.value) + '"/>' +
-      (sp.ref.label ? '<text class="axis" x="' + (W - padR) + '" y="' + (y(sp.ref.value) + 12) + '" text-anchor="end">' + esc(sp.ref.label) + '</text>' : '');
+      (sp.ref.label ? '<text class="axis" x="' + (W - padR) + '" y="' + (y(sp.ref.value) + 12) + '" text-anchor="end">' + esc(jaLabel(sp.ref.label)) + '</text>' : '');
     var ns = sp.series.length, every = n > 14 ? Math.ceil(n / 12) : 1;
     if (sp.type === 'stack') {
       var sw = Math.max(3, Math.min(30, gw - 8));
@@ -1282,7 +1291,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
       });
     }
     for (var i = 0; i < n; i++) {
-      if (i % every === 0) svg += '<text class="axis" x="' + (padL + gw * i + gw / 2) + '" y="' + (H - 6) + '" text-anchor="middle">' + esc(sp.labels[i]) + '</text>';
+      if (i % every === 0) svg += '<text class="axis" x="' + (padL + gw * i + gw / 2) + '" y="' + (H - 6) + '" text-anchor="middle">' + esc(jaLabel(sp.labels[i])) + '</text>';
       svg += '<rect class="hit" data-i="' + i + '" x="' + (padL + gw * i) + '" y="' + padT + '" width="' + gw + '" height="' + (H - padT - padB) + '"/>';
     }
     svg += '<line class="gridl" x1="' + padL + '" x2="' + (W - padR) + '" y1="' + y(lo) + '" y2="' + y(lo) + '" style="stroke:var(--muted)"/></svg>';
@@ -1294,9 +1303,9 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
         if (!tip) return;
         if (!hit || !s2) { tip.hidden = true; return; }
         var i = +hit.getAttribute('data-i');
-        tip.innerHTML = '<b>' + esc(s2.tipLabels ? s2.tipLabels[i] : s2.labels[i]) + '</b>' + s2.series.map(function (s) {
+        tip.innerHTML = '<b>' + esc(jaLabel(s2.tipLabels ? s2.tipLabels[i] : s2.labels[i])) + '</b>' + s2.series.map(function (s) {
           var v = s.values[i];
-          return '<div><span><i style="display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:5px;background:' + s.color + '"></i>' + esc(s.name) + '</span><span class="num">' + (v == null ? '—' : s2.fmt(v)) + '</span></div>';
+          return '<div><span><i style="display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:5px;background:' + s.color + '"></i>' + esc(jaLabel(s.name)) + '</span><span class="num">' + (v == null ? '—' : s2.fmt(v)) + '</span></div>';
         }).join('');
         tip.hidden = false;
         var rect = el.getBoundingClientRect(), x = e.clientX - rect.left + 12;
@@ -1461,7 +1470,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
   }
   function regRowText(x) {
     var c = R.IDLE_CAUSES.filter(function (k) { return k.id === x.cause; })[0];
-    return x.part + ' ' + (x.period || fmtDate(x.from).slice(0, -5)) + ' (' + x.days + ') ' + (x.note ? x.note : '') + (c && c.id !== 'other' ? ' [' + c.label + ']' : '');
+    return x.part + ' ' + (x.period || fmtDM(x.from)) + ' (' + x.days + ') ' + (x.note ? x.note : '') + (c && c.id !== 'other' ? ' [' + c.label + ']' : '');
   }
   function regBlock() {
     if (!regs.length) return '';
@@ -1495,7 +1504,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
     diffs.sort(function (a, b) { return Math.abs(b.row.diff) - Math.abs(a.row.diff); });
     var t2 = diffs.length ? table(['Tháng', 'Chuyền', 'Part', 'Sổ<span class="sub">chuyền-ngày</span>', 'Trang<span class="sub">trống + APIC</span>', 'Lệch', 'Sổ ghi', 'Trang thấy'], diffs.slice(0, 40).map(function (d) {
       var lp = partOf(d.row.line), regRows = d.reg.rows.filter(function (q) { return q.line + q.part.charAt(0) === d.row.line || (q.part === 'AB' && (q.line + 'A' === d.row.line || q.line + 'B' === d.row.line)); });
-      var myTxt = d.row.periods.map(function (p) { return (p.kind === 'apic' ? 'APIC ' : 'trống ') + fmtDate(p.from).slice(0, -5) + '–' + fmtDate(p.to).slice(0, -5) + ' (' + fmtN(p.days, 1) + ')'; }).join('; ');
+      var myTxt = d.row.periods.map(function (p) { return (p.kind === 'apic' ? 'APIC ' : 'trống ') + fmtDM(p.from) + '–' + fmtDM(p.to) + ' (' + fmtN(p.days, 1) + ')'; }).join('; ');
       return '<tr><td>' + R.monthLabel(d.m) + '</td>' + td(lp[0]) + td(lp[1], 'txt') + td(fmtN(d.row.tiDays, 1)) + td(fmtN(d.row.mine, 1)) + td(delta2(d.row.diff)) +
         '<td class="txt" style="white-space:normal;min-width:200px;font-size:12px">' + (regRows.length ? esc(regRows.map(regRowText).join('; ')) : '<span class="muted"' + jt('記載なし') + '>không ghi</span>') + '</td>' +
         '<td class="txt" style="white-space:normal;min-width:180px;font-size:12px">' + (myTxt ? esc(myTxt) : '<span class="muted"' + jt('TI品の生産あり') + '>có sản lượng hàng TI</span>') + '</td></tr>';
@@ -1538,8 +1547,8 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
       var rows = c.rows.map(function (r) {
         var lp = partOf(r.line), noteJ = !r.hasData ? '当月このラインのデータなし（工場ファイル不足）' : Math.abs(r.diff) < 0.01 ? '一致' : r.diff > 0 ? 'ページの方がTIより多い' : 'TIの方がページより多い', note = !r.hasData ? 'Không có dữ liệu chuyền này trong tháng (thiếu file xưởng)' : Math.abs(r.diff) < 0.01 ? 'Khớp' : r.diff > 0 ? 'Trang thấy nhiều hơn TI tính' : 'TI tính nhiều hơn trang thấy';
         var cls = !r.hasData ? 'muted' : Math.abs(r.diff) < 0.01 ? 'up' : 'down';
-        var tiTxt = r.tiRows.map(function (x) { return x.part + ' ' + fmtDate(x.from).slice(0, -5) + '–' + fmtDate(x.to).slice(0, -5) + ' (' + x.days + ')' + (R.billingSelf(b, x) ? ' 自販' : ''); }).join('; ');
-        var myTxt = r.periods.map(function (p) { return (p.kind === 'apic' ? 'APIC ' : 'trống ') + fmtDate(p.from).slice(0, -5) + '–' + fmtDate(p.to).slice(0, -5) + ' (' + fmtN(p.days, 1) + ')'; }).join('; ');
+        var tiTxt = r.tiRows.map(function (x) { return x.part + ' ' + fmtDM(x.from) + '–' + fmtDM(x.to) + ' (' + x.days + ')' + (R.billingSelf(b, x) ? ' 自販' : ''); }).join('; ');
+        var myTxt = r.periods.map(function (p) { return (p.kind === 'apic' ? 'APIC ' : 'trống ') + fmtDM(p.from) + '–' + fmtDM(p.to) + ' (' + fmtN(p.days, 1) + ')'; }).join('; ');
         return '<tr><td>' + lp[0] + '</td>' + td(lp[1], 'txt') + td(fmtN(r.tiDays, 1)) + td(r.tiSelf ? fmtN(r.tiSelf, 1) : '—') + td(r.hasData ? fmtN(r.idle, 1) : '—') + td(r.hasData ? fmtN(r.apic, 1) : '—') +
           td(r.hasData ? delta2(r.diff) : '—') + td('<span class="' + cls + '"' + jt(noteJ) + '>' + note + '</span>', 'txt') +
           '<td class="txt" style="white-space:normal;min-width:220px;font-size:12px">' + esc(tiTxt) + (myTxt ? '<span class="sub">Trang: ' + esc(myTxt) + '</span>' : '') + '</td></tr>';
@@ -2064,7 +2073,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
       vi: 'Kế hoạch chuyền: ' + soon.length + '/' + d.lines.length + ' chuyền còn ≤ 20 ngày làm việc có KH' + (soon.length ? ' (' + soon.slice(0, 8).map(function (l) { return l.line; }).join(', ') + (soon.length > 8 ? '…' : '') + ')' : '') + '.' });
     return out;
   }
-  function hrWeekLabel(w) { return fmtDate(w.from).slice(0, -5) + '–' + fmtDate(w.partial ? w.last : R.addDays(w.to, -1)).slice(0, -5); }
+  function hrWeekLabel(w) { return fmtDM(w.from) + '–' + fmtDM(w.partial ? w.last : R.addDays(w.to, -1)); }
   // Bảng tổng hợp: cột năm trước, kỳ so sánh, kỳ này, chênh, kế hoạch / dự báo
   function hrSummary(d) {
     var cols = d.yearCols.concat([d.prev, d.cur]);
@@ -3447,6 +3456,15 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
   function jt(ja) { return ja ? ' data-jt="' + esc(ja) + '"' : ''; }
   // Đoạn chữ song ngữ cho chỗ không có phần tử riêng (vd. trong ô bảng)
   function bi2(vi, ja) { return hasJa() && ja ? '<span class="vi-t">' + vi + '</span><span class="ja fixed" lang="ja">' + esc(ja) + '</span>' : vi; }
+  // Chỉ dùng ở chế độ chỉ tiếng Nhật: tháng "10/2026" → "2026年10月", danh sách tháng
+  function jaFmt(t) {
+    if (!t) return null;
+    var one = function (x) { var m = x.match(/^(\d{1,2})\/(\d{4})( \(kế hoạch\))?$/); return m ? m[2] + '年' + m[1] + '月' + (m[3] ? '（計画）' : '') : null; };
+    var r = one(t); if (r) return r;
+    var parts = t.split(', '); if (parts.length > 1) { var js = parts.map(one); if (js.every(Boolean)) return js.join('、'); }
+    var m = t.match(/^(\d{1,2})\/(\d{4})\s*[–-]\s*(\d{1,2})\/(\d{4})$/); if (m) return m[2] + '年' + m[1] + '月～' + m[4] + '年' + m[3] + '月';
+    return null;
+  }
   function jaOf(t) { return window.PMJa ? window.PMJa.ja(t) : null; }
   function directText(el) {
     var t = '';
@@ -3467,7 +3485,7 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
       if (el.getAttribute('data-ja') === (given || key) && el.querySelector(':scope > .ja')) return;
       el.setAttribute('data-ja', given || key);
       Array.prototype.forEach.call(el.querySelectorAll(':scope > .ja'), function (x) { x.remove(); });
-      var j = given || jaOf(key);
+      var j = given || jaOf(key) || (jaOnly() ? jaFmt(key) : null);
       if (!j) return;
       var sp = document.createElement('span'); sp.className = 'ja'; sp.textContent = j; sp.setAttribute('lang', 'ja');
       var sub = el.querySelector(':scope > .sub, :scope > .muted');
@@ -3508,8 +3526,9 @@ details.filelist > summary { cursor: pointer; font-weight: 600; font-size: 14px;
     Array.prototype.forEach.call(document.querySelectorAll('#langSeg [data-lang]'), function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-lang') === l)); });
     document.body.classList.toggle('lang-ja', l === 'ja');
     document.documentElement.lang = l === 'ja' ? 'ja' : 'vi';
+    Array.prototype.forEach.call(document.querySelectorAll('[data-ph-ja]'), function (x) { x.placeholder = l === 'ja' ? x.getAttribute('data-ph-ja') : x.getAttribute('data-ph-vi'); });
     clearJa();
-    if (ds) { try { render(); } catch (e) { /* bỏ qua */ } }
+    if (typeof files !== 'undefined' && (files.length || bills.length || regs.length)) { try { renderFiles(); renderOldBanner(); if (ds && ds.months.length) { fillFilters(); render(); } } catch (e) { /* bỏ qua */ } }
     annotate(document);
   }
   $('langSeg').addEventListener('click', function (e) { var b = e.target.closest('[data-lang]'); if (b) setLang(b.getAttribute('data-lang')); });

@@ -594,10 +594,16 @@
     'Đối chiếu file APIC負担金額 của TI với chuyền trống / may hàng APIC trang tính được': 'TIのAPIC負担金額ファイルと本ページ算出のライン空き・APIC品縫製の照合',
     'Đối chiếu sổ ライン空き原価配分表 của TI với chuyền trống / may hàng APIC trang tính được': 'TIライン空き原価配分表と本ページ算出のライン空き・APIC品縫製の照合',
     'Hiệu suất: cỡ lot / thời gian may': '稼働効率：ロットサイズ／工程時間',
-    'Tháng / chuyền': '月／ライン', 'Tháng / nhãn hàng': '月／ブランド'
+    'Tháng / chuyền': '月／ライン', 'Tháng / nhãn hàng': '月／ブランド',
+    // Chủng loại, tên hàng ghi bằng tiếng Việt trong file KH_UPDATE
+    'Áo': '上衣', 'Túi': 'バッグ', 'Váy': 'スカート', 'Áo khoác': 'ジャケット', 'Áo vest': 'ベスト', 'Áo gile': 'ベスト', 'Mũ': '帽子', 'Nón': '帽子', 'Găng tay': '手袋', 'Túi rời': '単品バッグ', 'Quần short': 'ショートパンツ', 'Quần dài': 'ロングパンツ', 'Áo len': 'ニット', 'Áo sơ mi': 'シャツ', 'Áo thun': 'Tシャツ', 'Phụ kiện': '付属品',
+    'Chênh năm gần nhất (điểm %)': '直近年度との差（ポイント）'
   };
   var KEY = {};
   Object.keys(D).forEach(function (k) { KEY[k.replace(/\s+/g, ' ').trim()] = D[k]; });
+  // Tra không phân biệt hoa thường cho dữ liệu trong file (vd. "ÁO", "TÚI")
+  var KEY_LC = {};
+  Object.keys(KEY).forEach(function (k) { var l = k.toLowerCase(); if (!(l in KEY_LC)) KEY_LC[l] = KEY[k]; });
   // Mẫu có số: "NTC 2026", "Tháng 4", "Tháng 10/2026"…
   var PATTERNS = [
     [/^NTC (\d{4})$/, function (m) { return m[1] + '年度'; }],
@@ -669,16 +675,22 @@
     [/^(\d{1,2})\/(\d{4}) – (\d{1,2})\/(\d{4}) \((\d+) tháng\)$/, function (m) { return m[2] + '年' + m[1] + '月～' + m[4] + '年' + m[3] + '月（' + m[5] + 'か月）'; }],
     [/^So năm chuẩn (\d{4}) \((.+)\)$/, function (m) { return m[1] + '年度（基準）比（' + m[2] + '）'; }],
     [/^([\d.,]+) (ngày|chuyền-ngày) · ([\d.,]+) USD(?: \(\+ ([\d.,]+) USD gắn mã hàng\))?$/, function (m) { return m[1] + (m[2] === 'ngày' ? '日' : 'ライン日') + '・' + m[3] + ' USD' + (m[4] ? '（＋品番紐付け ' + m[4] + ' USD）' : ''); }],
+    [/^mục tiêu (.+)$/, function (m) { return '目標 ' + m[1]; }],
+    [/^(.+) \(chưa đủ tuần\)$/, function (m) { return m[1] + '（週途中）'; }],
     [/^% chậm \(> (\d+) ngày\)$/, function (m) { return '遅延率（' + m[1] + '日超）'; }],
     [/^Ngày (\d+) \(% ổn định\)$/, function (m) { return m[1] + '日目（安定比%）'; }],
     [/^([A-Z]+\d+): dừng ở hàng (\d+)$/, function (m) { return m[1] + '：' + m[2] + '行で停止'; }],
     [/^Chỉ tiêu năng suất: (Hiệu suất|Năng suất) · tăng 5%\/năm lũy tiến so với NTC (\d{4})$/, function (m) { return '生産性指標：' + (m[1] === 'Hiệu suất' ? '稼働効率' : '生産性') + '・' + m[2] + '年度比 年5%複利増'; }],
-    [/^Xanh: đạt cam kết · Đỏ: chưa đạt \(năng suất dưới mục tiêu, hàng khó > ([\d,]+)%, lot nhỏ > ([\d,]+)%\)\.$/, function (m) { return '緑：契約達成・赤：未達（生産性が目標未満、高難易度品' + m[1] + '%超、小ロット' + m[2] + '%超）。'; }]
+    [/^Xanh: đạt cam kết · Đỏ: chưa đạt \(năng suất dưới mục tiêu, hàng khó > ([\d.,]+)%, lot nhỏ > ([\d.,]+)%\)\.$/, function (m) { return '緑：契約達成・赤：未達（生産性が目標未満、高難易度品' + m[1] + '%超、小ロット' + m[2] + '%超）。'; }]
   ];
   function ja(text) {
     var t = String(text == null ? '' : text).replace(/\s+/g, ' ').trim();
     if (!t) return null;
     if (KEY[t]) return KEY[t];
+    if (/^[A-ZÀ-Ỹ\s]+$/.test(t) && KEY_LC[t.toLowerCase()]) return KEY_LC[t.toLowerCase()];
+    // Mã hàng có tiền tố tiếng Việt: "TÚI RỜI NJ2HI51"
+    var pm = t.match(/^([A-Za-zÀ-ỹ]+(?: [A-Za-zÀ-ỹ]+)*) ([A-Z0-9][A-Z0-9-]*\d[A-Z0-9-]*)$/);
+    if (pm && /[À-ỹ]/.test(pm[1]) && KEY_LC[pm[1].toLowerCase()]) return KEY_LC[pm[1].toLowerCase()] + ' ' + pm[2];
     for (var i = 0; i < PATTERNS.length; i++) { var m = t.match(PATTERNS[i][0]); if (m) return PATTERNS[i][1](m); }
     // "Nhãn · phần thêm": dịch phần đầu, giữ phần sau
     var p = t.split(' · ');
