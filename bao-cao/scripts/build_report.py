@@ -84,7 +84,7 @@ K['s27fw']=_sq['27FW']; K['s26fw']=_sq['26FW']
 _sh=lambda d: (d.qty*d.sam/3600).sum()
 K['h_lo']=min(_sh(o[o.season.isin([f'{y}SS',f'{y}FW'])]) for y in ('23','24','25','26'))/1e6
 K['h_hi']=max(_sh(o[o.season.isin([f'{y}SS',f'{y}FW'])]) for y in ('23','24','25','26'))/1e6
-_samS=[_sh(o[o.season==s])*60/_sq[s] for s in ORDER[:9]]
+_samS=[_sh(o[o.season==s])*3600/o[(o.season==s)&o.sam.notna()].qty.sum() for s in ORDER[:9]]
 K['samFW_lo']=min(_samS[1::2]); K['samFW_hi']=max(_samS[1::2]); K['samSS_lo']=min(_samS[0::2]); K['samSS_hi']=max(_samS[0::2])
 _bq=o.groupby('brand').qty.sum().sort_values(ascending=False)
 K['tnf']=_bq['TNF']/_bq.sum(); K['top3']=_bq.head(3).sum()/_bq.sum()
@@ -105,6 +105,7 @@ K['blank']=o[o.brand=='(trống)'].qty.sum()/1000
 K['ndot']=len(O_DOT); K['qdot']=O_DOT.qty_raw.sum()/1000
 K['nsms']=len(O_SMS); K['qsms']=O_SMS.qty.sum(); K['qsms_vn']=f'{O_SMS.qty.sum():,.0f}'.replace(',','.'); K['cdsms']=O_SMS.cd.sum()
 V=lambda x,n=1: f'{x:.{n}f}'.replace('.',',')
+VT=lambda x: f'{x:,.0f}'.replace(',','.')
 import importlib.util as _ilu
 _sp=_ilu.spec_from_file_location('juchu_plan',os.path.join(_HERE,'juchu_plan.py')); JP=_ilu.module_from_spec(_sp); _sp.loader.exec_module(JP)
 _vnote=lambda d: d.row.map(_raw['V'])
@@ -255,7 +256,7 @@ for i,r in enumerate(o.itertuples(),2):
           f'=IF(AND(Q{i}<>"",Q{i}>=\'Phương pháp\'!$C$4,AJ{i}=""),"Có","")' if not r.stale else f'=IF(AND(Q{i}<>"",Q{i}>=\'Phương pháp\'!$C$4,AJ{i}=""),"Có","")',
           r.dq or None,'Y' if r.stale else None,r.factory_raw,
           f'=IF(AND(ISNUMBER(P{i}),ISNUMBER(Q{i})),Q{i}-P{i}+1,"")',
-          f'=IF(N{i}="","",IF(N{i}/60<60,"1. <60 phút",IF(N{i}/60<120,"2. 60–119 phút",IF(N{i}/60<180,"3. 120–179 phút",IF(N{i}/60<240,"4. 180–239 phút","5. ≥240 phút")))))',
+          f'=IF(N{i}="","",IF(N{i}<3600,"1. <3.600 giây",IF(N{i}<7200,"2. 3.600–7.199 giây",IF(N{i}<10800,"3. 7.200–10.799 giây",IF(N{i}<14400,"4. 10.800–14.399 giây","5. ≥14.400 giây")))))',
           f'=IF(AM{i}="","",IF(AM{i}<=5,"1. ≤5 ngày",IF(AM{i}<=10,"2. 6–10 ngày",IF(AM{i}<=20,"3. 11–20 ngày",IF(AM{i}<=40,"4. 21–40 ngày","5. >40 ngày")))))']
     for j,x in enumerate(vals,1):
         c=SD.cell(i,j,x); c.font=BODY
@@ -272,7 +273,7 @@ R=lambda col: f"Data!${col}$2:${col}${LAST}"
 
 # ---------- 2. Mùa vụ ----------
 title(S2,'Tổng hợp theo mùa vụ – hàng sản xuất','Nguồn: sheet Data (SUMIFS/COUNTIFS). Chỉ hàng sản xuất: đã bỏ dòng chấm và tách hàng SMS (bảng riêng bên dưới). Số style & lô trung vị tính sẵn từ dữ liệu sạch.')
-h2=['Mùa','Số dòng đơn','Số style','Sản lượng (pcs)','Tăng/giảm vs cùng mùa năm trước','Giờ chuẩn','SAM TB (phút/sp)','CP GC1 – theo đặt hàng (USD)','CP GC2 – theo lô SX (USD)','Chi phí chia lô (USD)','% chi phí chia lô','Đơn giá GC2 (USD/pcs)','Lô SX trung vị (pcs)','Tỷ trọng hàng 別注']
+h2=['Mùa','Số dòng đơn','Số style','Sản lượng (pcs)','Tăng/giảm vs cùng mùa năm trước','Giờ chuẩn','SAM TB (giây/sp)','CP GC1 – theo đặt hàng (USD)','CP GC2 – theo lô SX (USD)','Chi phí chia lô (USD)','% chi phí chia lô','Đơn giá GC2 (USD/pcs)','Lô SX trung vị (pcs)','Tỷ trọng hàng 別注']
 hdr(S2,4,h2,h=45)
 for k,sn in enumerate(ORDER):
     r=5+k; sub=o[o.season==sn]
@@ -282,7 +283,7 @@ for k,sn in enumerate(ORDER):
     S2.cell(r,4,f'=SUMIFS({R("M")},{R("B")},$A{r})')
     S2.cell(r,5,f'=IFERROR(D{r}/D{r-2}-1,"")' if k>=2 else 'n/a')
     S2.cell(r,6,f'=SUMIFS({R("O")},{R("B")},$A{r})')
-    S2.cell(r,7,f'=IFERROR(F{r}*60/D{r},"")')
+    S2.cell(r,7,f'=IFERROR(F{r}*3600/SUMIFS({R("M")},{R("B")},$A{r},{R("N")},"<>"),"")')
     S2.cell(r,8,f'=SUMIFS({R("AD")},{R("B")},$A{r})')
     S2.cell(r,9,f'=SUMIFS({R("AE")},{R("B")},$A{r})')
     S2.cell(r,10,f'=I{r}-H{r}'); S2.cell(r,11,f'=IFERROR(J{r}/H{r},"")')
@@ -293,10 +294,10 @@ tr=5+len(ORDER)
 S2.cell(tr,1,'Tổng'); 
 for c,fn in [(2,'SUM'),(3,None),(4,'SUM'),(6,'SUM'),(8,'SUM'),(9,'SUM'),(10,'SUM')]:
     if fn: S2.cell(tr,c,f'=SUM({CL(c)}5:{CL(c)}{tr-1})')
-S2.cell(tr,3,int(o['style'].nunique())); S2.cell(tr,7,f'=F{tr}*60/D{tr}'); S2.cell(tr,11,f'=J{tr}/H{tr}')
+S2.cell(tr,3,int(o['style'].nunique())); S2.cell(tr,7,f'=F{tr}*3600/SUMIFS({R("M")},{R("N")},"<>")'); S2.cell(tr,11,f'=J{tr}/H{tr}')
 body(S2,5,tr,1,14)
 for r in range(5,tr+1):
-    for c,fm in [(2,NUM),(3,NUM),(4,NUM),(5,PCT),(6,NUM),(7,'0.0'),(8,USD),(9,USD),(10,USD),(11,PCT),(12,USD2),(13,NUM),(14,PCT)]: S2.cell(r,c).number_format=fm
+    for c,fm in [(2,NUM),(3,NUM),(4,NUM),(5,PCT),(6,NUM),(7,NUM),(8,USD),(9,USD),(10,USD),(11,PCT),(12,USD2),(13,NUM),(14,PCT)]: S2.cell(r,c).number_format=fm
     S2.cell(r,1).font=F(bold=True,size=10)
 for c in range(1,15): S2.cell(tr,c).fill=TOT_FILL; S2.cell(tr,c).font=F(bold=True,size=10)
 S2.cell(tr+1,1,'Ghi chú: 27FW mới bắt đầu nhận đơn (chưa đầy đủ). "Cùng mùa năm trước" = so 27SS với 26SS, 26FW với 25FW…').font=F(italic=True,size=9,color='52514E')
@@ -337,7 +338,7 @@ ch2.height=7.5; ch2.width=17; chart_fix(ch2); S2.add_chart(ch2,f'H{yr+16}')
 title(S3,'Cơ cấu khách hàng / brand','Sản lượng (pcs) theo brand × mùa. "Khác" = phần còn lại. Brand trống = '+f'{K["blank"]:.0f}k pcs (xem sheet 7).')
 tot=o.groupby('brand').qty.sum().sort_values(ascending=False)
 top=[b for b in tot.index if b!='(trống)'][:10]
-h3=['Brand']+ORDER+['Tổng','Tỷ trọng','Tăng/giảm 27SS vs 26SS','Đơn giá GC2 (USD/pcs)','SAM TB (phút/sp)']
+h3=['Brand']+ORDER+['Tổng','Tỷ trọng','Tăng/giảm 27SS vs 26SS','Đơn giá GC2 (USD/pcs)','SAM TB (giây/sp)']
 hdr(S3,4,h3,h=45)
 for k,b in enumerate(top+['(trống)']):
     r=5+k; S3.cell(r,1,b)
@@ -353,9 +354,9 @@ for r in range(5,rt+1):
     S3.cell(r,13,f'=IFERROR(L{r}/$L${rt},"")'); S3.cell(r,14,f'=IFERROR(J{r}/H{r}-1,"")')
     if r<rk:
         S3.cell(r,15,f'=IFERROR(SUMIFS({R("AE")},{R("G")},$A{r})/SUMIFS({R("M")},{R("G")},$A{r},{R("AE")},"<>"),"")')
-        S3.cell(r,16,f'=IFERROR(SUMIFS({R("O")},{R("G")},$A{r})*60/SUMIFS({R("M")},{R("G")},$A{r},{R("O")},"<>"),"")')
+        S3.cell(r,16,f'=IFERROR(SUMIFS({R("O")},{R("G")},$A{r})*3600/SUMIFS({R("M")},{R("G")},$A{r},{R("O")},"<>"),"")')
     for c in range(2,13): S3.cell(r,c).number_format=NUM
-    S3.cell(r,13).number_format=PCT; S3.cell(r,14).number_format=PCT; S3.cell(r,15).number_format=USD2; S3.cell(r,16).number_format='0'
+    S3.cell(r,13).number_format=PCT; S3.cell(r,14).number_format=PCT; S3.cell(r,15).number_format=USD2; S3.cell(r,16).number_format=NUM
 body(S3,5,rt,1,16)
 for c in range(1,17): S3.cell(rt,c).fill=TOT_FILL; S3.cell(rt,c).font=F(bold=True,size=10)
 for r in range(5,rt+1): S3.cell(r,1).font=F(bold=True,size=10)
@@ -579,7 +580,7 @@ body(S1,6,14,1,5)
 
 S1['A17']='B. PHÁT HIỆN CHÍNH'; S1['A17'].font=F(bold=True,size=12,color='1C5CAB')
 finds=[
-('1. Quy mô đi ngang, mùa 27SS giảm.',f'Sản lượng năm 2024 đạt {K["y24"]/1000:.0f}k pcs, 2025 là {K["y25"]/1000:.0f}k pcs ({K["g25"]:+.0%}), 2026 là {K["y26"]/1000:.0f}k pcs ({K["g26"]:+.0%}). Mùa 27SS hiện có {K["s27"]/1000:.0f}k pcs ({K["g27"]:+.0%} so với 26SS). Tổng giờ chuẩn mỗi năm khoảng {V(K["h_lo"])}–{V(K["h_hi"])} triệu giờ vì hàng FW phức tạp hơn nhiều (SAM ~{K["samFW_lo"]:.0f}–{K["samFW_hi"]:.0f} phút/sp so với ~{K["samSS_lo"]:.0f}–{K["samSS_hi"]:.0f} phút/sp của hàng SS). Vì vậy nên đo năng lực bằng giờ chuẩn thay vì số pcs. Số liệu đã bỏ {K["ndot"]} dòng chấm ({K["qdot"]:.0f}k pcs) để không cộng 2 lần đơn chuyền lớn, và tách riêng {K["nsms"]} dòng hàng SMS ({K["qsms_vn"]} pcs) hỗ trợ chuyền mẫu.'),
+('1. Quy mô đi ngang, mùa 27SS giảm.',f'Sản lượng năm 2024 đạt {K["y24"]/1000:.0f}k pcs, 2025 là {K["y25"]/1000:.0f}k pcs ({K["g25"]:+.0%}), 2026 là {K["y26"]/1000:.0f}k pcs ({K["g26"]:+.0%}). Mùa 27SS hiện có {K["s27"]/1000:.0f}k pcs ({K["g27"]:+.0%} so với 26SS). Tổng giờ chuẩn mỗi năm khoảng {V(K["h_lo"])}–{V(K["h_hi"])} triệu giờ vì hàng FW phức tạp hơn nhiều (SAM ~{VT(K["samFW_lo"])}–{VT(K["samFW_hi"])} giây/sp so với ~{VT(K["samSS_lo"])}–{VT(K["samSS_hi"])} giây/sp của hàng SS). Vì vậy nên đo năng lực bằng giờ chuẩn thay vì số pcs. Số liệu đã bỏ {K["ndot"]} dòng chấm ({K["qdot"]:.0f}k pcs) để không cộng 2 lần đơn chuyền lớn, và tách riêng {K["nsms"]} dòng hàng SMS ({K["qsms_vn"]} pcs) hỗ trợ chuyền mẫu.'),
 ('2. Phụ thuộc lớn vào một khách hàng.',f'TNF chiếm {K["tnf"]:.0%} tổng sản lượng và {K["tnf27"]:.0%} mùa 27SS. Top 3 brand chiếm {K["top3"]:.0%}. MONTBELL giảm mạnh: {K["mb"][0]:.0f}k pcs (24FW) → {K["mb"][1]:.0f}k (25FW) → {K["mb"][2]:.0f}k (26FW) → {K["mb"][3]:.0f}k ở 27SS. LL.BEAN đã dừng từ 25SS. Tăng trưởng 27SS so với cùng kỳ 26SS: HELLY HANSEN {K["hh"]:+.0%}, ALLTERRAIN 81 {K["at"]:+.0%}; ngược lại GOLDWIN {K["gw"]:+.0%}. Hàng 別注 tăng từ 0% lên {K["bes26"]:.0%} sản lượng (26FW).'),
 ('3. Xưởng APIC kín lịch đến T1/2027, sau đó là khoảng trống lớn.',f'Kế hoạch dùng khoảng {N_["u_now"]:.0%} ngày công từ T11/2026 đến T1/2027 (bình quân 2026 là {N_["u26"]:.0%}). Tháng 2/2027 có Tết nên còn {N_["u_feb"]:.0%}. Từ T3/2027 chỉ còn {N_["u_mar"]:.0%}, và T4–T6 gần như chưa có đơn. Để đạt mức tải 90% trong T3–T6/2027 cần thêm khoảng {N_["pcs_gap"]/1000:,.0f}k pcs. Nếu không lấp được, khoảng {VN1(N_["usd_gap"]/1e6)} triệu USD chi phí nhân công sẽ không có đơn để phân bổ. Hiện 27FW mới có {K["s27fw"]/1000:.0f}k pcs, so với {K["s26fw"]/1000:.0f}k pcs của 26FW.'),
 ('4. Chia nhỏ lô làm tăng chi phí.',f'Lô ≤300 pcs chiếm {K["lot_rows"]:.0%} số dòng đơn nhưng chỉ {K["lot_qty"]:.0%} sản lượng. Đơn giá gia công của lô này là {V(K["upc_s"])} USD/pcs, gấp {V(K["lot_x"])} lần lô 2.001–5.000 ({V(K["upc_m"])} USD/pcs), vì chưa qua đường cong học việc (chỉ đạt ~{K["eff_s"]:.0%} tốc độ tối đa). Phần "chi phí chia lô" (giá vốn theo lô sản xuất thực tế so với lô đặt hàng) cộng dồn khoảng {V(K["split"])} triệu USD qua 10 mùa. Tỷ lệ này là {K["sp25"]:.0%} ở 25SS, {K["sp26fw"]:.0%} ở 26FW và {K["sp27"]:.0%} ở 27SS. Riêng 26FW tỷ lệ lô nhỏ lại tăng lên {K["small26fw"]:.0%} số dòng.'),
@@ -749,21 +750,21 @@ SG.conditional_formatting.add(f'{CL(5+len(hm_months))}{hr0}:{CL(5+len(hm_months)
 r=hr1+1; NOTE(SG,r,'Cột "Line trống từ ngày" tô đỏ = line hết đơn trước 15/03/2027, cần giao đơn 27FW sớm nhất.'); r+=1
 r+=1
 section(SG,r,'Hiệu quả theo cụm line (A+B) – các đơn bắt đầu T1–T10/2026'); r+=1
-hdr(SG,r,['Cụm line','Số đơn','Sản lượng (pcs)','Giờ chuẩn','SAM TB (phút/sp)','Lô TB (pcs)','CP gia công (USD)','Đơn giá GC (USD/pcs)','Hiệu suất lô TB'],h=32)
+hdr(SG,r,['Cụm line','Số đơn','Sản lượng (pcs)','Giờ chuẩn','SAM TB (giây/sp)','Lô TB (pcs)','CP gia công (USD)','Đơn giá GC (USD/pcs)','Hiệu suất lô TB'],h=32)
 pr0=r+1
 D1,D2='DATE(2026,1,1)','DATE(2026,11,1)'
 for k in range(15):
     rr_=pr0+k; ln=k+1
     cond=f'{R("C")},"APIC",{R("D")},{ln},{R("P")},">="&{D1},{R("P")},"<"&{D2},{R("AK")},"<>Y"'
     SG.cell(rr_,1,ln); SG.cell(rr_,2,f'=COUNTIFS({cond})'); SG.cell(rr_,3,f'=SUMIFS({R("M")},{cond})'); SG.cell(rr_,4,f'=SUMIFS({R("O")},{cond})')
-    SG.cell(rr_,5,f'=IFERROR(D{rr_}*60/C{rr_},"")'); SG.cell(rr_,6,f'=IFERROR(C{rr_}/B{rr_},"")'); SG.cell(rr_,7,f'=SUMIFS({R("AE")},{cond})')
+    SG.cell(rr_,5,f'=IFERROR(D{rr_}*3600/C{rr_},"")'); SG.cell(rr_,6,f'=IFERROR(C{rr_}/B{rr_},"")'); SG.cell(rr_,7,f'=SUMIFS({R("AE")},{cond})')
     SG.cell(rr_,8,f'=IFERROR(G{rr_}/C{rr_},"")'); SG.cell(rr_,9,f'=IFERROR(AVERAGEIFS({R("AH")},{cond}),"")')
-    for c,fm in [(2,NUM),(3,NUM),(4,NUM),(5,'0'),(6,NUM),(7,USD),(8,USD2),(9,'0%')]: SG.cell(rr_,c).number_format=fm
+    for c,fm in [(2,NUM),(3,NUM),(4,NUM),(5,NUM),(6,NUM),(7,USD),(8,USD2),(9,'0%')]: SG.cell(rr_,c).number_format=fm
     SG.cell(rr_,1).font=F(bold=True,size=10)
 pr1=pr0+14; SG.cell(pr1+1,1,'Tổng / TB')
 for c in (2,3,4,7): SG.cell(pr1+1,c,f'=SUM({CL(c)}{pr0}:{CL(c)}{pr1})')
-SG.cell(pr1+1,5,f'=D{pr1+1}*60/C{pr1+1}'); SG.cell(pr1+1,6,f'=C{pr1+1}/B{pr1+1}'); SG.cell(pr1+1,8,f'=G{pr1+1}/C{pr1+1}'); SG.cell(pr1+1,9,f'=AVERAGE(I{pr0}:I{pr1})')
-for c,fm in [(2,NUM),(3,NUM),(4,NUM),(5,'0'),(6,NUM),(7,USD),(8,USD2),(9,'0%')]: SG.cell(pr1+1,c).number_format=fm
+SG.cell(pr1+1,5,f'=D{pr1+1}*3600/C{pr1+1}'); SG.cell(pr1+1,6,f'=C{pr1+1}/B{pr1+1}'); SG.cell(pr1+1,8,f'=G{pr1+1}/C{pr1+1}'); SG.cell(pr1+1,9,f'=AVERAGE(I{pr0}:I{pr1})')
+for c,fm in [(2,NUM),(3,NUM),(4,NUM),(5,NUM),(6,NUM),(7,USD),(8,USD2),(9,'0%')]: SG.cell(pr1+1,c).number_format=fm
 body(SG,pr0,pr1+1,1,9)
 for c in range(1,10): SG.cell(pr1+1,c).fill=TOT_FILL; SG.cell(pr1+1,c).font=F(bold=True,size=10)
 SG.conditional_formatting.add(f'H{pr0}:H{pr1}',ColorScaleRule(start_type='min',start_color='FFFFFF',end_type='max',end_color='EB6834'))
@@ -896,7 +897,7 @@ for c_ in (2,3,4): S8.cell(r,c_).font=HDR_FONT
 mets=[('Số dòng đơn',lambda s: f'={CN_(s)}',NUM),
 ('Sản lượng (pcs)',lambda s: f'={SQ_(s)}',NUM),
 ('Giờ chuẩn',lambda s: f'=SUMIFS({R("O")},{R("B")},{s})',NUM),
-('SAM TB – thời gian chế tạo (phút/sp)',lambda s: f'=IFERROR(SUMIFS({R("O")},{R("B")},{s})*60/SUMIFS({R("M")},{R("B")},{s},{R("N")},"<>"),"")','0.0'),
+('SAM TB – thời gian chế tạo (giây/sp)',lambda s: f'=IFERROR(SUMIFS({R("O")},{R("B")},{s})*3600/SUMIFS({R("M")},{R("B")},{s},{R("N")},"<>"),"")',NUM),
 ('Lô TB (pcs / dòng đơn)',lambda s: f'=IFERROR({SQ_(s)}/{CN_(s)},"")',NUM),
 ('Số ngày may TB / đơn',lambda s: f'=IFERROR(AVERAGEIFS({R("AM")},{R("B")},{s}),"")','0.0'),
 ('Chi phí gia công (USD)',lambda s: f'=SUMIFS({R("AE")},{R("B")},{s})',USD),
@@ -920,7 +921,7 @@ for col in ('E','F'):
 r=a1+1; NOTE(S8,r,'Δ của các dòng % là chênh lệch điểm phần trăm. Đỏ = giảm >10%, xanh = tăng >10% (với chi phí/đơn giá, tăng là bất lợi).'); r+=2
 # ---- B. theo nhãn hàng ----
 section(S8,r,'B. Theo nhãn hàng (brand)'); r+=1
-hb=['Brand (top 12 của 25SS–27FW)','SL mùa phân tích','SL mùa trước','SL cùng kỳ','Δ vs mùa trước','Δ vs cùng kỳ','Tỷ trọng (mùa phân tích)','SAM TB (phút) – phân tích','SAM TB (phút) – cùng kỳ','Đơn giá GC – phân tích','Đơn giá GC – cùng kỳ','Lô TB – phân tích','Lô TB – cùng kỳ']
+hb=['Brand (top 12 của 25SS–27FW)','SL mùa phân tích','SL mùa trước','SL cùng kỳ','Δ vs mùa trước','Δ vs cùng kỳ','Tỷ trọng (mùa phân tích)','SAM TB (giây) – phân tích','SAM TB (giây) – cùng kỳ','Đơn giá GC – phân tích','Đơn giá GC – cùng kỳ','Lô TB – phân tích','Lô TB – cùng kỳ']
 hdr(S8,r,hb,h=45); b0=r+1
 top12=[b for b in o[o.season.isin(['25SS','25FW','26SS','26FW','27SS','27FW'])].groupby('brand').qty.sum().sort_values(ascending=False).index if b!='(trống)'][:12]+['(trống)']
 for k_,b in enumerate(top12):
@@ -929,7 +930,7 @@ for k_,b in enumerate(top12):
     for j_,cr in enumerate((M_,P_,C_)): S8.cell(rr_,2+j_,f'={SQ_(cr,g)}').number_format=NUM
     S8.cell(rr_,5,f'=IFERROR(B{rr_}/C{rr_}-1,IF(B{rr_}>0,"Mới",""))'); S8.cell(rr_,6,f'=IFERROR(B{rr_}/D{rr_}-1,IF(B{rr_}>0,"Mới",""))')
     S8.cell(rr_,7,f'=IFERROR(B{rr_}/{SQ_(M_)},"")')
-    for j_,cr in ((8,M_),(9,C_)): S8.cell(rr_,j_,f'=IFERROR(SUMIFS({R("O")},{R("B")},{cr}{g})*60/SUMIFS({R("M")},{R("B")},{cr}{g},{R("N")},"<>"),"")').number_format='0'
+    for j_,cr in ((8,M_),(9,C_)): S8.cell(rr_,j_,f'=IFERROR(SUMIFS({R("O")},{R("B")},{cr}{g})*3600/SUMIFS({R("M")},{R("B")},{cr}{g},{R("N")},"<>"),"")').number_format=NUM
     for j_,cr in ((10,M_),(11,C_)): S8.cell(rr_,j_,f'=IFERROR(SUMIFS({R("AE")},{R("B")},{cr}{g})/SUMIFS({R("M")},{R("B")},{cr}{g},{R("AE")},"<>"),"")').number_format=USD2
     for j_,cr in ((12,M_),(13,C_)): S8.cell(rr_,j_,f'=IFERROR({SQ_(cr,g)}/{CN_(cr,g)},"")').number_format=NUM
     for j_ in (5,6,7): S8.cell(rr_,j_).number_format='+0%;-0%;0%' if j_<7 else '0.0%'
@@ -958,10 +959,10 @@ def band_block(r,ttl,col,bands,note=None):
     S8.conditional_formatting.add(f'E{x0}:G{x1}',ColorScaleRule(start_type='num',start_value=0,start_color='FFFFFF',end_type='max',end_color='86B6EF'))
     return x1+2
 LOTB=['1. ≤300','2. 301–500','3. 501–1.000','4. 1.001–2.000','5. 2.001–5.000','6. >5.000']
-SAMB=['1. <60 phút','2. 60–119 phút','3. 120–179 phút','4. 180–239 phút','5. ≥240 phút']
+SAMB=['1. <3.600 giây','2. 3.600–7.199 giây','3. 7.200–10.799 giây','4. 10.800–14.399 giây','5. ≥14.400 giây']
 DAYB=['1. ≤5 ngày','2. 6–10 ngày','3. 11–20 ngày','4. 21–40 ngày','5. >40 ngày']
 r=band_block(r,'C. Theo quy mô lô sản xuất','AG',LOTB,'Lô = lô sản xuất thực tế (集約, giá vốn 2).')
-r=band_block(r,'D. Theo thời gian chế tạo sản phẩm (SAM, phút/sp)','AN',SAMB,'SAM = tổng thời gian chuẩn may 1 sản phẩm (cột TIME). Hàng phức tạp (jacket kỹ thuật) thường trên 180 phút.')
+r=band_block(r,'D. Theo thời gian chế tạo sản phẩm (SAM, giây/sp)','AN',SAMB,'SAM = tổng thời gian chuẩn may 1 sản phẩm (cột TIME). Hàng phức tạp (jacket kỹ thuật) thường trên 10.800 giây.')
 r=band_block(r,'E. Theo thời gian may của đơn (START → END, ngày)','AO',DAYB)
 # ---- F. xu hướng mọi mùa ----
 section(S8,r,'F. Xu hướng tất cả các mùa (tỷ trọng sản lượng)'); r+=1
@@ -975,10 +976,10 @@ def trend_block(r,lab,col,bands):
     S8.conditional_formatting.add(f'B{y0}:{CL(1+len(ORDER))}{y1}',ColorScaleRule(start_type='num',start_value=0,start_color='FFFFFF',end_type='max',end_color='86B6EF'))
     return y1+2
 r=trend_block(r,'Quy mô lô',  'AG',LOTB)
-r=trend_block(r,'SAM (phút/sp)','AN',SAMB)
+r=trend_block(r,'SAM (giây/sp)','AN',SAMB)
 hdr(S8,r,['Chỉ số']+ORDER,h=22); z0=r+1
 zrows=[('SL (pcs)',lambda sn: f'=SUMIFS({R("M")},{R("B")},"{sn}")',NUM),('Δ vs mùa trước',None,'+0%;-0%;0%'),('Δ vs cùng kỳ',None,'+0%;-0%;0%'),
-('SAM TB (phút/sp)',lambda sn: f'=IFERROR(SUMIFS({R("O")},{R("B")},"{sn}")*60/SUMIFS({R("M")},{R("B")},"{sn}",{R("N")},"<>"),"")','0'),
+('SAM TB (giây/sp)',lambda sn: f'=IFERROR(SUMIFS({R("O")},{R("B")},"{sn}")*3600/SUMIFS({R("M")},{R("B")},"{sn}",{R("N")},"<>"),"")',NUM),
 ('Lô TB (pcs)',lambda sn: f'=IFERROR(SUMIFS({R("M")},{R("B")},"{sn}")/COUNTIFS({R("B")},"{sn}"),"")',NUM),
 ('Đơn giá GC (USD/pcs)',lambda sn: f'=IFERROR(SUMIFS({R("AE")},{R("B")},"{sn}")/SUMIFS({R("M")},{R("B")},"{sn}",{R("AE")},"<>"),"")',USD2),
 ('Số ngày may TB',lambda sn: f'=IFERROR(AVERAGEIFS({R("AM")},{R("B")},"{sn}"),"")','0.0')]

@@ -40,7 +40,7 @@
     const w1 = wl(J.w1), w2 = wl(J.w2), mNow = wl([V.m0, V.m0 + 2]), mFut = wl([V.m0 + 4, V.m0 + 7]);
     const big = V.season.filter(s => s.n >= 100).slice(-4);
     const F = t ? [
-      ['1. Quy mô và mùa hiện tại.', `Năm ${yl.year} đạt ${kp(yl.qty)} pcs (${spct(yl.d)} so với ${yp.year}). Mùa ${cur} hiện có ${kp(K.curQty)} pcs (${spct(K.curYoy)} so với cùng kỳ, ${spct(K.curPrev)} so với mùa trước). Hàng FW mất ~${nf(K.samFW[0])}–${nf(K.samFW[1])} phút/sp, hàng SS ~${nf(K.samSS[0])}–${nf(K.samSS[1])} phút/sp, nên đo năng lực bằng giờ chuẩn. Đã bỏ ${V.counts.dotted} dòng chấm (${kp(V.counts.dottedQty)} pcs) và tách ${V.counts.sms} dòng hàng SMS.`],
+      ['1. Quy mô và mùa hiện tại.', `Năm ${yl.year} đạt ${kp(yl.qty)} pcs (${spct(yl.d)} so với ${yp.year}). Mùa ${cur} hiện có ${kp(K.curQty)} pcs (${spct(K.curYoy)} so với cùng kỳ, ${spct(K.curPrev)} so với mùa trước). Hàng FW mất ~${nf(K.samFW[0])}–${nf(K.samFW[1])} giây/sp, hàng SS ~${nf(K.samSS[0])}–${nf(K.samSS[1])} giây/sp, nên đo năng lực bằng giờ chuẩn. Đã bỏ ${V.counts.dotted} dòng chấm (${kp(V.counts.dottedQty)} pcs) và tách ${V.counts.sms} dòng hàng SMS.`],
       ['2. Phụ thuộc khách hàng.', `TNF chiếm ${pct(K.tnf)} tổng sản lượng và ${pct(K.tnfCur)} mùa ${cur}; top 3 brand chiếm ${pct(K.top3)}. So với cùng kỳ: HELLY HANSEN ${spct(g('HELLY HANSEN'))}, GOLDWIN ${spct(g('GOLDWIN'))}, ALLTERRAIN 81 ${spct(g('ALLTERRAIN 81'))}, MONTBELL ${spct(g('MONTBELL'))}.`],
       ['3. Công suất.', `${mNow} dùng ~${pct(C.uNow)} công suất (10 tháng trước: ${pct(C.uPast)}). ${mFut} chỉ ${pct(C.uFut)}: để đạt 90% cần thêm ~${kp(C.pcsGap)} pcs; nếu không, ~${musd(C.usdGap)} chi phí nhân công không có đơn để phân bổ.`],
       ['4. Lô nhỏ đắt.', `Lô ≤300 pcs chiếm ${pct(K.lotRows)} số dòng nhưng ${pct(K.lotQty)} sản lượng; đơn giá GC ${nf(K.upcS, 1)} USD/pcs, gấp ${nf(K.lotX, 1)} lần lô 2.001–5.000 (${nf(K.upcM, 1)}), chỉ đạt ~${pct(K.effS)} tốc độ tối đa. Chi phí chia lô cộng dồn ~${musd(K.split)}; ${big.map(s => s.season + ' ' + pct(s.splitPct)).join(', ')}.`],
@@ -48,7 +48,7 @@
       ['6. 受注進行表.', `${w1} phủ ${pct(J.k1.tot)} công suất nhưng chỉ ${pct(J.k1.conf)} đã chốt; ${w2} kể cả tạm tính chỉ ${pct(J.k2.tot)}. ${J.nFree}/30 line hết đơn trước ${dt(J.lim)}.`],
       ['7. Dữ liệu.', `${kp(V.dq.blankQ)} pcs không có brand; ${V.counts.seasonVariants} cách ghi mã mùa; ${V.counts.errCells} ô lỗi công thức; ${V.dq.noFac} đơn sắp SX chưa có 工場ETD. Xem tab Dữ liệu.`],
     ] : [
-      ['1. 規模と今シーズン。', `${yl.year}年は${kp(yl.qty)} pcs(${yp.year}年比${spct(yl.d)})。${cur}は${kp(K.curQty)} pcs(前年同期比${spct(K.curYoy)}、前シーズン比${spct(K.curPrev)})。FWは約${nf(K.samFW[0])}–${nf(K.samFW[1])}分/枚、SSは約${nf(K.samSS[0])}–${nf(K.samSS[1])}分/枚のため、能力は標準時間で測るべき。網掛け${V.counts.dotted}行(${kp(V.counts.dottedQty)} pcs)を除外し、SMS品${V.counts.sms}行を別集計。`],
+      ['1. 規模と今シーズン。', `${yl.year}年は${kp(yl.qty)} pcs(${yp.year}年比${spct(yl.d)})。${cur}は${kp(K.curQty)} pcs(前年同期比${spct(K.curYoy)}、前シーズン比${spct(K.curPrev)})。FWは約${nf(K.samFW[0])}–${nf(K.samFW[1])}秒/枚、SSは約${nf(K.samSS[0])}–${nf(K.samSS[1])}秒/枚のため、能力は標準時間で測るべき。網掛け${V.counts.dotted}行(${kp(V.counts.dottedQty)} pcs)を除外し、SMS品${V.counts.sms}行を別集計。`],
       ['2. 顧客依存。', `TNFが総数量の${pct(K.tnf)}、${cur}では${pct(K.tnfCur)}; 上位3ブランドで${pct(K.top3)}。前年同期比: HELLY HANSEN ${spct(g('HELLY HANSEN'))}、GOLDWIN ${spct(g('GOLDWIN'))}、ALLTERRAIN 81 ${spct(g('ALLTERRAIN 81'))}、MONTBELL ${spct(g('MONTBELL'))}。`],
       ['3. 生産能力。', `${mNow}の稼働率は約${pct(C.uNow)}(直近10か月 ${pct(C.uPast)})。${mFut}は${pct(C.uFut)}のみ: 90%達成には約${kp(C.pcsGap)} pcsの追加が必要; できなければ約${musd(C.usdGap)}の人件費が配賦先を失う。`],
       ['4. 小ロットは高コスト。', `≤300ロットは行数の${pct(K.lotRows)}だが数量は${pct(K.lotQty)}; 加工単価${nf(K.upcS, 1)} USD/pcsで2,001–5,000ロット(${nf(K.upcM, 1)})の${nf(K.lotX, 1)}倍、最大速度の約${pct(K.effS)}。ロット分割コスト累計 約${musd(K.split)}; ${big.map(s => s.season + ' ' + pct(s.splitPct)).join('、')}。`],
@@ -218,17 +218,17 @@
 
   function cmpStats(s) {
     const c = st.V.cube[s]; if (!c) return null;
-    return { n: c.n, q: c.q, h: c.h, sam: c.qs ? c.h * 60 / c.qs : NaN, lot: c.n ? c.q / c.n : NaN, sd: c.sdn ? c.sd / c.sdn : NaN, c2: c.c2, upc: c.qc ? c.c2 / c.qc : NaN, split: c.split, small: c.q ? ((c.lot['0'] || [0, 0])[1]) / c.q : NaN, bes: c.q ? c.bes / c.q : NaN, tnf: c.q ? c.tnf / c.q : NaN, c };
+    return { n: c.n, q: c.q, h: c.h, sam: c.qs ? c.h * 3600 / c.qs : NaN, lot: c.n ? c.q / c.n : NaN, sd: c.sdn ? c.sd / c.sdn : NaN, c2: c.c2, upc: c.qc ? c.c2 / c.qc : NaN, split: c.split, small: c.q ? ((c.lot['0'] || [0, 0])[1]) / c.q : NaN, bes: c.q ? c.bes / c.q : NaN, tnf: c.q ? c.tnf / c.q : NaN, c };
   }
   function tabSeasons() {
     const V = st.V, L = T(), vi = st.lang === 'vi';
     const s = V.season;
-    const tabS = tbl([L.season, L.rowsN, L.styles, L.qty, L.dPrev, L.dYoy, L.stdH, L.samMin, L.cost, L.upc, L.split, L.splitPct, L.lotMed, L.bespoke], s.map(x => [x.season, N(x.n), N(x.styles), N(x.qty), SP(x.dPrev), SP(x.dYoy), N(x.h), N(x.sam, 1), H(usd(x.c2), 'n'), N(x.upc, 2), H(usd(x.split), 'n'), P(x.splitPct, 1), N(x.lotMed), P(x.bespoke)]));
+    const tabS = tbl([L.season, L.rowsN, L.styles, L.qty, L.dPrev, L.dYoy, L.stdH, L.samMin, L.cost, L.upc, L.split, L.splitPct, L.lotMed, L.bespoke], s.map(x => [x.season, N(x.n), N(x.styles), N(x.qty), SP(x.dPrev), SP(x.dYoy), N(x.h), N(x.sam), H(usd(x.c2), 'n'), N(x.upc, 2), H(usd(x.split), 'n'), P(x.splitPct, 1), N(x.lotMed), P(x.bespoke)]));
     const cur = st.cmp || [V.K.cur, PE.prevSeason(V.K.cur), PE.yoySeason(V.K.cur)];
     const sel = (id, v) => `<select id="${id}" class="sel">${V.seasons.map(x => `<option ${x === v ? 'selected' : ''}>${x}</option>`).join('')}</select>`;
     const A = cmpStats(cur[0]) || {}, Pv = cmpStats(cur[1]) || {}, Y = cmpStats(cur[2]) || {};
     const d = (a, b) => (isNum(a) && isNum(b) && b ? a / b - 1 : NaN), dp = (a, b) => (isNum(a) && isNum(b) ? a - b : NaN);
-    const met = [[L.rowsN, 'n', 0], [L.qty, 'q', 0], [L.stdH, 'h', 0], [L.samMin, 'sam', 1], [L.lotAvg, 'lot', 0], [vi ? 'Số ngày may TB' : '平均縫製日数', 'sd', 1], [L.cost, 'c2', 0], [L.upc, 'upc', 2], [L.split, 'split', 0], [vi ? '% SL lô ≤300' : '≤300ロット数量比', 'small', 'p'], [L.bespoke, 'bes', 'p'], [vi ? '% TNF' : 'TNF比率', 'tnf', 'p']];
+    const met = [[L.rowsN, 'n', 0], [L.qty, 'q', 0], [L.stdH, 'h', 0], [L.samMin, 'sam', 0], [L.lotAvg, 'lot', 0], [vi ? 'Số ngày may TB' : '平均縫製日数', 'sd', 1], [L.cost, 'c2', 0], [L.upc, 'upc', 2], [L.split, 'split', 0], [vi ? '% SL lô ≤300' : '≤300ロット数量比', 'small', 'p'], [L.bespoke, 'bes', 'p'], [vi ? '% TNF' : 'TNF比率', 'tnf', 'p']];
     const mt = tbl([L.kpi, cur[0], cur[1], cur[2], L.dPrev, L.dYoy], met.map(([lab, k2, dd]) => dd === 'p' ? [lab, P(A[k2], 1), P(Pv[k2], 1), P(Y[k2], 1), H(isNum(dp(A[k2], Pv[k2])) ? (dp(A[k2], Pv[k2]) > 0 ? '+' : '') + nf(dp(A[k2], Pv[k2]) * 100, 1) + (vi ? ' điểm' : 'pt') : '–', 'n'), H(isNum(dp(A[k2], Y[k2])) ? (dp(A[k2], Y[k2]) > 0 ? '+' : '') + nf(dp(A[k2], Y[k2]) * 100, 1) + (vi ? ' điểm' : 'pt') : '–', 'n')]
       : [lab, N(A[k2], dd), N(Pv[k2], dd), N(Y[k2], dd), SP(d(A[k2], Pv[k2])), SP(d(A[k2], Y[k2]))]));
     const dim = (key, labels) => tbl([vi ? 'Nhóm' : '区分', cur[0], cur[1], cur[2], '% ' + cur[0], '% ' + cur[2], L.dYoy, L.upc + ' ' + cur[0], L.upc + ' ' + cur[2]], labels.map((lab, i) => {
@@ -236,7 +236,7 @@
       return [lab, N(a), N(p), N(y), P(a / (A.q || 1), 1), P(y / (Y.q || 1), 1), SP(y ? a / y - 1 : NaN), N(g(A, 4) ? g(A, 3) / g(A, 4) : NaN, 2), N(g(Y, 4) ? g(Y, 3) / g(Y, 4) : NaN, 2)]; }));
     const bset = [...new Set([...Object.keys((A.c || {}).brand || {}), ...Object.keys((Y.c || {}).brand || {})])].sort((a, b) => (((Y.c || {}).brand || {})[b] || [0, 0])[1] + (((A.c || {}).brand || {})[b] || [0, 0])[1] - ((((Y.c || {}).brand || {})[a] || [0, 0])[1] + (((A.c || {}).brand || {})[a] || [0, 0])[1])).slice(0, 14);
     const bt = tbl([L.brand, cur[0], cur[1], cur[2], L.dPrev, L.dYoy, L.share + ' ' + cur[0], L.samMin + ' ' + cur[0], L.upc + ' ' + cur[0], L.upc + ' ' + cur[2]], bset.map(b => { const g = (S, j) => (((S.c || {}).brand || {})[b] || [0, 0, 0, 0, 0])[j];
-      return [b, N(g(A, 1)), N(g(Pv, 1)), N(g(Y, 1)), SP(g(Pv, 1) ? g(A, 1) / g(Pv, 1) - 1 : NaN), SP(g(Y, 1) ? g(A, 1) / g(Y, 1) - 1 : NaN), P(g(A, 1) / (A.q || 1), 1), N(g(A, 1) ? g(A, 2) * 60 / g(A, 1) : NaN), N(g(A, 4) ? g(A, 3) / g(A, 4) : NaN, 2), N(g(Y, 4) ? g(Y, 3) / g(Y, 4) : NaN, 2)]; }));
+      return [b, N(g(A, 1)), N(g(Pv, 1)), N(g(Y, 1)), SP(g(Pv, 1) ? g(A, 1) / g(Pv, 1) - 1 : NaN), SP(g(Y, 1) ? g(A, 1) / g(Y, 1) - 1 : NaN), P(g(A, 1) / (A.q || 1), 1), N(g(A, 1) ? g(A, 2) * 3600 / g(A, 1) : NaN), N(g(A, 4) ? g(A, 3) / g(A, 4) : NaN, 2), N(g(Y, 4) ? g(Y, 3) / g(Y, 4) : NaN, 2)]; }));
     return `<div class="two">${sec(L.seasonTable, `<div class="ch"><canvas id="cSea"></canvas></div>`)}${sec(L.yearTable, tbl([L.year, L.qty, vi ? 'Tăng/giảm' : '増減', L.stdH, L.cost, L.split], V.year.map(y => [String(y.year) + (y.full ? '' : ' *'), N(y.qty), SP(y.d), N(y.h), H(usd(y.c2), 'n'), H(usd(y.split), 'n')])))}</div>` + sec(L.seasonTable, tabS) +
       sec(L.cmpTitle, `<div class="cmpsel"><label for="sA">${L.cmpA}</label>${sel('sA', cur[0])}<label for="sP">${L.cmpP}</label>${sel('sP', cur[1])}<label for="sY">${L.cmpY}</label>${sel('sY', cur[2])}</div>` + mt) +
       sec(L.byBrand, bt) + `<div class="two">${sec(L.byLot, dim('lot', L.lotBands))}${sec(L.bySam, dim('sam', L.samBands))}</div>` + sec(L.byDay, dim('day', L.dayBands));

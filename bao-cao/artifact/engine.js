@@ -201,7 +201,7 @@
     const seasonStat = (rows) => {
       const qty = sum(rows, o => o.qty), h = sum(rows, o => o.stdH), c1 = sum(rows, o => o.cost1), c2 = sum(rows, o => o.cost2);
       const qc2 = sum(rows.filter(o => isNum(o.cost2)), o => o.qty);
-      return { n: rows.length, styles: new Set(rows.map(o => o.style)).size, qty, h, sam: qty ? h * 60 / sum(rows.filter(o => isNum(o.sam)), o => o.qty) : NaN, c1, c2, split: c2 - c1, splitPct: c1 ? c2 / c1 - 1 : NaN,
+      return { n: rows.length, styles: new Set(rows.map(o => o.style)).size, qty, h, sam: qty ? h * 3600 / sum(rows.filter(o => isNum(o.sam)), o => o.qty) : NaN, c1, c2, split: c2 - c1, splitPct: c1 ? c2 / c1 - 1 : NaN,
         upc: qc2 ? c2 / qc2 : NaN, lotMed: median(rows.map(o => o.c2Qty)), lotAvg: rows.length ? qty / rows.length : NaN, bespoke: qty ? sum(rows.filter(o => o.bespoke), o => o.qty) / qty : NaN,
         small: rows.length ? rows.filter(o => o.c2Qty <= 300).length / rows.length : NaN, smallQty: qty ? sum(rows.filter(o => o.lot === 0), o => o.qty) / qty : NaN,
         sewDays: (a => a.length ? sum(a) / a.length : NaN)(rows.map(o => o.sewDays).filter(isNum)), tnf: qty ? sum(rows.filter(o => o.brand === 'TNF'), o => o.qty) / qty : NaN,
@@ -268,7 +268,7 @@
     // hiệu quả theo cụm line (10 tháng trước)
     R.linePerf = []; for (let ln = 1; ln <= 15; ln++) { const rows = P.filter(o => o.factory === 'APIC' && o.line === ln && !o.stale && o.start != null && o.start >= mStart(m0 - 10) && o.start < mStart(m0));
       const q = sum(rows, o => o.qty), h = sum(rows, o => o.stdH), c = sum(rows, o => o.cost2), e = rows.map(o => o.c2Max ? o.c2Avg / o.c2Max : NaN).filter(isNum);
-      R.linePerf.push({ line: ln, n: rows.length, qty: q, h, sam: q ? h * 60 / q : NaN, lot: rows.length ? q / rows.length : NaN, cost: c, upc: q ? c / q : NaN, eff: e.length ? sum(e) / e.length : NaN }); }
+      R.linePerf.push({ line: ln, n: rows.length, qty: q, h, sam: q ? h * 3600 / q : NaN, lot: rows.length ? q / rows.length : NaN, cost: c, upc: q ? c / q : NaN, eff: e.length ? sum(e) / e.length : NaN }); }
 
     // ---- rủi ro giao hàng
     const fw = P.filter(o => !o.stale && o.end != null && o.end >= REF);
