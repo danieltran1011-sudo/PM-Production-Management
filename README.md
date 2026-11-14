@@ -54,3 +54,9 @@ Kết quả: `bao-cao/Bao_cao_dieu_hanh_PLANTABLE_<ngày>.xlsx`, `bao-cao/Keiei_
 Quy ước chính: xưởng APIC (gộp AP1A/AP1B/AP1C), 30 line thường × 32 CN, line nhỏ 小ロット 16 CN; hàng SMS (mẫu chào hàng) tách khỏi hàng sản xuất; "đã chốt" trong 受注進行表 = đã bắt đầu may hoặc ghi chú NVL mới nhất có 生地 OK & 資材 OK (đã đối chiếu với 受注進行表 bản 09/11/2026).
 
 Lưu ý: sheet 4A và lịch sử tự trượt theo ngày tham chiếu; một số mốc so sánh ở các sheet khác (27SS vs 26SS, T3–T6/2027, Tết 2027) đang cố định cho giai đoạn cuối 2026 và cần rà soát khi sang mùa mới.
+
+### Trang tự động (artifact)
+
+Trang **Báo cáo điều hành APIC** (https://claude.ai/artifact/EtmJ8GTMAGj6mAioUnkHeV): thả file PLANTABLE vào là trang tự đọc (ngay trong trình duyệt), tính toàn bộ phân tích, hiển thị theo tab (Tổng quan, CEO, GĐ nhà máy, QL sản xuất, 受注進行表, Mùa vụ & so sánh, Rủi ro, Dữ liệu), chuyển Tiếng Việt / 日本語, tải Excel. Mỗi lần tải lên, trang lưu báo cáo mới nhất và thêm 1 mốc 受注進行表 vào lịch sử chung.
+
+Mã nguồn: `bao-cao/artifact/` (`engine.js` = toàn bộ phép tính, cùng quy ước với pipeline Python; `app.js` = giao diện; `i18n.js` = chữ hai ngôn ngữ). Khi sửa, đăng lại bằng công cụ artifact (publish_files) với 4 file này.

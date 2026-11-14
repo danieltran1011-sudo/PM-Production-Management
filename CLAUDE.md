@@ -6,3 +6,4 @@
 - Mọi chuỗi tiếng Việt mới thêm vào báo cáo phải có bản dịch trong `bao-cao/scripts/ja_tr.py`; sau khi build, quét file `_JP` để chắc không còn chữ tiếng Việt.
 - Giữ quy ước: dòng chấm (QTY nền chấm) không cộng SL; hàng SMS tách riêng; line thường 32 CN, line nhỏ 16 CN; xưởng = APIC.
 - Trả lời người dùng bằng tiếng Việt.
+- Có trang artifact tự động (`bao-cao/artifact/`, slug 70810864-0066-4ae9-98a3-0a6cafbf1626): khi đổi quy ước tính toán, sửa cả `bao-cao/artifact/engine.js` lẫn pipeline Python để hai bên cho cùng số liệu, rồi đăng lại trang.
