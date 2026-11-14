@@ -29,3 +29,28 @@ Chạy test:
 ```
 npm test
 ```
+
+## Báo cáo điều hành PLANTABLE (`bao-cao/`)
+
+Báo cáo Excel song ngữ (tiếng Việt + tiếng Nhật) cho CEO, Giám đốc nhà máy, Quản lý sản xuất, dựng **chỉ từ file PLANTABLE** (APIC P-Plan …xlsm). Không cần file 受注進行表: sheet `4A. 受注進行表` được tự dựng từ PLANTABLE.
+
+Chạy (từ thư mục gốc repo):
+
+```
+python3 bao-cao/scripts/tao_bao_cao.py "<đường dẫn file PLANTABLE .xlsm>"
+```
+
+Tuỳ chọn: `--ngay YYYY-MM-DD` (ngày tham chiếu, mặc định = ngày trong tên file + 1), `--ngay-file YYYY-MM-DD` (ngày của bản PLANTABLE).
+
+Kết quả: `bao-cao/Bao_cao_dieu_hanh_PLANTABLE_<ngày>.xlsx`, `bao-cao/Keiei_Report_PLANTABLE_<ngày>_JP.xlsx`, và thêm 1 mốc vào `bao-cao/lich-su/do_phu_don_theo_ban_chup.csv` (xu hướng 受注進行表 theo tuần).
+
+| File | Vai trò |
+|---|---|
+| `bao-cao/scripts/doc_plantable.py` | Đọc sheet PLANTABLE, làm sạch, nhận diện dòng chấm (QTY nền chấm = dòng thứ 2 của chuyền lớn AB, không cộng SL). |
+| `bao-cao/scripts/build_report.py` | Dựng toàn bộ sheet (tóm tắt, CEO, GĐ nhà máy, QL sản xuất, mùa vụ, so sánh mùa, khách hàng, công suất, 受注進行表, chi phí & lô, rủi ro, chất lượng dữ liệu, Data, Phương pháp). |
+| `bao-cao/scripts/juchu_plan.py` | Dựng 受注進行表 từ PLANTABLE: thanh line × thời gian, đã chốt / tạm tính (暫定). |
+| `bao-cao/scripts/ja_tr.py` | Bản dịch tiếng Nhật (từ điển + quy tắc cho câu có số liệu). |
+
+Quy ước chính: xưởng APIC (gộp AP1A/AP1B/AP1C), 30 line thường × 32 CN, line nhỏ 小ロット 16 CN; hàng SMS (mẫu chào hàng) tách khỏi hàng sản xuất; "đã chốt" trong 受注進行表 = đã bắt đầu may hoặc ghi chú NVL mới nhất có 生地 OK & 資材 OK (đã đối chiếu với 受注進行表 bản 09/11/2026).
+
+Lưu ý: sheet 4A và lịch sử tự trượt theo ngày tham chiếu; một số mốc so sánh ở các sheet khác (27SS vs 26SS, T3–T6/2027, Tết 2027) đang cố định cho giai đoạn cuối 2026 và cần rà soát khi sang mùa mới.
