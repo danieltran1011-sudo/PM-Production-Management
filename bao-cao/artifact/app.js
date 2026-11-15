@@ -304,7 +304,22 @@
     return sec(L.dqTitle, tbl([L.issue, L.scale, L.fix], issues)) + sec(L.methodTitle, `<ul class="method">${method.map(m => `<li>${esc(m)}</li>`).join('')}</ul>`);
   }
 
-  const TABS = { overview: [tabOverview], ceo: [tabCeo, afterCeo], factory: [tabFactory, afterFactory], prod: [tabProd], juchu: [tabJuchu, afterJuchu], seasons: [tabSeasons, afterSeasons], risk: [tabRisk, afterRisk], data: [tabData] };
+  function tabTerms() {
+    const L = T(), g = L.gl, G = window.GLOSSARY || { giai: [], terms: [] }, vi = st.lang === 'vi';
+    const ex = st.ex || (st.ex = { sam: 10000, cn: 32, order: 5000 });
+    const rate = 46.29017951425554, lots = [ex.order, ex.order / 2, ex.order / 5, ex.order / 10, 300];
+    const calc = lot => { const eff = (3.51 * Math.log(lot) + 76.97) / 100, learn = 2.23 * Math.pow(ex.sam, 0.11), mx = Math.floor(28800 / ex.sam * ex.cn * eff), days = lot / mx + learn / 2, upc = rate * ex.cn * days / lot; return { eff, learn, mx, days, upc, tot: upc * ex.order }; };
+    const base = calc(lots[0]);
+    const rows = lots.map((lot, i) => { const c = calc(lot); return [g.cases[i], N(lot), N(ex.order / lot, 1), N(c.eff, 3), N(c.learn, 1), N(c.mx), N(c.days, 1), N(c.upc, 2), H(usd(c.tot), 'n'), H(usd(c.tot - base.tot), 'n ' + (c.tot - base.tot > 0 ? 'neg' : '')), H(spct(c.tot / base.tot - 1), 'n ' + (c.tot - base.tot > 0 ? 'neg' : ''))]; });
+    const inp = (id, lab, v) => `<label for="${id}">${esc(lab)}</label><input id="${id}" class="sel" type="number" min="1" value="${v}">`;
+    const terms = G.terms.map(t => vi ? [H(`<b>${esc(t[0])}</b>`), t[1], t[2], t[4], t[6]] : [H(`<b>${esc(t[1])}</b>`), t[0], t[3], t[5], t[6]]);
+    return sec(g.what, `<ol class="find">${G.giai.map(p => `<li>${esc(vi ? p[0] : p[1])}</li>`).join('')}</ol>`) +
+      sec(g.ex, `<div class="cmpsel">${inp('exSam', g.sam, ex.sam)}${inp('exCn', g.cn, ex.cn)}${inp('exOrd', g.order, ex.order)}</div>` + tbl(g.head, rows), g.exNote) +
+      sec(g.table, tbl(g.cols, terms));
+  }
+  function afterTerms() { for (const [id, k] of [['exSam', 'sam'], ['exCn', 'cn'], ['exOrd', 'order']]) { const el = document.getElementById(id); if (el) el.onchange = () => { const v = +el.value; if (v > 0) { st.ex[k] = v; render(); } }; } }
+
+  const TABS = { overview: [tabOverview], ceo: [tabCeo, afterCeo], factory: [tabFactory, afterFactory], prod: [tabProd], juchu: [tabJuchu, afterJuchu], seasons: [tabSeasons, afterSeasons], risk: [tabRisk, afterRisk], data: [tabData], terms: [tabTerms, afterTerms] };
 
   // ------------------------------------------------------------ khung trang
   function render() {
@@ -317,7 +332,7 @@
     $('#tabs').innerHTML = Object.keys(TABS).map(k => `<button class="tab ${k === st.tab ? 'on' : ''}" data-tab="${k}" type="button">${esc(L.tabs[k])}</button>`).join('');
     document.querySelectorAll('.tab').forEach(b => { b.onclick = () => { st.tab = b.dataset.tab; try { history.replaceState(null, '', '#' + st.tab); } catch (e) { /* */ } render(); }; });
     st.charts.forEach(c => c.destroy()); st.charts = [];
-    if (!st.V) { $('#drop').hidden = false; $('#main').innerHTML = ''; $('#meta').textContent = ''; return; }
+    if (!st.V) { $('#drop').hidden = false; $('#meta').textContent = ''; if (st.tab === 'terms') { $('#main').innerHTML = tabTerms(); afterTerms(); } else $('#main').innerHTML = ''; return; }
     $('#drop').hidden = true;
     const m = st.V.meta || {};
     $('#meta').textContent = `${L.lastReport}: ${m.file || '?'} · ${L.ref} ${dt(st.V.ref)} · ${L.fileDate} ${dt(st.V.snap)}${m.at ? ' · ' + L.uploadedAt + ' ' + new Date(m.at).toLocaleString(loc()) : ''}`;

@@ -863,20 +863,20 @@ hdr(SX,4,['Người đọc','Đọc trước','Đọc thêm khi cần','Câu h�
 idx=[('CEO','1A. CEO','1. Tóm tắt điều hành; 2A. So sánh mùa; 3. Khách hàng','Kinh doanh đang đi về đâu? Rủi ro tài chính nào? Cần quyết định gì?'),
 ('Giám đốc nhà máy','1B. GĐ Nhà máy','4. Công suất; 4A. 受注進行表; 2A. So sánh mùa','Nhà máy đủ hay thiếu đơn? Line nào trống, khi nào? Nhân lực, Tết, hiệu suất?'),
 ('Quản lý sản xuất','1C. QL Sản xuất','6. Rủi ro giao hàng; 7. Chất lượng DL','Tuần này/6 tuần tới chạy gì, đơn nào chưa sẵn sàng, đơn nào trễ?'),
-('Tất cả','1. Tóm tắt điều hành','Phương pháp; Data','7 phát hiện chính, 6 khuyến nghị; định nghĩa chỉ số và dữ liệu sạch.')]
+('Tất cả','1. Tóm tắt điều hành','0A. Thuật ngữ; Phương pháp; Data','7 phát hiện chính, 6 khuyến nghị; định nghĩa chỉ số và dữ liệu sạch.')]
 for k,(a,b,c,d) in enumerate(idx,5):
     SX.cell(k,1,a).font=F(bold=True,size=11); x=SX.cell(k,2,b); x.hyperlink=f"#'{b}'!A1"; x.font=F(size=11,color='2A78D6',underline='single')
     SX.cell(k,3,c).font=BODY; SX.cell(k,4,d).font=BODY
     for j in range(1,5): SX.cell(k,j).alignment=Alignment(wrap_text=True,vertical='center'); SX.cell(k,j).border=BOX
     SX.row_dimensions[k].height=36
 SX['A11']='Danh sách sheet'; SX['A11'].font=F(bold=True,size=11)
-desc={'1. Tóm tắt điều hành':'KPI tổng hợp, phát hiện chính, khuyến nghị','1A. CEO':'Bức tranh kinh doanh, khách hàng, quyết định cần phê duyệt','1B. GĐ Nhà máy':'Tải theo line, nhân lực, hiệu suất line, Tết','1C. QL Sản xuất':'Lịch line 16 tuần, checklist sẵn sàng 6 tuần tới',
+desc={'0A. Thuật ngữ':'Giải thích chi phí chia lô (có ví dụ tính) và định nghĩa các thuật ngữ','1. Tóm tắt điều hành':'KPI tổng hợp, phát hiện chính, khuyến nghị','1A. CEO':'Bức tranh kinh doanh, khách hàng, quyết định cần phê duyệt','1B. GĐ Nhà máy':'Tải theo line, nhân lực, hiệu suất line, Tết','1C. QL Sản xuất':'Lịch line 16 tuần, checklist sẵn sàng 6 tuần tới',
 '2. Mùa vụ':'Sản lượng, giờ chuẩn, chi phí theo mùa & năm','2A. So sánh mùa':'So với mùa trước & cùng kỳ: tổng quan, brand, quy mô lô, SAM, ngày may','3. Khách hàng':'Brand × mùa, tập trung khách hàng','4. Công suất':'Ngày công kế hoạch vs định biên theo tháng','4A. 受注進行表':'受注進行表 tự dựng từ PLANTABLE: bảng line × nửa tháng, độ phủ đã chốt / tạm tính, xu hướng theo bản chụp','5. Chi phí & Lô':'Đơn giá gia công theo quy mô lô',
 '6. Rủi ro giao hàng':'Toàn bộ đơn đang/sắp SX với cờ rủi ro','7. Chất lượng DL':'Lỗi dữ liệu cần sửa ở file gốc','Data':'Dữ liệu đã làm sạch (nguồn cho mọi công thức)','Phương pháp':'Giả định có thể chỉnh (ô xanh), ánh xạ cột, định nghĩa'}
 for k,(n,dsc) in enumerate(desc.items(),12):
     x=SX.cell(k,1,n); x.hyperlink=f"#'{n}'!A1"; x.font=F(size=10,color='2A78D6',underline='single'); SX.cell(k,2,dsc).font=BODY
     SX.merge_cells(start_row=k,start_column=2,end_row=k,end_column=4)
-SX.cell(27,1,'Cách cập nhật: dán dữ liệu PLANTABLE mới → chạy lại script phân tích (hoặc nhờ Claude) → các sheet tự tính lại theo sheet Data và các ô xanh ở sheet Phương pháp.').font=F(italic=True,size=9,color='52514E')
+SX.cell(28,1,'Cách cập nhật: dán dữ liệu PLANTABLE mới → chạy lại script phân tích (hoặc nhờ Claude) → các sheet tự tính lại theo sheet Data và các ô xanh ở sheet Phương pháp.').font=F(italic=True,size=9,color='52514E')
 widths(SX,[24,24,38,60]); SX.sheet_view.showGridLines=False
 
 
@@ -1119,9 +1119,70 @@ jf=[('1. 3 tháng tới kín lịch nhưng phần lớn còn tạm tính.',f'{JN
 text_rows(SJ,rG+1,jf,ncol=11,w=130)
 SJ.column_dimensions['A'].width=34; SJ.sheet_view.showGridLines=False; SJ.freeze_panes=None
 
-for ws_ in (S1,S2,S3,S4,S5,S6,S7,S8,SC,SG,SQ,SX,SJ):
+# ---------- 0A. Thuật ngữ & định nghĩa ----------
+_tn_spec=_ilu.spec_from_file_location('thuat_ngu',os.path.join(_HERE,'thuat_ngu.py')); TN=_ilu.module_from_spec(_tn_spec); _tn_spec.loader.exec_module(TN)
+SGl=wb.create_sheet('0A. Thuật ngữ')
+title(SGl,'Thuật ngữ & định nghĩa','Giải thích các khái niệm dùng trong báo cáo. Ô chữ xanh dương ở phần B có thể sửa để thử.')
+r=4; section(SGl,r,'A. Chi phí chia lô là gì?'); r+=1
+for vi_,ja_ in TN.GIAI_THICH:
+    c=SGl.cell(r,1,vi_); c.font=F(size=10); c.alignment=Alignment(wrap_text=True,vertical='top'); SGl.merge_cells(start_row=r,start_column=1,end_row=r,end_column=12); SGl.row_dimensions[r].height=32; r+=1
+r+=1; section(SGl,r,'B. Ví dụ tính theo công thức giá vốn của PLANTABLE'); r+=1
+NOTE(SGl,r,'Một đơn hàng được may thành 1 lô lớn hoặc chia nhỏ thành nhiều lô. Mỗi lô phải trả lại chi phí học việc và chạy ở hiệu suất thấp hơn, nên tổng chi phí tăng.'); r+=1
+inp0=r
+for lab,val,fmt,font in [('SAM (giây/sp)',10000,'#,##0',BLUE),('Số công nhân / line',32,'0',BLUE),('Chi phí nhân công / công-ngày (USD)',"='Phương pháp'!$C$9",USD2,GREEN),('Số lượng đơn hàng (pcs)',5000,'#,##0',BLUE)]:
+    SGl.cell(r,1,lab).font=F(bold=True,size=10); c=SGl.cell(r,3,val); c.number_format=fmt; c.font=F(size=10,bold=True,color=font.color.rgb if font.color else None); c.border=BOX; r+=1
+SAMc,CNc,RTc,ORc=f'$C${inp0}',f'$C${inp0+1}',f'$C${inp0+2}',f'$C${inp0+3}'
+r+=1
+hdr(SGl,r,['Phương án','Lô SX (pcs)','Số lô','稼働率 (hệ số hiệu suất)','習熟日数 (ngày học việc)','日産MAX (pcs/ngày)','Số ngày may / lô','Chi phí / lô (USD)','Đơn giá GC (USD/pcs)','Tổng chi phí (USD)','Chi phí chia lô (USD)','% tăng so với 1 lô'],h=45)
+t0=r+1
+for k_,(lab,lot) in enumerate([('1 lô (không chia)',f'={ORc}/1'),('Chia 2 lô',f'={ORc}/2'),('Chia 5 lô',f'={ORc}/5'),('Chia 10 lô',f'={ORc}/10'),('Lô 300 pcs',300)]):
+    rr_=t0+k_
+    SGl.cell(rr_,1,lab).font=F(bold=True,size=10)
+    c=SGl.cell(rr_,2,lot); c.font=BLUE
+    SGl.cell(rr_,3,f'={ORc}/B{rr_}')
+    SGl.cell(rr_,4,f'=(3.51*LN(B{rr_})+76.97)/100')
+    SGl.cell(rr_,5,f'=2.23*{SAMc}^0.11')
+    SGl.cell(rr_,6,f'=ROUNDDOWN(28800/{SAMc}*{CNc}*D{rr_},0)')
+    SGl.cell(rr_,7,f'=B{rr_}/F{rr_}+E{rr_}/2')
+    SGl.cell(rr_,8,f'={RTc}*{CNc}*G{rr_}')
+    SGl.cell(rr_,9,f'=H{rr_}/B{rr_}')
+    SGl.cell(rr_,10,f'=I{rr_}*{ORc}')
+    SGl.cell(rr_,11,f'=J{rr_}-$J${t0}')
+    SGl.cell(rr_,12,f'=IFERROR(J{rr_}/$J${t0}-1,"")')
+    for c_,fm in [(2,'#,##0'),(3,'0.0'),(4,'0.000'),(5,'0.0'),(6,'#,##0'),(7,'0.0'),(8,USD),(9,USD2),(10,USD),(11,USD),(12,'0%')]: SGl.cell(rr_,c_).number_format=fm
+t1=t0+4; body(SGl,t0,t1,1,12)
+SGl.conditional_formatting.add(f'K{t0}:K{t1}',ColorScaleRule(start_type='num',start_value=0,start_color='FFFFFF',end_type='max',end_color='EB6834'))
+r=t1+1; NOTE(SGl,r,'Công thức giống cột AR–AY / BD–BK của PLANTABLE: 稼働率 = (3,51×LN(lô)+76,97)/100; 習熟日数 = 2,23×SAM^0,11; 日産MAX = 28.800/SAM × CN × 稼働率; số ngày = lô/日産MAX + 習熟日数/2.'); r+=2
+# ví dụ thực tế
+_cs=[s for s in ORDER if len(o[o.season==s])>=100][-1]
+_ex=o[(o.season==_cs)&(o.c1_qty>o.c2_qty)&o.c1_upc.notna()&o.c2_upc.notna()].copy(); _ex['sp']=_ex.qty*(_ex.c2_upc-_ex.c1_upc)
+_x=_ex.sort_values('sp',ascending=False).iloc[0]
+section(SGl,r,'C. Ví dụ thực tế từ PLANTABLE (đơn có chi phí chia lô lớn nhất mùa hiện tại)'); r+=1
+x0=r
+for lab,val,fmt in [('Mùa',_x.season,None),('Brand',_x.brand,None),('Style',_x['style'],None),('Item',_x['item'],None),('Dòng gốc',int(_x.row),'0'),('SL dòng đơn (pcs)',float(_x.qty),'#,##0'),
+                    ('Lô đặt hàng – giá vốn 1 (pcs)',float(_x.c1_qty),'#,##0'),('Lô sản xuất – giá vốn 2 (pcs)',float(_x.c2_qty),'#,##0'),('SAM (giây/sp)',float(_x.sam),'#,##0'),
+                    ('Đơn giá GC1 (USD/pcs)',float(_x.c1_upc),USD2),('Đơn giá GC2 (USD/pcs)',float(_x.c2_upc),USD2)]:
+    SGl.cell(r,1,lab).font=F(bold=True,size=10); c=SGl.cell(r,3,val); c.font=F(size=10); c.border=BOX
+    if fmt: c.number_format=fmt
+    r+=1
+SGl.cell(r,1,'Chi phí chia lô của dòng này (USD)').font=F(bold=True,size=10); SGl.cell(r,3,f'=C{x0+5}*(C{x0+10}-C{x0+9})').number_format=USD; SGl.cell(r,3).font=F(bold=True,size=10,color='D03B3B'); r+=1
+SGl.cell(r,1,'% tăng đơn giá').font=F(bold=True,size=10); SGl.cell(r,3,f'=C{x0+10}/C{x0+9}-1').number_format='0%'; r+=2
+# bảng thuật ngữ
+section(SGl,r,'D. Bảng thuật ngữ'); r+=1
+hdr(SGl,r,['Thuật ngữ','Tiếng Nhật','Định nghĩa','Cách tính / nguồn','Xem ở sheet'],h=24); g0=r+1
+for k_,(tv,tj,dv,dj,fv,fj,sh) in enumerate(TN.THUAT_NGU):
+    rr_=g0+k_
+    for j_,val in enumerate([tv,tj,dv,fv,sh],1):
+        c=SGl.cell(rr_,j_,val); c.alignment=Alignment(wrap_text=True,vertical='top'); c.font=F(size=10,bold=(j_==1)); c.border=BOX
+    SGl.row_dimensions[rr_].height=max(30,14*(max(len(dv),len(fv)*0.8)//60+1))
+GL_ROWS=(g0,g0+len(TN.THUAT_NGU)-1)
+for j_,w in enumerate([34,26,60,60,12],1): SGl.column_dimensions[CL(j_)].width=w
+for j_ in range(6,13): SGl.column_dimensions[CL(j_)].width=13
+SGl.sheet_view.showGridLines=False
+
+for ws_ in (S1,S2,S3,S4,S5,S6,S7,S8,SC,SG,SQ,SX,SJ,SGl):
     ws_.page_setup.orientation='landscape'; ws_.page_setup.fitToWidth=1; ws_.page_setup.fitToHeight=0; ws_.sheet_properties.pageSetUpPr.fitToPage=True
-wb._sheets=[SX,S1,SC,SG,SQ,S2,S8,S3,S4,SJ,S5,S6,S7,SD,SM]
+wb._sheets=[SX,SGl,S1,SC,SG,SQ,S2,S8,S3,S4,SJ,S5,S6,S7,SD,SM]
 pass
 wb.calculation.fullCalcOnLoad=True
 wb.save(OUT); print('saved', OUT, len(fw))
@@ -1134,5 +1195,8 @@ ja_tr.translate_wb(wb,dict(JN=JN,N_=N_,RK=RK,K=K,N_ADJ1=N_ADJ1,q8k=sev_hi.qty.su
 OUT_JP=OUT.replace('.xlsx','_JP.xlsx').replace('Bao_cao_dieu_hanh','Keiei_Report')
 for _n,_w in [('4A. 受注進行表',{'A':34}),('1. エグゼクティブサマリー',{'A':54}),('1A. CEO',{'A':50}),('1B. 工場長',{'A':50,'N':34}),('1C. 生産管理',{'A':40}),('2. シーズン別',{'A':12}),('前提・定義',{'A':40}),('7. データ品質',{'A':34})]:
     for _c,_x in _w.items(): wb[_n].column_dimensions[_c].width=_x
+_g=wb['0A. 用語と定義']
+_g.cell(GL_ROWS[0]-1,2).value='ベトナム語'
+for k_,row_ in enumerate(TN.THUAT_NGU): _g.cell(GL_ROWS[0]+k_,2).value=row_[0]
 wb.calculation.fullCalcOnLoad=True
 wb.save(OUT_JP); print('saved', OUT_JP)

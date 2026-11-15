@@ -7,7 +7,7 @@ SHEETS = {
     '0. Mục lục': '0. 目次', '1. Tóm tắt điều hành': '1. エグゼクティブサマリー', '1A. CEO': '1A. CEO',
     '1B. GĐ Nhà máy': '1B. 工場長', '1C. QL Sản xuất': '1C. 生産管理', '2. Mùa vụ': '2. シーズン別',
     '3. Khách hàng': '3. 顧客別', '4. Công suất': '4. 生産能力', '5. Chi phí & Lô': '5. 加工費とロット',
-    '6. Rủi ro giao hàng': '6. 納期リスク', '7. Chất lượng DL': '7. データ品質', 'Data': 'データ', 'Phương pháp': '前提・定義', '2A. So sánh mùa': '2A. シーズン比較', '4A. 受注進行表': '4A. 受注進行表',
+    '6. Rủi ro giao hàng': '6. 納期リスク', '7. Chất lượng DL': '7. データ品質', 'Data': 'データ', 'Phương pháp': '前提・定義', '2A. So sánh mùa': '2A. シーズン比較', '0A. Thuật ngữ': '0A. 用語と定義', '4A. 受注進行表': '4A. 受注進行表',
 }
 
 EX = {
@@ -292,6 +292,30 @@ EX.update({
  '(a) Sales chốt các đơn đang tạm tính trong 3 tháng tới; (b) mục tiêu độ phủ các tháng 4–7 ≥60% sau 4 tuần và ≥90% sau 8 tuần; (c) nếu độ phủ không tăng sau 2 bản chụp liên tiếp thì kích hoạt phương án nhân lực (sheet 1B).': '(a) 営業は今後3か月の暫定オーダーを確定; (b) 4–7か月目の充足率を4週間後に60%以上、8週間後に90%以上に; (c) 2回連続で充足率が伸びなければ要員計画(シート1B)を発動。',
  '4. Công suất; 4A. 受注進行表; 2A. So sánh mùa': '4. 生産能力; 4A. 受注進行表; 2A. シーズン比較',
  '受注進行表 tự dựng từ PLANTABLE: bảng line × nửa tháng, độ phủ đã chốt / tạm tính, xu hướng theo bản chụp': 'PLANTABLEから自動作成した受注進行表: ライン × 半月の表、確定 / 暫定の充足率、スナップショット推移',
+})
+
+
+import importlib.util as _ilu2, os as _os2
+_s=_ilu2.spec_from_file_location('thuat_ngu',_os2.path.join(_os2.path.dirname(_os2.path.abspath(__file__)),'thuat_ngu.py')); _TN=_ilu2.module_from_spec(_s); _s.loader.exec_module(_TN)
+for _v,_j in _TN.GIAI_THICH: EX[_v]=_j
+for _tv,_tj,_dv,_dj,_fv,_fj,_sh in _TN.THUAT_NGU: EX[_tv]=_tj; EX[_dv]=_dj; EX[_fv]=_fj
+EX.update({
+ 'Thuật ngữ & định nghĩa': '用語と定義', 'Giải thích các khái niệm dùng trong báo cáo. Ô chữ xanh dương ở phần B có thể sửa để thử.': 'レポートで使う概念の説明。B欄の青字セルは変更して試せます。',
+ 'A. Chi phí chia lô là gì?': 'A. ロット分割コストとは?', 'B. Ví dụ tính theo công thức giá vốn của PLANTABLE': 'B. PLANTABLEの原価式による計算例',
+ 'Một đơn hàng được may thành 1 lô lớn hoặc chia nhỏ thành nhiều lô. Mỗi lô phải trả lại chi phí học việc và chạy ở hiệu suất thấp hơn, nên tổng chi phí tăng.': '1つのオーダーを大ロット1本で縫うか、複数の小ロットに分けるか。ロットごとに習熟コストがかかり効率も下がるため、総費用が増える。',
+ 'SAM (giây/sp)': 'SAM(秒/枚)', 'Số công nhân / line': 'ライン人数', 'Chi phí nhân công / công-ngày (USD)': '人件費 / 人日(USD)', 'Số lượng đơn hàng (pcs)': 'オーダー数量(pcs)',
+ 'Phương án': 'ケース', 'Lô SX (pcs)': '生産ロット(pcs)', 'Số lô': 'ロット数', '稼働率 (hệ số hiệu suất)': '稼働率(効率係数)', '習熟日数 (ngày học việc)': '習熟日数(日)', '日産MAX (pcs/ngày)': '日産MAX(pcs/日)',
+ 'Số ngày may / lô': 'ロットあたり縫製日数', 'Chi phí / lô (USD)': 'ロット費用(USD)', 'Đơn giá GC (USD/pcs)': '加工単価(USD/pcs)', 'Tổng chi phí (USD)': '総費用(USD)', '% tăng so với 1 lô': '1ロット比の増加率',
+ '1 lô (không chia)': '1ロット(分割なし)', 'Chia 2 lô': '2ロットに分割', 'Chia 5 lô': '5ロットに分割', 'Chia 10 lô': '10ロットに分割', 'Lô 300 pcs': '300 pcsロット',
+ 'Công thức giống cột AR–AY / BD–BK của PLANTABLE: 稼働率 = (3,51×LN(lô)+76,97)/100; 習熟日数 = 2,23×SAM^0,11; 日産MAX = 28.800/SAM × CN × 稼働率; số ngày = lô/日産MAX + 習熟日数/2.': 'PLANTABLEのAR–AY / BD–BK列と同じ式: 稼働率 = (3.51×LN(ロット)+76.97)/100; 習熟日数 = 2.23×SAM^0.11; 日産MAX = 28,800/SAM × 人数 × 稼働率; 日数 = ロット/日産MAX + 習熟日数/2。',
+ 'C. Ví dụ thực tế từ PLANTABLE (đơn có chi phí chia lô lớn nhất mùa hiện tại)': 'C. PLANTABLEの実例(今シーズンでロット分割コストが最大のオーダー)',
+ 'SL dòng đơn (pcs)': 'オーダー行数量(pcs)', 'Lô đặt hàng – giá vốn 1 (pcs)': '発注ロット – 原価1(pcs)', 'Lô sản xuất – giá vốn 2 (pcs)': '生産ロット – 原価2(pcs)',
+ 'Đơn giá GC1 (USD/pcs)': '加工単価1(USD/pcs)', 'Đơn giá GC2 (USD/pcs)': '加工単価2(USD/pcs)', 'Chi phí chia lô của dòng này (USD)': 'この行のロット分割コスト(USD)', '% tăng đơn giá': '単価の増加率',
+ 'D. Bảng thuật ngữ': 'D. 用語集', 'Thuật ngữ': '用語', 'Tiếng Nhật': '日本語', 'Định nghĩa': '定義', 'Cách tính / nguồn': '計算 / 出典', 'Xem ở sheet': '参照シート',
+ 'Giải thích chi phí chia lô (có ví dụ tính) và định nghĩa các thuật ngữ': 'ロット分割コストの説明(計算例付き)と用語の定義',
+ '0A. Thuật ngữ; Phương pháp; Data': '0A. 用語と定義; 前提・定義; データ',
+ '7 phát hiện chính, 6 khuyến nghị; định nghĩa chỉ số và dữ liệu sạch.': '主な発見7点、推奨アクション6点; 指標の定義とクレンジング済みデータ。',
+ '2, 2A, 5': '2, 2A, 5', '7, Phương pháp': '7, 前提・定義', 'Phương pháp': '前提・定義',
 })
 
 EX.update(SHEETS)
