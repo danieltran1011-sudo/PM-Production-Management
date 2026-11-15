@@ -124,7 +124,7 @@
   const smpOk = x => (typeof x === 'number' && x > 42000) || (typeof x === 'string' && ['●', '継続', '並行進行でOK', 'パターンの通り進行OK'].includes(x.trim()));
   const matOkNote = note => { const f = String(note || '').split(/\n\s*\n/)[0]; return /生地[:：]\s*OK/.test(f) && /資材[:：]\s*OK/.test(f); };
   const lotBand = q => !isFinite(q) ? null : q <= 300 ? 0 : q <= 500 ? 1 : q <= 1000 ? 2 : q <= 2000 ? 3 : q <= 5000 ? 4 : 5;
-  const samBand = s => !isFinite(s) ? null : s / 60 < 60 ? 0 : s / 60 < 120 ? 1 : s / 60 < 180 ? 2 : s / 60 < 240 ? 3 : 4;
+  const samBand = s => !isFinite(s) ? null : s / 60 < 60 ? 0 : s / 60 < 120 ? 1 : s / 60 < 180 ? 2 : s / 60 < 240 ? 3 : s < 20000 ? 4 : 5;
   const dayBand = n => !isFinite(n) ? null : n <= 5 ? 0 : n <= 10 ? 1 : n <= 20 ? 2 : n <= 40 ? 3 : 4;
 
   // c1/c2 lô: tính lại sau khi loại dòng chấm (cùng công thức file gốc, điều chỉnh theo tỷ lệ)

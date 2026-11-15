@@ -256,7 +256,7 @@ for i,r in enumerate(o.itertuples(),2):
           f'=IF(AND(Q{i}<>"",Q{i}>=\'Phương pháp\'!$C$4,AJ{i}=""),"Có","")' if not r.stale else f'=IF(AND(Q{i}<>"",Q{i}>=\'Phương pháp\'!$C$4,AJ{i}=""),"Có","")',
           r.dq or None,'Y' if r.stale else None,r.factory_raw,
           f'=IF(AND(ISNUMBER(P{i}),ISNUMBER(Q{i})),Q{i}-P{i}+1,"")',
-          f'=IF(N{i}="","",IF(N{i}<3600,"1. <3.600 giây",IF(N{i}<7200,"2. 3.600–7.199 giây",IF(N{i}<10800,"3. 7.200–10.799 giây",IF(N{i}<14400,"4. 10.800–14.399 giây","5. ≥14.400 giây")))))',
+          f'=IF(N{i}="","",IF(N{i}<3600,"1. <3.600 giây",IF(N{i}<7200,"2. 3.600–7.199 giây",IF(N{i}<10800,"3. 7.200–10.799 giây",IF(N{i}<14400,"4. 10.800–14.399 giây",IF(N{i}<20000,"5. 14.400–19.999 giây","6. ≥20.000 giây"))))))',
           f'=IF(AM{i}="","",IF(AM{i}<=5,"1. ≤5 ngày",IF(AM{i}<=10,"2. 6–10 ngày",IF(AM{i}<=20,"3. 11–20 ngày",IF(AM{i}<=40,"4. 21–40 ngày","5. >40 ngày")))))']
     for j,x in enumerate(vals,1):
         c=SD.cell(i,j,x); c.font=BODY
@@ -959,7 +959,7 @@ def band_block(r,ttl,col,bands,note=None):
     S8.conditional_formatting.add(f'E{x0}:G{x1}',ColorScaleRule(start_type='num',start_value=0,start_color='FFFFFF',end_type='max',end_color='86B6EF'))
     return x1+2
 LOTB=['1. ≤300','2. 301–500','3. 501–1.000','4. 1.001–2.000','5. 2.001–5.000','6. >5.000']
-SAMB=['1. <3.600 giây','2. 3.600–7.199 giây','3. 7.200–10.799 giây','4. 10.800–14.399 giây','5. ≥14.400 giây']
+SAMB=['1. <3.600 giây','2. 3.600–7.199 giây','3. 7.200–10.799 giây','4. 10.800–14.399 giây','5. 14.400–19.999 giây','6. ≥20.000 giây']
 DAYB=['1. ≤5 ngày','2. 6–10 ngày','3. 11–20 ngày','4. 21–40 ngày','5. >40 ngày']
 r=band_block(r,'C. Theo quy mô lô sản xuất','AG',LOTB,'Lô = lô sản xuất thực tế (集約, giá vốn 2).')
 r=band_block(r,'D. Theo thời gian chế tạo sản phẩm (SAM, giây/sp)','AN',SAMB,'SAM = tổng thời gian chuẩn may 1 sản phẩm (cột TIME). Hàng phức tạp (jacket kỹ thuật) thường trên 10.800 giây.')
