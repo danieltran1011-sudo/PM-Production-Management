@@ -125,6 +125,7 @@ npm test                                              # test workflow lead time 
 6. Mẫu TNF别注 富山 (Như) và 東京 (Huy) mùa 25FW, 26SS có số giống hệt nhau trong file SPL – có thể nhập trùng.
 7. **Phân tích nhóm kỹ thuật và CAD** (gồm H.Trang): quản lý muốn làm sau, tách riêng khỏi MD.
 8. **Lịch Tết 2027 chính thức** (đang tính theo dự kiến 4–14/2), ngày nghỉ Giỗ Tổ và Quốc khánh 2027, lịch nghỉ thứ 7 sau 3/2027 (đang giả định). **Kế hoạch 27FW/28SS thật** để thay số ước từ 4/2027.
+10. **Huyền Trang (CAD) sắp nghỉ thai sản**: cần người dịch nội dung chỉnh sửa rập ALLTERRAIN, DESCENTE cho Ngân (nhóm rập); chưa chốt người. Hàng ALLTERRAIN, DESCENTE giảm từ 1/2027 (theo quản lý: tháng 1 còn khoảng 1/2, tháng 3 trống chuyền; mô hình: tải Hiền 1,40 tháng 11 → 0,83 tháng 1 → 0,57 tháng 3). Bước đầu: Hiền tổng hợp danh sách việc đang phụ trách (mẫu: `docs/tai-ve/Danh-sach-cong-viec-Hien-20261116.xlsx`, tạo bằng `data/phan-cong/danh-sach-cong-viec.py`, dùng được cho mọi MD).
 9. Đề xuất theo dõi định kỳ theo sổ tay MD: mỗi mùa chạy lại; báo cáo tuần (thứ Sáu); thử ghi giờ theo 5 chức năng MD trong 2–4 tuần để đặt trọng số theo thực tế.
 
 ## 9. Lưu ý khi làm việc tiếp
