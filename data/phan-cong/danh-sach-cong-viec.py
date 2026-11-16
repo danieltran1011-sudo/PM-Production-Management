@@ -92,7 +92,7 @@ JA_TU = {
     'Các việc định kỳ hoặc phát sinh không gắn với một mã hàng. Sửa, xóa hoặc thêm dòng cho đúng thực tế.':
         '品番に紐づかない定常・臨時の業務。実態に合わせて修正・削除・追加してください。',
     'Tự tính từ các sheet khác.': '他のシートから自動計算します。',
-    'Brand': 'ブランド', 'Mùa': 'シーズン', 'Hợp đồng': '契約番号', 'Mã hàng': '品番', 'Số lượng': '数量', 'Xưởng / line': '工場／ライン',
+    'Brand': 'ブランド', 'Mùa': 'シーズン', 'Hợp đồng': '契約番号', 'Mã hàng': '品番', 'Số lượng': '数量', 'Line': 'ライン',
     'Bắt đầu may': '縫製開始', 'Kết thúc': '縫製終了', 'Phân công': '担当変更', 'Giai đoạn hiện tại': '現在の工程', 'Việc còn lại': '残作業',
     'Vấn đề đang vướng (NPL, rập, tài liệu…)': '課題（資材・パターン・資料など）', 'Vấn đề đang vướng': '課題', 'Giờ / tuần (ước)': '時間／週（概算）',
     'Tên hàng': '品名', 'Loại mẫu': 'サンプル種類', 'Hạn': '納期',
@@ -168,13 +168,13 @@ def tao(ma_nguoi, ten, out):
     ws = sheet('Đơn hàng sản xuất')
     tieu_de(ws, f'Đơn hàng sản xuất – {ten}', 'Lô có ngày kết thúc từ 1/11/2026 trở đi (Plantable 16/11/2026). Cột vàng: người phụ trách điền.')
     rows = sorted([x for x in SX if x['moi'] == ma_nguoi], key=lambda x: (x['start'], x['brand']))
-    cols = [('Brand', 14), ('Mùa', 7), ('Hợp đồng', 13), ('Mã hàng', 18), ('Số lượng', 9), ('Xưởng / line', 10), ('Bắt đầu may', 11), ('Kết thúc', 11), ('Phân công', 14),
+    cols = [('Brand', 14), ('Mùa', 7), ('Hợp đồng', 13), ('Mã hàng', 18), ('Số lượng', 9), ('Part', 6), ('Line', 6), ('Bắt đầu may', 11), ('Kết thúc', 11), ('Phân công', 14),
             ('Giai đoạn hiện tại', 18), ('Việc còn lại', 30), ('Vấn đề đang vướng (NPL, rập, tài liệu…)', 30), ('Giờ / tuần (ước)', 9)]
-    data = [[x['brand'], x['mua'], x['hd'], x['ma'], x['sl'], f"{x['xuong']}-{x['line']}", dt.date.fromisoformat(x['start']), dt.date.fromisoformat(x['end']), x['ghi']] for x in rows]
+    data = [[x['brand'], x['mua'], x['hd'], x['ma'], x['sl'], x['xuong'].replace('AP', ''), x['line'], dt.date.fromisoformat(x['start']), dt.date.fromisoformat(x['end']), x['ghi']] for x in rows]
     end = bang(ws, 4, cols, data, 4, them_dong=10)
     for r in range(5, end + 1):
-        for c in (7, 8): ws.cell(r, c).number_format = 'DD/MM/YYYY'
-    dv = DataValidation(type='list', formula1=GD_SX, allow_blank=True); ws.add_data_validation(dv); dv.add(f'J5:J{end}')
+        for c in (8, 9): ws.cell(r, c).number_format = 'DD/MM/YYYY'
+    dv = DataValidation(type='list', formula1=GD_SX, allow_blank=True); ws.add_data_validation(dv); dv.add(f'K5:K{end}')
     n_sx = len(data)
 
     # 2. Mẫu
@@ -202,9 +202,9 @@ def tao(ma_nguoi, ten, out):
     # 4. Tổng hợp (công thức)
     ws = sheet('Tổng hợp')
     tieu_de(ws, f'Tổng hợp – {ten}', 'Tự tính từ các sheet khác.')
-    items = [('Số lô sản xuất (điền sẵn)', n_sx), ('Số lô chưa xong', "=COUNTA('Đơn hàng sản xuất'!D5:D500)-COUNTIF('Đơn hàng sản xuất'!J5:J500,\"Đã xong\")"),
+    items = [('Số lô sản xuất (điền sẵn)', n_sx), ('Số lô chưa xong', "=COUNTA('Đơn hàng sản xuất'!D5:D500)-COUNTIF('Đơn hàng sản xuất'!K5:K500,\"Đã xong\")"),
              ('Số đơn mẫu (điền sẵn)', n_mau), ('Số đơn mẫu chưa xong', "=COUNTA('Mẫu'!A5:A500)-COUNTIF('Mẫu'!I5:I500,\"Đã xong\")"),
-             ('Giờ / tuần – đơn hàng sản xuất', "=SUM('Đơn hàng sản xuất'!M5:M500)"), ('Giờ / tuần – mẫu', "=SUM('Mẫu'!L5:L500)"),
+             ('Giờ / tuần – đơn hàng sản xuất', "=SUM('Đơn hàng sản xuất'!N5:N500)"), ('Giờ / tuần – mẫu', "=SUM('Mẫu'!L5:L500)"),
              ('Giờ / tuần – việc khác', "=SUM('Việc khác'!C5:C500)"), ('Tổng giờ / tuần', '=SUM(B8:B10)'),
              ('Giờ làm chuẩn / tuần (5,5 ngày × 8 giờ, tham khảo)', 44)]
     for i, (k, v) in enumerate(items, 4):
@@ -246,14 +246,14 @@ for j in (2, 3): ws.cell(n, j, f'=SUM({L(j)}5:{L(j)}{n - 1})').font = Font(name=
 ws2 = wb.create_sheet('Chưa rõ người phụ trách')
 ws2.cell(1, 1, 'Lô sản xuất chưa gán được MD (Plantable không ghi, không có mẫu PPS, brand chưa có quy tắc)').font = Font(name=F, bold=True, size=12)
 cr = sorted([x for x in SX if x['moi'] not in TEN], key=lambda x: (x['brand'], x['start']))
-for j, (c, w) in enumerate([('Brand', 16), ('Mùa', 7), ('TIJ', 6), ('Hợp đồng', 13), ('Mã hàng', 18), ('Số lượng', 9), ('Xưởng / line', 10), ('Bắt đầu', 11), ('Kết thúc', 11), ('Người phụ trách (quản lý điền)', 18)], 1):
-    x = ws2.cell(3, j, c); x.font = Font(name=F, bold=True, size=10); x.fill = DIEN if j == 10 else HEAD; x.border = BOX
+for j, (c, w) in enumerate([('Brand', 16), ('Mùa', 7), ('TIJ', 6), ('Hợp đồng', 13), ('Mã hàng', 18), ('Số lượng', 9), ('Part', 6), ('Line', 6), ('Bắt đầu', 11), ('Kết thúc', 11), ('Người phụ trách (quản lý điền)', 18)], 1):
+    x = ws2.cell(3, j, c); x.font = Font(name=F, bold=True, size=10); x.fill = DIEN if j == 11 else HEAD; x.border = BOX
     ws2.column_dimensions[L(j)].width = w
 for i, x in enumerate(cr, 4):
-    for j, v in enumerate([x['brand'], x['mua'], x.get('tij'), x['hd'], x['ma'], x['sl'], f"{x['xuong']}-{x['line']}", dt.date.fromisoformat(x['start']), dt.date.fromisoformat(x['end']), None], 1):
+    for j, v in enumerate([x['brand'], x['mua'], x.get('tij'), x['hd'], x['ma'], x['sl'], x['xuong'].replace('AP', ''), x['line'], dt.date.fromisoformat(x['start']), dt.date.fromisoformat(x['end']), None], 1):
         c = ws2.cell(i, j, v); c.font = Font(name=F, size=10); c.border = BOX
-        if j in (8, 9): c.number_format = 'DD/MM/YYYY'
-        if j == 10: c.fill = DIEN
+        if j in (9, 10): c.number_format = 'DD/MM/YYYY'
+        if j == 11: c.fill = DIEN
 ws2.freeze_panes = 'A4'
 out = f"{OUT}/Tong-hop-danh-sach-cong-viec-MD-{hom_nay:%Y%m%d}.xlsx"; wb.save(out)
 print('ok', out, f'{len(cr)} lô chưa rõ người phụ trách')
