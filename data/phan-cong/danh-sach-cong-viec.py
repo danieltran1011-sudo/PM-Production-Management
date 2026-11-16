@@ -3,17 +3,22 @@
 # Chạy từ thư mục gốc repo:
 #   python3 data/phan-cong/danh-sach-cong-viec.py 2026-11-16                      # cả nhóm MD → docs/tai-ve/danh-sach-cong-viec/
 #   python3 data/phan-cong/danh-sach-cong-viec.py 2026-11-16 docs/tai-ve/danh-sach-cong-viec Hien Khanh   # vài người
+#   thêm --ja để xuất bản tiếng Nhật (Danh-sach-cong-viec-<tên>-<ngày>-JA.xlsx; không tạo file tổng hợp)
 import json, sys, os, re, collections, importlib.util, datetime as dt
 from openpyxl import Workbook
 from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
 from openpyxl.worksheet.datavalidation import DataValidation
 from openpyxl.utils import get_column_letter as L
 
-ngay = sys.argv[1]
-OUT = sys.argv[2] if len(sys.argv) > 2 else 'docs/tai-ve/danh-sach-cong-viec'
+ARGS = [a for a in sys.argv[1:] if not a.startswith('--')]
+JA = '--ja' in sys.argv                     # xuất bản tiếng Nhật (tên file thêm -JA)
+ngay = ARGS[0]
+OUT = ARGS[1] if len(ARGS) > 1 else 'docs/tai-ve/danh-sach-cong-viec'
 TEN = {'Cuong': ('Cường', 'Cuong'), 'Luan': ('Luân', 'Luan'), 'Khanh': ('Khánh', 'Khanh'), 'B.Trang': ('Bích Trang', 'Bich-Trang'),
        'Q.Huy': ('Huy', 'Huy'), 'Hien': ('Hiền', 'Hien'), 'Nhu': ('Như', 'Nhu')}
-NGUOI = sys.argv[3:] or list(TEN)
+NGUOI = ARGS[2:] or list(TEN)
+TEN_JA = {'Cuong': 'クォン（Cuong）', 'Luan': 'ルァン（Luan）', 'Khanh': 'カィン（Khanh）', 'B.Trang': 'チャン（Bich Trang）',
+          'Q.Huy': 'フィ（Huy）', 'Hien': 'ヒィン（Hien）', 'Nhu': 'ヌ（Nhu）'}
 hom_nay = dt.date.fromisoformat(ngay)
 pt = json.load(open('data/khoi-luong/plantable-11-2025-4-2027.json'))['rows']
 mau = json.load(open('data/khoi-luong/mau-2025-2026.json'))
@@ -40,7 +45,7 @@ for x in mau:
     elif (b == 'NW' or (p == 'Cuong' and b == 'TNF')) and kh.mua_so(x['mua']) >= (28, 0): p = 'Khanh'   # NW, TNF 東京企画 từ mùa sau 27FW
     MAU.append(dict(x, moi=p, ghi='' if p == x['nguoi'] else f"Nhận từ {hien_thi(x['nguoi'])}"))
 
-F = 'Arial'
+F = 'Meiryo UI' if JA else 'Arial'
 HEAD = PatternFill('solid', fgColor='DCE6F1'); DIEN = PatternFill('solid', fgColor='FFF2CC')
 thin = Side(style='thin', color='999999'); BOX = Border(left=thin, right=thin, top=thin, bottom=thin)
 
@@ -62,6 +67,70 @@ def bang(ws, r0, cols, rows, n_dien, them_dong=0):
 def tieu_de(ws, t, ghi_chu):
     ws.cell(1, 1, t).font = Font(name=F, bold=True, size=13)
     ws.cell(2, 1, ghi_chu).font = Font(name=F, italic=True, size=9, color='555555')
+
+
+JA_TU = {
+    'Mục đích': '目的', 'Cách điền': '記入方法',
+    'Nắm đúng khối lượng việc đang làm để sắp xếp lại việc trong nhóm trong thời gian tới (có thành viên nghỉ thai sản, lịch đơn hàng thay đổi).':
+        '今後のチーム内の業務再配分（産休者の発生、受注スケジュールの変更）に向けて、現在の業務量を正確に把握するための資料です。',
+    'Đây không phải bảng đánh giá. Số liệu giúp quản lý chia việc hợp lý và đề xuất hỗ trợ khi cần.':
+        '評価のための表ではありません。業務を適切に配分し、必要に応じて支援を検討するために使います。',
+    '1. Các cột nền xanh đã điền sẵn từ Plantable (16/11/2026) và file mẫu (13/11/2026), theo phân công brand chốt 5/11/2026. Cột "Phân công" ghi lô / đơn nhận từ người khác. Nếu sai hoặc thiếu, sửa trực tiếp hoặc thêm dòng.':
+        '1. 青色の列は、Plantable（2026/11/16）とサンプル表（2026/11/13）から、2026/11/5確定のブランド担当に基づいて事前入力しています。「担当変更」列は他の担当者から引き継いだロット・オーダーです。誤りや漏れがあれば直接修正するか、行を追加してください。',
+    '2. Điền các cột nền vàng: giai đoạn hiện tại, việc còn lại, vấn đề đang vướng, số giờ ước mỗi tuần.':
+        '2. 黄色の列（現在の工程、残作業、課題、週あたりの時間）を記入してください。',
+    '3. Lô / đơn đã xong: chọn giai đoạn "Đã xong", không cần điền thêm.':
+        '3. 完了したロット・オーダーは、工程で「完了」を選択してください。他の記入は不要です。',
+    '4. Sheet "Việc khác": các việc không theo mã (báo cáo, họp, liên lạc, xử lý sự cố, hỗ trợ người khác…). Ghi số giờ ước mỗi tuần.':
+        '4. 「その他業務」シート：品番に紐づかない業務（報告、会議、連絡、トラブル対応、他メンバーの支援など）。週あたりの時間を記入してください。',
+    '5. Giờ ước mức 30 phút là đủ, không cần chính xác.': '5. 時間は30分単位の概算で構いません。',
+    'Hạn gửi lại: ……/……/2026': '提出期限：2026年……月……日',
+    'Lô có ngày kết thúc từ 1/11/2026 trở đi (Plantable 16/11/2026). Cột vàng: người phụ trách điền.':
+        '2026/11/1以降に縫製終了するロット（Plantable 2026/11/16）。黄色の列：担当者が記入。',
+    'Đơn mẫu chưa xong trong file mẫu (sheet サンプル表2026), cộng các đơn mẫu khác đang làm (thêm dòng). Cột vàng: người phụ trách điền.':
+        'サンプル表（サンプル表2026）の未完了オーダー。その他進行中のサンプルは行を追加してください。黄色の列：担当者が記入。',
+    'Các việc định kỳ hoặc phát sinh không gắn với một mã hàng. Sửa, xóa hoặc thêm dòng cho đúng thực tế.':
+        '品番に紐づかない定常・臨時の業務。実態に合わせて修正・削除・追加してください。',
+    'Tự tính từ các sheet khác.': '他のシートから自動計算します。',
+    'Brand': 'ブランド', 'Mùa': 'シーズン', 'Hợp đồng': '契約番号', 'Mã hàng': '品番', 'Số lượng': '数量', 'Xưởng / line': '工場／ライン',
+    'Bắt đầu may': '縫製開始', 'Kết thúc': '縫製終了', 'Phân công': '担当変更', 'Giai đoạn hiện tại': '現在の工程', 'Việc còn lại': '残作業',
+    'Vấn đề đang vướng (NPL, rập, tài liệu…)': '課題（資材・パターン・資料など）', 'Vấn đề đang vướng': '課題', 'Giờ / tuần (ước)': '時間／週（概算）',
+    'Tên hàng': '品名', 'Loại mẫu': 'サンプル種類', 'Hạn': '納期',
+    'Việc': '業務', 'Tần suất (ngày / tuần / tháng / phát sinh)': '頻度（日次／週次／月次／不定期）', 'Ghi chú': '備考',
+    'Báo cáo tuần / tháng': '週次・月次報告', 'Họp (nội bộ, với TIJ, với nhà máy)': '会議（社内・TIJ・工場）',
+    'Dịch tài liệu, email ngoài phần mã hàng': '品番以外の翻訳（資料・メール）', 'Liên lạc TIJ / khách hàng (hỏi, xác nhận)': 'TIJ・顧客との連絡（問い合わせ・確認）',
+    'Xử lý sự cố (vải lỗi, NPL thiếu, kỹ thuật)': 'トラブル対応（生地不良・資材不足・技術）', 'Theo dõi xuất hàng, chứng từ': '出荷フォロー・書類',
+    'Hỗ trợ người khác trong nhóm': 'チーム内の他メンバーの支援', 'Khác: …': 'その他：…',
+    'Số lô sản xuất (điền sẵn)': '量産ロット数（事前入力）', 'Số lô chưa xong': '未完了ロット数', 'Số đơn mẫu (điền sẵn)': 'サンプルオーダー数（事前入力）',
+    'Số đơn mẫu chưa xong': '未完了サンプル数', 'Giờ / tuần – đơn hàng sản xuất': '時間／週 – 量産', 'Giờ / tuần – mẫu': '時間／週 – サンプル',
+    'Giờ / tuần – việc khác': '時間／週 – その他業務', 'Tổng giờ / tuần': '合計時間／週', 'Giờ làm chuẩn / tuần (5,5 ngày × 8 giờ, tham khảo)': '標準勤務時間／週（5.5日×8時間、参考）',
+}
+JA_SHEET = {'Hướng dẫn': '説明', 'Đơn hàng sản xuất': '量産オーダー', 'Mẫu': 'サンプル', 'Việc khác': 'その他業務', 'Tổng hợp': '集計'}
+JA_TIEUDE = {'Danh sách công việc đang phụ trách': '担当業務リスト', 'Đơn hàng sản xuất': '量産オーダー', 'Đơn mẫu': 'サンプル',
+             'Việc không theo mã': 'その他業務', 'Tổng hợp': '集計'}
+JA_CHON = {'Chuẩn bị (tài liệu / NPL)': '準備（資料・資材）', 'PPS / duyệt mẫu': 'PPS・サンプル承認', 'Đang may': '縫製中',
+           'Hoàn thiện / kiểm hàng': '仕上げ・検品', 'Xuất hàng': '出荷', 'Đã xong': '完了', 'Chờ tài liệu': '資料待ち',
+           'Đang chuẩn bị': '準備中', 'Gửi khách / chờ góp ý': '客先送付・コメント待ち'}
+
+def dich_ja(wb):
+    for ws in wb.worksheets:
+        for row in ws.iter_rows():
+            for c in row:
+                v = c.value
+                if c.number_format == 'DD/MM/YYYY': c.number_format = 'YYYY/MM/DD'   # cách ghi ngày của Nhật
+                if not isinstance(v, str): continue
+                if v.startswith('='):
+                    for a, b in list(JA_SHEET.items()) + list(JA_CHON.items()): v = v.replace(f"'{a}'!", f"'{b}'!").replace(f'"{a}"', f'"{b}"')
+                elif v in JA_TU: v = JA_TU[v]
+                elif v.startswith('Ngày lập: '): v = f'作成日：{hom_nay:%Y/%m/%d}'
+                elif v.startswith('Nhận từ '): v = v[len('Nhận từ '):] + 'から引継ぎ'
+                elif re.fullmatch(r'(Áo|Quần) (\d) lớp', v): v = re.sub(r'(Áo|Quần) (\d) lớp', lambda m: ('上衣' if m[1] == 'Áo' else 'パンツ') + f'（{m[2]}層）', v)
+                elif ' – ' in v and v.split(' – ')[0] in JA_TIEUDE: v = JA_TIEUDE[v.split(' – ')[0]] + ' – ' + v.split(' – ', 1)[1]
+                c.value = v
+        for dv in ws.data_validations.dataValidation:
+            ds = dv.formula1.strip('"').split(',')
+            dv.formula1 = '"' + ','.join(JA_CHON.get(x, x) for x in ds) + '"'
+    for ws in wb.worksheets: ws.title = JA_SHEET.get(ws.title, ws.title)
 
 def tao(ma_nguoi, ten, out):
     wb = Workbook()
@@ -92,7 +161,7 @@ def tao(ma_nguoi, ten, out):
     for i, (t, b) in enumerate(dong, 1):
         c = ws.cell(i, 1, t); c.font = Font(name=F, bold=b, size=12 if i == 1 else 10); c.alignment = Alignment(wrap_text=True)
 
-    GD_SX = '"Chuẩn bị (tài liệu, NPL),PPS / duyệt mẫu,Đang may,Hoàn thiện / kiểm hàng,Xuất hàng,Đã xong"'
+    GD_SX = '"Chuẩn bị (tài liệu / NPL),PPS / duyệt mẫu,Đang may,Hoàn thiện / kiểm hàng,Xuất hàng,Đã xong"'
     GD_MAU = '"Chờ tài liệu,Đang chuẩn bị,Đang may,Gửi khách / chờ góp ý,Đã xong"'
 
     # 1. Đơn hàng sản xuất
@@ -144,6 +213,7 @@ def tao(ma_nguoi, ten, out):
         if isinstance(v, (int, float)): b.font = Font(name=F, size=10, color='0000FF')
     ws.column_dimensions['A'].width = 48; ws.column_dimensions['B'].width = 12
 
+    if JA: dich_ja(wb)
     wb.save(out)
     return n_sx, n_mau
 
@@ -151,7 +221,8 @@ os.makedirs(OUT, exist_ok=True)
 tong = []
 for p in NGUOI:
     ten, tep = TEN[p]
-    out = f"{OUT}/Danh-sach-cong-viec-{tep}-{hom_nay:%Y%m%d}.xlsx"
+    if JA: ten = TEN_JA[p]
+    out = f"{OUT}/Danh-sach-cong-viec-{tep}-{hom_nay:%Y%m%d}{'-JA' if JA else ''}.xlsx"
     n_sx, n_mau = tao(p, ten, out)
     nhan = sum(1 for x in SX if x['moi'] == p and x['ghi']) + sum(1 for x in MAU if x['moi'] == p and x['ghi'])
     giao = sum(1 for x in SX if x['nguoi'] == p and x['moi'] != p) + sum(1 for x in MAU if x['nguoi'] == p and x['moi'] != p)
@@ -159,6 +230,7 @@ for p in NGUOI:
     print('ok', out, f'{n_sx} lô sản xuất, {n_mau} đơn mẫu, nhận {nhan}, chuyển đi {giao}')
 
 # File tổng hợp cho quản lý: số lô, số đơn mẫu từng người; lô chưa rõ người phụ trách
+if JA: sys.exit(0)
 wb = Workbook(); ws = wb.active; ws.title = 'Tổng hợp'
 ws.cell(1, 1, f'Danh sách công việc nhóm MD – tổng hợp ({hom_nay:%d/%m/%Y})').font = Font(name=F, bold=True, size=13)
 ws.cell(2, 1, 'Lô sản xuất kết thúc từ 1/11/2026 (Plantable 16/11/2026), đơn mẫu còn mở (file mẫu 13/11/2026), theo phân công chốt 5/11/2026.').font = Font(name=F, italic=True, size=9, color='555555')
