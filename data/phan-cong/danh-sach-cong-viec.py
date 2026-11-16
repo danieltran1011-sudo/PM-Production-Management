@@ -85,12 +85,13 @@ n_sx = len(data)
 ws = sheet('Mẫu')
 tieu_de(ws, f'Đơn mẫu – {ten}', 'Đơn mẫu chưa xong trong file mẫu (sheet サンプル表2026), cộng các đơn mẫu khác đang làm (thêm dòng). Cột vàng: người phụ trách điền.')
 rows = sorted([x for x in mau if x['nguoi'] == ma_nguoi and not x['xong'] and x['sheet'] == 'サンプル表2026'], key=lambda x: (x['due'], x['brand']))
-cols = [('Brand', 16), ('Mùa', 7), ('Loại mẫu', 14), ('Số lượng', 9), ('Hạn', 11),
+rows = sorted(rows, key=lambda x: (x['due'], x['brand'], x.get('ma', '')))
+cols = [('Brand', 16), ('Mùa', 7), ('Mã hàng', 16), ('Tên hàng', 22), ('Loại mẫu', 12), ('Số lượng', 9), ('Hạn', 11),
         ('Giai đoạn hiện tại', 18), ('Việc còn lại', 30), ('Vấn đề đang vướng', 30), ('Giờ / tuần (ước)', 9)]
-data = [[x['brand'], x['mua'], x['loai'], x['sl'], dt.date.fromisoformat(x['due'])] for x in rows]
+data = [[x['brand'], x['mua'], x.get('ma', ''), x.get('ten', ''), x['loai'], x['sl'], dt.date.fromisoformat(x['due'])] for x in rows]
 end = bang(ws, 4, cols, data, 4, them_dong=15)
-for r in range(5, end + 1): ws.cell(r, 5).number_format = 'DD/MM/YYYY'
-dv = DataValidation(type='list', formula1=GD_MAU, allow_blank=True); ws.add_data_validation(dv); dv.add(f'F5:F{end}')
+for r in range(5, end + 1): ws.cell(r, 7).number_format = 'DD/MM/YYYY'
+dv = DataValidation(type='list', formula1=GD_MAU, allow_blank=True); ws.add_data_validation(dv); dv.add(f'H5:H{end}')
 n_mau = len(data)
 
 # 3. Việc khác
@@ -106,8 +107,8 @@ bang(ws, 4, cols, goi_y, 3, them_dong=4)
 ws = sheet('Tổng hợp')
 tieu_de(ws, f'Tổng hợp – {ten}', 'Tự tính từ các sheet khác.')
 items = [('Số lô sản xuất (điền sẵn)', n_sx), ('Số lô chưa xong', "=COUNTA('Đơn hàng sản xuất'!D5:D500)-COUNTIF('Đơn hàng sản xuất'!I5:I500,\"Đã xong\")"),
-         ('Số đơn mẫu (điền sẵn)', n_mau), ('Số đơn mẫu chưa xong', "=COUNTA('Mẫu'!A5:A500)-COUNTIF('Mẫu'!F5:F500,\"Đã xong\")"),
-         ('Giờ / tuần – đơn hàng sản xuất', "=SUM('Đơn hàng sản xuất'!L5:L500)"), ('Giờ / tuần – mẫu', "=SUM('Mẫu'!I5:I500)"),
+         ('Số đơn mẫu (điền sẵn)', n_mau), ('Số đơn mẫu chưa xong', "=COUNTA('Mẫu'!A5:A500)-COUNTIF('Mẫu'!H5:H500,\"Đã xong\")"),
+         ('Giờ / tuần – đơn hàng sản xuất', "=SUM('Đơn hàng sản xuất'!L5:L500)"), ('Giờ / tuần – mẫu', "=SUM('Mẫu'!K5:K500)"),
          ('Giờ / tuần – việc khác', "=SUM('Việc khác'!C5:C500)"), ('Tổng giờ / tuần', '=SUM(B8:B10)'),
          ('Giờ làm chuẩn / tuần (5,5 ngày × 8 giờ, tham khảo)', 44)]
 for i, (k, v) in enumerate(items, 4):

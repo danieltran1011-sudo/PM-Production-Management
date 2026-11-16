@@ -29,8 +29,8 @@ def cot_2026(ws):
     """Bố cục sheet サンプル表2026: bản đến 10/2026 (tiêu đề dòng 2) hoặc bản từ 11/2026 (tiêu đề dòng 3–4, cột 品番 trước サンプル)."""
     h = [str(x or '') for x in next(ws.iter_rows(min_row=4, max_row=4, max_col=31, values_only=True))]
     if h[7].startswith('品番') and h[8].startswith('サンプル'):
-        return dict(p=3, br=5, mua=6, loai=8, ma=7, sl=19, due=20, ok=28), 5
-    return dict(p=3, br=5, mua=6, loai=7, ma=9, sl=11, due=12, ok=20), 3
+        return dict(p=3, br=5, mua=6, loai=8, ma=7, ten=30, sl=19, due=20, ok=28), 5
+    return dict(p=3, br=5, mua=6, loai=7, ma=9, ten=10, sl=11, due=12, ok=20), 3
 
 for sn, ci, r0 in (('サンプル表2025', dict(p=3, br=5, mua=6, loai=7, ma=8, sl=10, due=11, ok=17), 3),
                    ('サンプル表2026', None, None)):
@@ -44,7 +44,8 @@ for sn, ci, r0 in (('サンプル表2025', dict(p=3, br=5, mua=6, loai=7, ma=8, 
         if not isinstance(r[ci['due']], dt.datetime): continue
         mau.append(dict(nguoi=p, brand=str(r[ci['br']] or '').strip(), mua=str(r[ci['mua']] or '').strip(), loai=loai,
                         sl=r[ci['sl']] if isinstance(r[ci['sl']], (int, float)) else 0, due=r[ci['due']].date().isoformat(),
-                        xong=str(r[ci['ok']]).strip() == '●', sheet=sn))
+                        xong=str(r[ci['ok']]).strip() == '●', sheet=sn,
+                        ma=str(r[ci['ma']] or '').strip(), ten=str(r[ci['ten']] or '').strip() if 'ten' in ci else ''))
 
 # 2) Gán MD cho mã sản xuất: người theo dõi mẫu PPS của mã; không có thì theo brand
 def gan(m, brand, ti, mua):
