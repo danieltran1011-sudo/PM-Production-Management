@@ -6,8 +6,8 @@ Cập nhật: 28/10/2026. Nguồn dữ liệu:
 - `data/nguon/Thuc-te-BULK-19FW-27SS-20261012.xlsx`: hàng đại trà theo người, mùa, brand (số lượng, số mã, giây TB, ngày chuyền).
 - `data/nguon/Thuc-te-mau-SPL-23FW-27FW-20261012.xlsx`: mẫu (1st/2nd/3rd, SMS) theo người, mùa, brand (bản cập nhật có thêm mùa 27FW), kèm bảng giờ dịch tài liệu cho mỗi mã theo brand.
 - `data/nguon/Phan-cong-brand-MD-APIC-20260722.xlsx`: phân công brand của nhóm MD ngày 22/7/2026.
-- `data/nguon/APIC-P-Plan-Plantable-2026-20261026.xlsm`: Plantable 26/10/2026 – kế hoạch sản xuất theo chuyền (ngày vào chuyền, kết thúc từng lô), sổ theo dõi đơn S27 (MD phụ trách từng đơn).
-- `data/nguon/APIC-Sample-20261023.xlsx`: kế hoạch và thực tế may mẫu 2025–2026 (MD phụ trách, loại mẫu, ngày cần, trạng thái), công suất phòng mẫu.
+- `data/nguon/APIC-P-Plan-Plantable-2026-20261116.xlsm`: Plantable 16/11/2026 (bản trước: 26/10/2026) – kế hoạch sản xuất theo chuyền (ngày vào chuyền, kết thúc từng lô), sổ theo dõi đơn S27 (MD phụ trách từng đơn).
+- `data/nguon/APIC-Sample-20261113.xlsx`: kế hoạch và thực tế may mẫu 2025–2026 (bản 13/11/2026; bản trước 23/10/2026, sheet サンプル表2026 đổi bố cục từ bản 13/11) (MD phụ trách, loại mẫu, ngày cần, trạng thái), công suất phòng mẫu.
 - `data/nguon/Lich-nghi-thu-7-TIVN-APIC-2026-20260811.xlsx`: lịch nghỉ thứ 7 theo nhóm A/B (8/2026 – 3/2027).
 - `data/nguon/APIC-MD-Best-Practice-Handbook.docx`: định hướng MD (5 chức năng, KPI, chu kỳ tuần).
 - Bảng phân tích nghiệp vụ APIC 2026 上期 (`docs/phan-cong-cong-viec.md`).
@@ -150,7 +150,7 @@ Tính lại: `python3 data/khoi-luong/ke-hoach-nam.py` → `data/khoi-luong/ke-h
 **Vòng mùa** (theo quản lý): mùa FW may mẫu phát triển (1st–3rd) từ tháng 7, mẫu triển lãm (SMS) tháng 10–11, sản xuất tháng 4–9 năm sau. Mùa SS may mẫu phát triển từ tháng 1, SMS tháng 4–5, sản xuất tháng 10 – 3 năm sau. Vì vậy mỗi tháng luôn có **mẫu của một mùa chồng lên sản xuất của mùa khác**. Lịch thật năm trước trong Plantable cho thấy hàng FW bắt đầu vào chuyền từ tháng 2–3 (PPS, chuẩn bị từ trước đó), sớm hơn mốc tháng 4.
 
 **Cách tính:**
-- **Sản xuất**: mùa đã có kế hoạch (đến 27SS) dùng lịch thật trong Plantable 26/10/2026; mùa chưa có kế hoạch (27FW, 28SS) dùng lịch thật của mùa tương ứng năm trước (26FW, 27SS) dời 52 tuần. Người phụ trách theo các quyết định 10/2026 (NW, TNF 東京企画 → Khanh; Goldwin → Huy; YONEX từ 27SS → B.Trang).
+- **Sản xuất**: mùa đã có kế hoạch (đến 27SS) dùng lịch thật trong Plantable 16/11/2026; mùa chưa có kế hoạch (27FW, 28SS) dùng lịch thật của mùa tương ứng năm trước (26FW, 27SS) dời 52 tuần. Người phụ trách theo các quyết định 10/2026 (NW, TNF 東京企画 → Khanh; Goldwin → Huy; YONEX từ 27SS → B.Trang).
 - **Mẫu**: đơn còn tồn dồn vào 11/2026 + số đơn cùng tháng năm trước theo brand (file mẫu 2025–2026), trọng số theo loại mẫu như trước. Mẫu TNF của Luân (PPS, re-PPS…) chia ~30% cho Khanh theo tỷ lệ mã SGM; mẫu 141 tính cho Khanh.
 - **Công suất theo ngày làm việc thực**: thứ 2 – thứ 7, nghỉ thứ 7 theo nhóm (file lịch nghỉ thứ 7 2026, đến 3/2027; sau đó giả định mỗi nhóm nghỉ 2 thứ 7/tháng), trừ ngày lễ theo lịch công ty: **24/11/2026 (Ngày Văn hóa Việt Nam, nghỉ từ 2026), 1/1/2027, Tết 4–14/2/2027 (dự kiến), 30/4–1/5/2027**. Giỗ Tổ 16/4/2027 và Quốc khánh 2–3/9/2027 chưa có trong lịch công ty, tạm tính theo luật. Giờ/ngày: 9 (8 + 1 tăng ca), Khanh 8.
 - Phân công theo bảng chốt 5/11/2026: Khanh nhận 141 và phần TNF SGM từ 11/2026, TNF 東京企画 và NW từ mùa 27FW (Cuong theo hết 27SS); Cuong, Luan mỗi người ~20% thời gian cho việc kế hoạch, điều phối (giả định). Hệ số độ khó ALLTERRAIN/DESCENTE ×1,3.
@@ -177,18 +177,18 @@ Tính lại: `python3 data/khoi-luong/ke-hoach-nam.py` → `data/khoi-luong/ke-h
 
 | Tháng | Cuong | Luan | Khanh | B.Trang | Huy | Hien | Nhu |
 |---|---|---|---|---|---|---|---|
-| 11/26 | **2,12** | **1,76** | 1,17 | 1,35 | **1,62** | **1,40** | 1,08 |
-| 12/26 | **2,44** | 1,30 | 0,95 | 0,78 | 0,39 | 1,26 | 0,30 |
-| 1/27 | **1,61** | **1,67** | 0,45 | 0,19 | **1,51** | 0,83 | 1,16 |
-| 2/27 | **2,30** | 0,61 | 1,05 | 0,24 | 0,65 | 0,89 | 1,15 |
-| 3/27 | 0,87 | 0,78 | **1,42** | 0,13 | 0,41 | 0,57 | 1,08 |
-| 4/27 | 1,04 | **2,19** | 0,59 | 0,54 | 0,98 | 0,52 | **2,47** |
-| 5/27 | 0,92 | **2,03** | 0,53 | 0,52 | **1,61** | 0,85 | 0,83 |
-| 6/27 | 1,05 | **1,72** | 0,43 | 1,04 | 1,26 | 1,29 | 0,26 |
-| 7/27 | **3,09** | 1,03 | 0,24 | 0,92 | **1,45** | 0,59 | 0,83 |
-| 8/27 | 0,97 | 0,89 | 0,55 | 0,44 | 1,29 | 0,54 | 0,79 |
-| 9/27 | 1,10 | 0,48 | 0,72 | 0,42 | 0,86 | 0,46 | 0,53 |
-| 10/27 | **1,67** | 0,82 | 1,06 | 0,88 | 1,09 | 1,21 | 0,81 |
+| 11/26 | 1,36 | **1,92** | 0,79 | 0,61 | **1,57** | **1,42** | 0,92 |
+| 12/26 | **2,77** | 1,05 | 1,00 | 0,91 | 0,69 | 1,23 | 0,26 |
+| 1/27 | **1,99** | **1,67** | 0,43 | 0,14 | 1,15 | 0,88 | 1,22 |
+| 2/27 | **2,50** | 0,71 | 1,13 | 0,26 | 1,38 | 0,90 | 1,02 |
+| 3/27 | 0,73 | 0,81 | **1,43** | 0,14 | 0,25 | 0,61 | 1,21 |
+| 4/27 | 1,11 | **2,22** | 0,60 | 0,60 | 1,08 | 0,58 | **2,48** |
+| 5/27 | 0,96 | **2,05** | 0,55 | 0,58 | **1,73** | 0,90 | 0,83 |
+| 6/27 | 1,16 | **1,74** | 0,47 | 1,13 | 1,29 | 1,35 | 0,27 |
+| 7/27 | **3,32** | 1,04 | 0,25 | 0,98 | **1,49** | 0,60 | 0,85 |
+| 8/27 | 0,99 | 0,92 | 0,57 | 0,45 | 1,31 | 0,57 | 0,83 |
+| 9/27 | 1,12 | 0,50 | 0,75 | 0,44 | 0,89 | 0,60 | 0,54 |
+| 10/27 | 1,10 | 0,82 | 0,92 | 0,71 | 0,94 | 1,05 | 0,82 |
 
 Như: chỉ số chỉ tính phần brand; Như còn ~30% thời gian cho việc văn phòng, nên chỉ số thực ≈ chỉ số ÷ 0,7.
 
@@ -196,44 +196,44 @@ Như: chỉ số chỉ tính phần brand; Như còn ~30% thời gian cho việc
 
 | Tháng | Cuong | Luan | Khanh | B.Trang | Huy | Hien | Nhu |
 |---|---|---|---|---|---|---|---|
-| 11/26 | 5 / 105 | 13 / 5 | 6 / 24 | 1 / 121 | 9 / 65 | 8 / 41 | 4 / 35 |
-| 12/26 | 24 / 15 | 10 / 9 | 5 / 7 | 0 / 41 | 1 / 25 | 12 / 26 | 2 / 24 |
-| 1/27 | 12 / 12 | 7 / 24 | 0 / 10 | 1 / 7 | 25 / 8 | 10 / 14 | 12 / 21 |
-| 2/27 | 9 / 15 | 1 / 9 | 1 / 13 | 0 / 7 | 2 / 15 | 8 / 4 | 8 / 4 |
-| 3/27 | 6 / 19 | 6 / 19 | 6 / 20 | 0 / 9 | 3 / 20 | 2 / 21 | 10 / 11 |
+| 11/26 | 3 / 59 | 16 / 2 | 4 / 7 | 1 / 46 | 11 / 51 | 10 / 35 | 4 / 36 |
+| 12/26 | 28 / 15 | 5 / 9 | 7 / 7 | 1 / 41 | 6 / 25 | 12 / 26 | 1 / 24 |
+| 1/27 | 15 / 12 | 9 / 24 | 0 / 10 | 0 / 7 | 17 / 8 | 9 / 14 | 11 / 21 |
+| 2/27 | 10 / 15 | 1 / 9 | 1 / 13 | 0 / 7 | 11 / 15 | 8 / 4 | 7 / 4 |
+| 3/27 | 4 / 19 | 6 / 19 | 6 / 20 | 0 / 9 | 0 / 20 | 2 / 21 | 12 / 11 |
 | 4/27 | 2 / 44 | 21 / 9 | 1 / 6 | 0 / 46 | 0 / 46 | 0 / 30 | 40 / 10 |
 | 5/27 | 9 / 19 | 22 / 4 | 1 / 6 | 0 / 45 | 9 / 62 | 5 / 33 | 11 / 8 |
-| 6/27 | 11 / 15 | 16 / 1 | 0 / 12 | 3 / 36 | 17 / 20 | 11 / 50 | 2 / 10 |
+| 6/27 | 12 / 15 | 16 / 1 | 0 / 12 | 3 / 36 | 17 / 20 | 11 / 50 | 2 / 10 |
 | 7/27 | 11 / 71 | 8 / 6 | 1 / 6 | 5 / 41 | 18 / 24 | 7 / 7 | 9 / 10 |
 | 8/27 | 10 / 6 | 5 / 15 | 5 / 11 | 6 / 8 | 16 / 19 | 2 / 13 | 5 / 16 |
-| 9/27 | 10 / 8 | 1 / 14 | 3 / 16 | 4 / 18 | 8 / 19 | 0 / 21 | 5 / 9 |
-| 10/27 | 2 / 112 | 7 / 5 | 2 / 26 | 1 / 86 | 7 / 44 | 4 / 48 | 7 / 14 |
+| 9/27 | 10 / 8 | 1 / 14 | 3 / 16 | 4 / 18 | 8 / 20 | 0 / 27 | 5 / 9 |
+| 10/27 | 2 / 60 | 7 / 4 | 2 / 16 | 1 / 61 | 7 / 33 | 4 / 34 | 7 / 14 |
 
 **Tháng cao điểm của từng người** (3 tháng cao nhất)
 
 | Người | Tháng cao điểm |
 |---|---|
-| Cuong | 12/26 (2,44), 2/27 (2,30), 7/27 (3,09) |
-| Luan | 11/26 (1,76), 4/27 (2,19), 5/27 (2,03) |
-| Khanh | 11/26 (1,17), 3/27 (1,42), 10/27 (1,06) |
-| B.Trang | 11/26 (1,35), 6/27 (1,04), 7/27 (0,92) |
-| Huy | 11/26 (1,62), 1/27 (1,51), 5/27 (1,61) |
-| Hien | 11/26 (1,40), 12/26 (1,26), 6/27 (1,29) |
-| Nhu | 1/27 (1,16), 2/27 (1,15), 4/27 (2,47) |
+| Cuong | 12/26 (2,77), 2/27 (2,50), 7/27 (3,32) |
+| Luan | 11/26 (1,92), 4/27 (2,22), 5/27 (2,05) |
+| Khanh | 12/26 (1,00), 2/27 (1,13), 3/27 (1,43) |
+| B.Trang | 12/26 (0,91), 6/27 (1,13), 7/27 (0,98) |
+| Huy | 11/26 (1,57), 5/27 (1,73), 7/27 (1,49) |
+| Hien | 11/26 (1,42), 12/26 (1,23), 6/27 (1,35) |
+| Nhu | 1/27 (1,22), 3/27 (1,21), 4/27 (2,48) |
 
 Nhận xét:
 1. **Mỗi người có chu kỳ cao điểm riêng, lặp lại theo mùa**:
-   - **Cuong**: **11/2026 – 2/2027 rất cao (1,6–2,4)** vì vẫn theo TNF 東京企画 và NW hết 27SS cùng HELLY HANSEN (21 mã vào chuyền tháng 12) và mẫu triển lãm FW; tháng 2 (Tết, ít ngày làm); **tháng 7 (mẫu 1st FW của HELLY HANSEN, ~71 đơn mẫu)** và tháng 10 (mẫu triển lãm FW).
+   - **Cuong**: **12/2026 – 2/2027 rất cao (2,0–2,8)** vì vẫn theo TNF 東京企画 và NW hết 27SS cùng HELLY HANSEN (Plantable 16/11: HELLY HANSEN tháng 12–1 dày hơn bản 26/10); tháng 2 (Tết, ít ngày làm); **tháng 7 (mẫu 1st FW của HELLY HANSEN, ~71 đơn mẫu)** và tháng 10 (mẫu triển lãm FW).
    - **Luan**: 11, 1 và **4–6** (hàng FW TNF 富山企画 phía HSY vào chuyền). Phần SGM chuyển cho Khanh chủ yếu nặng vào mùa SS, nên tháng 4–6 Luan vẫn 1,7–2,2.
    - **Huy**: 11, 1 (25 mã TNF 別注 vào chuyền), **5 (mẫu Goldwin, ~62 đơn)**, 7.
    - **Nhu**: **tháng 4 rất cao** (40 mã TNF 別注 富山 mùa FW vào chuyền cùng tháng), cộng thêm việc văn phòng.
-   - **Hien**: 11–12, 6 (mẫu ~50 đơn), 10.
-2. **Tháng 11 vẫn là tháng nặng nhất của cả nhóm** (mẫu triển lãm FW + đại trà SS bắt đầu + đơn mẫu tồn), lại có thêm ngày nghỉ 24/11 nên chỉ còn 22 ngày làm: 5/7 người ở mức ≥ 1,4. Tháng 3 và tháng 8–9 nhẹ hơn.
-3. **Tháng 2/2027 chỉ có 14 ngày làm** (Tết dự kiến 4–14/2, nghỉ 9 ngày làm việc): ai có mã vào chuyền hoặc mẫu trong tháng 2 (Cuong 2,30, Nhu 1,15) sẽ bị dồn. Nên kéo bớt việc lên tháng 1 hoặc lùi sang tháng 3.
+   - **Hien**: 11–12, 6 (mẫu ~50 đơn), 10. **Từ 1/2027 giảm** (0,88 → 0,61 tháng 3 → 0,58 tháng 4): Plantable 16/11 đã bỏ các lô DESCENTE DCC tháng 3 (114 ngày chuyền); ALLTERRAIN hết đơn sau tháng 1. Số tháng 3–4 còn lại phần lớn là ước 27FW theo năm trước, thực tế có thể thấp hơn.
+2. **Tháng 11** (tính bằng đơn mẫu thật trong file mẫu 13/11): nhẹ hơn ước trước vì phần lớn mẫu triển lãm 27FW đã xong; còn 3/7 người ở mức ≥ 1,4 (Luan 1,92, Huy 1,57, Hien 1,42). **Tháng 12 – 2 là giai đoạn nặng của Cuong.** Tháng 3 và tháng 8–9 nhẹ hơn.
+3. **Tháng 2/2027 chỉ có 14 ngày làm** (Tết dự kiến 4–14/2, nghỉ 9 ngày làm việc): ai có mã vào chuyền hoặc mẫu trong tháng 2 (Cuong 2,50, Huy 1,38) sẽ bị dồn. Nên kéo bớt việc lên tháng 1 hoặc lùi sang tháng 3.
 4. **Cần lên kế hoạch trước cho tháng 4/2027 (Nhu)** và **tháng 7/2027 (Cuong)**: hai đỉnh này đến từ lịch năm trước nên gần như chắc sẽ lặp lại. Khanh và B.Trang đang thấp trong các tháng này (theo số liệu), là người có thể hỗ trợ tạm.
-5. **Khanh** trung bình 0,76 (141, phần TNF SGM; TNF 東京企画, NW từ 27FW); thấp vào tháng 12–1 (0,45–0,95) và tháng 4–7 (0,2–0,6), cao nhất tháng 3 (1,42, hàng SS của SGM). **Khanh còn sức hỗ trợ Cuong vào 11/2026 – 2/2027** (các lô TNF 東京企画, NW 27SS, cũng là cách nhận bàn giao trước 27FW) và **hỗ trợ Luan vào tháng 4–6** (cao điểm hàng FW).
-6. **Cách chia 11/2026 chưa giảm tải đủ cho Luan, Cuong** để có thời gian làm kế hoạch: trung bình 12 tháng Cuong 1,60, Luan 1,27 (đã tính ~20% thời gian cho kế hoạch). Cuong gần như không bớt việc vì HELLY HANSEN là phần nặng nhất (cao điểm 12, 2, 7). Phương án cân nhắc: Bích Trang (đang thấp) hỗ trợ mẫu HELLY HANSEN tháng 7 hoặc một phần theo dõi xuất hàng; Khanh hỗ trợ Luan tháng 4–6.
-7. **B.Trang thấp gần như cả năm** theo số liệu (trung bình 0,62, đã giữ toàn bộ mẫu TNF), nhưng **có thể do thiếu dữ liệu**: các brand mới (FOXFIRE, TATRAS, Kasco, YONEX) gần như chưa có lịch sản xuất năm trước. Cần số liệu thật trước khi kết luận B.Trang còn dư sức.
+5. **Khanh** trung bình 0,74 (141, phần TNF SGM; TNF 東京企画, NW từ 27FW); thấp vào tháng 11 và 1 (0,4–0,8) và tháng 4–7 (0,2–0,6), cao nhất tháng 3 (1,43, hàng SS của SGM). **Khanh còn sức hỗ trợ Cuong vào 12/2026 – 2/2027** (các lô TNF 東京企画, NW 27SS, cũng là cách nhận bàn giao trước 27FW) và **hỗ trợ Luan vào tháng 4–6** (cao điểm hàng FW).
+6. **Cách chia 11/2026 chưa giảm tải đủ cho Luan, Cuong** để có thời gian làm kế hoạch: trung bình 12 tháng Cuong 1,59, Luan 1,29 (đã tính ~20% thời gian cho kế hoạch). Cuong gần như không bớt việc vì HELLY HANSEN là phần nặng nhất (cao điểm 12, 2, 7). Phương án cân nhắc: Bích Trang (đang thấp) hỗ trợ mẫu HELLY HANSEN tháng 7 hoặc một phần theo dõi xuất hàng; Khanh hỗ trợ Luan tháng 4–6.
+7. **B.Trang thấp gần như cả năm** theo số liệu (trung bình 0,58, đã giữ toàn bộ mẫu TNF), nhưng **có thể do thiếu dữ liệu**: các brand mới (FOXFIRE, TATRAS, Kasco, YONEX) gần như chưa có lịch sản xuất năm trước. Cần số liệu thật trước khi kết luận B.Trang còn dư sức.
 8. Số liệu 4–10/2027 là **ước theo năm trước**; khi có kế hoạch 27FW/28SS thật thì chạy lại.
 
 **Số đơn hàng (案件) S27 mỗi MD phụ trách** (sổ theo dõi đơn S27): Huy 12 đơn (46 mã, ~30.000 cái), Nhu 10 đơn (34 mã, ~26.500 cái), Cuong 7,5 (71 mã, ~149.000 cái), Hien 2 (39 mã), Luan 1,5 (26 mã, ~121.000 cái). **Huy và Nhu làm nhiều đơn 別注 nhỏ**: mỗi đơn đều phải làm bảng cấu tạo, chi tiết đặt hàng, kế hoạch MD, kiểm công suất, kế hoạch sản xuất, nên khối lượng thực tế cao hơn số cái cho thấy.

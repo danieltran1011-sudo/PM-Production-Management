@@ -1,6 +1,6 @@
 # Bàn giao: phân tích khối lượng và phân công nhóm MD APIC
 
-Cập nhật: 5/11/2026. Nhánh: `claude/vigilant-fermi-3p4gcx` (đã push, chưa mở PR).
+Cập nhật: 16/11/2026. Nhánh: `claude/vigilant-fermi-3p4gcx` (đã push, chưa mở PR).
 
 ## 1. Tóm tắt
 
@@ -38,10 +38,10 @@ Viết tắt brand: HH = HELLY HANSEN, NW = NEUTRALWORKS, DCC = DESCENTE (TI: WT
 | 28/10/2026 | **TNF 東京企画: Cường → Khánh từ 11/2026** |
 | 28/10/2026 | Hỗ trợ tạm theo tháng (Huy, Như hỗ trợ Cường tháng 12; Bích Trang hỗ trợ Huy tháng 1): **chưa cần**, giữ làm phương án dự phòng |
 | 28/10/2026 | Snowpeak do Hiền theo dõi |
-| 11/2026 | 2,12 | 1,76 | 1,17 | 1,35 | 1,62 | 1,40 | 1,08 |
-| 11/2026 | 2,12 | 1,76 | 1,17 | 1,35 | 1,62 | 1,40 | 1,08 |
-| 11/2026 | 2,12 | 1,76 | 1,17 | 1,35 | 1,62 | 1,40 | 1,08 |
-| 11/2026 | 2,12 | 1,76 | 1,17 | 1,35 | 1,62 | 1,40 | 1,08 |
+| 11/2026 | **Luân và Cường hỗ trợ quản lý xây kế hoạch** (tạm tính ~20% thời gian mỗi người) |
+| 11/2026 | **Khánh nhận thêm 141 và phần TNF 富山企画 do Shigemoto (SGM) phụ trách** (tách TNF 富山企画 theo người phụ trách TIJ; Luân giữ HSY, NKO); giữ NW, TNF 東京企画. Thay cho cách Khánh hỗ trợ Luân theo % |
+| 11/2026 | **Khánh không nhận 1/3 mẫu TNF**: Bích Trang giữ toàn bộ mẫu TNF |
+| 11/2026 | Thời điểm Khánh nhận hẳn phần SGM: đã chốt 5/11/2026: nhận ngay (xem dòng dưới) |
 | 5/11/2026 | **Bảng phân chia brand chốt** (`data/nguon/Phan-cong-brand-MD-APIC-20261105.xlsx`): Khánh nhận TNF 富山企画 phần SGM và 141 ngay; **TNF 東京企画, NEUTRALWORKS: Cường đến 27SS, Khánh từ 27FW**; Luân TNF 富山企画 phần HSY, NKO. Chi tiết: `docs/phan-cong-cong-viec.md` |
 | 5/11/2026 | Họp nhóm MD (biên bản: `docs/bien-ban-hop-md-20261105.md`): cả nhóm chấp nhận số liệu tải; mức chuẩn không tăng ca ~100 mã/mùa (đại trà ~40, mẫu ~60), ~200 mã/năm; Khánh nhận khoảng 34–35 mã (chỉnh theo đơn thực tế); Cường, Luân nhận dần việc kế hoạch; thử dịch tự động (Copilot) |
 
@@ -51,20 +51,20 @@ Viết tắt brand: HH = HELLY HANSEN, NW = NEUTRALWORKS, DCC = DESCENTE (TI: WT
 
 | Tháng | Cường | Luân | Khánh | Bích Trang | Huy | Hiền | Như (chỉ phần brand) |
 |---|---|---|---|---|---|---|---|
-| 11/2026 | 2,12 | 1,76 | 1,17 | 1,35 | 1,62 | 1,40 | 1,08 |
-| 12/2026 | 2,44 | 1,30 | 0,95 | 0,78 | 0,39 | 1,26 | 0,30 |
-| 1/2027 | 1,61 | 1,67 | 0,45 | 0,19 | 1,51 | 0,83 | 1,16 |
-| 2/2027 | 2,30 | 0,61 | 1,05 | 0,24 | 0,65 | 0,89 | 1,15 |
-| 3/2027 | 0,87 | 0,78 | 1,42 | 0,13 | 0,41 | 0,57 | 1,08 |
-| 4/2027 | 1,04 | 2,19 | 0,59 | 0,54 | 0,98 | 0,52 | 2,47 |
-| 5/2027 | 0,92 | 2,03 | 0,53 | 0,52 | 1,61 | 0,85 | 0,83 |
-| 6/2027 | 1,05 | 1,72 | 0,43 | 1,04 | 1,26 | 1,29 | 0,26 |
-| 7/2027 | 3,09 | 1,03 | 0,24 | 0,92 | 1,45 | 0,59 | 0,83 |
-| 8/2027 | 0,97 | 0,89 | 0,55 | 0,44 | 1,29 | 0,54 | 0,79 |
-| 9/2027 | 1,10 | 0,48 | 0,72 | 0,42 | 0,86 | 0,46 | 0,53 |
-| 10/2027 | 1,67 | 0,82 | 1,06 | 0,88 | 1,09 | 1,21 | 0,81 |
+| 11/2026 | 1,36 | 1,92 | 0,79 | 0,61 | 1,57 | 1,42 | 0,92 |
+| 12/2026 | 2,77 | 1,05 | 1,00 | 0,91 | 0,69 | 1,23 | 0,26 |
+| 1/2027 | 1,99 | 1,67 | 0,43 | 0,14 | 1,15 | 0,88 | 1,22 |
+| 2/2027 | 2,50 | 0,71 | 1,13 | 0,26 | 1,38 | 0,90 | 1,02 |
+| 3/2027 | 0,73 | 0,81 | 1,43 | 0,14 | 0,25 | 0,61 | 1,21 |
+| 4/2027 | 1,11 | 2,22 | 0,60 | 0,60 | 1,08 | 0,58 | 2,48 |
+| 5/2027 | 0,96 | 2,05 | 0,55 | 0,58 | 1,73 | 0,90 | 0,83 |
+| 6/2027 | 1,16 | 1,74 | 0,47 | 1,13 | 1,29 | 1,35 | 0,27 |
+| 7/2027 | 3,32 | 1,04 | 0,25 | 0,98 | 1,49 | 0,60 | 0,85 |
+| 8/2027 | 0,99 | 0,92 | 0,57 | 0,45 | 1,31 | 0,57 | 0,83 |
+| 9/2027 | 1,12 | 0,50 | 0,75 | 0,44 | 0,89 | 0,60 | 0,54 |
+| 10/2027 | 1,10 | 0,82 | 0,92 | 0,71 | 0,94 | 1,05 | 0,82 |
 
-Điểm cần theo dõi: tháng 11 nặng nhất cả nhóm; Cường **11/2026 – 2/2027 rất cao (1,6–2,4)** vì theo TNF 東京企画, NW hết 27SS → Khánh nên hỗ trợ (cũng là nhận bàn giao trước 27FW); Cường còn cao điểm **7** (mẫu 1st FW HELLY HANSEN), 10; Luân 11, 1 và **4–6** (hàng FW phía HSY vào chuyền); Khánh thấp 12–1 và 4–7 → hỗ trợ Cường (11–2) và Luân (4–6); Huy 11, 1, **5**; **Như tháng 4** (40 mã TNF 別注 FW vào chuyền); Hiền 11–12, 6. Bích Trang thấp có thể do thiếu dữ liệu các brand mới.
+Điểm cần theo dõi: tháng 11 nặng nhất cả nhóm; Cường **12/2026 – 2/2027 rất cao (2,0–2,8)** vì theo TNF 東京企画, NW hết 27SS → Khánh nên hỗ trợ (cũng là nhận bàn giao trước 27FW); Cường còn cao điểm **7** (mẫu 1st FW HELLY HANSEN), 10; Luân 11, 1 và **4–6** (hàng FW phía HSY vào chuyền); Khánh thấp 11, 1 và 4–7 → hỗ trợ Cường (12–2) và Luân (4–6); Hiền giảm từ 1/2027 (0,88 → 0,61 tháng 3), Plantable 16/11 đã bỏ lô DCC tháng 3; Huy 11, 1, **5**; **Như tháng 4** (40 mã TNF 別注 FW vào chuyền); Hiền 11–12, 6. Bích Trang thấp có thể do thiếu dữ liệu các brand mới.
 
 ## 5. Dữ liệu nguồn và các điểm dễ sai
 
@@ -74,8 +74,8 @@ Tất cả file gốc ở `data/nguon/`.
 |---|---|---|
 | `Thuc-te-BULK-19FW-27SS-20261012.xlsx` | Đại trà theo người/mùa/brand | **Dùng sheet từng người**; sheet "纏め" cũ hơn |
 | `Thuc-te-mau-SPL-23FW-27FW-20261012.xlsx` | Mẫu theo người/mùa/brand, giờ dịch/mã theo brand | **Dùng sheet từng người** (khớp "全体纏め"); "シーズンごと纏め" lệch nhiều. Sheet Hien thiếu mẫu 26FW |
-| `APIC-P-Plan-Plantable-2026-20261026.xlsm` | Lịch sản xuất theo chuyền (sheet PLANTABLE (原価) 2026年), sổ theo dõi đơn S27 (S27 受注・進捗管理台帳) | **Sheet S27本発注 là bảng mô phỏng** (ngày kéo đến 2034), không dùng làm lịch. **Dòng 1976–1996 (chuyền AP1B-9) là đơn cũ 23SS/23FW bị đẩy ngày** sang 28/11/2026 – 19/10/2027 (ô START dòng 1976 gõ cứng, các dòng sau nối công thức); đã loại 8 dòng rơi vào giai đoạn phân tích, đã báo quản lý nên sửa trong Plantable |
-| `APIC-Sample-20261023.xlsx` | Đơn mẫu 2025–2026 (sheet サンプル表2025/2026: MD, loại mẫu, ngày cần, trạng thái ●/×), công suất phòng mẫu (サンプル状況2026) | Cột khác nhau giữa sheet 2025 và 2026; tên người viết nhiều kiểu (Như/Nhu, Luân/Luan, "B Trang", "Trang" = H.Trang) |
+| `APIC-P-Plan-Plantable-2026-20261116.xlsm` (bản trước 20261026) | Lịch sản xuất theo chuyền (sheet PLANTABLE (原価) 2026年), sổ theo dõi đơn S27 (S27 受注・進捗管理台帳) | **Sheet S27本発注 là bảng mô phỏng** (ngày kéo đến 2034), không dùng làm lịch. **Dòng 1976–1996 (chuyền AP1B-9) là đơn cũ 23SS/23FW bị đẩy ngày** sang 28/11/2026 – 19/10/2027 (ô START dòng 1976 gõ cứng, các dòng sau nối công thức); đã loại 8 dòng rơi vào giai đoạn phân tích, đã báo quản lý nên sửa trong Plantable |
+| `APIC-Sample-20261113.xlsx` (bản trước 20261023; từ bản 13/11 sheet サンプル表2026 đổi bố cục: tiêu đề dòng 3–4, tên dạng "Mr.Cuong", script tự nhận) | Đơn mẫu 2025–2026 (sheet サンプル表2025/2026: MD, loại mẫu, ngày cần, trạng thái ●/×), công suất phòng mẫu (サンプル状況2026) | Cột khác nhau giữa sheet 2025 và 2026; tên người viết nhiều kiểu (Như/Nhu, Luân/Luan, "B Trang", "Trang" = H.Trang) |
 | `Phan-cong-brand-MD-APIC-20260722.xlsx` | Phân công brand 22/7/2026 (sheet hiển thị) + lịch sử 2017–2018 (sheet ẩn) | (1)/(2) = phòng 1課/2課 phía TI |
 | `Phan-tich-nghiep-vu-TIVN-APIC-2026-thuong-ky.xlsx` | % thời gian theo ~100 việc của 18 người (2026 上期) | Số tự khai, chia gần đều; không phản ánh khối lượng thực |
 | `Hop-TIVN-phi-uy-thac-APIC-BTNB-20240130.xlsx` | Biên bản họp phí ủy thác, khai trị giá hải quan (評価加算), bảng nghiệp vụ 2023–2024 | Đổi người làm các việc tính thuế (phát triển SP, rập, nhảy size, tài liệu may…) phải báo TI |
@@ -90,7 +90,7 @@ Tất cả file gốc ở `data/nguon/`.
 - **Hệ số độ khó**: ALLTERRAIN, DESCENTE (DCC) × 1,3 (quản lý đánh giá: tài liệu, rập không rõ, TIJ hay thiếu NPL).
 - **Công suất**: 9 giờ/ngày, Khánh 8 giờ. Việc kế hoạch, điều phối: Cường, Luân mỗi người ~20% thời gian (từ 11/2026) – **chưa có số thật**.
 - **Phần TNF SGM của Khánh**: lô sản xuất TNF có cột TIJ = SGM (Plantable) gán Khánh; mẫu TNF của Luân chia ~30% cho Khánh (tỷ lệ mã SGM 26SS–27SS).
-- **Tải 12 tháng** (`ke-hoach-nam.py`, dùng chính): sản xuất mùa đến 27SS lấy lịch thật trong Plantable; 27FW, 28SS lấy lịch của 26FW, 27SS năm trước dời 52 tuần; mẫu = đơn tồn (dồn vào 11/2026) + cùng tháng năm trước; công suất = ngày làm việc thực từng người (`lich_lam_viec.py`: thứ 2–7, nghỉ thứ 7 theo nhóm, trừ lễ; lễ theo lịch công ty: 24/11/2026, 1/1/2027, **Tết dự kiến 4–14/2/2027**, 30/4–1/5/2027; Giỗ Tổ 16/4 và Quốc khánh 2–3/9/2027 tạm theo luật) × giờ/ngày; mốc 1,0 = trung bình 1 ngày công cả 12 tháng.
+- **Tải 12 tháng** (`ke-hoach-nam.py`, dùng chính): sản xuất mùa đến 27SS lấy lịch thật trong Plantable; 27FW, 28SS lấy lịch của 26FW, 27SS năm trước dời 52 tuần; mẫu = đơn thật cho tháng trong `THANG_MAU_THAT` (hiện 11/2026), tháng khác cùng tháng năm trước, đơn quá hạn còn mở dồn vào 11/2026; công suất = ngày làm việc thực từng người (`lich_lam_viec.py`: thứ 2–7, nghỉ thứ 7 theo nhóm, trừ lễ; lễ theo lịch công ty: 24/11/2026, 1/1/2027, **Tết dự kiến 4–14/2/2027**, 30/4–1/5/2027; Giỗ Tổ 16/4 và Quốc khánh 2–3/9/2027 tạm theo luật) × giờ/ngày; mốc 1,0 = trung bình 1 ngày công cả 12 tháng.
 - **Tải 4 tháng** (`ke-hoach-thang.py`, bản trước, không còn trong tài liệu): mã vào chuyền (mỗi mã tính 1 lần dù nhiều lô), ngày chuyền đang chạy (theo lô), đơn mẫu = đơn tồn (hạn ≤ 10/2026, chưa xong, dồn vào tháng 11) + số đơn cùng tháng năm trước theo brand; trọng số loại mẫu: 1st/0次 1,0; 2nd 0,8; PPS/mockup 0,6; SMS 0,5; khác 0,3. Mốc 1,0 chung cho cả 4 tháng.
 - **Mùa vừa qua** (`build.py`): bulk 26FW + 27SS, mẫu 27SS; Khánh (nghỉ) và H.Trang (CAD) không tính vào mức trung bình.
 - `du-bao.py` là bản ước cũ theo 2 giai đoạn (trước khi có Plantable), **không còn dùng** trong tài liệu.
@@ -102,7 +102,7 @@ Chạy từ thư mục gốc repo (cần `openpyxl`, `pandoc`, `python-docx`, Li
 ```
 python3 data/phan-cong/build.py . data/phan-cong     # dữ liệu phân công (nếu đổi file nghiệp vụ)
 python3 data/khoi-luong/build.py                     # mùa vừa qua → hien-tai.json, thuc-te.json
-python3 data/khoi-luong/trich-ke-hoach.py data/nguon/APIC-P-Plan-Plantable-2026-20261026.xlsm data/nguon/APIC-Sample-20261023.xlsx 2025-11-01 2027-04-30 data/khoi-luong/plantable-11-2025-4-2027.json
+python3 data/khoi-luong/trich-ke-hoach.py data/nguon/APIC-P-Plan-Plantable-2026-20261116.xlsm data/nguon/APIC-Sample-20261113.xlsx 2025-11-01 2027-04-30 data/khoi-luong/plantable-11-2025-4-2027.json
                                                       # trích Plantable (11/2025 – 4/2027) + file mẫu → mau-2025-2026.json
 python3 data/khoi-luong/ke-hoach-nam.py              # tải 12 tháng → ke-hoach-nam.json
 python3 data/khoi-luong/lich_lam_viec.py             # xem số ngày làm việc từng tháng
@@ -119,7 +119,7 @@ npm test                                              # test workflow lead time 
 
 1. **Kế hoạch mẫu 1st 28SS** (số mã theo brand): hiện ước theo cùng kỳ năm trước, nên Bích Trang, Huy tháng 12–2 có thể thấp hơn thực tế.
 2. **Đại trà 27SS của FOXFIRE, TATRAS, Kasco, YONEX** (Bích Trang) gần như chưa có trong Plantable/BULK.
-3. **Giờ thực tế** của việc kế hoạch, điều phối của Cường và Luân (đang tạm ~20% thời gian). Cách chia 11/2026 chưa giảm tải đủ cho hai bạn (TB 12 tháng Cường 1,60, Luân 1,27): cân nhắc Bích Trang hỗ trợ mẫu HELLY HANSEN tháng 7 / theo dõi xuất hàng, Khánh hỗ trợ Luân tháng 4–6.
+3. **Giờ thực tế** của việc kế hoạch, điều phối của Cường và Luân (đang tạm ~20% thời gian). Cách chia 11/2026 chưa giảm tải đủ cho hai bạn (TB 12 tháng Cường 1,59, Luân 1,29): cân nhắc Bích Trang hỗ trợ mẫu HELLY HANSEN tháng 7 / theo dõi xuất hàng, Khánh hỗ trợ Luân tháng 4–6.
 4. **Mẫu 26FW của Hiền** (sheet Hiền trong file SPL thiếu); YONEX chưa có giây TB (tạm 1 ngày/cái).
 5. **Plantable dòng 1976–1996**: đã báo quản lý nên sửa; khi Plantable mới đã sửa thì không cần lọc thủ công.
 6. Mẫu TNF别注 富山 (Như) và 東京 (Huy) mùa 25FW, 26SS có số giống hệt nhau trong file SPL – có thể nhập trùng.

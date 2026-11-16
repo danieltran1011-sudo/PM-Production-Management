@@ -54,7 +54,7 @@ dong = [
     ('Đây không phải bảng đánh giá. Số liệu giúp quản lý chia việc hợp lý và đề xuất hỗ trợ khi cần.', False),
     ('', False),
     ('Cách điền', True),
-    ('1. Các cột nền xanh đã điền sẵn từ Plantable (26/10/2026) và file mẫu (23/10/2026). Nếu sai hoặc thiếu, sửa trực tiếp hoặc thêm dòng.', False),
+    ('1. Các cột nền xanh đã điền sẵn từ Plantable (16/11/2026) và file mẫu (13/11/2026). Nếu sai hoặc thiếu, sửa trực tiếp hoặc thêm dòng.', False),
     ('2. Điền các cột nền vàng: giai đoạn hiện tại, việc còn lại, vấn đề đang vướng, số giờ ước mỗi tuần.', False),
     ('3. Lô / đơn đã xong: chọn giai đoạn "Đã xong", không cần điền thêm.', False),
     ('4. Sheet "Việc khác": các việc không theo mã (báo cáo, họp, liên lạc, xử lý sự cố, hỗ trợ người khác…). Ghi số giờ ước mỗi tuần.', False),
@@ -70,7 +70,7 @@ GD_MAU = '"Chờ tài liệu,Đang chuẩn bị,Đang may,Gửi khách / chờ g
 
 # 1. Đơn hàng sản xuất
 ws = sheet('Đơn hàng sản xuất')
-tieu_de(ws, f'Đơn hàng sản xuất – {ten}', 'Lô có ngày kết thúc từ 1/11/2026 trở đi (Plantable 26/10/2026). Cột vàng: người phụ trách điền.')
+tieu_de(ws, f'Đơn hàng sản xuất – {ten}', 'Lô có ngày kết thúc từ 1/11/2026 trở đi (Plantable 16/11/2026). Cột vàng: người phụ trách điền.')
 rows = sorted([x for x in pt if x['nguoi'] == ma_nguoi and x['end'] >= '2026-11-01'], key=lambda x: (x['start'], x['brand']))
 cols = [('Brand', 14), ('Mùa', 7), ('Hợp đồng', 13), ('Mã hàng', 18), ('Số lượng', 9), ('Xưởng / line', 10), ('Bắt đầu may', 11), ('Kết thúc', 11),
         ('Giai đoạn hiện tại', 18), ('Việc còn lại', 30), ('Vấn đề đang vướng (NPL, rập, tài liệu…)', 30), ('Giờ / tuần (ước)', 9)]

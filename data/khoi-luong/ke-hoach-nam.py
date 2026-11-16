@@ -3,7 +3,7 @@
 #                             SS: mẫu phát triển từ tháng 1 → SMS tháng 4–5 → sản xuất tháng 10 – 3 năm sau.
 #   - Sản xuất mùa đã có kế hoạch (đến 27SS): lịch thật trong Plantable 26/10/2026.
 #   - Sản xuất mùa chưa có kế hoạch (27FW, 28SS): lịch của mùa tương ứng năm trước (26FW, 27SS) dời +1 năm, gán người đang phụ trách.
-#   - Mẫu: đơn còn tồn dồn vào 11/2026 + số đơn cùng tháng năm trước (file mẫu 2025–2026), gán người đang phụ trách.
+#   - Mẫu: tháng trong THANG_MAU_THAT dùng đơn thật (file mẫu mới nhất); tháng khác: số đơn cùng tháng năm trước; đơn quá hạn còn mở dồn vào 11/2026.
 #   - Phân công theo bảng chốt 5/11/2026 (data/nguon/Phan-cong-brand-MD-APIC-20261105.xlsx): Khánh nhận 141 và phần TNF 富山企画
 #     do Shigemoto (SGM) phụ trách bên TIJ (ngay); TNF 東京企画 và NW từ mùa 27FW (Cường theo hết 27SS);
 #     Khánh không nhận mẫu TNF của Bích Trang, không còn hỗ trợ Luân theo %. Cường, Luân dành ~20% thời gian hỗ trợ quản lý làm kế hoạch.
@@ -80,6 +80,7 @@ def trong_so_mau(loai):
     if 'PPS' in l or 'MOCK' in l: return 0.6, 0.2
     return 0.3, 0.1
 
+THANG_MAU_THAT = ('2026-11',)   # tháng dùng đơn mẫu thật trong file mẫu (file 13/11/2026); tháng sau: ước theo cùng kỳ năm trước
 MAU_SGM = 0.3   # phần mẫu TNF (PPS, re-PPS…) của Luân thuộc SGM: theo tỷ lệ mã SGM trong Plantable 26SS–27SS (~28%)
 
 def tai(khanh_mau_tnf=0, khanh_mau_tnf_tu='2026-12', giao_them={'Cuong': 0.2, 'Luan': 0.2},
@@ -129,8 +130,11 @@ def tai(khanh_mau_tnf=0, khanh_mau_tnf_tu='2026-12', giao_them={'Cuong': 0.2, 'L
         if x['nguoi'] == 'H.Trang' and b != '141': continue   # H.Trang thuộc CAD; riêng 141 chuyển cho Khanh
         if x['sheet'] == 'サンプル表2026' and not x['xong'] and '2026-06-01' <= x['due'] < '2026-11-01':
             them_mau('2026-11', chu_mau(x['nguoi'], b, '2026-11', khanh_mau_tnf_tu), b, x['loai'])
+        if x['sheet'] == 'サンプル表2026' and x['due'][:7] in THANG_MAU_THAT:      # tháng đã có đủ đơn mẫu thật
+            them_mau(x['due'][:7], chu_mau(x['nguoi'], b, x['due'][:7], khanh_mau_tnf_tu), b, x['loai'])
         for m in THANG:
             y, mo = map(int, m.split('-'))
+            if m in THANG_MAU_THAT: continue
             if x['due'][:7] == f'{y - 1}-{mo:02d}':
                 ms = mua_so(x['mua'])                                   # đơn năm trước → mùa năm nay
                 p = chu_mau(x['nguoi'], b, m, khanh_mau_tnf_tu, f"{ms[0] + 1}{'FW' if ms[1] else 'SS'}" if ms[0] else None)

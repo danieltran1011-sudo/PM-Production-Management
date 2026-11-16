@@ -32,7 +32,7 @@ def widths(ws, ws_):
 
 # 1. Phân công dự kiến
 ws = sheet('Phân công dự kiến', True)
-title(ws, 'Phân công dự kiến nhóm MD APIC (bảng chốt 5/11/2026, Plantable 26/10/2026)', 'Cột 2: 11–12/2026 (mẫu triển lãm 27FW, PPS 27SS, đại trà 27SS bắt đầu). Cột 3: từ mẫu 1st 28SS (1–2/2027). Hỗ trợ tạm theo tháng: chưa áp dụng.')
+title(ws, 'Phân công dự kiến nhóm MD APIC (bảng chốt 5/11/2026, Plantable 16/11/2026)', 'Cột 2: 11–12/2026 (mẫu triển lãm 27FW, PPS 27SS, đại trà 27SS bắt đầu). Cột 3: từ mẫu 1st 28SS (1–2/2027). Hỗ trợ tạm theo tháng: chưa áp dụng.')
 rows = [
  ('Cuong', 'HELLY HANSEN (chủ lực); TNF 東京企画, NEUTRALWORKS đến 27SS; điều phối xuất hàng chung cả nhóm; quản lý chung may mẫu; hỗ trợ quản lý xây kế hoạch (~20%)', 'HELLY HANSEN; TNF 東京企画, NW chuyển Khanh từ 27FW; điều phối; kế hoạch', 'Rất cao 11/2026 – 2/2027 (1,6–2,4): Khanh nên hỗ trợ các lô TNF 東京企画, NW 27SS. Cao điểm 7/2027 (mẫu 1st HELLY HANSEN)'),
  ('Luan', 'TNF 富山企画 phần HSY, NKO; theo cùng Khanh phần SGM trong thời gian bàn giao; hỗ trợ quản lý xây kế hoạch (~20%)', 'TNF 富山企画 phần HSY, NKO; hỗ trợ xây kế hoạch', 'Cao điểm 4–6/2027 (hàng FW phía HSY): Khanh có thể hỗ trợ'),
@@ -117,7 +117,7 @@ widths(ws, [9, 52, 12] + [10] * 7); ws.freeze_panes = 'D5'
 # 3b. Đơn hàng S27 (sổ theo dõi)
 dh = json.load(open('data/khoi-luong/don-hang-s27.json'))
 ws = sheet('Đơn hàng S27')
-title(ws, 'Sổ theo dõi đơn hàng S27 – MD phụ trách', 'Nguồn: sheet S27 受注・進捗管理台帳 trong Plantable 26/10/2026.')
+title(ws, 'Sổ theo dõi đơn hàng S27 – MD phụ trách', 'Nguồn: sheet S27 受注・進捗管理台帳 trong Plantable 26/10/2026 (chưa trích lại từ bản 16/11).')
 cols3 = [('stt', 'STT'), ('ngay', 'Ngày nhận'), ('brand', 'Brand'), ('mua', 'Mùa'), ('ten', 'Tên đơn'), ('so_ma', 'Số mã'), ('sl', 'Số lượng'), ('etd', 'ETD'), ('tij', 'TI phụ trách'), ('md', 'MD TIVN'), ('thieu', 'Tài liệu thiếu'), ('buoc_tiep', 'Việc tiếp theo')]
 header(ws, 4, [c[1] for c in cols3])
 for i, x in enumerate(dh, 5):

@@ -10,7 +10,7 @@ TU = dt.date.fromisoformat(sys.argv[3]) if len(sys.argv) > 3 else dt.date(2026, 
 DEN = dt.date.fromisoformat(sys.argv[4]) if len(sys.argv) > 4 else dt.date(2027, 3, 31)
 OUT = sys.argv[5] if len(sys.argv) > 5 else 'data/khoi-luong/plantable-10-2026-3-2027.json'
 MUA_TOI_THIEU = (26, 0)   # bỏ dòng mùa cũ hơn 26SS (dòng cũ bị đẩy ngày, vd. AP1B-9 dòng 1976–1996 là 23SS/23FW)
-TEN = {'Như': 'Nhu', 'Luân': 'Luan', 'B Trang': 'B.Trang', 'Trang': 'H.Trang', 'H Trang': 'H.Trang', 'Huy': 'Q.Huy', 'Cường': 'Cuong', 'Khánh': 'Khanh'}
+TEN = {'Như': 'Nhu', 'Luân': 'Luan', 'B Trang': 'B.Trang', 'Trang': 'H.Trang', 'H Trang': 'H.Trang', 'Huy': 'Q.Huy', 'Cường': 'Cuong', 'Khánh': 'Khanh', 'Hiền': 'Hien'}
 LOAI_PPS = ('PPS', 'RE-PPS', 'BULK', 'MOCK UP', 'MOCKUP', '量産前SPL (TIEN PPS)', '工場控え (LUU)')
 
 def ma(x): return re.sub(r'[\s\.]+$', '', str(x or '').strip().upper())
@@ -21,12 +21,24 @@ def mua_so(m):
 # 1) File mẫu: sheet 2025 và 2026 (cột khác nhau)
 wb = openpyxl.load_workbook(SP, read_only=True, data_only=True)
 mau, pps = [], collections.defaultdict(collections.Counter)
-for sn, ci in (('サンプル表2025', dict(p=3, br=5, mua=6, loai=7, ma=8, sl=10, due=11, ok=17)),
-               ('サンプル表2026', dict(p=3, br=5, mua=6, loai=7, ma=9, sl=11, due=12, ok=20))):
+def ten(v):
+    v = re.sub(r'^(MR|MS|MRS)\.?\s*', '', str(v).strip(), flags=re.I).replace('_', ' ').strip()   # 'Mr.Cuong', 'Ms.B_Trang' (file từ 11/2026)
+    return TEN.get(v, v)
+
+def cot_2026(ws):
+    """Bố cục sheet サンプル表2026: bản đến 10/2026 (tiêu đề dòng 2) hoặc bản từ 11/2026 (tiêu đề dòng 3–4, cột 品番 trước サンプル)."""
+    h = [str(x or '') for x in next(ws.iter_rows(min_row=4, max_row=4, max_col=31, values_only=True))]
+    if h[7].startswith('品番') and h[8].startswith('サンプル'):
+        return dict(p=3, br=5, mua=6, loai=8, ma=7, sl=19, due=20, ok=28), 5
+    return dict(p=3, br=5, mua=6, loai=7, ma=9, sl=11, due=12, ok=20), 3
+
+for sn, ci, r0 in (('サンプル表2025', dict(p=3, br=5, mua=6, loai=7, ma=8, sl=10, due=11, ok=17), 3),
+                   ('サンプル表2026', None, None)):
     if sn not in wb.sheetnames: continue
-    for r in wb[sn].iter_rows(min_row=3, max_col=24, values_only=True):
+    if ci is None: ci, r0 = cot_2026(wb[sn])
+    for r in wb[sn].iter_rows(min_row=r0, max_col=31, values_only=True):
         if not r[ci['p']]: continue
-        p = TEN.get(str(r[ci['p']]).strip(), str(r[ci['p']]).strip())
+        p = ten(r[ci['p']])
         loai = str(r[ci['loai']] or '').strip().upper()
         if sn == 'サンプル表2026' and r[ci['ma']] and loai in LOAI_PPS: pps[ma(r[ci['ma']])][p] += 1   # chỉ dùng PPS của năm 2026 (đúng người đang phụ trách)
         if not isinstance(r[ci['due']], dt.datetime): continue
