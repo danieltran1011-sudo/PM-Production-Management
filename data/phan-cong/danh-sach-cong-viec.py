@@ -3,7 +3,7 @@
 # Chạy từ thư mục gốc repo:
 #   python3 data/phan-cong/danh-sach-cong-viec.py 2026-11-16                      # cả nhóm MD → docs/tai-ve/danh-sach-cong-viec/
 #   python3 data/phan-cong/danh-sach-cong-viec.py 2026-11-16 docs/tai-ve/danh-sach-cong-viec Hien Khanh   # vài người
-#   thêm --ja để xuất bản tiếng Nhật (Danh-sach-cong-viec-<tên>-<ngày>-JA.xlsx; không tạo file tổng hợp)
+#   thêm --han=YYYY-MM-DD để điền hạn gửi lại; thêm --ja để xuất bản tiếng Nhật (Danh-sach-cong-viec-<tên>-<ngày>-JA.xlsx; không tạo file tổng hợp)
 import json, sys, os, re, collections, importlib.util, datetime as dt
 from openpyxl import Workbook
 from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
@@ -12,6 +12,7 @@ from openpyxl.utils import get_column_letter as L
 
 ARGS = [a for a in sys.argv[1:] if not a.startswith('--')]
 JA = '--ja' in sys.argv                     # xuất bản tiếng Nhật (tên file thêm -JA)
+HAN = next((dt.date.fromisoformat(a[6:]) for a in sys.argv if a.startswith('--han=')), None)   # hạn gửi lại, vd. --han=2026-11-20
 ngay = ARGS[0]
 OUT = ARGS[1] if len(ARGS) > 1 else 'docs/tai-ve/danh-sach-cong-viec'
 TEN = {'Cuong': ('Cường', 'Cuong'), 'Luan': ('Luân', 'Luan'), 'Khanh': ('Khánh', 'Khanh'), 'B.Trang': ('Bích Trang', 'Bich-Trang'),
@@ -123,6 +124,7 @@ def dich_ja(wb):
                     for a, b in list(JA_SHEET.items()) + list(JA_CHON.items()): v = v.replace(f"'{a}'!", f"'{b}'!").replace(f'"{a}"', f'"{b}"')
                 elif v in JA_TU: v = JA_TU[v]
                 elif v.startswith('Ngày lập: '): v = f'作成日：{hom_nay:%Y/%m/%d}'
+                elif v.startswith('Hạn gửi lại: ') and HAN: v = f'提出期限：{HAN:%Y/%m/%d}（金）'
                 elif v.startswith('Nhận từ '): v = v[len('Nhận từ '):] + 'から引継ぎ'
                 elif re.fullmatch(r'(Áo|Quần) (\d) lớp', v): v = re.sub(r'(Áo|Quần) (\d) lớp', lambda m: ('上衣' if m[1] == 'Áo' else 'パンツ') + f'（{m[2]}層）', v)
                 elif ' – ' in v and v.split(' – ')[0] in JA_TIEUDE: v = JA_TIEUDE[v.split(' – ')[0]] + ' – ' + v.split(' – ', 1)[1]
@@ -156,7 +158,7 @@ def tao(ma_nguoi, ten, out):
         ('4. Sheet "Việc khác": các việc không theo mã (báo cáo, họp, liên lạc, xử lý sự cố, hỗ trợ người khác…). Ghi số giờ ước mỗi tuần.', False),
         ('5. Giờ ước mức 30 phút là đủ, không cần chính xác.', False),
         ('', False),
-        ('Hạn gửi lại: ……/……/2026', True),
+        (f'Hạn gửi lại: {HAN:%d/%m/%Y}' if HAN else 'Hạn gửi lại: ……/……/2026', True),
     ]
     for i, (t, b) in enumerate(dong, 1):
         c = ws.cell(i, 1, t); c.font = Font(name=F, bold=b, size=12 if i == 1 else 10); c.alignment = Alignment(wrap_text=True)
@@ -230,7 +232,7 @@ for p in NGUOI:
     print('ok', out, f'{n_sx} lô sản xuất, {n_mau} đơn mẫu, nhận {nhan}, chuyển đi {giao}')
 
 # File tổng hợp cho quản lý: số lô, số đơn mẫu từng người; lô chưa rõ người phụ trách
-if JA: sys.exit(0)
+if JA or ARGS[2:]: sys.exit(0)   # file tổng hợp chỉ tạo khi chạy cho cả nhóm
 wb = Workbook(); ws = wb.active; ws.title = 'Tổng hợp'
 ws.cell(1, 1, f'Danh sách công việc nhóm MD – tổng hợp ({hom_nay:%d/%m/%Y})').font = Font(name=F, bold=True, size=13)
 ws.cell(2, 1, 'Lô sản xuất kết thúc từ 1/11/2026 (Plantable 16/11/2026), đơn mẫu còn mở (file mẫu 13/11/2026), theo phân công chốt 5/11/2026.').font = Font(name=F, italic=True, size=9, color='555555')
