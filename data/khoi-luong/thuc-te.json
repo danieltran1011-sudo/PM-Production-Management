@@ -1,0 +1,4609 @@
+{
+"bulk": [
+{
+"nguoi": "Thuan",
+"mua": "19FW",
+"brand": "WOOLRICH",
+"sl": 1581,
+"ma": 8,
+"giay": 14044,
+"ngay": 53,
+"ghichu": null
+},
+{
+"nguoi": "Thuan",
+"mua": "19FW",
+"brand": "SCHOFEEL",
+"sl": 345,
+"ma": 5,
+"giay": 12127,
+"ngay": 11,
+"ghichu": null
+},
+{
+"nguoi": "Thuan",
+"mua": "20SS",
+"brand": "WOOLRICH",
+"sl": 400,
+"ma": 2,
+"giay": 18205,
+"ngay": 7,
+"ghichu": null
+},
+{
+"nguoi": "Thuan",
+"mua": "20FW",
+"brand": "WOOLRICH",
+"sl": 3679,
+"ma": 14,
+"giay": 12050,
+"ngay": 100,
+"ghichu": null
+},
+{
+"nguoi": "Thuan",
+"mua": "20FW",
+"brand": "SCHOFEEL",
+"sl": 250,
+"ma": 2,
+"giay": 11428,
+"ngay": 7,
+"ghichu": null
+},
+{
+"nguoi": "Thuan",
+"mua": "21SS",
+"brand": "ORCIVAL",
+"sl": 2888,
+"ma": 5,
+"giay": 6212,
+"ngay": 45,
+"ghichu": null
+},
+{
+"nguoi": "Thuan",
+"mua": "21SS",
+"brand": "WOOLRICH",
+"sl": 3831,
+"ma": 14,
+"giay": 9149,
+"ngay": 98,
+"ghichu": null
+},
+{
+"nguoi": "Thuan",
+"mua": "21FW",
+"brand": "NW",
+"sl": 355,
+"ma": 3,
+"giay": 6149,
+"ngay": 11,
+"ghichu": null
+},
+{
+"nguoi": "Thuan",
+"mua": "21FW",
+"brand": "Gymphlex",
+"sl": 2596,
+"ma": 7,
+"giay": 5800,
+"ngay": 40,
+"ghichu": null
+},
+{
+"nguoi": "Thuan",
+"mua": "21FW",
+"brand": "DANTON",
+"sl": 34077,
+"ma": 11,
+"giay": 4182,
+"ngay": 231,
+"ghichu": null
+},
+{
+"nguoi": "Thuan",
+"mua": "21FW",
+"brand": "WOOLRICH",
+"sl": 1469,
+"ma": 9,
+"giay": 12491,
+"ngay": 60,
+"ghichu": null
+},
+{
+"nguoi": "Thuan",
+"mua": "22SS",
+"brand": "ORCIVAL",
+"sl": 2888,
+"ma": 5,
+"giay": 6223,
+"ngay": 43,
+"ghichu": null
+},
+{
+"nguoi": "Thuan",
+"mua": "22SS",
+"brand": "WOOLRICH",
+"sl": 666,
+"ma": 4,
+"giay": 10460,
+"ngay": 30,
+"ghichu": null
+},
+{
+"nguoi": "Phong",
+"mua": "19FW",
+"brand": "241",
+"sl": 278,
+"ma": 1,
+"giay": 19068,
+"ngay": 8,
+"ghichu": null
+},
+{
+"nguoi": "Phong",
+"mua": "19FW",
+"brand": "UNDER ARMOUR",
+"sl": 20226,
+"ma": 6,
+"giay": 5953,
+"ngay": 179,
+"ghichu": null
+},
+{
+"nguoi": "Phong",
+"mua": "19FW",
+"brand": "MUNSINGWEAR",
+"sl": 914,
+"ma": 3,
+"giay": 5925,
+"ngay": 32,
+"ghichu": null
+},
+{
+"nguoi": "Phong",
+"mua": "20SS",
+"brand": "MUNSINGWEAR",
+"sl": 548,
+"ma": 1,
+"giay": 4911,
+"ngay": 7,
+"ghichu": null
+},
+{
+"nguoi": "Phong",
+"mua": "20SS",
+"brand": "LECOQ",
+"sl": 3782,
+"ma": 3,
+"giay": 4883,
+"ngay": 33,
+"ghichu": null
+},
+{
+"nguoi": "Phong",
+"mua": "20SS",
+"brand": "SRIXON",
+"sl": 5400,
+"ma": 2,
+"giay": 7214,
+"ngay": 59,
+"ghichu": null
+},
+{
+"nguoi": "Phong",
+"mua": "20FW",
+"brand": "SRIXON",
+"sl": 16154,
+"ma": 4,
+"giay": 5378,
+"ngay": 117,
+"ghichu": null
+},
+{
+"nguoi": "Phong",
+"mua": "21SS",
+"brand": "241",
+"sl": 1050,
+"ma": 2,
+"giay": 6520,
+"ngay": 39,
+"ghichu": null
+},
+{
+"nguoi": "Phong",
+"mua": "21SS",
+"brand": "SNOWPEAK",
+"sl": 18185,
+"ma": 6,
+"giay": 5665,
+"ngay": 265,
+"ghichu": null
+},
+{
+"nguoi": "Phong",
+"mua": "21FW",
+"brand": "241",
+"sl": 250,
+"ma": 2,
+"giay": 16534,
+"ngay": 12,
+"ghichu": null
+},
+{
+"nguoi": "Phong",
+"mua": "21FW",
+"brand": "SNOWPEAK",
+"sl": 12276,
+"ma": 15,
+"giay": 5959,
+"ngay": 177,
+"ghichu": null
+},
+{
+"nguoi": "Phong",
+"mua": "22SS",
+"brand": "241",
+"sl": 821,
+"ma": 6,
+"giay": 4593,
+"ngay": 17,
+"ghichu": null
+},
+{
+"nguoi": "Phong",
+"mua": "22SS",
+"brand": "SNOWPEAK",
+"sl": 7355,
+"ma": 10,
+"giay": 6215,
+"ngay": 91,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "19FW",
+"brand": "TNF(東京企画)",
+"sl": 9350,
+"ma": 18,
+"giay": 4915,
+"ngay": 109,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "19FW",
+"brand": "HH",
+"sl": 8892,
+"ma": 13,
+"giay": 8929,
+"ngay": 151,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "19FW",
+"brand": "TETON BROS",
+"sl": 1608,
+"ma": 14,
+"giay": 7919,
+"ngay": 41,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "19FW",
+"brand": "C3FIT",
+"sl": 2000,
+"ma": 1,
+"giay": 4836,
+"ngay": 13,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "19FW",
+"brand": "CHAMPION",
+"sl": 50717,
+"ma": 8,
+"giay": 7698,
+"ngay": 546,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "20SS",
+"brand": "TNF(東京企画)",
+"sl": 21965,
+"ma": 19,
+"giay": 4604,
+"ngay": 169,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "20SS",
+"brand": "HH",
+"sl": 11214,
+"ma": 19,
+"giay": 8221,
+"ngay": 177,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "20SS",
+"brand": "TETON BROS",
+"sl": 5815,
+"ma": 19,
+"giay": 5040,
+"ngay": 111,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "20SS",
+"brand": "C3FIT",
+"sl": 2000,
+"ma": 1,
+"giay": 4836,
+"ngay": 16,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "20FW",
+"brand": "CHAMPION",
+"sl": 10763,
+"ma": 4,
+"giay": 6304,
+"ngay": 100,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "20FW",
+"brand": "C3FIT",
+"sl": 9108,
+"ma": 15,
+"giay": 11736,
+"ngay": 169,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "21SS",
+"brand": "C3FIT",
+"sl": 9120,
+"ma": 8,
+"giay": 8636,
+"ngay": 226,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "21FW",
+"brand": "HH",
+"sl": 13557,
+"ma": 30,
+"giay": 10653,
+"ngay": 258,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "21FW",
+"brand": "CHAMPION",
+"sl": 30496,
+"ma": 8,
+"giay": 7572,
+"ngay": 306,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "22SS",
+"brand": "HH",
+"sl": 7227,
+"ma": 21,
+"giay": 8693,
+"ngay": 160,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "22SS",
+"brand": "C3FIT",
+"sl": 1701,
+"ma": 1,
+"giay": 4094,
+"ngay": 13,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "22FW",
+"brand": "DANTON",
+"sl": 16804,
+"ma": 13,
+"giay": 5509,
+"ngay": 163,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "22FW",
+"brand": "TNF(東京企画)",
+"sl": 12067,
+"ma": 6,
+"giay": 11194,
+"ngay": 53,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "22FW",
+"brand": "Gymphlex",
+"sl": 329,
+"ma": 1,
+"giay": 5259,
+"ngay": 5,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "22FW",
+"brand": "HH",
+"sl": 20674,
+"ma": 31,
+"giay": 9933,
+"ngay": 373,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "22FW",
+"brand": "CHAMPION",
+"sl": 6003,
+"ma": 5,
+"giay": 7363,
+"ngay": 69,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "22FW",
+"brand": "241",
+"sl": 150,
+"ma": 1,
+"giay": 16131,
+"ngay": 8,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "23SS",
+"brand": "TNF(東京企画)",
+"sl": 21124,
+"ma": 20,
+"giay": 7784,
+"ngay": 183,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "23SS",
+"brand": "DANTON",
+"sl": 5199,
+"ma": 9,
+"giay": 5778,
+"ngay": 69,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "23SS",
+"brand": "HH",
+"sl": 14544,
+"ma": 20,
+"giay": 8623,
+"ngay": 235,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "23SS",
+"brand": "C3FIT",
+"sl": 15800,
+"ma": 2,
+"giay": 449,
+"ngay": 7,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "23FW",
+"brand": "TNF(東京企画)",
+"sl": 7795,
+"ma": 5,
+"giay": 10683,
+"ngay": 68,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "23FW",
+"brand": "HH",
+"sl": 29328,
+"ma": 30,
+"giay": 10940,
+"ngay": 434,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "23FW",
+"brand": "CHAMPION",
+"sl": 4882,
+"ma": 3,
+"giay": 1627,
+"ngay": 45,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "23FW",
+"brand": "GOLDWIN",
+"sl": 6131,
+"ma": 11,
+"giay": 9865,
+"ngay": 114,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "23FW",
+"brand": "RESURRECTION",
+"sl": 805,
+"ma": 5,
+"giay": 4935,
+"ngay": 10,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "24SS",
+"brand": "TNF(東京企画)",
+"sl": 109487,
+"ma": 30,
+"giay": 7478,
+"ngay": 568,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "24SS",
+"brand": "HH",
+"sl": 26543,
+"ma": 18,
+"giay": 8349,
+"ngay": 325,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "24SS",
+"brand": "MACKINTOSH",
+"sl": 874,
+"ma": 2,
+"giay": 6196,
+"ngay": 12,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "24FW",
+"brand": "TNF(東京企画)",
+"sl": 19320,
+"ma": 13,
+"giay": 6300,
+"ngay": 212,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "24FW",
+"brand": "NW",
+"sl": 4885,
+"ma": 21,
+"giay": 7770,
+"ngay": 142,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "24FW",
+"brand": "HH",
+"sl": 24694,
+"ma": 31,
+"giay": 10557,
+"ngay": 406,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "25SS",
+"brand": "TNF(東京企画)",
+"sl": 35392,
+"ma": 10,
+"giay": 5661,
+"ngay": 245,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "25SS",
+"brand": "NW",
+"sl": 6450,
+"ma": 17,
+"giay": 5515,
+"ngay": 112,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "25SS",
+"brand": "HH",
+"sl": 18161,
+"ma": 26,
+"giay": 10594,
+"ngay": 326,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "25FW",
+"brand": "TNF(東京企画)",
+"sl": 14612,
+"ma": 7,
+"giay": 6048,
+"ngay": 117,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "25FW",
+"brand": "NW",
+"sl": 5654,
+"ma": 22,
+"giay": 8099,
+"ngay": 164,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "25FW",
+"brand": "HH",
+"sl": 43447,
+"ma": 42,
+"giay": 13550,
+"ngay": 675,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "25FW",
+"brand": "KOTI",
+"sl": 518,
+"ma": 3,
+"giay": 13031,
+"ngay": 23,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "26SS",
+"brand": "TNF(東京企画)",
+"sl": 41883,
+"ma": 9,
+"giay": 5241,
+"ngay": 261,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "26SS",
+"brand": "NW",
+"sl": 4472,
+"ma": 16,
+"giay": 6592,
+"ngay": 96,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "26SS",
+"brand": "HH",
+"sl": 16462,
+"ma": 24,
+"giay": 11413,
+"ngay": 292,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "26FW",
+"brand": "NW",
+"sl": 2853,
+"ma": 13,
+"giay": 6202,
+"ngay": 91,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "26FW",
+"brand": "HH",
+"sl": 36373,
+"ma": 56,
+"giay": 10630,
+"ngay": 529,
+"ghichu": "生産数34136→36373、品番数40→56"
+},
+{
+"nguoi": "Cuong",
+"mua": "26FW",
+"brand": "YONEX",
+"sl": 3465,
+"ma": 12,
+"giay": 13880,
+"ngay": 97,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "27SS",
+"brand": "TNF(東京企画)",
+"sl": 18885,
+"ma": 7,
+"giay": 5917,
+"ngay": 250,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "27SS",
+"brand": "NW",
+"sl": 940,
+"ma": 3,
+"giay": 6160,
+"ngay": 23,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "27SS",
+"brand": "HH",
+"sl": 28995,
+"ma": 38,
+"giay": 8490,
+"ngay": 433,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "19FW",
+"brand": "MILLET",
+"sl": 1476,
+"ma": 4,
+"giay": 8274,
+"ngay": 25,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "19FW",
+"brand": "MARMOT",
+"sl": 15886,
+"ma": 12,
+"giay": 9373,
+"ngay": 183,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "19FW",
+"brand": "MAMMUT",
+"sl": 3911,
+"ma": 1,
+"giay": 12498,
+"ngay": 48,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "20SS",
+"brand": "MILLET",
+"sl": 2632,
+"ma": 2,
+"giay": 6221,
+"ngay": 32,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "20SS",
+"brand": "MARMOT",
+"sl": 9594,
+"ma": 5,
+"giay": 8778,
+"ngay": 137,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "20SS",
+"brand": "MAMMUT",
+"sl": 1382,
+"ma": 4,
+"giay": 8240,
+"ngay": 20,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "20FW",
+"brand": "MARMOT",
+"sl": 4988,
+"ma": 6,
+"giay": 11047,
+"ngay": 65,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "21SS",
+"brand": "MARMOT",
+"sl": 5931,
+"ma": 6,
+"giay": 9591,
+"ngay": 101,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "21FW",
+"brand": "AIGLE",
+"sl": 1630,
+"ma": 1,
+"giay": 7899,
+"ngay": 22,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "21FW",
+"brand": "MILLET",
+"sl": 3380,
+"ma": 4,
+"giay": 5906,
+"ngay": 46,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "21FW",
+"brand": "MARMOT",
+"sl": 1610,
+"ma": 6,
+"giay": 13305,
+"ngay": 35,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "22SS",
+"brand": "MARMOT",
+"sl": 5931,
+"ma": 6,
+"giay": 9596,
+"ngay": 62,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "22FW",
+"brand": "ALLTERRAIN",
+"sl": 772,
+"ma": 3,
+"giay": 9176,
+"ngay": 20,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "22FW",
+"brand": "SNOWPEAK",
+"sl": 16784,
+"ma": 15,
+"giay": 7411,
+"ngay": 188,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "22FW",
+"brand": "MARMOT",
+"sl": 1484,
+"ma": 5,
+"giay": 10282,
+"ngay": 36,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "23SS",
+"brand": "ALLTERRAIN",
+"sl": 301,
+"ma": 2,
+"giay": 5471,
+"ngay": 8,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "23SS",
+"brand": "SNOWPEAK",
+"sl": 7592,
+"ma": 7,
+"giay": 6025,
+"ngay": 71,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "23FW",
+"brand": "ALLTERRAIN",
+"sl": 998,
+"ma": 3,
+"giay": 12410,
+"ngay": 16,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "23FW",
+"brand": "SNOWPEAK",
+"sl": 4455,
+"ma": 13,
+"giay": 9610,
+"ngay": 67,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "23FW",
+"brand": "LL.BEAN",
+"sl": 13869,
+"ma": 11,
+"giay": 8203,
+"ngay": 149,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "24SS",
+"brand": "LECOQ",
+"sl": 10000,
+"ma": 2,
+"giay": 8921,
+"ngay": 105,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "24SS",
+"brand": "LL.BEAN",
+"sl": 20608,
+"ma": 17,
+"giay": 6289,
+"ngay": 180,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "24FW",
+"brand": "CHAMPION",
+"sl": 7683,
+"ma": 5,
+"giay": 5881,
+"ngay": 66,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "24FW",
+"brand": "MONTBELL",
+"sl": 5065,
+"ma": 5,
+"giay": 14899,
+"ngay": 47,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "24FW",
+"brand": "LL.BEAN",
+"sl": 10117,
+"ma": 12,
+"giay": 9442,
+"ngay": 126,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "25SS",
+"brand": "ALLTERRAIN",
+"sl": 966,
+"ma": 2,
+"giay": 12781,
+"ngay": 26,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "25SS",
+"brand": "MONTBELL",
+"sl": 25802,
+"ma": 5,
+"giay": 8039,
+"ngay": 196,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "25SS",
+"brand": "LL.BEAN",
+"sl": 655,
+"ma": 3,
+"giay": 14272,
+"ngay": 21,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "25FW",
+"brand": "ALLTERRAIN",
+"sl": 829,
+"ma": 2,
+"giay": 10926,
+"ngay": 16,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "25FW",
+"brand": "MONTBELL",
+"sl": 46521,
+"ma": 13,
+"giay": 12994,
+"ngay": 389,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "25FW",
+"brand": "MILLET",
+"sl": 3644,
+"ma": 2,
+"giay": 7654,
+"ngay": 40,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "25FW",
+"brand": "CANTERBURY",
+"sl": 611,
+"ma": 3,
+"giay": 15113,
+"ngay": 15,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "26SS",
+"brand": "TETON BROS",
+"sl": 9748,
+"ma": 17,
+"giay": 4997,
+"ngay": 106,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "26SS",
+"brand": "ALLTERRAIN",
+"sl": 3044,
+"ma": 1,
+"giay": 16817,
+"ngay": 52,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "26SS",
+"brand": "DESCENT",
+"sl": 2721,
+"ma": 4,
+"giay": 11794,
+"ngay": 35,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "26SS",
+"brand": "MONTBELL",
+"sl": 24594,
+"ma": 4,
+"giay": 6000,
+"ngay": 160,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "26SS",
+"brand": "CANTERBURY",
+"sl": 3000,
+"ma": 1,
+"giay": 1885,
+"ngay": 7,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "26FW",
+"brand": "TETON BROS",
+"sl": 2912,
+"ma": 14,
+"giay": 8527,
+"ngay": 126,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "26FW",
+"brand": "ALLTERRAIN",
+"sl": 13195,
+"ma": 16,
+"giay": 13131,
+"ngay": 328,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "26FW",
+"brand": "MONTBELL",
+"sl": 15287,
+"ma": 5,
+"giay": 6541,
+"ngay": 125,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "27SS",
+"brand": "TETON BROS",
+"sl": 6781,
+"ma": 20,
+"giay": 5032.95,
+"ngay": 133,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "27SS",
+"brand": "ALLTERRAIN",
+"sl": 12594,
+"ma": 19,
+"giay": 12151.11538,
+"ngay": 226,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "27SS",
+"brand": "DESCENT",
+"sl": 900,
+"ma": 1,
+"giay": 8132,
+"ngay": 12,
+"ghichu": null
+},
+{
+"nguoi": "Nhu",
+"mua": "19FW",
+"brand": "UMBRO",
+"sl": 1060,
+"ma": 1,
+"giay": 7630,
+"ngay": 12,
+"ghichu": null
+},
+{
+"nguoi": "Nhu",
+"mua": "19FW",
+"brand": "DESCENT",
+"sl": 700,
+"ma": 2,
+"giay": 9218,
+"ngay": 14,
+"ghichu": null
+},
+{
+"nguoi": "Nhu",
+"mua": "19FW",
+"brand": "MONTBELL",
+"sl": 19607,
+"ma": 4,
+"giay": 11320,
+"ngay": 133,
+"ghichu": null
+},
+{
+"nguoi": "Nhu",
+"mua": "19FW",
+"brand": "INOV8",
+"sl": 10440,
+"ma": 14,
+"giay": 8211,
+"ngay": 147,
+"ghichu": null
+},
+{
+"nguoi": "Nhu",
+"mua": "20FW",
+"brand": "LECOQ",
+"sl": 4418,
+"ma": 3,
+"giay": 7220,
+"ngay": 51,
+"ghichu": null
+},
+{
+"nguoi": "Nhu",
+"mua": "20FW",
+"brand": "MONTBELL",
+"sl": 13632,
+"ma": 4,
+"giay": 12323,
+"ngay": 140,
+"ghichu": null
+},
+{
+"nguoi": "Nhu",
+"mua": "20FW",
+"brand": "DESCENTE",
+"sl": 443,
+"ma": 2,
+"giay": 14512,
+"ngay": 10,
+"ghichu": null
+},
+{
+"nguoi": "Nhu",
+"mua": "21SS",
+"brand": "DESCENT",
+"sl": 890,
+"ma": 2,
+"giay": 8844,
+"ngay": 22,
+"ghichu": null
+},
+{
+"nguoi": "Nhu",
+"mua": "21SS",
+"brand": "TOKYO MARATHON",
+"sl": 9500,
+"ma": 4,
+"giay": 4484,
+"ngay": 49,
+"ghichu": null
+},
+{
+"nguoi": "Nhu",
+"mua": "21SS",
+"brand": "MONTBELL",
+"sl": 12090,
+"ma": 4,
+"giay": 4371,
+"ngay": 93,
+"ghichu": null
+},
+{
+"nguoi": "Nhu",
+"mua": "21FW",
+"brand": "KUIU",
+"sl": 10000,
+"ma": 1,
+"giay": 7537,
+"ngay": 129,
+"ghichu": null
+},
+{
+"nguoi": "Nhu",
+"mua": "21FW",
+"brand": "Foxfire",
+"sl": 3070,
+"ma": 3,
+"giay": 3970,
+"ngay": 25,
+"ghichu": null
+},
+{
+"nguoi": "Nhu",
+"mua": "21FW",
+"brand": "ARENA",
+"sl": 2120,
+"ma": 7,
+"giay": 4896,
+"ngay": 26,
+"ghichu": null
+},
+{
+"nguoi": "Nhu",
+"mua": "21FW",
+"brand": "DESCENT",
+"sl": 1002,
+"ma": 2,
+"giay": 9400,
+"ngay": 32,
+"ghichu": null
+},
+{
+"nguoi": "Nhu",
+"mua": "21FW",
+"brand": "MONTBELL",
+"sl": 10602,
+"ma": 8,
+"giay": 15089,
+"ngay": 180,
+"ghichu": null
+},
+{
+"nguoi": "Nhu",
+"mua": "22SS",
+"brand": "ALLTERRAIN",
+"sl": 455,
+"ma": 1,
+"giay": 9337,
+"ngay": 6,
+"ghichu": null
+},
+{
+"nguoi": "Nhu",
+"mua": "22SS",
+"brand": "DESCENT",
+"sl": 890,
+"ma": 2,
+"giay": 9946,
+"ngay": 21,
+"ghichu": null
+},
+{
+"nguoi": "Nhu",
+"mua": "22SS",
+"brand": "MONTBELL",
+"sl": 12090,
+"ma": 4,
+"giay": 3919,
+"ngay": 86,
+"ghichu": null
+},
+{
+"nguoi": "Nhu",
+"mua": "22FW",
+"brand": "NW",
+"sl": 1839,
+"ma": 10,
+"giay": 4095,
+"ngay": 41,
+"ghichu": null
+},
+{
+"nguoi": "Nhu",
+"mua": "22FW",
+"brand": "DESCENT",
+"sl": 627,
+"ma": 2,
+"giay": 8651,
+"ngay": 15,
+"ghichu": null
+},
+{
+"nguoi": "Nhu",
+"mua": "23SS",
+"brand": "NW",
+"sl": 3149,
+"ma": 9,
+"giay": 5669,
+"ngay": 52,
+"ghichu": null
+},
+{
+"nguoi": "Nhu",
+"mua": "23SS",
+"brand": "UTMF",
+"sl": 2151,
+"ma": 1,
+"giay": 4048,
+"ngay": 13,
+"ghichu": null
+},
+{
+"nguoi": "Nhu",
+"mua": "23FW",
+"brand": "NW",
+"sl": 5863,
+"ma": 20,
+"giay": 5356,
+"ngay": 82,
+"ghichu": null
+},
+{
+"nguoi": "Nhu",
+"mua": "23FW",
+"brand": "MONTBELL",
+"sl": 40162,
+"ma": 15,
+"giay": 14505,
+"ngay": 336,
+"ghichu": null
+},
+{
+"nguoi": "Nhu",
+"mua": "23FW",
+"brand": "UMBRO",
+"sl": 812,
+"ma": 1,
+"giay": 10783,
+"ngay": 6,
+"ghichu": null
+},
+{
+"nguoi": "Nhu",
+"mua": "24SS",
+"brand": "NW",
+"sl": 4644,
+"ma": 20,
+"giay": 6358,
+"ngay": 108,
+"ghichu": null
+},
+{
+"nguoi": "Nhu",
+"mua": "24SS",
+"brand": "GOLDWIN",
+"sl": 84339,
+"ma": 9,
+"giay": 6487,
+"ngay": 89,
+"ghichu": null
+},
+{
+"nguoi": "Nhu",
+"mua": "24SS",
+"brand": "MONTBELL",
+"sl": 26353,
+"ma": 6,
+"giay": 8180,
+"ngay": 136,
+"ghichu": null
+},
+{
+"nguoi": "Nhu",
+"mua": "24FW",
+"brand": "GOLDWIN",
+"sl": 2381,
+"ma": 5,
+"giay": null,
+"ngay": 47,
+"ghichu": null
+},
+{
+"nguoi": "Nhu",
+"mua": "24FW",
+"brand": "MONTBELL",
+"sl": 48965,
+"ma": 15,
+"giay": 14899,
+"ngay": 378,
+"ghichu": null
+},
+{
+"nguoi": "Nhu",
+"mua": "25SS",
+"brand": "UTMF",
+"sl": 2187,
+"ma": 1,
+"giay": 4179,
+"ngay": 19,
+"ghichu": null
+},
+{
+"nguoi": "Nhu",
+"mua": "25FW",
+"brand": "TNF別注　富山",
+"sl": 35860,
+"ma": 66,
+"giay": 11264,
+"ngay": 558,
+"ghichu": null
+},
+{
+"nguoi": "Nhu",
+"mua": "26SS",
+"brand": "TNF別注　富山",
+"sl": 47395,
+"ma": 48,
+"giay": 8303,
+"ngay": 533,
+"ghichu": null
+},
+{
+"nguoi": "Nhu",
+"mua": "26SS",
+"brand": "UTMF",
+"sl": 2226,
+"ma": 1,
+"giay": 4179,
+"ngay": 15,
+"ghichu": null
+},
+{
+"nguoi": "Nhu",
+"mua": "26FW",
+"brand": "TNF別注　富山",
+"sl": 56164,
+"ma": 79,
+"giay": 12542.28736,
+"ngay": 770,
+"ghichu": null
+},
+{
+"nguoi": "Nhu",
+"mua": "27SS",
+"brand": "TNF別注　富山",
+"sl": 32056,
+"ma": 35,
+"giay": 7140.074468,
+"ngay": 448,
+"ghichu": null
+},
+{
+"nguoi": "Luan",
+"mua": "19FW",
+"brand": "TNF(GTC企画)",
+"sl": 88966,
+"ma": 52,
+"giay": 7470,
+"ngay": 991,
+"ghichu": null
+},
+{
+"nguoi": "Luan",
+"mua": "20SS",
+"brand": "TNF(GTC企画)",
+"sl": 172681,
+"ma": 79,
+"giay": 7910,
+"ngay": 1839,
+"ghichu": null
+},
+{
+"nguoi": "Luan",
+"mua": "20FW",
+"brand": "TNF(GTC企画)",
+"sl": 130371,
+"ma": 83,
+"giay": 9590,
+"ngay": 1524,
+"ghichu": null
+},
+{
+"nguoi": "Luan",
+"mua": "21SS",
+"brand": "TNF(GTC企画)",
+"sl": 370639,
+"ma": 103,
+"giay": 7504,
+"ngay": 3805,
+"ghichu": null
+},
+{
+"nguoi": "Luan",
+"mua": "21FW",
+"brand": "TNF(GTC企画)",
+"sl": 175387,
+"ma": 72,
+"giay": 11390,
+"ngay": 2345,
+"ghichu": null
+},
+{
+"nguoi": "Luan",
+"mua": "22SS",
+"brand": "TNF(GTC企画)",
+"sl": 134787,
+"ma": 55,
+"giay": 7983,
+"ngay": 1382,
+"ghichu": null
+},
+{
+"nguoi": "Luan",
+"mua": "22FW",
+"brand": "TNF(GTC企画)",
+"sl": 189937,
+"ma": 57,
+"giay": 11194,
+"ngay": 2266,
+"ghichu": null
+},
+{
+"nguoi": "Luan",
+"mua": "22FW",
+"brand": "GSM",
+"sl": 994,
+"ma": 1,
+"giay": 5341,
+"ngay": 3,
+"ghichu": null
+},
+{
+"nguoi": "Luan",
+"mua": "23SS",
+"brand": "TNF(GTC企画)",
+"sl": 160051,
+"ma": 55,
+"giay": 7784,
+"ngay": 1751,
+"ghichu": null
+},
+{
+"nguoi": "Luan",
+"mua": "23SS",
+"brand": "LL.BEAN",
+"sl": 13638,
+"ma": 16,
+"giay": 5422,
+"ngay": 124,
+"ghichu": null
+},
+{
+"nguoi": "Luan",
+"mua": "23FW",
+"brand": "TNF(GTC企画)",
+"sl": 200411,
+"ma": 75,
+"giay": 10683,
+"ngay": 2493,
+"ghichu": null
+},
+{
+"nguoi": "Luan",
+"mua": "24SS",
+"brand": "TNF(GTC企画)",
+"sl": 160572,
+"ma": 66,
+"giay": 7478,
+"ngay": 1764,
+"ghichu": null
+},
+{
+"nguoi": "Luan",
+"mua": "24FW",
+"brand": "TNF(GTC企画)",
+"sl": 200202,
+"ma": 83,
+"giay": 10510,
+"ngay": 2877,
+"ghichu": null
+},
+{
+"nguoi": "Luan",
+"mua": "25SS",
+"brand": "TNF(GTC企画)",
+"sl": 144941,
+"ma": 50,
+"giay": 9369,
+"ngay": 1875,
+"ghichu": null
+},
+{
+"nguoi": "Luan",
+"mua": "25SS",
+"brand": "TNF別注　富山",
+"sl": 28056,
+"ma": 38,
+"giay": 10315,
+"ngay": 424,
+"ghichu": null
+},
+{
+"nguoi": "Luan",
+"mua": "25FW",
+"brand": "TNF(GTC企画)",
+"sl": 167156,
+"ma": 86,
+"giay": 11603,
+"ngay": 2404,
+"ghichu": null
+},
+{
+"nguoi": "Luan",
+"mua": "26SS",
+"brand": "TNF(GTC企画)",
+"sl": 100919,
+"ma": 41,
+"giay": 8241,
+"ngay": 1166,
+"ghichu": null
+},
+{
+"nguoi": "Luan",
+"mua": "26FW",
+"brand": "TNF(GTC企画)",
+"sl": 179012,
+"ma": 89,
+"giay": 12542.28736,
+"ngay": 2922,
+"ghichu": null
+},
+{
+"nguoi": "Luan",
+"mua": "27SS",
+"brand": "TNF(GTC企画)",
+"sl": 207757,
+"ma": 45,
+"giay": 7140.074468,
+"ngay": 2471,
+"ghichu": null
+},
+{
+"nguoi": "Khanh",
+"mua": "22FW",
+"brand": "WOOLRICH",
+"sl": 1350,
+"ma": 2,
+"giay": 9648,
+"ngay": 32,
+"ghichu": null
+},
+{
+"nguoi": "Khanh",
+"mua": "22FW",
+"brand": "GOLDWIN",
+"sl": 1969,
+"ma": 15,
+"giay": 5872,
+"ngay": 46,
+"ghichu": null
+},
+{
+"nguoi": "Khanh",
+"mua": "23SS",
+"brand": "WOOLRICH",
+"sl": 1138,
+"ma": 6,
+"giay": 9775,
+"ngay": 36,
+"ghichu": null
+},
+{
+"nguoi": "Khanh",
+"mua": "23SS",
+"brand": "GOLDWIN",
+"sl": 3963,
+"ma": 6,
+"giay": 5170,
+"ngay": 52,
+"ghichu": null
+},
+{
+"nguoi": "Khanh",
+"mua": "23FW",
+"brand": "DANTON",
+"sl": 6361,
+"ma": 5,
+"giay": 8228,
+"ngay": 75,
+"ghichu": null
+},
+{
+"nguoi": "Khanh",
+"mua": "23FW",
+"brand": "241",
+"sl": 2297,
+"ma": 4,
+"giay": 15725,
+"ngay": 44,
+"ghichu": null
+},
+{
+"nguoi": "Khanh",
+"mua": "24SS",
+"brand": "DANTON",
+"sl": 3824,
+"ma": 4,
+"giay": 6325,
+"ngay": 41,
+"ghichu": null
+},
+{
+"nguoi": "Khanh",
+"mua": "24FW",
+"brand": "241",
+"sl": 3823,
+"ma": 11,
+"giay": 11845,
+"ngay": 100,
+"ghichu": null
+},
+{
+"nguoi": "Khanh",
+"mua": "24FW",
+"brand": "GOLDWIN",
+"sl": 20545,
+"ma": 36,
+"giay": 11334,
+"ngay": 435,
+"ghichu": null
+},
+{
+"nguoi": "Khanh",
+"mua": "25SS",
+"brand": "GOLDWIN",
+"sl": 15631,
+"ma": 15,
+"giay": 7746,
+"ngay": 236,
+"ghichu": null
+},
+{
+"nguoi": "Khanh",
+"mua": "25FW",
+"brand": "GOLDWIN",
+"sl": 18775,
+"ma": 36,
+"giay": 11931,
+"ngay": 361,
+"ghichu": null
+},
+{
+"nguoi": "Khanh",
+"mua": "26SS",
+"brand": "GOLDWIN",
+"sl": 22139,
+"ma": 23,
+"giay": 8161,
+"ngay": 315,
+"ghichu": null
+},
+{
+"nguoi": "V.Huy",
+"mua": "22FW",
+"brand": "MONTBELL",
+"sl": 23182,
+"ma": 8,
+"giay": 15294,
+"ngay": 271,
+"ghichu": null
+},
+{
+"nguoi": "V.Huy",
+"mua": "22FW",
+"brand": "DESCENTE",
+"sl": 2223,
+"ma": 3,
+"giay": 10667,
+"ngay": 24,
+"ghichu": null
+},
+{
+"nguoi": "V.Huy",
+"mua": "23SS",
+"brand": "MONTBELL",
+"sl": 19732,
+"ma": 4,
+"giay": 7833,
+"ngay": 196,
+"ghichu": null
+},
+{
+"nguoi": "Q.Huy",
+"mua": "24FW",
+"brand": "TNF別注　東京",
+"sl": 50,
+"ma": 1,
+"giay": 4832,
+"ngay": 1,
+"ghichu": null
+},
+{
+"nguoi": "Q.Huy",
+"mua": "24FW",
+"brand": "UTMF",
+"sl": 500,
+"ma": 1,
+"giay": 2654,
+"ngay": 6,
+"ghichu": null
+},
+{
+"nguoi": "Q.Huy",
+"mua": "24FW",
+"brand": "CANTERBURY",
+"sl": 3892,
+"ma": 7,
+"giay": 10672,
+"ngay": 73,
+"ghichu": null
+},
+{
+"nguoi": "Q.Huy",
+"mua": "24FW",
+"brand": "HYKE",
+"sl": 3373,
+"ma": 15,
+"giay": 5354,
+"ngay": 58,
+"ghichu": null
+},
+{
+"nguoi": "Q.Huy",
+"mua": "25SS",
+"brand": "TNF別注　東京",
+"sl": 3813,
+"ma": 20,
+"giay": 5267,
+"ngay": 56,
+"ghichu": null
+},
+{
+"nguoi": "Q.Huy",
+"mua": "25SS",
+"brand": "CANTERBURY",
+"sl": 290,
+"ma": 1,
+"giay": 8454,
+"ngay": 11,
+"ghichu": null
+},
+{
+"nguoi": "Q.Huy",
+"mua": "25SS",
+"brand": "HYKE",
+"sl": 2061,
+"ma": 9,
+"giay": 4194,
+"ngay": 52,
+"ghichu": null
+},
+{
+"nguoi": "Q.Huy",
+"mua": "25SS",
+"brand": "141",
+"sl": 6,
+"ma": 2,
+"giay": 14012,
+"ngay": 3,
+"ghichu": null
+},
+{
+"nguoi": "Q.Huy",
+"mua": "25FW",
+"brand": "TNF別注　東京",
+"sl": 1099,
+"ma": 5,
+"giay": 3915,
+"ngay": 25,
+"ghichu": null
+},
+{
+"nguoi": "Q.Huy",
+"mua": "25FW",
+"brand": "NANGA",
+"sl": 300,
+"ma": 3,
+"giay": 9890,
+"ngay": 18,
+"ghichu": null
+},
+{
+"nguoi": "Q.Huy",
+"mua": "25FW",
+"brand": "HYKE",
+"sl": 1916,
+"ma": 9,
+"giay": 7430,
+"ngay": 19,
+"ghichu": null
+},
+{
+"nguoi": "Q.Huy",
+"mua": "25FW",
+"brand": "141",
+"sl": 52,
+"ma": 2,
+"giay": 14012,
+"ngay": 26,
+"ghichu": null
+},
+{
+"nguoi": "Q.Huy",
+"mua": "26SS",
+"brand": "TNF別注　東京",
+"sl": 9386,
+"ma": 26,
+"giay": 8463,
+"ngay": 40,
+"ghichu": null
+},
+{
+"nguoi": "Q.Huy",
+"mua": "26SS",
+"brand": "141",
+"sl": 298,
+"ma": 7,
+"giay": 13614,
+"ngay": 16,
+"ghichu": null
+},
+{
+"nguoi": "Q.Huy",
+"mua": "26FW",
+"brand": "TNF別注　東京",
+"sl": 20689,
+"ma": 37,
+"giay": 9594,
+"ngay": 366,
+"ghichu": "Trừ các mã PS + 2 mã mới bổ sung chưa có trên PT"
+},
+{
+"nguoi": "Q.Huy",
+"mua": "26FW",
+"brand": "GOLDWIN",
+"sl": 27289,
+"ma": 33,
+"giay": 12716,
+"ngay": 511,
+"ghichu": "Bổ sung 4 mã đặt riêng"
+},
+{
+"nguoi": "Q.Huy",
+"mua": "26FW",
+"brand": "NANGA",
+"sl": 200,
+"ma": 4,
+"giay": 11636,
+"ngay": 12,
+"ghichu": null
+},
+{
+"nguoi": "Q.Huy",
+"mua": "26FW",
+"brand": "CANTERBURY",
+"sl": 2582,
+"ma": 3,
+"giay": 12719,
+"ngay": 46,
+"ghichu": null
+},
+{
+"nguoi": "Q.Huy",
+"mua": "27SS",
+"brand": "TNF別注　東京",
+"sl": 11323,
+"ma": 28,
+"giay": 7424.796296,
+"ngay": 191,
+"ghichu": null
+},
+{
+"nguoi": "Q.Huy",
+"mua": "27SS",
+"brand": "NANGA",
+"sl": 811,
+"ma": 3,
+"giay": 7995.333333,
+"ngay": 27,
+"ghichu": null
+},
+{
+"nguoi": "Q.Huy",
+"mua": "27SS",
+"brand": "GOLDWIN",
+"sl": 14305,
+"ma": 12,
+"giay": 10292.66667,
+"ngay": 233,
+"ghichu": null
+},
+{
+"nguoi": "H.Trang",
+"mua": "25SS",
+"brand": "HAT +",
+"sl": 2675,
+"ma": 6,
+"giay": 2855,
+"ngay": 28,
+"ghichu": null
+},
+{
+"nguoi": "H.Trang",
+"mua": "25FW",
+"brand": "HAT +",
+"sl": 500,
+"ma": 2,
+"giay": 2959,
+"ngay": 6,
+"ghichu": null
+},
+{
+"nguoi": "H.Trang",
+"mua": "26SS",
+"brand": "HAT +",
+"sl": 384,
+"ma": 1,
+"giay": 4000,
+"ngay": 768,
+"ghichu": "SPL　Line"
+},
+{
+"nguoi": "B.Trang",
+"mua": "26SS",
+"brand": "KASCO",
+"sl": 10000,
+"ma": 2,
+"giay": 8479,
+"ngay": 458,
+"ghichu": null
+},
+{
+"nguoi": "B.Trang",
+"mua": "26FW",
+"brand": "TNF別注",
+"sl": 887,
+"ma": 11,
+"giay": 23670,
+"ngay": 146,
+"ghichu": null
+},
+{
+"nguoi": "B.Trang",
+"mua": "26FW",
+"brand": "FOXFIRE",
+"sl": 1046,
+"ma": 2,
+"giay": 14883,
+"ngay": 94,
+"ghichu": null
+},
+{
+"nguoi": "B.Trang",
+"mua": "26FW",
+"brand": "TATRAS",
+"sl": 311,
+"ma": 2,
+"giay": 12164,
+"ngay": 60,
+"ghichu": null
+}
+],
+"spl": [
+{
+"nguoi": "Luan",
+"mua": "23FW",
+"brand": "GSM",
+"loai": "SMS",
+"sl": 18,
+"ma": 3,
+"giay": 8069,
+"ngay": 54,
+"ghichu": null
+},
+{
+"nguoi": "Luan",
+"mua": "25SS",
+"brand": "TNF(GTC企画)",
+"loai": "1st-3rd",
+"sl": 55,
+"ma": 39,
+"giay": 6690,
+"ngay": 110,
+"ghichu": null
+},
+{
+"nguoi": "Luan",
+"mua": "25FW",
+"brand": "TNF(GTC企画)",
+"loai": "1st-3rd",
+"sl": 109,
+"ma": 61,
+"giay": 10990,
+"ngay": 436,
+"ghichu": null
+},
+{
+"nguoi": "Luan",
+"mua": "26SS",
+"brand": "TNF(GTC企画)",
+"loai": "1st-3rd",
+"sl": 16,
+"ma": 14,
+"giay": 7482,
+"ngay": 32,
+"ghichu": null
+},
+{
+"nguoi": "Luan",
+"mua": "26FW",
+"brand": "TNF(GTC企画)",
+"loai": "1st-3rd",
+"sl": 18,
+"ma": 15,
+"giay": 14987,
+"ngay": 90,
+"ghichu": null
+},
+{
+"nguoi": "Luan",
+"mua": "27SS",
+"brand": "TNF(GTC企画)",
+"loai": "1st-3rd",
+"sl": 52,
+"ma": 25,
+"giay": null,
+"ngay": 52,
+"ghichu": null
+},
+{
+"nguoi": "Luan",
+"mua": "27FW",
+"brand": "TNF(GTC企画)",
+"loai": "1st-3rd",
+"sl": 12,
+"ma": 12,
+"giay": null,
+"ngay": 12,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "23FW",
+"brand": "NW",
+"loai": "1st-3rd",
+"sl": 18,
+"ma": 18,
+"giay": 5672,
+"ngay": 36,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "23FW",
+"brand": "RESURRECTION",
+"loai": "1st-3rd",
+"sl": 15,
+"ma": 15,
+"giay": 5785,
+"ngay": 30,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "23FW",
+"brand": "CHAMPION",
+"loai": "1st-3rd",
+"sl": 2,
+"ma": 2,
+"giay": 8027,
+"ngay": 6,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "23FW",
+"brand": "NW",
+"loai": "SMS",
+"sl": 54,
+"ma": 19,
+"giay": 4705,
+"ngay": 108,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "23FW",
+"brand": "CHAMPION",
+"loai": "SMS",
+"sl": 8,
+"ma": 2,
+"giay": 8213,
+"ngay": 24,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "24SS",
+"brand": "NW",
+"loai": "1st-3rd",
+"sl": 18,
+"ma": 15,
+"giay": 6108,
+"ngay": 36,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "24SS",
+"brand": "MACKINTOSH LONDON",
+"loai": "1st-3rd",
+"sl": 1,
+"ma": 1,
+"giay": 6777,
+"ngay": 2,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "24SS",
+"brand": "ORCIVAL",
+"loai": "1st-3rd",
+"sl": 2,
+"ma": 2,
+"giay": null,
+"ngay": 2,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "24SS",
+"brand": "HH",
+"loai": "1st-3rd",
+"sl": 7,
+"ma": 7,
+"giay": 6522,
+"ngay": 14,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "24SS",
+"brand": "NW",
+"loai": "SMS",
+"sl": 71,
+"ma": 17,
+"giay": 5692,
+"ngay": 142,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "24SS",
+"brand": "HH",
+"loai": "SMS",
+"sl": 60,
+"ma": 20,
+"giay": 7556,
+"ngay": 120,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "24FW",
+"brand": "NW",
+"loai": "1st-3rd",
+"sl": 15,
+"ma": 15,
+"giay": 6108,
+"ngay": 30,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "24FW",
+"brand": "MACKINTOSH LONDON",
+"loai": "1st-3rd",
+"sl": 1,
+"ma": 1,
+"giay": null,
+"ngay": 1,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "24FW",
+"brand": "HH",
+"loai": "1st-3rd",
+"sl": 10,
+"ma": 10,
+"giay": 6522,
+"ngay": 20,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "24FW",
+"brand": "CHAMPION",
+"loai": "1st-3rd",
+"sl": 1,
+"ma": 1,
+"giay": 7433,
+"ngay": 2,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "24FW",
+"brand": "NW",
+"loai": "SMS",
+"sl": 78,
+"ma": 19,
+"giay": 6320,
+"ngay": 156,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "24FW",
+"brand": "HH",
+"loai": "SMS",
+"sl": 54,
+"ma": 19,
+"giay": 9654,
+"ngay": 162,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "25SS",
+"brand": "TNF(東京企画)",
+"loai": "1st-3rd",
+"sl": 6,
+"ma": 6,
+"giay": 6690,
+"ngay": 12,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "25SS",
+"brand": "NW",
+"loai": "1st-3rd",
+"sl": 25,
+"ma": 23,
+"giay": 5184,
+"ngay": 50,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "25SS",
+"brand": "HH",
+"loai": "1st-3rd",
+"sl": 31,
+"ma": 30,
+"giay": 8709,
+"ngay": 93,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "25SS",
+"brand": "NW",
+"loai": "SMS",
+"sl": 63,
+"ma": 18,
+"giay": 5449,
+"ngay": 126,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "25SS",
+"brand": "HH",
+"loai": "SMS",
+"sl": 56,
+"ma": 16,
+"giay": 9281,
+"ngay": 168,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "25FW",
+"brand": "TNF(東京企画)",
+"loai": "1st-3rd",
+"sl": 5,
+"ma": 5,
+"giay": 10990,
+"ngay": 20,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "25FW",
+"brand": "NW",
+"loai": "1st-3rd",
+"sl": 26,
+"ma": 18,
+"giay": 9146,
+"ngay": 78,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "25FW",
+"brand": "HH",
+"loai": "1st-3rd",
+"sl": 65,
+"ma": 36,
+"giay": 13961,
+"ngay": 325,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "25FW",
+"brand": "TSUTSU+KOTI",
+"loai": "1st-3rd",
+"sl": 3,
+"ma": 3,
+"giay": 12763,
+"ngay": 15,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "25FW",
+"brand": "NW",
+"loai": "SMS",
+"sl": 99,
+"ma": 29,
+"giay": 7187,
+"ngay": 198,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "25FW",
+"brand": "HH",
+"loai": "SMS",
+"sl": 139,
+"ma": 40,
+"giay": 13178,
+"ngay": 695,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "26SS",
+"brand": "TNF(東京企画)",
+"loai": "1st-3rd",
+"sl": 7,
+"ma": 2,
+"giay": 7482,
+"ngay": 14,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "26SS",
+"brand": "NW",
+"loai": "1st-3rd",
+"sl": 7,
+"ma": 5,
+"giay": 6165,
+"ngay": 14,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "26SS",
+"brand": "SHIMANO",
+"loai": "1st-3rd",
+"sl": 2,
+"ma": 2,
+"giay": 8210,
+"ngay": 6,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "26SS",
+"brand": "HH",
+"loai": "1st-3rd",
+"sl": 25,
+"ma": 16,
+"giay": 13068,
+"ngay": 125,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "26SS",
+"brand": "NW",
+"loai": "SMS",
+"sl": 30,
+"ma": 12,
+"giay": 5617,
+"ngay": 60,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "26SS",
+"brand": "HH",
+"loai": "SMS",
+"sl": 52,
+"ma": 19,
+"giay": 11036,
+"ngay": 208,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "26FW",
+"brand": "NW",
+"loai": "1st-3rd",
+"sl": 23,
+"ma": 21,
+"giay": 7573,
+"ngay": 46,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "26FW",
+"brand": "HH",
+"loai": "1st-3rd",
+"sl": 47,
+"ma": 42,
+"giay": 9838,
+"ngay": 141,
+"ghichu": "生産数42→47, 品番数37→42"
+},
+{
+"nguoi": "Cuong",
+"mua": "26FW",
+"brand": "NW",
+"loai": "SMS",
+"sl": 39,
+"ma": 12,
+"giay": 5939,
+"ngay": 78,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "26FW",
+"brand": "HH",
+"loai": "SMS",
+"sl": 120,
+"ma": 38,
+"giay": 12316,
+"ngay": 600,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "27SS",
+"brand": "NW",
+"loai": "1st-3rd",
+"sl": 2,
+"ma": 2,
+"giay": null,
+"ngay": 2,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "27SS",
+"brand": "HH",
+"loai": "1st-3rd",
+"sl": 45,
+"ma": 34,
+"giay": null,
+"ngay": 45,
+"ghichu": "生産数34→45, 品番数28→34"
+},
+{
+"nguoi": "Cuong",
+"mua": "27SS",
+"brand": "NW",
+"loai": "SMS",
+"sl": 13,
+"ma": 5,
+"giay": null,
+"ngay": 13,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "27SS",
+"brand": "HH",
+"loai": "SMS",
+"sl": 132,
+"ma": 48,
+"giay": null,
+"ngay": 132,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "27FW",
+"brand": "HH",
+"loai": "SMS",
+"sl": 267,
+"ma": 74,
+"giay": 11700.357142857143,
+"ngay": 1068,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "27FW",
+"brand": "NW",
+"loai": "SMS",
+"sl": 31,
+"ma": 10,
+"giay": 7990.9,
+"ngay": 62,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "27FW",
+"brand": "HH",
+"loai": "1st-3rd",
+"sl": 76,
+"ma": 68,
+"giay": null,
+"ngay": 76,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "27FW",
+"brand": "NW",
+"loai": "1st-3rd",
+"sl": 15,
+"ma": 13,
+"giay": null,
+"ngay": 15,
+"ghichu": null
+},
+{
+"nguoi": "Cuong",
+"mua": "27FW",
+"brand": "YONEX",
+"loai": "1st-3rd",
+"sl": 5,
+"ma": 5,
+"giay": null,
+"ngay": 5,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "23FW",
+"brand": "ALLTERRAIN",
+"loai": "1st-3rd",
+"sl": 9,
+"ma": 7,
+"giay": 11873,
+"ngay": 36,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "23FW",
+"brand": "SNOWPEAK",
+"loai": "1st-3rd",
+"sl": 4,
+"ma": 2,
+"giay": 7574,
+"ngay": 8,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "23FW",
+"brand": "LL.BEAN",
+"loai": "1st-3rd",
+"sl": 8,
+"ma": 8,
+"giay": 7319,
+"ngay": 16,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "23FW",
+"brand": "ALLTERRAIN",
+"loai": "SMS",
+"sl": 21,
+"ma": 5,
+"giay": 11873,
+"ngay": 84,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "23FW",
+"brand": "SNOWPEAK",
+"loai": "SMS",
+"sl": 138,
+"ma": 15,
+"giay": 7639,
+"ngay": 276,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "23FW",
+"brand": "LL.BEAN",
+"loai": "SMS",
+"sl": 88,
+"ma": 16,
+"giay": 7332,
+"ngay": 176,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "24SS",
+"brand": "ALLTERRAIN",
+"loai": "1st-3rd",
+"sl": 5,
+"ma": 5,
+"giay": 6356,
+"ngay": 10,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "24SS",
+"brand": "LL.BEAN",
+"loai": "1st-3rd",
+"sl": 66,
+"ma": 21,
+"giay": 6592,
+"ngay": 132,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "24SS",
+"brand": "ALLTERRAIN",
+"loai": "SMS",
+"sl": 15,
+"ma": 3,
+"giay": 7060,
+"ngay": 30,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "24SS",
+"brand": "LL.BEAN",
+"loai": "SMS",
+"sl": 122,
+"ma": 17,
+"giay": 5953,
+"ngay": 244,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "24FW",
+"brand": "ALLTERRAIN",
+"loai": "1st-3rd",
+"sl": 6,
+"ma": 6,
+"giay": 12613,
+"ngay": 30,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "24FW",
+"brand": "CANTERBURY",
+"loai": "1st-3rd",
+"sl": 6,
+"ma": 6,
+"giay": 10234,
+"ngay": 24,
+"ghichu": "Hien 1st, Q.Huy SMS"
+},
+{
+"nguoi": "Hien",
+"mua": "24FW",
+"brand": "SNOWPEAK",
+"loai": "1st-3rd",
+"sl": 2,
+"ma": 2,
+"giay": 3157,
+"ngay": 4,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "24FW",
+"brand": "LL.BEAN",
+"loai": "1st-3rd",
+"sl": 20,
+"ma": 20,
+"giay": 9245,
+"ngay": 60,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "24FW",
+"brand": "ALLTERRAIN",
+"loai": "SMS",
+"sl": 26,
+"ma": 4,
+"giay": 12613,
+"ngay": 130,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "24FW",
+"brand": "SNOWPEAK",
+"loai": "SMS",
+"sl": 36,
+"ma": 3,
+"giay": 13405,
+"ngay": 180,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "24FW",
+"brand": "LL.BEAN",
+"loai": "SMS",
+"sl": 143,
+"ma": 25,
+"giay": 10038,
+"ngay": 572,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "25SS",
+"brand": "ALLTERRAIN",
+"loai": "1st-3rd",
+"sl": 6,
+"ma": 5,
+"giay": 11451,
+"ngay": 24,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "25SS",
+"brand": "LL.BEAN",
+"loai": "1st-3rd",
+"sl": 21,
+"ma": 21,
+"giay": 6592,
+"ngay": 42,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "25SS",
+"brand": "ALLTERRAIN",
+"loai": "SMS",
+"sl": 29,
+"ma": 5,
+"giay": 10460,
+"ngay": 116,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "25SS",
+"brand": "LL.BEAN",
+"loai": "SMS",
+"sl": 133,
+"ma": 16,
+"giay": 6610,
+"ngay": 266,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "25FW",
+"brand": "MONTBELL",
+"loai": "1st-3rd",
+"sl": 2,
+"ma": 2,
+"giay": 12114,
+"ngay": 10,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "25FW",
+"brand": "LL.BEAN",
+"loai": "1st-3rd",
+"sl": 4,
+"ma": 2,
+"giay": 12254,
+"ngay": 20,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "25FW",
+"brand": "MONTBELL",
+"loai": "SMS",
+"sl": 20,
+"ma": 5,
+"giay": 11438,
+"ngay": 80,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "25FW",
+"brand": "LL.BEAN",
+"loai": "SMS",
+"sl": 34,
+"ma": 3,
+"giay": 9610,
+"ngay": 102,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "26SS",
+"brand": "ALLTERRAIN",
+"loai": "1st-3rd",
+"sl": 57,
+"ma": 16,
+"giay": null,
+"ngay": 57,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "26SS",
+"brand": "DESCENT",
+"loai": "1st-3rd",
+"sl": 6,
+"ma": 5,
+"giay": 11486,
+"ngay": 24,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "26SS",
+"brand": "MONTBELL",
+"loai": "1st-3rd",
+"sl": 6,
+"ma": 1,
+"giay": 8037,
+"ngay": 18,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "26SS",
+"brand": "TETON",
+"loai": "1st-3rd",
+"sl": 21,
+"ma": 21,
+"giay": 5443,
+"ngay": 42,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "26SS",
+"brand": "DESCENT",
+"loai": "SMS",
+"sl": 16,
+"ma": 5,
+"giay": 11610,
+"ngay": 64,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "26SS",
+"brand": "MONTBELL",
+"loai": "SMS",
+"sl": 10,
+"ma": 3,
+"giay": 5432,
+"ngay": 20,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "27SS",
+"brand": "ALLTERRAIN",
+"loai": "1st-3rd",
+"sl": 23,
+"ma": 21,
+"giay": null,
+"ngay": 23,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "27SS",
+"brand": "DESCENT",
+"loai": "1st-3rd",
+"sl": 3,
+"ma": 2,
+"giay": null,
+"ngay": 3,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "27SS",
+"brand": "TETON",
+"loai": "1st-3rd",
+"sl": 16,
+"ma": 12,
+"giay": null,
+"ngay": 16,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "27SS",
+"brand": "ALLTERRAIN",
+"loai": "SMS",
+"sl": 81,
+"ma": 26,
+"giay": null,
+"ngay": 81,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "27SS",
+"brand": "DESCENT",
+"loai": "SMS",
+"sl": 2,
+"ma": 2,
+"giay": null,
+"ngay": 2,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "27SS",
+"brand": "TETON",
+"loai": "SMS",
+"sl": 157,
+"ma": 33,
+"giay": null,
+"ngay": 157,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "27FW",
+"brand": "ALLTERRAIN",
+"loai": "SMS",
+"sl": 35,
+"ma": 9,
+"giay": null,
+"ngay": 35,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "27FW",
+"brand": "SKI",
+"loai": "SMS",
+"sl": 82,
+"ma": 6,
+"giay": 22237.5,
+"ngay": 492,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "27FW",
+"brand": "TETON",
+"loai": "SMS",
+"sl": 41,
+"ma": 9,
+"giay": null,
+"ngay": 41,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "27FW",
+"brand": "ALLTERRAIN",
+"loai": "1st-3rd",
+"sl": 6,
+"ma": 6,
+"giay": null,
+"ngay": 6,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "27FW",
+"brand": "Descente",
+"loai": "1st-3rd",
+"sl": 5,
+"ma": 3,
+"giay": null,
+"ngay": 5,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "27FW",
+"brand": "Montbell",
+"loai": "1st-3rd",
+"sl": 1,
+"ma": 1,
+"giay": null,
+"ngay": 1,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "27FW",
+"brand": "SKI",
+"loai": "1st-3rd",
+"sl": 10,
+"ma": 10,
+"giay": null,
+"ngay": 10,
+"ghichu": null
+},
+{
+"nguoi": "Hien",
+"mua": "27FW",
+"brand": "TETON",
+"loai": "1st-3rd",
+"sl": 7,
+"ma": 7,
+"giay": null,
+"ngay": 7,
+"ghichu": null
+},
+{
+"nguoi": "Nhu",
+"mua": "23FW",
+"brand": "UTMF",
+"loai": "1st-3rd",
+"sl": 1,
+"ma": 1,
+"giay": null,
+"ngay": 1,
+"ghichu": null
+},
+{
+"nguoi": "Nhu",
+"mua": "23FW",
+"brand": "MONTBELL",
+"loai": "1st-3rd",
+"sl": 19,
+"ma": 19,
+"giay": 13224,
+"ngay": 95,
+"ghichu": null
+},
+{
+"nguoi": "Nhu",
+"mua": "23FW",
+"brand": "MONTBELL",
+"loai": "SMS",
+"sl": 11,
+"ma": 3,
+"giay": 13224,
+"ngay": 55,
+"ghichu": null
+},
+{
+"nguoi": "Nhu",
+"mua": "24SS",
+"brand": "MONTBELL",
+"loai": "1st-3rd",
+"sl": 14,
+"ma": 12,
+"giay": 3994,
+"ngay": 28,
+"ghichu": null
+},
+{
+"nguoi": "Nhu",
+"mua": "24SS",
+"brand": "UMBRO",
+"loai": "1st-3rd",
+"sl": 3,
+"ma": 3,
+"giay": 10783,
+"ngay": 12,
+"ghichu": null
+},
+{
+"nguoi": "Nhu",
+"mua": "24SS",
+"brand": "TORAY SPORT",
+"loai": "1st-3rd",
+"sl": 11,
+"ma": 11,
+"giay": 6072,
+"ngay": 22,
+"ghichu": null
+},
+{
+"nguoi": "Nhu",
+"mua": "24SS",
+"brand": "MONTBELL",
+"loai": "SMS",
+"sl": 25,
+"ma": 6,
+"giay": 3994,
+"ngay": 50,
+"ghichu": null
+},
+{
+"nguoi": "Nhu",
+"mua": "24SS",
+"brand": "TORAY SPORT",
+"loai": "SMS",
+"sl": 11,
+"ma": 11,
+"giay": 6072,
+"ngay": 22,
+"ghichu": null
+},
+{
+"nguoi": "Nhu",
+"mua": "24FW",
+"brand": "MONTBELL",
+"loai": "1st-3rd",
+"sl": 19,
+"ma": 19,
+"giay": 15840,
+"ngay": 114,
+"ghichu": null
+},
+{
+"nguoi": "Nhu",
+"mua": "24FW",
+"brand": "GOLDWIN",
+"loai": "1st-3rd",
+"sl": 38,
+"ma": 38,
+"giay": 7919,
+"ngay": 76,
+"ghichu": null
+},
+{
+"nguoi": "Nhu",
+"mua": "24FW",
+"brand": "CHAMPION",
+"loai": "SMS",
+"sl": 16,
+"ma": 1,
+"giay": 7662,
+"ngay": 32,
+"ghichu": "1st anh Cường , 2nd với SMS Như"
+},
+{
+"nguoi": "Nhu",
+"mua": "24FW",
+"brand": "GOLDWIN",
+"loai": "SMS",
+"sl": 262,
+"ma": 37,
+"giay": 10175,
+"ngay": 1048,
+"ghichu": null
+},
+{
+"nguoi": "Nhu",
+"mua": "25SS",
+"brand": "UTMF",
+"loai": "1st-3rd",
+"sl": 1,
+"ma": 1,
+"giay": null,
+"ngay": 1,
+"ghichu": null
+},
+{
+"nguoi": "Nhu",
+"mua": "25SS",
+"brand": "CHAMPION",
+"loai": "1st-3rd",
+"sl": 3,
+"ma": 3,
+"giay": 9848,
+"ngay": 9,
+"ghichu": null
+},
+{
+"nguoi": "Nhu",
+"mua": "25SS",
+"brand": "MONTBELL",
+"loai": "1st-3rd",
+"sl": 3,
+"ma": 3,
+"giay": 9848,
+"ngay": 9,
+"ghichu": "1st Như theo, SMS Hien theo(S25 ko có nên bắt đầu từ 25FW?)"
+},
+{
+"nguoi": "Nhu",
+"mua": "25SS",
+"brand": "GOLDWIN",
+"loai": "1st-3rd",
+"sl": 35,
+"ma": 30,
+"giay": 7683,
+"ngay": 70,
+"ghichu": "1st Như theo, SMS Q.Huy theo"
+},
+{
+"nguoi": "Nhu",
+"mua": "25FW",
+"brand": "TNF別注 TOYAMA",
+"loai": "1st-3rd",
+"sl": 46,
+"ma": 21,
+"giay": 10990,
+"ngay": 184,
+"ghichu": null
+},
+{
+"nguoi": "Nhu",
+"mua": "25FW",
+"brand": "CHAMPION",
+"loai": "1st-3rd",
+"sl": 3,
+"ma": 3,
+"giay": 10914,
+"ngay": 12,
+"ghichu": "Như Theo"
+},
+{
+"nguoi": "Nhu",
+"mua": "25FW",
+"brand": "CHAMPION",
+"loai": "SMS",
+"sl": 18,
+"ma": 2,
+"giay": 9999,
+"ngay": 54,
+"ghichu": "Như Theo"
+},
+{
+"nguoi": "Nhu",
+"mua": "26SS",
+"brand": "TNF別注 TOYAMA",
+"loai": "1st-3rd",
+"sl": 146,
+"ma": 63,
+"giay": 7482,
+"ngay": 292,
+"ghichu": null
+},
+{
+"nguoi": "Nhu",
+"mua": "26FW",
+"brand": "TNF別注 TOYAMA",
+"loai": "1st-3rd",
+"sl": 89,
+"ma": 49,
+"giay": 14987,
+"ngay": 445,
+"ghichu": null
+},
+{
+"nguoi": "Nhu",
+"mua": "27SS",
+"brand": "TNF別注 TOYAMA",
+"loai": "1st-3rd",
+"sl": 49,
+"ma": 34,
+"giay": null,
+"ngay": 49,
+"ghichu": null
+},
+{
+"nguoi": "Nhu",
+"mua": "27FW",
+"brand": "TNF別注",
+"loai": "1st-3rd",
+"sl": 9,
+"ma": 9,
+"giay": null,
+"ngay": 9,
+"ghichu": null
+},
+{
+"nguoi": "Khanh",
+"mua": "23FW",
+"brand": "TNF(東京企画、GTC企画共通)サンプル",
+"loai": "1st-3rd",
+"sl": 4,
+"ma": 4,
+"giay": 7347,
+"ngay": 8,
+"ghichu": null
+},
+{
+"nguoi": "Khanh",
+"mua": "23FW",
+"brand": "TNF(東京企画、GTC企画共通)サンプル",
+"loai": "SMS",
+"sl": 157,
+"ma": 42,
+"giay": 7347,
+"ngay": 314,
+"ghichu": null
+},
+{
+"nguoi": "Khanh",
+"mua": "24SS",
+"brand": "TNF(東京企画、GTC企画共通)サンプル",
+"loai": "1st-3rd",
+"sl": 145,
+"ma": 70,
+"giay": 8461,
+"ngay": 435,
+"ghichu": null
+},
+{
+"nguoi": "Khanh",
+"mua": "24SS",
+"brand": "TNF(東京企画、GTC企画共通)サンプル",
+"loai": "SMS",
+"sl": 229,
+"ma": 53,
+"giay": 7143,
+"ngay": 458,
+"ghichu": null
+},
+{
+"nguoi": "Khanh",
+"mua": "24FW",
+"brand": "TNF(東京企画、GTC企画共通)サンプル",
+"loai": "1st-3rd",
+"sl": 50,
+"ma": 40,
+"giay": 7335,
+"ngay": 100,
+"ghichu": null
+},
+{
+"nguoi": "Khanh",
+"mua": "24FW",
+"brand": "TNF(東京企画、GTC企画共通)サンプル",
+"loai": "SMS",
+"sl": 281,
+"ma": 68,
+"giay": 9483,
+"ngay": 843,
+"ghichu": null
+},
+{
+"nguoi": "Khanh",
+"mua": "25SS",
+"brand": "TNF(東京企画、GTC企画共通)サンプル",
+"loai": "1st-3rd",
+"sl": 39,
+"ma": 24,
+"giay": 6690,
+"ngay": 78,
+"ghichu": null
+},
+{
+"nguoi": "Khanh",
+"mua": "25SS",
+"brand": "TNF(東京企画、GTC企画共通)サンプル",
+"loai": "SMS",
+"sl": 279,
+"ma": 53,
+"giay": 7267,
+"ngay": 558,
+"ghichu": null
+},
+{
+"nguoi": "Khanh",
+"mua": "25FW",
+"brand": "TNF(東京企画、GTC企画共通)サンプル",
+"loai": "1st-3rd",
+"sl": 93,
+"ma": 74,
+"giay": 10990,
+"ngay": 372,
+"ghichu": null
+},
+{
+"nguoi": "Khanh",
+"mua": "25FW",
+"brand": "TNF(東京企画、GTC企画共通)サンプル",
+"loai": "SMS",
+"sl": 567,
+"ma": 109,
+"giay": 10546,
+"ngay": 2268,
+"ghichu": null
+},
+{
+"nguoi": "Khanh",
+"mua": "26SS",
+"brand": "TNF(東京企画、GTC企画共通)サンプル",
+"loai": "1st-3rd",
+"sl": 46,
+"ma": 30,
+"giay": 7482,
+"ngay": 92,
+"ghichu": null
+},
+{
+"nguoi": "Khanh",
+"mua": "26SS",
+"brand": "TNF(東京企画、GTC企画共通)サンプル",
+"loai": "SMS",
+"sl": 273,
+"ma": 82,
+"giay": 9673,
+"ngay": 819,
+"ghichu": null
+},
+{
+"nguoi": "Khanh",
+"mua": "26FW",
+"brand": "TNF(東京企画、GTC企画共通)サンプル",
+"loai": "1st-3rd",
+"sl": 86,
+"ma": 49,
+"giay": 15600,
+"ngay": 516,
+"ghichu": null
+},
+{
+"nguoi": "Khanh",
+"mua": "26FW",
+"brand": "TNF(東京企画、GTC企画共通)サンプル",
+"loai": "SMS",
+"sl": 480,
+"ma": 96,
+"giay": 14629,
+"ngay": 2400,
+"ghichu": null
+},
+{
+"nguoi": "Khanh",
+"mua": "27SS",
+"brand": "TNF(東京企画、GTC企画共通)サンプル",
+"loai": "1st-3rd",
+"sl": 11,
+"ma": 6,
+"giay": 6992,
+"ngay": 22,
+"ghichu": null
+},
+{
+"nguoi": "Q.Huy",
+"mua": "23FW",
+"brand": "RIDGE MOUNTAIN GEAR",
+"loai": "1st-3rd",
+"sl": 1,
+"ma": 1,
+"giay": null,
+"ngay": 1,
+"ghichu": null
+},
+{
+"nguoi": "Q.Huy",
+"mua": "24FW",
+"brand": "HYKE",
+"loai": "1st-3rd",
+"sl": 10,
+"ma": 8,
+"giay": 4317,
+"ngay": 20,
+"ghichu": null
+},
+{
+"nguoi": "Q.Huy",
+"mua": "24FW",
+"brand": "HYKE",
+"loai": "SMS",
+"sl": 78,
+"ma": 14,
+"giay": null,
+"ngay": 78,
+"ghichu": null
+},
+{
+"nguoi": "Q.Huy",
+"mua": "24FW",
+"brand": "CANTERBURY",
+"loai": "SMS",
+"sl": 15,
+"ma": 5,
+"giay": 10490,
+"ngay": 60,
+"ghichu": "Hiền 1st, Q.Huy SMS"
+},
+{
+"nguoi": "Q.Huy",
+"mua": "24FW",
+"brand": "RIDGE MOUNTAIN GEAR",
+"loai": "SMS",
+"sl": 5,
+"ma": 2,
+"giay": null,
+"ngay": 5,
+"ghichu": null
+},
+{
+"nguoi": "Q.Huy",
+"mua": "25SS",
+"brand": "TNF別注",
+"loai": "1st-3rd",
+"sl": 11,
+"ma": 11,
+"giay": 6690,
+"ngay": 22,
+"ghichu": null
+},
+{
+"nguoi": "Q.Huy",
+"mua": "25SS",
+"brand": "HYKE",
+"loai": "1st-3rd",
+"sl": 8,
+"ma": 8,
+"giay": 6690,
+"ngay": 16,
+"ghichu": null
+},
+{
+"nguoi": "Q.Huy",
+"mua": "25SS",
+"brand": "RIDGE MOUNTAIN GEAR",
+"loai": "1st-3rd",
+"sl": 1,
+"ma": 1,
+"giay": 9543,
+"ngay": 3,
+"ghichu": null
+},
+{
+"nguoi": "Q.Huy",
+"mua": "25SS",
+"brand": "HYKE",
+"loai": "SMS",
+"sl": 43,
+"ma": 8,
+"giay": 4598,
+"ngay": 86,
+"ghichu": null
+},
+{
+"nguoi": "Q.Huy",
+"mua": "25SS",
+"brand": "CANTERBURY",
+"loai": "SMS",
+"sl": 4,
+"ma": 1,
+"giay": 8454,
+"ngay": 12,
+"ghichu": null
+},
+{
+"nguoi": "Q.Huy",
+"mua": "25SS",
+"brand": "GOLDWIN",
+"loai": "SMS",
+"sl": 248,
+"ma": 17,
+"giay": 8080,
+"ngay": 744,
+"ghichu": "1st Như theo, SMS Q.Huy theo"
+},
+{
+"nguoi": "Q.Huy",
+"mua": "25FW",
+"brand": "TNF別注",
+"loai": "1st-3rd",
+"sl": 46,
+"ma": 21,
+"giay": 10990,
+"ngay": 184,
+"ghichu": null
+},
+{
+"nguoi": "Q.Huy",
+"mua": "25FW",
+"brand": "HYKE",
+"loai": "1st-3rd",
+"sl": 5,
+"ma": 5,
+"giay": 6513,
+"ngay": 10,
+"ghichu": null
+},
+{
+"nguoi": "Q.Huy",
+"mua": "25FW",
+"brand": "CANTERBURY",
+"loai": "1st-3rd",
+"sl": 1,
+"ma": 1,
+"giay": 15113,
+"ngay": 6,
+"ghichu": null
+},
+{
+"nguoi": "Q.Huy",
+"mua": "25FW",
+"brand": "GOLDWIN",
+"loai": "1st-3rd",
+"sl": 18,
+"ma": 11,
+"giay": 12116,
+"ngay": 90,
+"ghichu": null
+},
+{
+"nguoi": "Q.Huy",
+"mua": "25FW",
+"brand": "NANGA",
+"loai": "1st-3rd",
+"sl": 9,
+"ma": 3,
+"giay": 9890,
+"ngay": 27,
+"ghichu": null
+},
+{
+"nguoi": "Q.Huy",
+"mua": "25FW",
+"brand": "141",
+"loai": "1st-3rd",
+"sl": 7,
+"ma": 2,
+"giay": 14012,
+"ngay": 35,
+"ghichu": null
+},
+{
+"nguoi": "Q.Huy",
+"mua": "25FW",
+"brand": "HYKE",
+"loai": "SMS",
+"sl": 34,
+"ma": 16,
+"giay": 7387,
+"ngay": 68,
+"ghichu": null
+},
+{
+"nguoi": "Q.Huy",
+"mua": "25FW",
+"brand": "CANTERBURY",
+"loai": "SMS",
+"sl": 2,
+"ma": 1,
+"giay": 15113,
+"ngay": 12,
+"ghichu": null
+},
+{
+"nguoi": "Q.Huy",
+"mua": "25FW",
+"brand": "GOLDWIN",
+"loai": "SMS",
+"sl": 250,
+"ma": 41,
+"giay": 11971,
+"ngay": 1000,
+"ghichu": null
+},
+{
+"nguoi": "Q.Huy",
+"mua": "26SS",
+"brand": "TNF別注",
+"loai": "1st-3rd",
+"sl": 146,
+"ma": 63,
+"giay": 7482,
+"ngay": 292,
+"ghichu": null
+},
+{
+"nguoi": "Q.Huy",
+"mua": "26SS",
+"brand": "GOLDWIN",
+"loai": "1st-3rd",
+"sl": 12,
+"ma": 10,
+"giay": 7755,
+"ngay": 24,
+"ghichu": null
+},
+{
+"nguoi": "Q.Huy",
+"mua": "26SS",
+"brand": "NANGA",
+"loai": "1st-3rd",
+"sl": 9,
+"ma": 5,
+"giay": 9276,
+"ngay": 27,
+"ghichu": null
+},
+{
+"nguoi": "Q.Huy",
+"mua": "26SS",
+"brand": "GOLDWIN",
+"loai": "SMS",
+"sl": 150,
+"ma": 25,
+"giay": 7950,
+"ngay": 300,
+"ghichu": null
+},
+{
+"nguoi": "Q.Huy",
+"mua": "26FW",
+"brand": "TNF別注",
+"loai": "1st-3rd",
+"sl": 86,
+"ma": 46,
+"giay": 14987,
+"ngay": 430,
+"ghichu": null
+},
+{
+"nguoi": "Q.Huy",
+"mua": "26FW",
+"brand": "CANTERBURY",
+"loai": "1st-3rd",
+"sl": 25,
+"ma": 5,
+"giay": 13517,
+"ngay": 125,
+"ghichu": null
+},
+{
+"nguoi": "Q.Huy",
+"mua": "26FW",
+"brand": "GOLDWIN",
+"loai": "1st-3rd",
+"sl": 52,
+"ma": 34,
+"giay": 12105,
+"ngay": 260,
+"ghichu": null
+},
+{
+"nguoi": "Q.Huy",
+"mua": "26FW",
+"brand": "NANGA",
+"loai": "1st-3rd",
+"sl": 6,
+"ma": 6,
+"giay": 13597,
+"ngay": 30,
+"ghichu": null
+},
+{
+"nguoi": "Q.Huy",
+"mua": "26FW",
+"brand": "CANTERBURY",
+"loai": "SMS",
+"sl": 11,
+"ma": 3,
+"giay": 12502,
+"ngay": 55,
+"ghichu": null
+},
+{
+"nguoi": "Q.Huy",
+"mua": "26FW",
+"brand": "GOLDWIN",
+"loai": "SMS",
+"sl": 194,
+"ma": 33,
+"giay": 11241,
+"ngay": 776,
+"ghichu": null
+},
+{
+"nguoi": "Q.Huy",
+"mua": "27SS",
+"brand": "TNF別注",
+"loai": "1st-3rd",
+"sl": 46,
+"ma": 43,
+"giay": 5136,
+"ngay": 92,
+"ghichu": null
+},
+{
+"nguoi": "Q.Huy",
+"mua": "27SS",
+"brand": "GOLDWIN",
+"loai": "1st-3rd",
+"sl": 33,
+"ma": 22,
+"giay": 10969,
+"ngay": 132,
+"ghichu": null
+},
+{
+"nguoi": "Q.Huy",
+"mua": "27SS",
+"brand": "GOLDWIN",
+"loai": "SMS",
+"sl": 67,
+"ma": 15,
+"giay": 11400,
+"ngay": 268,
+"ghichu": null
+},
+{
+"nguoi": "Q.Huy",
+"mua": "27FW",
+"brand": "CANTERBURY",
+"loai": "SMS",
+"sl": 15,
+"ma": 7,
+"giay": null,
+"ngay": 15,
+"ghichu": null
+},
+{
+"nguoi": "Q.Huy",
+"mua": "27FW",
+"brand": "GOLDWIN",
+"loai": "SMS",
+"sl": 194,
+"ma": 23,
+"giay": 13176.238095238095,
+"ngay": 970,
+"ghichu": null
+},
+{
+"nguoi": "Q.Huy",
+"mua": "27FW",
+"brand": "CANTERBURY",
+"loai": "1st-3rd",
+"sl": 3,
+"ma": 3,
+"giay": null,
+"ngay": 3,
+"ghichu": null
+},
+{
+"nguoi": "Q.Huy",
+"mua": "27FW",
+"brand": "GOLDWIN",
+"loai": "1st-3rd",
+"sl": 32,
+"ma": 24,
+"giay": null,
+"ngay": 32,
+"ghichu": null
+},
+{
+"nguoi": "Q.Huy",
+"mua": "27FW",
+"brand": "TNF",
+"loai": "1st-3rd",
+"sl": 6,
+"ma": 5,
+"giay": null,
+"ngay": 6,
+"ghichu": null
+},
+{
+"nguoi": "H.Trang",
+"mua": "25SS",
+"brand": "HAT+CAP...",
+"loai": "1st-3rd",
+"sl": 8,
+"ma": 8,
+"giay": 2322,
+"ngay": 8,
+"ghichu": null
+},
+{
+"nguoi": "H.Trang",
+"mua": "25FW",
+"brand": "HAT+CAP...",
+"loai": "1st-3rd",
+"sl": 31,
+"ma": 14,
+"giay": 2322,
+"ngay": 31,
+"ghichu": null
+},
+{
+"nguoi": "H.Trang",
+"mua": "26SS",
+"brand": "HAT+CAP...",
+"loai": "1st-3rd",
+"sl": 82,
+"ma": 36,
+"giay": 4650,
+"ngay": 164,
+"ghichu": null
+},
+{
+"nguoi": "H.Trang",
+"mua": "26SS",
+"brand": "HAT+CAP...",
+"loai": "SMS",
+"sl": 16,
+"ma": 3,
+"giay": 2836,
+"ngay": 16,
+"ghichu": null
+},
+{
+"nguoi": "H.Trang",
+"mua": "26FW",
+"brand": "HAT+CAP...",
+"loai": "SMS",
+"sl": 8,
+"ma": 2,
+"giay": 3728,
+"ngay": 16,
+"ghichu": null
+},
+{
+"nguoi": "H.Trang",
+"mua": "27SS",
+"brand": "141",
+"loai": "1st-3rd",
+"sl": 24,
+"ma": 8,
+"giay": 10494,
+"ngay": 96,
+"ghichu": null
+},
+{
+"nguoi": "B.Trang",
+"mua": "27SS",
+"brand": "TNF(東京企画、GTC企画共通)サンプル",
+"loai": "1st-3rd",
+"sl": 47,
+"ma": 29,
+"giay": 7010,
+"ngay": 94,
+"ghichu": null
+},
+{
+"nguoi": "B.Trang",
+"mua": "27SS",
+"brand": "TNF(東京企画、GTC企画共通)サンプル",
+"loai": "SMS",
+"sl": 293,
+"ma": 75,
+"giay": 7619,
+"ngay": 586,
+"ghichu": null
+},
+{
+"nguoi": "B.Trang",
+"mua": "27FW",
+"brand": "TNF",
+"loai": "SMS",
+"sl": 367,
+"ma": 94,
+"giay": 11824.380952380952,
+"ngay": 1468,
+"ghichu": null
+},
+{
+"nguoi": "B.Trang",
+"mua": "27FW",
+"brand": "YONEX",
+"loai": "SMS",
+"sl": 244,
+"ma": 16,
+"giay": null,
+"ngay": 244,
+"ghichu": null
+},
+{
+"nguoi": "B.Trang",
+"mua": "27FW",
+"brand": "TNF",
+"loai": "1st-3rd",
+"sl": 73,
+"ma": 45,
+"giay": null,
+"ngay": 73,
+"ghichu": null
+}
+],
+"dich": [
+{
+"brand": "TNF(GTC企画)",
+"nguoi": [
+"Luan"
+],
+"gio_ma": 3.8333333333333335,
+"trang": 12,
+"ty_le_dich": 30
+},
+{
+"brand": "TNF(東京企画)",
+"nguoi": [
+"Cuong"
+],
+"gio_ma": 3.3333333333333335,
+"trang": 6,
+"ty_le_dich": 30
+},
+{
+"brand": "TNF(東京企画、GTC企画共通)サンプル",
+"nguoi": [
+"Khanh"
+],
+"gio_ma": 3.3333333333333335,
+"trang": 9,
+"ty_le_dich": 40
+},
+{
+"brand": "TNF別注　富山",
+"nguoi": [
+"Nhu",
+"B.Trang"
+],
+"gio_ma": 3.3333333333333335,
+"trang": 10,
+"ty_le_dich": 40
+},
+{
+"brand": "TNF別注　東京",
+"nguoi": [
+"Huy"
+],
+"gio_ma": 3.3333333333333335,
+"trang": 11,
+"ty_le_dich": 40
+},
+{
+"brand": "NW",
+"nguoi": [
+"Cuong"
+],
+"gio_ma": 3.8333333333333335,
+"trang": 8,
+"ty_le_dich": 30
+},
+{
+"brand": "UTMF",
+"nguoi": [
+"Nhu"
+],
+"gio_ma": 3.3333333333333335,
+"trang": "5～7",
+"ty_le_dich": 30
+},
+{
+"brand": "BOYS/DTN",
+"nguoi": [],
+"gio_ma": 3.3333333333333335,
+"trang": "4～6",
+"ty_le_dich": 30
+},
+{
+"brand": "Gymphlex",
+"nguoi": [],
+"gio_ma": 3.3333333333333335,
+"trang": 6,
+"ty_le_dich": 30
+},
+{
+"brand": "NANGA",
+"nguoi": [
+"Huy"
+],
+"gio_ma": 2.5,
+"trang": "5～7",
+"ty_le_dich": 20
+},
+{
+"brand": "DANTON",
+"nguoi": [],
+"gio_ma": 3.3333333333333335,
+"trang": 6,
+"ty_le_dich": 30
+},
+{
+"brand": "TETON BROS",
+"nguoi": [
+"Hien"
+],
+"gio_ma": 3.3333333333333335,
+"trang": 6,
+"ty_le_dich": 30
+},
+{
+"brand": "ALLTERRAIN",
+"nguoi": [
+"Hien"
+],
+"gio_ma": 3.8333333333333335,
+"trang": "5～7",
+"ty_le_dich": 30
+},
+{
+"brand": "AIGLE",
+"nguoi": [],
+"gio_ma": 3.8333333333333335,
+"trang": null,
+"ty_le_dich": 30
+},
+{
+"brand": "ORCIVAL",
+"nguoi": [],
+"gio_ma": 3.8333333333333335,
+"trang": null,
+"ty_le_dich": 30
+},
+{
+"brand": "HH",
+"nguoi": [
+"Cuong"
+],
+"gio_ma": 4.333333333333333,
+"trang": 14,
+"ty_le_dich": 35
+},
+{
+"brand": "WOOLRICH",
+"nguoi": [],
+"gio_ma": 1.8333333333333333,
+"trang": 7,
+"ty_le_dich": 20
+},
+{
+"brand": "CHAMPION",
+"nguoi": [
+"Hien"
+],
+"gio_ma": 2,
+"trang": 5,
+"ty_le_dich": 30
+},
+{
+"brand": "241",
+"nguoi": [
+"Hien"
+],
+"gio_ma": 1.5,
+"trang": 10,
+"ty_le_dich": 30
+},
+{
+"brand": "SNOWPEAK",
+"nguoi": [],
+"gio_ma": 1.0833333333333333,
+"trang": "4～5",
+"ty_le_dich": 30
+},
+{
+"brand": "LECOQ",
+"nguoi": [],
+"gio_ma": 1.0833333333333333,
+"trang": "4～5",
+"ty_le_dich": 30
+},
+{
+"brand": "SRIXON",
+"nguoi": [],
+"gio_ma": 1.0833333333333333,
+"trang": "5～10",
+"ty_le_dich": 30
+},
+{
+"brand": "MACKINTOSH",
+"nguoi": [
+"Cuong"
+],
+"gio_ma": 1.25,
+"trang": "5～7",
+"ty_le_dich": 30
+},
+{
+"brand": "MARMOT",
+"nguoi": [],
+"gio_ma": 3,
+"trang": "8～12",
+"ty_le_dich": 30
+},
+{
+"brand": "DESCENT",
+"nguoi": [
+"Hien"
+],
+"gio_ma": 2.8333333333333335,
+"trang": "6～10",
+"ty_le_dich": 30
+},
+{
+"brand": "C3FIT",
+"nguoi": [],
+"gio_ma": 1.6666666666666667,
+"trang": 4,
+"ty_le_dich": 30
+},
+{
+"brand": "MONTBELL",
+"nguoi": [
+"Hien"
+],
+"gio_ma": 4,
+"trang": "15～17",
+"ty_le_dich": 30
+},
+{
+"brand": "MILLET",
+"nguoi": [
+"Hien"
+],
+"gio_ma": 3.8333333333333335,
+"trang": 4,
+"ty_le_dich": 30
+},
+{
+"brand": "GOLDWINサンプル",
+"nguoi": [
+"Huy"
+],
+"gio_ma": 1.25,
+"trang": 13,
+"ty_le_dich": 30
+},
+{
+"brand": "GOLDWIN",
+"nguoi": [
+"Huy",
+"Khanh"
+],
+"gio_ma": 1.75,
+"trang": 13,
+"ty_le_dich": 30
+},
+{
+"brand": "GSM",
+"nguoi": [],
+"gio_ma": 1.25,
+"trang": "5～9",
+"ty_le_dich": 30
+},
+{
+"brand": "RESURRECTION",
+"nguoi": [],
+"gio_ma": 1.25,
+"trang": "5～10",
+"ty_le_dich": 30
+},
+{
+"brand": "CANTERBURY",
+"nguoi": [
+"Huy",
+"Hien"
+],
+"gio_ma": 1.25,
+"trang": "5～11",
+"ty_le_dich": 30
+},
+{
+"brand": "HYKE",
+"nguoi": [
+"Huy"
+],
+"gio_ma": 3.8333333333333335,
+"trang": "5～13",
+"ty_le_dich": 30
+},
+{
+"brand": "141",
+"nguoi": [
+"Huy"
+],
+"gio_ma": 3.8333333333333335,
+"trang": "5～14",
+"ty_le_dich": 30
+},
+{
+"brand": "HAT +",
+"nguoi": [
+"H.Trang"
+],
+"gio_ma": 1.25,
+"trang": "5～14",
+"ty_le_dich": 30
+},
+{
+"brand": "LL.BEAN",
+"nguoi": [
+"Hien"
+],
+"gio_ma": 1.25,
+"trang": "5～15",
+"ty_le_dich": 30
+},
+{
+"brand": "FOXFIRE",
+"nguoi": [
+"B.Trang"
+],
+"gio_ma": 1.42,
+"trang": "5～14",
+"ty_le_dich": 40
+},
+{
+"brand": "TATRAS",
+"nguoi": [
+"B.Trang"
+],
+"gio_ma": 1.42,
+"trang": "5～15",
+"ty_le_dich": 40
+},
+{
+"brand": "KASCO",
+"nguoi": [
+"B.Trang"
+],
+"gio_ma": 1.83,
+"trang": 8,
+"ty_le_dich": 30
+},
+{
+"brand": "YONEX",
+"nguoi": [
+"Cuong"
+],
+"gio_ma": 1.4166666666666667,
+"trang": "8～12",
+"ty_le_dich": 40
+},
+{
+"brand": "KOTI",
+"nguoi": [
+"Cuong"
+],
+"gio_ma": 1.25,
+"trang": "5～15",
+"ty_le_dich": 30
+}
+]
+}
