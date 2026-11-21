@@ -77,7 +77,7 @@ params = [
     ("1日稼働時間", 8, "時間", "電力試算の前提（2.400kWh/日から逆算）。要確認", True, "0.0"),
     ("電気料金単価", 0.08, "USD/kWh", "handoff。工場の実績単価で要確認", True, "0.000"),
     ("作業者稼働効率", 1.0, "%", "1人年間有効稼働秒の算出用。APIC標準値に置換要", True, PCT),
-    ("1人当たり年間人件費", None, "USD/年", "省人効果の金額換算用。工場人事データで記入", True, USD),
+    ("工員人件費（月額・1人）", None, "USD/月", "省人効果・損益分岐の金額換算用。工場人事データ（社保等込み）で記入", True, USD),
 ]
 for i, (k, v, u, s, y, f) in enumerate(params):
     r = 6 + i
@@ -85,11 +85,22 @@ for i, (k, v, u, s, y, f) in enumerate(params):
 r = 6 + len(params)
 put(P, f"A{r}", "1人年間有効稼働秒", bold=True)
 put(P, f"B{r}", "=B12*3600*B11*B14", fmt=JPY); put(P, f"C{r}", "秒/人・年"); put(P, f"D{r}", "＝1日稼働時間×3,600×年間稼働日数×稼働効率")
+extra = [
+    ("月間稼働日数", 26, "日/月", "比較シートの前提（ダウン充填装置比較と同じ考え方）。APIC実績で要確認", True, "0"),
+    ("設備稼働率", 0.6, "%", "比較シートの前提（同上：60%）。APIC実績で要確認", True, PCT),
+    ("余裕率", 0.2, "%", "日産能力算出用（同上：20%）", True, PCT),
+]
+for i, (k, v, u, s_, y, f) in enumerate(extra):
+    r = 18 + i
+    put(P, f"A{r}", k); inp(P, f"B{r}", v, fmt=f, yellow=y); put(P, f"C{r}", u); put(P, f"D{r}", s_)
+put(P, "A21", "1日有効作業秒（1台・1人）", bold=True)
+put(P, "B21", "=B12*3600*(1-B20)", fmt=JPY); put(P, "C21", "秒/日"); put(P, "D21", "＝1日稼働時間×3,600×(1－余裕率)")
 widths(P, {"A": 30, "B": 16, "C": 12, "D": 70})
 # 参照名
 RATE, RATE2, TARGET, APIC, YEARS, DAYS, HOURS, ELEC, EFF, LABOR, SECYR = (
     "'パラメータ'!$B$6", "'パラメータ'!$B$7", "'パラメータ'!$B$8", "'パラメータ'!$B$9", "'パラメータ'!$B$10",
     "'パラメータ'!$B$11", "'パラメータ'!$B$12", "'パラメータ'!$B$13", "'パラメータ'!$B$14", "'パラメータ'!$B$15", "'パラメータ'!$B$16")
+MDAYS, UTIL, DAYSEC = "'パラメータ'!$B$18", "'パラメータ'!$B$19", "'パラメータ'!$B$21"
 
 # ---------------------------------------------------------------- 総括
 S = wb.create_sheet("総括", 0)
@@ -113,7 +124,7 @@ put(S, f"A{H0-1}", "設備別明細（優先①の15機種）", bold=True, borde
 header(S, H0, cols)
 items = [
     (1, "2本針オーバーロック（サーボ・自動糸切り）", "MO-6814／Juki", "必須", "生産継続・レンタル削減",
-     "実稼働可能86台 vs ピーク必要112台。第2工場借用・外部レンタルで不足が既に顕在化", 5, 980, 5, "第1次", "試算済（台数データ要最終確認）", "ロックミシン"),
+     "実稼働可能86台 vs ピーク必要112台。第2工場借用・外部レンタルで不足が既に顕在化", 5, 980, 5, "第1次", "試算済（台数データ要最終確認）", "ロックミシン／比較_レンタル購入"),
     (2, "2本針インターロック（サーボ・自動糸切り）", "MO-6816／Juki", "必須", "生産継続",
      "実稼働可能64台 vs ピーク必要70台", 2, 1150, 2, "第1次", "試算済（台数データ要最終確認）", "ロックミシン"),
     (11, "スポットプレス 30×10cm", "PTTG", "必須", "安全（老朽機入替）",
@@ -121,15 +132,15 @@ items = [
     (12, "温冷カーブプレス（フロントジッパー）", "HTM-8749／Nawon", "必須", "顧客要求（26FW GW）",
      "26FW GW要請。現行シーム機のみでは品質・品位を確保できない品番への対応", 2, 19980, 2, "第1次", "顧客要請（定性）", "―"),
     (4, "パターンシーマ 60×40cm", "HMS-6040／Hikari", "改善", "省人・品質・属人性排除",
-     "ポケットファスナー等の工程集約。手作業／治具／PSの3方式比較を整備中", 3, 4450, 3, "第2次", "作成中（工程秒数・拘束時間）", "パターンシーマ"),
+     "ポケットファスナー等の工程集約。手作業／治具／PSの3方式比較を整備中", 3, 4450, 3, "第2次", "作成中（工程秒数・拘束時間）", "比較_パターンシーマ"),
     (5, "パターンシーマ 130×95cm（360度回転ヘッド）", "HMS-13095A/RND／Hikari", "改善", "省人・品質・外注/レンタル削減",
-     "GW系フロントファスナー指示、キルティング内製化（25FW外注 約3,000USD）、2025年レンタル約3,017USD", 6, 6500, 6, "第2次", "作成中（工程秒数・レンタル）", "パターンシーマ"),
+     "GW系フロントファスナー指示、キルティング内製化（25FW外注 約3,000USD）、2025年レンタル約3,017USD", 6, 6500, 6, "第2次", "作成中（工程秒数・レンタル）", "比較_パターンシーマ／比較_レンタル購入"),
     (6, "本縫針送りミシン", "DM1968L-NF／DUMA", "改善", "機材不足・レンタル削減",
-     "裾縫い・ファスナー付けで各ライン1台。理由書のレンタル削減額をレンタル実績と照合中", 10, 880, 10, "第2次", "要照合（レンタル実績）", "レンタル"),
+     "裾縫い・ファスナー付けで各ライン1台。理由書のレンタル削減額をレンタル実績と照合中", 10, 880, 10, "第2次", "要照合（レンタル実績）", "比較_レンタル購入"),
     (7, "テーピングマシン spec-D", "AI-002／H&H", "改善", "省人・品質",
-     "長尺パーツのシーム作業。熟練者・2名体制 → 属人性排除。アタッチメント対応不可を確認済", 3, 9700, 3, "第2次", "作成中（省人効果）", "―"),
+     "長尺パーツのシーム作業。熟練者・2名体制 → 属人性排除。アタッチメント対応不可を確認済", 3, 9700, 3, "第2次", "作成中（省人効果）", "比較_シーム機"),
     (9, "温冷プレス 60×12cm", "CSL-201／H&H", "改善", "機材不足・工数削減",
-     "現有30×10cm 26台で不足。プレス面積拡大で工程秒数約1/2の見込み", 6, 4150, 6, "第2次", "要実測（工程秒数）", "―"),
+     "現有30×10cm 26台で不足。プレス面積拡大で工程秒数約1/2の見込み", 6, 4150, 6, "第2次", "要実測（工程秒数）", "比較_温冷プレス"),
     (10, "平プレス 125×83cm", "CS-691／H&H", "改善", "品質・新構造品対応",
      "TNFエアチャンバー等の大型パーツ。プレス精度の検証方法を提示", 2, 13000, 2, "第2次", "検証方法 案作成済", "平プレス検証"),
     (8, "テーピングマシン spec-IJ", "AI-129／H&H", "戦略・検証", "品質（曲線部）",
@@ -454,6 +465,213 @@ for i, (a, b) in enumerate(sh):
     put(SH, f"A{r}", a, align="center"); put(SH, f"B{r}", b); inp(SH, f"C{r}", None, yellow=True); inp(SH, f"D{r}", None, yellow=True)
 widths(SH, {"A": 8, "B": 60, "C": 40, "D": 14})
 
+# ---------------------------------------------------------------- 比較シート（ダウン充填装置比較の定量モデルを踏襲）
+from openpyxl.chart import LineChart, Reference
+
+def build_compare(name, ttl, sub, heads, data, cases, pros, cons, notes, na_cols=(), labels=None):
+    """heads: 3列の見出し（現行／代替案／新設備案）。data: 行キー -> (C,D,E) 値（数値=入力、'='始まり=式、None=要記入）。"""
+    W = wb.create_sheet(name)
+    put(W, "A1", ttl, bold=True, size=14, border=False, wrap=False)
+    put(W, "A2", sub, size=9, border=False, wrap=False, color="595959")
+    put(W, "A3", "凡例：青字＝入力値／黄色＝工場で実測・記入が必要／黒字＝計算式。前提（稼働日・稼働率・余裕率・人件費）は『パラメータ』シート。",
+        size=9, border=False, wrap=False, color="595959")
+    header(W, 5, ["区分", "項目", heads[0], heads[1], heads[2], "備考"])
+    lab = {"name": "方式・機種", "price": "設備価格(USD/台)", "proc": "対応工程", "steps": "工程数",
+           "ppl": "1台あたり作業人数(人/台)", "sec": "工程作業時間(秒/枚)", "bind": "作業者拘束時間(秒/枚)"}
+    if labels: lab.update(labels)
+    order = [("基本情報", "name"), ("", "price"), ("", "proc"), ("", "steps"), ("", "ppl"),
+             ("生産性", "sec"), ("", "bind")]
+    rowof = {}
+    for i, (sec, key) in enumerate(order):
+        r = 6 + i; rowof[key] = r
+        put(W, f"A{r}", sec, bold=True); put(W, f"B{r}", lab[key])
+        vals, note = data.get(key, ((None, None, None), ""))
+        for j, col in enumerate("CDE"):
+            v = vals[j]
+            if col in na_cols and v is None:
+                put(W, f"{col}{r}", "－", align="center", fill=GRY)
+            elif isinstance(v, str) and v.startswith("="):
+                put(W, f"{col}{r}", v, fmt=NUM1 if key in ("sec", "bind") else None)
+            elif v is None:
+                inp(W, f"{col}{r}", None, fmt=USD if key == "price" else "#,##0", yellow=True)
+            else:
+                inp(W, f"{col}{r}", v, fmt=USD if key == "price" else ("#,##0" if isinstance(v, (int, float)) else None))
+        put(W, f"F{r}", note)
+    r_cap, r_cap_p, r_dep = 13, 14, 15
+    put(W, f"A{r_cap}", "", bold=True); put(W, f"B{r_cap}", "1台当たり日産能力(枚/台)")
+    put(W, f"B{r_cap_p}", "1人当たり日産能力(枚/人)")
+    put(W, f"A{r_dep}", "加工コスト比較", bold=True); put(W, f"B{r_dep}", "減価償却費(USD/月・台)")
+    for col in "CDE":
+        if col in na_cols:
+            for rr_ in (r_cap, r_cap_p, r_dep): put(W, f"{col}{rr_}", "－", align="center", fill=GRY)
+            continue
+        put(W, f"{col}{r_cap}", f'=IF(N({col}{rowof["sec"]})=0,"",{DAYSEC}/{col}{rowof["sec"]})', fmt=NUM1)
+        put(W, f"{col}{r_cap_p}", f'=IF(N({col}{rowof["bind"]})=0,"",{DAYSEC}/{col}{rowof["bind"]})', fmt=NUM1)
+        put(W, f"{col}{r_dep}", f'=IF({col}{rowof["price"]}="","",N({col}{rowof["price"]})/{YEARS}/12)', fmt=USD2)
+    put(W, f"F{r_cap}", "＝1日有効作業秒÷工程作業時間"); put(W, f"F{r_cap_p}", "＝1日有効作業秒÷作業者拘束時間")
+    put(W, f"F{r_dep}", "＝設備価格÷償却年数÷12")
+    # 損益分岐ケース
+    case_rows = []
+    base = 20
+    caseitems = ["日産目標(枚/日)", "所要設備台数(台)", "装置総額(USD)", "〃 差額(USD) ※現行－各案",
+                 "作業人数(人)", "人件費(USD/月)", "〃 差額(USD/月) ※現行－各案", "損益分岐点月数(月)"]
+    for k, target in enumerate(cases):
+        b = base + k * 8; case_rows.append(b)
+        for i, t in enumerate(caseitems):
+            put(W, f"A{b+i}", f"損益分岐 ケース{k+1}" if i == 0 else "", bold=True); put(W, f"B{b+i}", t)
+        inp(W, f"C{b}", target, fmt="#,##0")
+        for col in "DE": put(W, f"{col}{b}", f"=$C${b}", fmt="#,##0")
+        for col in "CDE":
+            na = col in na_cols
+            if na:
+                for i in range(1, 8): put(W, f"{col}{b+i}", "－", align="center", fill=GRY)
+                continue
+            put(W, f"{col}{b+1}", f'=IF({col}{r_cap}="","",ROUNDUP({col}{b}/{col}{r_cap},0))', fmt="0")
+            put(W, f"{col}{b+2}", f'=IF({col}{b+1}="","",{col}{b+1}*N({col}{rowof["price"]}))', fmt=USD)
+            put(W, f"{col}{b+4}", f'=IF(N({col}{rowof["bind"]})=0,"",ROUNDUP({col}{b}*{col}{rowof["bind"]}/{DAYSEC}*2,0)/2)', fmt="0.0")
+            put(W, f"{col}{b+5}", f'=IF(OR({col}{b+4}="",{LABOR}=""),"",{col}{b+4}*{LABOR})', fmt=USD)
+            if col == "C":
+                for i in (3, 6, 7): put(W, f"C{b+i}", "（基準）", align="center", fill=GRY)
+            else:
+                put(W, f"{col}{b+3}", f'=IF(OR($C{b+2}="",{col}{b+2}=""),"",$C{b+2}-{col}{b+2})', fmt=USD)
+                put(W, f"{col}{b+6}", f'=IF(OR($C{b+5}="",{col}{b+5}=""),"",$C{b+5}-{col}{b+5})', fmt=USD)
+                put(W, f"{col}{b+7}",
+                    f'=IF(OR({col}{b+3}="",{col}{b+6}=""),"",IF({col}{b+6}<=0,"回収不可",IF({col}{b+3}>=0,0,-{col}{b+3}/({UTIL}*{col}{b+6}))))',
+                    fmt=NUM1)
+        put(W, f"F{b}", "試算ケース（任意に変更可）"); put(W, f"F{b+4}", "＝ROUNDUP(日産×拘束秒÷1日有効作業秒×2)÷2（0.5人単位）")
+        put(W, f"F{b+7}", "＝－装置差額÷(稼働率×人件費差額)")
+    # 加工コスト（ケース別）
+    put(W, "A16", "試算", bold=True)
+    for k, b in enumerate(case_rows):
+        r = 16 + k
+        if k: put(W, f"A{r}", "")
+        put(W, f"B{r}", f'="加工コスト(USD/枚) 日産="&TEXT(C{b},"#,##0")&"枚"')
+        for col in "CDE":
+            if col in na_cols: put(W, f"{col}{r}", "－", align="center", fill=GRY); continue
+            put(W, f"{col}{r}", f'=IF(OR({col}{b+1}="",{col}{b+5}=""),"",(N({col}{r_dep})*{col}{b+1}+{col}{b+5})/({col}{b}*{MDAYS}*{UTIL}))', fmt="0.000")
+        put(W, f"F{r}", "＝(減価償却費×所要台数＋人件費)÷(日産×月間稼働日×稼働率)" if k == 0 else "")
+    put(W, "A19", ""); put(W, "B19", ""); [put(W, f"{c}19", None) for c in "CDEF"]
+    rr = base + len(cases) * 8
+    put(W, f"A{rr}", "特徴", bold=True); put(W, f"B{rr}", "長所"); put(W, f"B{rr+1}", "短所"); put(W, f"A{rr+1}", "")
+    for j, col in enumerate("CDE"):
+        put(W, f"{col}{rr}", pros[j]); put(W, f"{col}{rr+1}", cons[j])
+    put(W, f"F{rr}", None); put(W, f"F{rr+1}", None)
+    W.row_dimensions[rr].height = 48; W.row_dimensions[rr + 1].height = 48
+    for i, n in enumerate(notes):
+        put(W, f"A{rr+3+i}", n, size=9, border=False, wrap=False)
+    # 月次ランニングコスト累計（ケース2）→ グラフ
+    b2 = case_rows[1]
+    put(W, "H5", "月", bold=True, fill=SUB, align="center")
+    for j, col in enumerate("CDE"):
+        put(W, f"{'IJK'[j]}5", f"={col}5", bold=True, fill=SUB)
+    for m in range(0, 61):
+        r = 6 + m
+        put(W, f"H{r}", m, fmt="0", align="center")
+        for j, col in enumerate("CDE"):
+            tgt = "IJK"[j]
+            if col in na_cols: put(W, f"{tgt}{r}", None); continue
+            put(W, f"{tgt}{r}", f"=N(${col}${b2+2})+N(${col}${b2+5})*{UTIL}*$H{r}", fmt=USD)
+    put(W, "H67", "※ケース2の累計コスト＝装置総額＋人件費×稼働率×月数", size=9, border=False, wrap=False)
+    ch = LineChart(); ch.title = "月次ランニングコスト累計（ケース2）"; ch.roundedCorners = False
+    ch.y_axis.title = "USD"; ch.x_axis.title = "月"
+    ch.x_axis.delete = False; ch.y_axis.delete = False
+    for j, col in enumerate("CDE"):
+        if col in na_cols: continue
+        tcol = 9 + j
+        ch.add_data(Reference(W, min_col=tcol, min_row=5, max_row=66), titles_from_data=True)
+    ch.set_categories(Reference(W, min_col=8, min_row=6, max_row=66))
+    ch.legend.position = "b"; ch.legend.overlay = False; ch.title.overlay = False
+    ch.x_axis.title.overlay = False; ch.y_axis.title.overlay = False
+    ch.height = 9; ch.width = 18
+    W.add_chart(ch, "M5")
+    widths(W, {"A": 13, "B": 34, "C": 24, "D": 24, "E": 24, "F": 46, "G": 3, "H": 6, "I": 13, "J": 13, "K": 13})
+    W.freeze_panes = "C6"
+    return W
+
+build_compare(
+    "比較_パターンシーマ", "パターンシーマ 3方式比較（定量モデル）",
+    "ダウン充填装置比較と同じ構成：基本情報→生産性→加工コスト→損益分岐（3ケース）→特徴。工程ごと（ファスナー・ポケット等）にシートを複製して使用。",
+    ["手作業（現行）", "改善治具＋1本針（代替案）", "パターンシーマ（新設備案）"],
+    {"name": (("本縫いミシン・手作業", "改善治具＋1本針", "Hikari HMS-6040（60×40）"), "大型（HMS-13095A/RND）はシートを複製して作成"),
+     "price": ((None, None, 4450), "現行は既存機の取得価額（償却済なら0）、治具は製作費"),
+     "proc": (("ファスナー（例）", "ファスナー（例）", "ファスナー（例）"), "実データの工程名に置換"),
+     "steps": ((6, 3, 2), "handoffの例（手作業6工程・治具3工程・PS2工程）。実データに置換"),
+     "ppl": ((1, 1, 1), ""),
+     "sec": ((340, 330, 310), "handoffの例（340秒・330秒・310秒）。工程合計秒を実測値に置換"),
+     "bind": (("=IF(C11=\"\",\"\",C11*C10)", "=IF(D11=\"\",\"\",D11*D10)", None),
+              "PSは自動縫製中は拘束なし：セット＋次製品準備＋取り出しの実測秒（『パターンシーマ』運用設計）")},
+    [200, 400, 600],
+    ["設備費不要。段取り替え不要", "低コストで工程を集約できる", "工程集約。自動縫製中に次作業が可能。属人性排除・習熟期間短縮・品質安定"],
+    ["熟練依存で品質がばらつく。習熟期間が長い", "依然として熟練依存。拘束時間の削減は限定的", "設備費・型製作が必要。サイクルタイムは手作業と同等の場合もある"],
+    ["※1) 工程作業時間・拘束時間は同一工程・同一品番で3方式を実測した値を使用する。",
+     "※2) 日産能力＝1日有効作業秒（稼働時間×3,600×(1－余裕率)）÷工程作業時間。",
+     "※3) 1枚あたり加工コスト＝(減価償却費×設備台数＋人件費)÷(日産×月間稼働日×稼働率)。",
+     "※4) 損益分岐点月数＝－(現行装置総額－新装置総額)÷{稼働率×(現行人件費－新人件費)}。",
+     "※5) 省人化は人員削減ではなく、余力人員を他工程へ再配置して工場全体の生産性を上げることを指す。"])
+
+build_compare(
+    "比較_温冷プレス", "温冷プレス 60×12cm 比較（定量モデル）",
+    "シームテープ接着後プレス工程。現行30×10cm（26台）／同型追加購入／60×12cm大型機の比較。",
+    ["30×10cm 現行機（現行）", "30×10cm 追加購入（代替案）", "H&H CSL-201 60×12cm（新設備案）"],
+    {"name": (("H&H 30×10cm（現有26台）", "H&H 30×10cm 追加", "H&H CSL-201（60×12cm）"), ""),
+     "price": ((None, None, 4150), "現行は取得価額（償却済なら0）、代替案は30×10cmの見積単価"),
+     "proc": (("シームテープ接着後プレス",) * 3, ""),
+     "steps": ((None, '=IF(C9="","",C9)', None), "1箇所あたりのプレス回数。面積が狭いと回数増・シワリスク"),
+     "ppl": ((1, 1, 1), ""),
+     "sec": ((None, "=C11", "=IF(C11=\"\",\"\",C11/2)"), "新設備案は理由書の見込み（工程秒数約1/2）。実測値で置換"),
+     "bind": (("=IF(C11=\"\",\"\",C11*C10)", "=IF(D11=\"\",\"\",D11*D10)", "=IF(E11=\"\",\"\",E11*E10)"), "")},
+    [200, 400, 600],
+    ["既存機を活用でき追加費用なし", "追加費用が小さい", "1回で広範囲をプレス。工程秒数約1/2見込み。仕上がり均一"],
+    ["プレス面積が狭く複数回プレスが必要、シワリスク。台数不足", "回数・シワリスクは解消しない", "設備費"],
+    ["※) 計算式・前提は『比較_パターンシーマ』の注記と同じ。現行の工程作業時間（秒/枚）を実測して記入すると全体が計算される。"],
+    labels={"steps": "プレス回数(回/箇所)"})
+
+build_compare(
+    "比較_シーム機", "テーピングマシン spec-D 比較（定量モデル）",
+    "袖・裾等の長尺パーツのシーム工程。現行は熟練者または2名体制。アタッチメント取付による対応は不可を確認済。",
+    ["既存シーム機（現行）", "既存機＋アタッチメント（代替案）", "H&H AI-002 spec-D（新設備案）"],
+    {"name": (("H&H 既存機（2名体制）", "対応不可（H&H・工場技術で確認済）", "H&H AI-002 spec-D"), ""),
+     "price": ((None, None, 9700), "現行は取得価額（償却済なら0）"),
+     "proc": (("長尺パーツのシーム", None, "長尺パーツのシーム"), ""),
+     "steps": ((1, None, 1), ""),
+     "ppl": ((2, None, 1), "現行は2名体制（予算案ファイル R10）"),
+     "sec": ((None, None, None), "同一品番・同一パーツで実測"),
+     "bind": (("=IF(C11=\"\",\"\",C11*C10)", None, "=IF(E11=\"\",\"\",E11*E10)"), "＝工程作業時間×作業人数")},
+    [200, 400, 600],
+    ["既存機を活用", "－", "ハンドリング性・視認性向上。1名で作業可能。熟練者依存の削減"],
+    ["熟練者限定または2名体制。テープ貼り精度のばらつき", "取付不可のため選択肢にならない", "設備費"],
+    ["※) 計算式・前提は『比較_パターンシーマ』の注記と同じ。"],
+    na_cols=("D",))
+
+# ---- レンタル vs 購入
+RB = wb.create_sheet("比較_レンタル購入")
+title(RB, "レンタル継続 vs 購入 比較", "瞬間的にしか使わない機材はレンタルの方が有利な場合もあるため、機種別に回収月数で判断する。")
+legend(RB, "A3")
+put(RB, "A4", "購入判断の基準（回収月数）"); inp(RB, "B4", 36, fmt="0", yellow=True); put(RB, "C4", "か月以内なら購入有利（基準値は要合意）")
+header(RB, 6, ["機種", "購入単価(USD)", "台数", "購入額(USD)", "月額レンタル(USD/台)", "年間レンタル月数", "年間レンタル試算(USD)",
+               "年間レンタル実績(USD)", "採用年間レンタル費(USD)", "回収月数(月)", "判定", "出典・備考"])
+rb = [
+    ("No.6 本縫針送りミシン DUMA", 880, 10, 112, 12, None, "予算案ファイル R9（112USD×12か月×10台）。2025年レンタル総額4,890.75USDを上回るため請求書で要確認"),
+    ("No.1 オーバーロック", 980, 5, None, 3, None, "2024年10～12月に約10台を外部レンタル。月額単価を請求書で確認"),
+    ("No.2 インターロック", 1150, 2, None, None, None, "レンタル実績の有無を確認"),
+    ("No.5 大型パターンシーマ", 6500, 6, None, None, 3016.54, "2025年レンタル実績3,016.54USD（『レンタル』シート）"),
+]
+for i, (n, pr, q, mo, mm, act, src) in enumerate(rb):
+    r = 7 + i
+    put(RB, f"A{r}", n); inp(RB, f"B{r}", pr, fmt=USD); inp(RB, f"C{r}", q, fmt="0")
+    put(RB, f"D{r}", f"=B{r}*C{r}", fmt=USD)
+    inp(RB, f"E{r}", mo, fmt=USD, yellow=(mo is None)); inp(RB, f"F{r}", mm, fmt="0", yellow=(mm is None))
+    put(RB, f"G{r}", f'=IF(OR(E{r}="",F{r}=""),"",E{r}*F{r}*C{r})', fmt=USD)
+    inp(RB, f"H{r}", act, fmt=USD2, yellow=(act is None))
+    put(RB, f"I{r}", f'=IF(H{r}<>"",H{r},G{r})', fmt=USD)
+    put(RB, f"J{r}", f'=IF(N(I{r})=0,"",D{r}/(I{r}/12))', fmt=NUM1)
+    put(RB, f"K{r}", f'=IF(J{r}="","データ待ち",IF(J{r}<=$B$4,"購入有利","レンタル継続を検討"))', align="center")
+    put(RB, f"L{r}", src)
+    RB.row_dimensions[r].height = 36
+put(RB, "A12", "注：年間レンタル実績が入力されていれば実績を優先し、なければ月額×月数×台数の試算を使う。回収月数＝購入額÷(年間レンタル費÷12)。", size=9, border=False, wrap=False)
+put(RB, "A13", "注：購入にはサーボ化による電力削減・品質改善（ロックミシン）などの副次効果もあるが、本表はレンタル費のみで比較。", size=9, border=False, wrap=False)
+widths(RB, {"A": 30, "B": 13, "C": 7, "D": 13, "E": 14, "F": 12, "G": 15, "H": 15, "I": 15, "J": 12, "K": 18, "L": 60})
+
 # ---------------------------------------------------------------- P/L影響
 PL = wb.create_sheet("PL影響")
 title(PL, "当年度P/L影響（シナリオ別）", "P/L影響＝新規設備年間償却－既存設備償却減少額－年間削減効果。プラス＝コスト増（安全・戦略理由で説明）、マイナス＝P/L改善。")
@@ -480,8 +698,8 @@ put(PL, "A12", "年間削減効果：電力(円)")
 for col in "BCD": put(PL, f"{col}12", f"='ロックミシン'!$B$36*{RATE}", fmt=JPY, color=GREEN)
 put(PL, "A13", "年間削減効果：省人・工数(円)")
 put(PL, "B13", 0, fmt=JPY, color=BLUE); put(PL, "B13", 0, fmt=JPY, color=BLUE)
-for col in "CD": put(PL, f"{col}13", f"=IF({LABOR}=\"\",0,'パターンシーマ'!$N$22*{LABOR}*{RATE})", fmt=JPY)
-put(PL, "E13", "必須案はパターンシーマを含まないため0。人件費は『パラメータ』B15に記入。再配置人員の付加価値で評価する場合は別途")
+for col in "CD": put(PL, f"{col}13", f"=IF({LABOR}=\"\",0,'パターンシーマ'!$N$22*{LABOR}*12*{RATE})", fmt=JPY)
+put(PL, "E13", "必須案はパターンシーマを含まないため0。人件費（月額）は『パラメータ』B15に記入。再配置人員の付加価値で評価する場合は別途")
 put(PL, "A14", "年間削減効果：品質（不良削減）(円)")
 for col in "BCD": inp(PL, f"{col}14", None, fmt=JPY, yellow=True)
 put(PL, "E14", "不良・再加工の実績から算出")
