@@ -132,7 +132,7 @@ items = [
     (12, "温冷カーブプレス（フロントジッパー）", "HTM-8749／Nawon", "必須", "顧客要求（26FW GW）",
      "26FW GW要請。現行シーム機のみでは品質・品位を確保できない品番への対応", 2, 19980, 2, "第1次", "顧客要請（定性）", "―"),
     (4, "パターンシーマ 60×40cm", "HMS-6040／Hikari", "改善", "省人・品質・属人性排除",
-     "ポケットファスナー等の工程集約。手作業／治具／PSの3方式比較を整備中", 3, 4450, 3, "第2次", "作成中（工程秒数・拘束時間）", "比較_パターンシーマ"),
+     "ポケットファスナー等の工程集約。手作業／治具／PSの3方式比較を整備中", 3, 4450, 3, "第2次", "作成中（工程秒数・拘束時間）", "比較_パターンシーマ／PS_工程ファミリー集計"),
     (5, "パターンシーマ 130×95cm（360度回転ヘッド）", "HMS-13095A/RND／Hikari", "改善", "省人・品質・外注/レンタル削減",
      "GW系フロントファスナー指示、キルティング内製化（25FW外注 約3,000USD）、2025年レンタル約3,017USD", 6, 6500, 6, "第2次", "作成中（工程秒数・レンタル）", "比較_パターンシーマ／比較_レンタル購入"),
     (6, "本縫針送りミシン", "DM1968L-NF／DUMA", "改善", "機材不足・レンタル削減",
@@ -218,10 +218,10 @@ header(Q, 5, ["No.", "要確認事項", "回答方針", "必要データ", "状�
 qs = [
     ("①", "機材導入で削減できる年間外部レンタル費用。パターンシーマ・シーム機(spec-D)による要員減の数値",
      "レンタル実績(2024～2026)から投資で回避できる分のみを削減額とする。省人化は『工程秒数削減→必要工数削減→余力人員の再配置』として算出（人員削減ではない）",
-     "レンタル明細(機種・台数・期間・D/N・ライン)／3方式の工程秒数・作業者拘束時間・年間数量", "作成中", "レンタル／パターンシーマ"),
+     "レンタル明細(機種・台数・期間・D/N・ライン)／3方式の工程秒数・作業者拘束時間・年間数量", "作成中", "レンタル／PS_工程ファミリー集計／PS_習熟カーブ"),
     ("②", "パターンシーマの動線・工員配置・縫製中の動きを含む運用設計",
      "作業者→セット→自動縫製→自動縫製中に次製品準備→取り出し、の各秒数を実測し、1人当たり担当台数を実測値で設定（『1人で複数台』を前提にしない）",
-     "工程別の実測秒数、ライン内配置図", "作成中", "パターンシーマ"),
+     "工程別の実測秒数、ライン内配置図", "作成中", "パターンシーマ／PS_定性評価"),
     ("③", "スポットプレスを最優先で入替。必要総数の計算根拠と現状の運用状況",
      "対象ライン数×必要台数/ライン＋共用分＋予備・保全分＝必要総数。更新分と純増分を分けて提示。安全性を主理由とし、ROIは求めない",
      "旧型の台数・年式・安全装置有無・修理可否・使用ライン、写真、ヒヤリハット", "データ待ち", "スポットプレス"),
@@ -672,6 +672,205 @@ put(RB, "A12", "注：年間レンタル実績が入力されていれば実績�
 put(RB, "A13", "注：購入にはサーボ化による電力削減・品質改善（ロックミシン）などの副次効果もあるが、本表はレンタル費のみで比較。", size=9, border=False, wrap=False)
 widths(RB, {"A": 30, "B": 13, "C": 7, "D": 13, "E": 14, "F": 12, "G": 15, "H": 15, "I": 15, "J": 12, "K": 18, "L": 60})
 
+# ---------------------------------------------------------------- PS 多品種向け 3シート（工程ファミリー集計／習熟カーブ／定性評価）
+from openpyxl.worksheet.datavalidation import DataValidation
+EXF = PatternFill("solid", fgColor="EDEDED")
+
+def example_row(ws, r, vals, fmts=None):
+    for j, v in enumerate(vals):
+        c = ws.cell(row=r, column=1 + j, value=v)
+        c.font = Font(name=F, italic=True, color="7F7F7F", size=9); c.fill = EXF; c.border = BOX
+        c.alignment = Alignment(wrap_text=True, vertical="center")
+        if fmts and fmts[j]: c.number_format = fmts[j]
+
+# ===== PS_工程ファミリー集計
+FA = wb.create_sheet("PS_工程ファミリー集計")
+title(FA, "パターンシーマ 工程ファミリー別 集計（多品種対応の統計方法）",
+      "品番ごとではなく工程ファミリーごとに評価する。母数＝工程分析表の該当工程秒×数量（既存データ）、改善率＝代表品番の3方式実測（サンプル）。")
+legend(FA, "A3")
+put(FA, "A4", "手順：①Part Aでファミリーを定義 → ②Part Bに代表品番の実測値を記入 → ③Part Cに25FW・26SSの工程分析表から該当工程を転記 → Part Aに年間効果が自動集計される。",
+    size=9, border=False, wrap=False)
+put(FA, "A5", "Part A　工程ファミリー別 年間効果（自動集計）", bold=True, border=False, wrap=False)
+header(FA, 6, ["ファミリーID", "工程ファミリー", "代表例（顧客・部位）", "対象機種", "実測サンプル数",
+               "手作業 平均秒/枚", "PS 平均秒/枚", "PS 平均拘束秒/枚", "秒削減率", "拘束削減率",
+               "年間対象工程秒", "年間対象数量(枚)", "年間削減秒(拘束ベース)", "省人工数(人)", "金額換算(USD/年)"])
+fams = [("F01", "ポケットファスナー付け", "TNF・GW・HH ポケット", "中型 60×40"),
+        ("F02", "フロントファスナー付け", "GW（PS縫製の指示あり）", "大型 130×95"),
+        ("F03", "ポケット口・フラップ", "各ブランド", "中型 60×40"),
+        ("F04", "キルティング", "Montbell フードキルト等", "大型（360度回転）"),
+        ("F05", "装飾ステッチ・その他", "", "中型／大型"),
+        (None, None, None, None), (None, None, None, None), (None, None, None, None)]
+A0, A1 = 7, 14
+B0, B1 = 20, 49     # Part B data rows
+C0, C1 = 54, 253    # Part C data rows
+for i, fam in enumerate(fams):
+    r = A0 + i
+    for j, v in enumerate(fam):
+        inp(FA, f"{'ABCD'[j]}{r}", v, yellow=(v is None))
+    put(FA, f"E{r}", f'=IF(A{r}="","",COUNTIF($A${B0}:$A${B1},A{r}))', fmt="0")
+    for col, src in (("F", "F"), ("G", "H"), ("H", "I")):
+        put(FA, f"{col}{r}", f'=IF(COUNTIFS($A${B0}:$A${B1},A{r},${src}${B0}:${src}${B1},">0")=0,"",AVERAGEIFS(${src}${B0}:${src}${B1},$A${B0}:$A${B1},A{r}))', fmt=NUM1)
+    put(FA, f"I{r}", f'=IF(OR(F{r}="",G{r}=""),"",1-G{r}/F{r})', fmt=PCT)
+    put(FA, f"J{r}", f'=IF(OR(F{r}="",H{r}=""),"",1-H{r}/F{r})', fmt=PCT)
+    put(FA, f"K{r}", f'=IF(A{r}="","",SUMIF($A${C0}:$A${C1},A{r},$H${C0}:$H${C1}))', fmt=JPY)
+    put(FA, f"L{r}", f'=IF(A{r}="","",SUMIF($A${C0}:$A${C1},A{r},$G${C0}:$G${C1}))', fmt=JPY)
+    put(FA, f"M{r}", f'=IF(A{r}="","",SUMIF($A${C0}:$A${C1},A{r},$J${C0}:$J${C1}))', fmt=JPY)
+    put(FA, f"N{r}", f'=IF(M{r}="","",M{r}/{SECYR})', fmt="0.00")
+    put(FA, f"O{r}", f'=IF(OR(N{r}="",{LABOR}=""),"",N{r}*{LABOR}*12)', fmt=USD)
+tA = A1 + 1
+put(FA, f"A{tA}", "合計", bold=True, fill=GRY)
+for col in "BCDFGHIJ": put(FA, f"{col}{tA}", None, fill=GRY)
+for col, f in (("E", "0"), ("K", JPY), ("L", JPY), ("M", JPY), ("N", "0.00"), ("O", USD)):
+    put(FA, f"{col}{tA}", f"=SUM({col}{A0}:{col}{A1})", bold=True, fmt=f, fill=GRY)
+put(FA, f"A{tA+1}", "注：省人工数は『拘束削減率』で算出（自動縫製中は作業者が拘束されないため）。削減率がマイナス（PSの方が遅い）の場合もそのまま計上する。人員削減ではなく再配置可能な人工を示す。",
+    size=9, border=False, wrap=False)
+
+put(FA, f"A{B0-3}", "Part B　代表品番の3方式実測（各ファミリー2～3品番 × 各方式5～10サイクル）", bold=True, border=False, wrap=False)
+header(FA, B0 - 2, ["ファミリーID", "シーズン", "品番", "顧客", "測定サイクル数", "手作業 秒/枚", "治具 秒/枚", "PS 秒/枚", "PS 拘束秒/枚", "測定日", "測定者・備考"])
+example_row(FA, B0 - 1, ["記入例", "26SS", "NP00000", "TNF", 10, 340, 330, 310, 120, "2026/12/01", "拘束秒＝セット＋次製品準備＋取り出し"],
+            [None, None, None, None, "0", "0", "0", "0", "0", None, None])
+for r in range(B0, B1 + 1):
+    for j, col in enumerate("ABCDEFGHIJK"):
+        inp(FA, f"{col}{r}", None, fmt="#,##0" if 4 <= j <= 8 else None, yellow=True)
+
+put(FA, f"A{C0-3}", "Part C　工程分析表からの転記（25FW・26SS の全品番のうち、PS適用可能な工程のみ）", bold=True, border=False, wrap=False)
+header(FA, C0 - 2, ["ファミリーID", "シーズン", "品番", "顧客", "工程名", "現行工程秒/枚", "数量(枚)", "年間工程秒", "拘束削減率(Part A)", "年間削減秒"])
+example_row(FA, C0 - 1, ["記入例", "25FW", "NP00000", "TNF", "胸ポケットファスナー付け", 85, 1800, "＝秒×数量", "Part Aから自動", "＝年間工程秒×削減率"])
+for r in range(C0, C1 + 1):
+    for j, col in enumerate("ABCDEFG"):
+        inp(FA, f"{col}{r}", None, fmt="#,##0" if j >= 5 else None, yellow=True)
+    put(FA, f"H{r}", f'=IF(OR(F{r}="",G{r}=""),"",F{r}*G{r})', fmt=JPY)
+    put(FA, f"I{r}", f'=IF(A{r}="","",IF(ISNA(MATCH(A{r},$A${A0}:$A${A1},0)),"",INDEX($J${A0}:$J${A1},MATCH(A{r},$A${A0}:$A${A1},0))))', fmt=PCT)
+    put(FA, f"J{r}", f'=IF(OR(H{r}="",I{r}=""),"",H{r}*I{r})', fmt=JPY)
+dv = DataValidation(type="list", formula1=f"=$A${A0}:$A${A1}", allow_blank=True)
+FA.add_data_validation(dv); dv.add(f"A{B0}:A{B1}"); dv.add(f"A{C0}:A{C1}")
+widths(FA, {"A": 11, "B": 22, "C": 22, "D": 18, "E": 12, "F": 12, "G": 12, "H": 13, "I": 13, "J": 13,
+            "K": 15, "L": 14, "M": 17, "N": 12, "O": 15})
+FA.freeze_panes = "B7"
+
+# ===== PS_習熟カーブ
+LC = wb.create_sheet("PS_習熟カーブ")
+title(LC, "パターンシーマ 立上げ時の習熟カーブ（多品種工場ならではの効果）",
+      "品番切替のたびに手作業は標準日産に達するまで数日かかるが、PSは初日から標準に近い。習熟ロス×年間立上げ回数で効果を算出し、型製作費を差し引く。")
+legend(LC, "A3")
+L0, L1 = 8, 37
+put(LC, "A5", "Part A　立上げ実績（ライン投入日からの日別出来高。生産日報から転記）", bold=True, border=False, wrap=False)
+days = [f"{d}日目" for d in range(1, 11)]
+header(LC, 6, ["品番", "ファミリーID", "方式", "工程秒/枚", "標準日産(枚/日)"] + days + ["標準未達日数", "習熟ロス(枚)", "習熟ロス(秒)"])
+example_row(LC, 7, ["記入例", "F01", "手作業", 85, 300, 150, 200, 240, 270, 290, 300, 300, None, None, None, "5", "＝標準との差の合計", "＝ロス枚×工程秒"])
+for r in range(L0, L1 + 1):
+    for j, col in enumerate("ABCDE"):
+        inp(LC, f"{col}{r}", None, fmt="#,##0" if j >= 3 else None, yellow=True)
+    for k in range(10):
+        inp(LC, f"{chr(ord('F')+k)}{r}", None, fmt="#,##0", yellow=True)
+    put(LC, f"P{r}", f'=IF(OR(E{r}="",COUNT(F{r}:O{r})=0),"",SUMPRODUCT((F{r}:O{r}<>"")*(F{r}:O{r}<E{r})))', fmt="0")
+    put(LC, f"Q{r}", f'=IF(P{r}="","",SUMPRODUCT((F{r}:O{r}<>"")*(F{r}:O{r}<E{r})*(E{r}-F{r}:O{r})))', fmt=JPY)
+    put(LC, f"R{r}", f'=IF(OR(Q{r}="",D{r}=""),"",Q{r}*D{r})', fmt=JPY)
+dvm = DataValidation(type="list", formula1='"手作業,治具,PS"', allow_blank=True)
+LC.add_data_validation(dvm); dvm.add(f"C{L0}:C{L1}")
+dvf = DataValidation(type="list", formula1=f"='PS_工程ファミリー集計'!$A${A0}:$A${A1}", allow_blank=True)
+LC.add_data_validation(dvf); dvf.add(f"B{L0}:B{L1}")
+
+S0 = L1 + 5; S1 = S0 + 7
+put(LC, f"A{S0-2}", "Part B　ファミリー別 年間習熟効果", bold=True, border=False, wrap=False)
+header(LC, S0 - 1, ["ファミリーID", "工程ファミリー", "手作業 平均ロス秒/立上げ", "PS 平均ロス秒/立上げ", "差(秒/立上げ)",
+                     "年間立上げ回数", "年間削減秒", "人工換算(人)", "金額換算(USD/年)", "PS型製作費(USD/品番)", "年間型製作費(USD)", "正味効果(USD/年)"])
+for i in range(8):
+    r = S0 + i; fr = A0 + i
+    put(LC, f"A{r}", f"=IF('PS_工程ファミリー集計'!A{fr}=\"\",\"\",'PS_工程ファミリー集計'!A{fr})", color=GREEN)
+    put(LC, f"B{r}", f"=IF('PS_工程ファミリー集計'!B{fr}=\"\",\"\",'PS_工程ファミリー集計'!B{fr})", color=GREEN)
+    for col, m in (("C", "手作業"), ("D", "PS")):
+        put(LC, f"{col}{r}", f'=IF(COUNTIFS($B${L0}:$B${L1},A{r},$C${L0}:$C${L1},"{m}",$R${L0}:$R${L1},">=0")=0,"",AVERAGEIFS($R${L0}:$R${L1},$B${L0}:$B${L1},A{r},$C${L0}:$C${L1},"{m}"))', fmt=JPY)
+    put(LC, f"E{r}", f'=IF(OR(C{r}="",D{r}=""),"",C{r}-D{r})', fmt=JPY)
+    inp(LC, f"F{r}", None, fmt="0", yellow=True)
+    put(LC, f"G{r}", f'=IF(OR(E{r}="",F{r}=""),"",E{r}*F{r})', fmt=JPY)
+    put(LC, f"H{r}", f'=IF(G{r}="","",G{r}/{SECYR})', fmt="0.00")
+    put(LC, f"I{r}", f'=IF(OR(H{r}="",{LABOR}=""),"",H{r}*{LABOR}*12)', fmt=USD)
+    inp(LC, f"J{r}", None, fmt=USD, yellow=True)
+    put(LC, f"K{r}", f'=IF(OR(J{r}="",F{r}=""),"",J{r}*F{r})', fmt=USD)
+    put(LC, f"L{r}", f'=IF(I{r}="","",I{r}-N(K{r}))', fmt=USD)
+tS = S1 + 1
+put(LC, f"A{tS}", "合計", bold=True, fill=GRY)
+for col in "BCDEFJ": put(LC, f"{col}{tS}", None, fill=GRY)
+for col, f in (("G", JPY), ("H", "0.00"), ("I", USD), ("K", USD), ("L", USD)):
+    put(LC, f"{col}{tS}", f"=SUM({col}{S0}:{col}{S1})", bold=True, fmt=f, fill=GRY)
+put(LC, f"A{tS+1}", "注：年間立上げ回数＝そのファミリーの工程を含む品番が年間にライン投入される回数（生産計画から集計）。習熟ロス(秒)＝(標準日産－実績)の合計×工程秒。",
+    size=9, border=False, wrap=False)
+put(LC, f"A{tS+2}", "注：同じファミリーで手作業とPSの立上げを各3件以上記録すると平均値の信頼性が上がる。PS型製作費は型材・プログラム作成工数を含める。",
+    size=9, border=False, wrap=False)
+widths(LC, {"A": 12, "B": 22, "C": 13, "D": 13, "E": 13, "F": 9, "G": 9, "H": 9, "I": 9, "J": 9, "K": 9,
+            "L": 11, "M": 9, "N": 9, "O": 9, "P": 11, "Q": 12, "R": 13})
+LC.freeze_panes = "B8"
+
+# ===== PS_定性評価
+QE = wb.create_sheet("PS_定性評価")
+title(QE, "パターンシーマ 定性評価（根拠付き）",
+      "定性項目も証拠と半定量指標をセットで示す。評価記号は案（青字）として記載しており、工場が証拠をそろえて確定する。")
+legend(QE, "A3")
+put(QE, "A4", "評価：◎＝3点、○＝2点、△＝1点、×＝0点。加重スコア＝Σ(重み×点数)。", size=9, border=False, wrap=False)
+header(QE, 6, ["評価項目", "重み(1～3)", "手作業", "改善治具＋1本針", "パターンシーマ", "根拠・証拠", "証拠資料(ファイル名・写真No.)",
+               "半定量指標", "現状値(手作業)", "PS導入後(見込／実績)"])
+qe = [
+    ("顧客要求への適合", 3, "×", "△", "◎", "GW系ブランドはフロントファスナーをPSで縫製するよう指示", None, "PS指定品番数・数量"),
+    ("品質（直線性・波打ち）", 3, "△", "○", "◎", "ファスナー部の直線性・仕上がりへの要求が高まっている", None, "補修率(%)・顧客指摘件数"),
+    ("属人性（熟練者依存）", 2, "×", "△", "◎", "当該工程を担当できる作業者が限られる", None, "担当可能人数(人)"),
+    ("習熟期間", 2, "×", "△", "◎", "新人・応援者が標準に達するまでの日数", None, "標準到達日数(日)『PS_習熟カーブ』"),
+    ("多品種・切替対応", 2, "△", "△", "○", "型・プログラム作成で対応。品番ごとの型製作が必要", None, "型製作時間(時間/品番)"),
+    ("欠勤・離職時のリスク", 1, "×", "△", "○", "熟練者不在時にライン停滞・応援対応", None, "停滞発生件数"),
+    ("作業負担・作業環境", 1, "△", "○", "◎", "自動縫製中は手を離せ、細かな操作が減る", None, "作業者ヒアリング"),
+    ("サイクルタイム", 1, "○", "○", "△", "同等または数秒長いケースあり（正直に記載）", None, "秒/枚『PS_工程ファミリー集計』"),
+]
+Q0 = 7; Q1 = Q0 + len(qe) - 1
+dvq = DataValidation(type="list", formula1='"◎,○,△,×"', allow_blank=True)
+QE.add_data_validation(dvq); dvq.add(f"C{Q0}:E{Q1}")
+for i, (k, w, a, b, c, ev, doc, kpi) in enumerate(qe):
+    r = Q0 + i
+    put(QE, f"A{r}", k); inp(QE, f"B{r}", w, fmt="0")
+    for col, v in (("C", a), ("D", b), ("E", c)):
+        inp(QE, f"{col}{r}", v); QE[f"{col}{r}"].alignment = Alignment(horizontal="center", vertical="center")
+    put(QE, f"F{r}", ev); inp(QE, f"G{r}", doc, yellow=True); put(QE, f"H{r}", kpi)
+    inp(QE, f"I{r}", None, yellow=True); inp(QE, f"J{r}", None, yellow=True)
+    QE.row_dimensions[r].height = 32
+sr = Q1 + 1
+put(QE, f"A{sr}", "加重スコア", bold=True, fill=GRY); put(QE, f"B{sr}", f"=SUM(B{Q0}:B{Q1})*3", fmt="0", fill=GRY)
+QE[f"B{sr}"].comment = Comment("満点（＝重み合計×3）", "draft")
+for col in "CDE":
+    put(QE, f"{col}{sr}", f'=SUMPRODUCT($B${Q0}:$B${Q1},({col}{Q0}:{col}{Q1}="◎")*3+({col}{Q0}:{col}{Q1}="○")*2+({col}{Q0}:{col}{Q1}="△")*1)',
+        fmt="0", bold=True, fill=GRY, align="center")
+put(QE, f"A{sr+1}", "達成率（対満点）", bold=True, fill=GRY); put(QE, f"B{sr+1}", None, fill=GRY)
+for col in "CDE":
+    put(QE, f"{col}{sr+1}", f'=IF($B${sr}=0,"",{col}{sr}/$B${sr})', fmt=PCT, bold=True, fill=GRY, align="center")
+for col in "FGHIJ":
+    put(QE, f"{col}{sr}", None, fill=GRY); put(QE, f"{col}{sr+1}", None, fill=GRY)
+
+wr = sr + 4
+put(QE, f"A{wr-1}", "弱み・留意点（説明時に先に示す）", bold=True, border=False, wrap=False)
+weak = ["サイクルタイムは全ケースで短縮するわけではない（同等または数秒長いケースあり）。主効果は拘束時間削減・工程集約・属人性排除・品質安定。",
+        "品番ごとに型製作・プログラム作成の時間と費用がかかる（『PS_習熟カーブ』で正味効果から差し引き済み）。",
+        "『1人で複数台』は前提にしない。動線・配置を設計し、実測で確認してから人員配置に反映する（要確認事項②）。",
+        "定量効果だけで投資回収を説明できない場合は、顧客要求・品質・属人性リスクを投資判断の主根拠とし、その旨を明記する。"]
+for i, t in enumerate(weak):
+    put(QE, f"A{wr+i}", f"{i+1}. {t}", border=False, wrap=False)
+
+kr = wr + len(weak) + 2
+put(QE, f"A{kr}", "事後検証KPI（段階導入：一部台数で導入 → 6か月後に検証 → 残台数を判断）", bold=True, border=False, wrap=False)
+header(QE, kr + 1, ["KPI", "改善方向", "導入前", "目標", "3か月後", "6か月後", "判定(6か月後)", "測定方法"])
+kpis = [("作業者拘束時間(秒/枚)", "減少", "『PS_工程ファミリー集計』Part B"),
+        ("標準到達日数(日)", "減少", "『PS_習熟カーブ』"),
+        ("補修率(%)", "減少", "QC記録"),
+        ("顧客指摘件数(件/シーズン)", "減少", "顧客クレーム・指摘記録"),
+        ("PS稼働率(%)", "増加", "PS運用日誌"),
+        ("担当可能人数(人)", "増加", "スキルマップ")]
+dvd = DataValidation(type="list", formula1='"減少,増加"', allow_blank=True)
+QE.add_data_validation(dvd)
+for i, (k, d, m) in enumerate(kpis):
+    r = kr + 2 + i
+    put(QE, f"A{r}", k); inp(QE, f"B{r}", d); dvd.add(f"B{r}")
+    for col in "CDEF": inp(QE, f"{col}{r}", None, fmt="#,##0.0", yellow=True)
+    put(QE, f"G{r}", f'=IF(OR(D{r}="",F{r}=""),"",IF(B{r}="減少",IF(F{r}<=D{r},"達成","未達"),IF(F{r}>=D{r},"達成","未達")))', align="center")
+    put(QE, f"H{r}", m)
+widths(QE, {"A": 26, "B": 10, "C": 11, "D": 14, "E": 13, "F": 46, "G": 26, "H": 30, "I": 14, "J": 18})
+
 # ---------------------------------------------------------------- P/L影響
 PL = wb.create_sheet("PL影響")
 title(PL, "当年度P/L影響（シナリオ別）", "P/L影響＝新規設備年間償却－既存設備償却減少額－年間削減効果。プラス＝コスト増（安全・戦略理由で説明）、マイナス＝P/L改善。")
@@ -698,8 +897,8 @@ put(PL, "A12", "年間削減効果：電力(円)")
 for col in "BCD": put(PL, f"{col}12", f"='ロックミシン'!$B$36*{RATE}", fmt=JPY, color=GREEN)
 put(PL, "A13", "年間削減効果：省人・工数(円)")
 put(PL, "B13", 0, fmt=JPY, color=BLUE); put(PL, "B13", 0, fmt=JPY, color=BLUE)
-for col in "CD": put(PL, f"{col}13", f"=IF({LABOR}=\"\",0,'パターンシーマ'!$N$22*{LABOR}*12*{RATE})", fmt=JPY)
-put(PL, "E13", "必須案はパターンシーマを含まないため0。人件費（月額）は『パラメータ』B15に記入。再配置人員の付加価値で評価する場合は別途")
+for col in "CD": put(PL, f"{col}13", f"=(N('PS_工程ファミリー集計'!$O$15)+N('PS_習熟カーブ'!$L$50))*{RATE}", fmt=JPY, color=GREEN)
+put(PL, "E13", "＝PS工程ファミリー別の省人効果＋立上げ習熟効果（型製作費控除後）。必須案はパターンシーマを含まないため0")
 put(PL, "A14", "年間削減効果：品質（不良削減）(円)")
 for col in "BCD": inp(PL, f"{col}14", None, fmt=JPY, yellow=True)
 put(PL, "E14", "不良・再加工の実績から算出")
@@ -710,7 +909,7 @@ for col in "BCD": put(PL, f"{col}16", f"={col}8-N({col}10)-{col}15", fmt=JPY, bo
 put(PL, "A17", "判定", bold=True)
 for col in "BCD": put(PL, f"{col}17", f'=IF({col}16>0,"コスト増（安全・戦略理由で説明）","P/L改善")', align="center")
 put(PL, "A18", "単純回収年数(年)")
-for col in "BCD": put(PL, f"{col}18", f'=IF(N({col}11)+N({col}13)+N({col}14)=0,"効果未算定",{col}7/{col}15)', fmt="0.0")
+for col in "BCD": put(PL, f"{col}18", f'=IF(N({col}11)+N({col}13)+N({col}14)=0,"効果未算定",IF({col}15<=0,"回収不可",{col}7/{col}15))', fmt="0.0")
 put(PL, "E18", "＝投資額÷年間削減効果。レンタル・省人・品質効果が未記入の間は表示しない。安全投資（スポットプレス）は回収年数で評価しない")
 for r in (11, 12, 15, 16, 17, 18): put(PL, f"E{r}", PL[f"E{r}"].value)
 widths(PL, {"A": 36, "B": 22, "C": 22, "D": 22, "E": 70})
@@ -720,5 +919,10 @@ for ws in wb.worksheets:
     ws.page_setup.orientation = "landscape"
     ws.page_setup.fitToWidth = 1; ws.page_setup.fitToHeight = 0
     ws.sheet_properties.pageSetUpPr.fitToPage = True
+# シート順：PS関連3シートを『比較_パターンシーマ』の直後へ
+order = [ws.title for ws in wb.worksheets]
+for nm in ["PS_定性評価", "PS_習熟カーブ", "PS_工程ファミリー集計"]:
+    ws_ = wb[nm]; wb._sheets.remove(ws_)
+    wb._sheets.insert(wb.sheetnames.index("比較_パターンシーマ") + 1, ws_)
 wb.save(OUT)
 print("saved", OUT)
