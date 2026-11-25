@@ -132,9 +132,9 @@ items = [
     (12, "温冷カーブプレス（フロントジッパー）", "HTM-8749／Nawon", "必須", "顧客要求（26FW GW）",
      "26FW GW要請。現行シーム機のみでは品質・品位を確保できない品番への対応", 2, 19980, 2, "第1次", "顧客要請（定性）", "―"),
     (4, "パターンシーマ 60×40cm", "HMS-6040／Hikari", "改善", "省人・品質・属人性排除",
-     "ポケットファスナー等の工程集約。手作業／治具／PSの3方式比較を整備中", 3, 4450, 3, "第2次", "作成中（工程秒数・拘束時間）", "比較_パターンシーマ／PS_工程ファミリー集計"),
+     "ポケットファスナー等の工程集約。TNF SUMMIT 27SSで3品番のファスナー付けにPS使用（『根拠_TNF_SUMMIT』）。3方式比較を整備中", 3, 4450, 3, "第2次", "作成中（工程秒数・拘束時間）", "比較_パターンシーマ／PS_工程ファミリー集計"),
     (5, "パターンシーマ 130×95cm（360度回転ヘッド）", "HMS-13095A/RND／Hikari", "改善", "省人・品質・外注/レンタル削減",
-     "GW系フロントファスナー指示、キルティング内製化（25FW外注 約3,000USD）、2025年レンタル約3,017USD", 6, 6500, 6, "第2次", "作成中（工程秒数・レンタル）", "比較_パターンシーマ／比較_レンタル購入"),
+     "GW系フロントファスナー指示、TNF SUMMITのフロントファスナーPS化、キルティング内製化（25FW外注 約3,000USD）、2025年レンタル約3,017USD", 6, 6500, 6, "第2次", "作成中（工程秒数・レンタル）", "比較_パターンシーマ／比較_レンタル購入"),
     (6, "本縫針送りミシン", "DM1968L-NF／DUMA", "改善", "機材不足・レンタル削減",
      "裾縫い・ファスナー付けで各ライン1台。理由書のレンタル削減額をレンタル実績と照合中", 10, 880, 10, "第2次", "要照合（レンタル実績）", "比較_レンタル購入"),
     (7, "テーピングマシン spec-D", "AI-002／H&H", "改善", "省人・品質",
@@ -146,7 +146,7 @@ items = [
     (8, "テーピングマシン spec-IJ", "AI-129／H&H", "戦略・検証", "品質（曲線部）",
      "フード等曲線部のシーム精度。1台で評価後、追加判断", 1, 6800, 1, "試験後", "試験導入", "―"),
     (15, "温冷プレス", "HTM-8601／Nawon", "戦略・検証", "品質・営業要望",
-     "2025年度1台導入済で評価良好。TNF等高難度品で営業から増設要望", 1, 18333, 1, "第2次", "導入実績あり（定性）", "―"),
+     "2025年度1台導入済。TNF SUMMIT NP12670のフードカーブ仕上げに使用中。営業から増設要望", 1, 18333, 1, "第2次", "導入実績あり（定性）", "―"),
     (18, "超音波溶着機 35kHz", "US-512／H&H", "戦略・検証", "品質・提案幅拡大",
      "既存28kHz機で一部素材の溶着不良。サンプル作製を兼ねたトライアル", 1, 6300, 1, "試験後", "試験導入", "―"),
     (13, "温冷カーブプレス（袖）", "HTM-8739／Nawon", "戦略・検証", "品質",
@@ -699,7 +699,8 @@ fams = [("F01", "ポケットファスナー付け", "TNF・GW・HH ポケット
         ("F03", "ポケット口・フラップ", "各ブランド", "中型 60×40"),
         ("F04", "キルティング", "Montbell フードキルト等", "大型（360度回転）"),
         ("F05", "装飾ステッチ・その他", "", "中型／大型"),
-        (None, None, None, None), (None, None, None, None), (None, None, None, None)]
+        ("F06", "脇ファスナー付け", "TNF SUMMIT シームパンツ", "中型／大型"),
+        (None, None, None, None), (None, None, None, None)]
 A0, A1 = 7, 14
 B0, B1 = 20, 49     # Part B data rows
 C0, C1 = 54, 253    # Part C data rows
@@ -733,15 +734,25 @@ for r in range(B0, B1 + 1):
     for j, col in enumerate("ABCDEFGHIJK"):
         inp(FA, f"{col}{r}", None, fmt="#,##0" if 4 <= j <= 8 else None, yellow=True)
 
-put(FA, f"A{C0-3}", "Part C　工程分析表からの転記（25FW・26SS の全品番のうち、PS適用可能な工程のみ）", bold=True, border=False, wrap=False)
+put(FA, f"A{C0-3}", "Part C　工程分析表からの転記（25FW・26SS・27SS の全品番のうち、PS適用可能な工程のみ。27SS TNF SUMMITの4行は記入済、工程秒のみ要記入）", bold=True, border=False, wrap=False)
 header(FA, C0 - 2, ["ファミリーID", "シーズン", "品番", "顧客", "工程名", "現行工程秒/枚", "数量(枚)", "年間工程秒", "拘束削減率(Part A)", "年間削減秒"])
 example_row(FA, C0 - 1, ["記入例", "25FW", "NP00000", "TNF", "胸ポケットファスナー付け", 85, 1800, "＝秒×数量", "Part Aから自動", "＝年間工程秒×削減率"])
 for r in range(C0, C1 + 1):
     for j, col in enumerate("ABCDEFG"):
         inp(FA, f"{col}{r}", None, fmt="#,##0" if j >= 5 else None, yellow=True)
     put(FA, f"H{r}", f'=IF(OR(F{r}="",G{r}=""),"",F{r}*G{r})', fmt=JPY)
+
     put(FA, f"I{r}", f'=IF(A{r}="","",IF(ISNA(MATCH(A{r},$A${A0}:$A${A1},0)),"",INDEX($J${A0}:$J${A1},MATCH(A{r},$A${A0}:$A${A1},0))))', fmt=PCT)
     put(FA, f"J{r}", f'=IF(OR(H{r}="",I{r}=""),"",H{r}*I{r})', fmt=JPY)
+pre = [("F06", "27SS", "NP12671", "TNF", "脇ファスナー付け", 224),
+       ("F02", "27SS", "NP72571", "TNF", "フロントファスナー付け", 3575),
+       ("F02", "27SS", "NP12670", "TNF", "フロントファスナー付け", 907),
+       ("F01", "27SS", "NP12670", "TNF", "ポケットファスナー付け", 907)]
+for i, (fid, se, st, cu, pr, q) in enumerate(pre):
+    r = C0 + i
+    for col, v in zip("ABCDE", (fid, se, st, cu, pr)): inp(FA, f"{col}{r}", v)
+    inp(FA, f"G{r}", q, fmt="#,##0")
+    FA[f"F{r}"].comment = Comment("工程分析表の工程秒を記入。品番・数量は『根拠_TNF_SUMMIT』（27SS量産でPS使用）", "draft")
 dv = DataValidation(type="list", formula1=f"=$A${A0}:$A${A1}", allow_blank=True)
 FA.add_data_validation(dv); dv.add(f"A{B0}:A{B1}"); dv.add(f"A{C0}:A{C1}")
 widths(FA, {"A": 11, "B": 22, "C": 22, "D": 18, "E": 12, "F": 12, "G": 12, "H": 13, "I": 13, "J": 13,
@@ -811,9 +822,9 @@ put(QE, "A4", "評価：◎＝3点、○＝2点、△＝1点、×＝0点。加�
 header(QE, 6, ["評価項目", "重み(1～3)", "手作業", "改善治具＋1本針", "パターンシーマ", "根拠・証拠", "証拠資料(ファイル名・写真No.)",
                "半定量指標", "現状値(手作業)", "PS導入後(見込／実績)"])
 qe = [
-    ("顧客要求への適合", 3, "×", "△", "◎", "GW系ブランドはフロントファスナーをPSで縫製するよう指示", None, "PS指定品番数・数量"),
-    ("品質（直線性・波打ち）", 3, "△", "○", "◎", "ファスナー部の直線性・仕上がりへの要求が高まっている", None, "補修率(%)・顧客指摘件数"),
-    ("属人性（熟練者依存）", 2, "×", "△", "◎", "当該工程を担当できる作業者が限られる", None, "担当可能人数(人)"),
+    ("顧客要求への適合", 3, "×", "△", "◎", "GW系：フロントファスナーをPSで縫製するよう指示。TNF SUMMIT：品位改善対応として27SSの3品番でファスナー付けをPSで実施", "『根拠_TNF_SUMMIT』p.3・5・6／GW指示書（要添付）", "PS使用品番数・着数（27SS SUMMIT：3品番）"),
+    ("品質（直線性・波打ち）", 3, "△", "○", "◎", "TNF 26AW指摘（NY82520 フロントファスナー波打ち）に対し、治具＋本縫い→治具＋PSへの変更で解消を確認", "『根拠_TNF_SUMMIT』p.8（改善検証）", "補修率(%)・顧客指摘件数"),
+    ("属人性（熟練者依存）", 2, "×", "△", "◎", "NY82520の要因検証：治具＋本縫いでは作業者ごとに送り込み量・テンションがばらつき、波打ちを助長", "『根拠_TNF_SUMMIT』p.8（要因検証③）／スキルマップ（要添付）", "担当可能人数(人)"),
     ("習熟期間", 2, "×", "△", "◎", "新人・応援者が標準に達するまでの日数", None, "標準到達日数(日)『PS_習熟カーブ』"),
     ("多品種・切替対応", 2, "△", "△", "○", "型・プログラム作成で対応。品番ごとの型製作が必要", None, "型製作時間(時間/品番)"),
     ("欠勤・離職時のリスク", 1, "×", "△", "○", "熟練者不在時にライン停滞・応援対応", None, "停滞発生件数"),
@@ -828,7 +839,7 @@ for i, (k, w, a, b, c, ev, doc, kpi) in enumerate(qe):
     put(QE, f"A{r}", k); inp(QE, f"B{r}", w, fmt="0")
     for col, v in (("C", a), ("D", b), ("E", c)):
         inp(QE, f"{col}{r}", v); QE[f"{col}{r}"].alignment = Alignment(horizontal="center", vertical="center")
-    put(QE, f"F{r}", ev); inp(QE, f"G{r}", doc, yellow=True); put(QE, f"H{r}", kpi)
+    put(QE, f"F{r}", ev); inp(QE, f"G{r}", doc, yellow=(doc is None or "要添付" in doc)); put(QE, f"H{r}", kpi)
     inp(QE, f"I{r}", None, yellow=True); inp(QE, f"J{r}", None, yellow=True)
     QE.row_dimensions[r].height = 32
 sr = Q1 + 1
@@ -870,6 +881,62 @@ for i, (k, d, m) in enumerate(kpis):
     put(QE, f"G{r}", f'=IF(OR(D{r}="",F{r}=""),"",IF(B{r}="減少",IF(F{r}<=D{r},"達成","未達"),IF(F{r}>=D{r},"達成","未達")))', align="center")
     put(QE, f"H{r}", m)
 widths(QE, {"A": 26, "B": 10, "C": 11, "D": 14, "E": 13, "F": 46, "G": 26, "H": 30, "I": 14, "J": 18})
+
+# ===== 根拠_TNF_SUMMIT（品位対応事例）
+EV = wb.create_sheet("根拠_TNF_SUMMIT")
+title(EV, "根拠資料：TNF SUMMITシリーズ 品位改善対応（27SS量産・26AW指摘）",
+      "出典：『TNF SUMMITシリーズ 品位改善対応』（東レインターナショナル／TIVN、2026年11月、SW1課・AP2部へ共有済）。頁は同資料の頁番号。")
+put(EV, "A3", "要点", bold=True, border=False)
+put(EV, "A4", "1. 顧客の品位要求に対し、ファスナー付けをパターンシーマで行うことが量産での標準対策になっている（27SS：3品番）。", border=False, wrap=False)
+put(EV, "A5", "2. 26AW指摘品（NY82520）では、治具＋本縫いミシンの作業者ごとの送り込み差が波打ちの要因と特定し、治具＋パターンシーマへ変更して解消。", border=False, wrap=False)
+put(EV, "A6", "3. フードカーブはシーム接着後にNawonカーブプレス（2025年度導入のHTM-8601）で仕上げており、既導入機の実績となっている。", border=False, wrap=False)
+header(EV, 8, ["No.", "シーズン", "品番", "品名", "アイテム", "着数", "品位課題", "対応内容（設備に関わる点）", "関連設備", "関連投資案（当初No.）", "資料頁"])
+ev = [
+    ("27SS", "NP12671", "GTX TRAIL EDRC PT", "シームパンツ", 224, "脇ファスナー波打ち／各部シーム圧着品位",
+     "ファスナー付けにパターンシーマを使用し、縫い縮み・パッカリング・波打ちを軽減。耐水圧2000mm/120秒クリア。長距離シーム工程で斜め皺が出やすいため縫い代の糊接着固定を提案",
+     "パターンシーマ／シーム機", "No.4・5／No.7", "p.3"),
+    ("27SS", "NB72571/NBW72571", "Enduris Trail Short", "ショートパンツ", 3835, "ウエスト圧着伸び・波打ち／千鳥ミシン伸び／レーザー裁断部のガタつき",
+     "アイロン仮接着の方法、ミシン押さえ・送り歯の調整、レーザー出力の最適化で対応（作業方法・既存設備の調整）",
+     "（既存設備の調整）", "―", "p.4"),
+    ("27SS", "NP72571", "Infinity Trail Hoodie", "ジャケット", 3575, "フロントファスナー波打ち／各部パッカリング（生地薄・ストレッチ）",
+     "ファスナー付けにパターンシーマを使用し、品質・品位のばらつきを軽減。ポケット袋は治具＋本縫い、脇パイピングはラッパ調整＋ローラー押さえ",
+     "パターンシーマ", "No.4・5", "p.5"),
+    ("27SS", "NP12670", "GTX TRAIL EDRC JK", "シームジャケット", 907, "フロント／ポケットファスナー波打ち／フードツバ接着品位／シーム圧着品位",
+     "ファスナー付けにパターンシーマを使用。フロントファスナー部は金属製補助台座でシーム後の品位を安定化。フードカーブはシーム接着後にNawonカーブプレスで仕上げ",
+     "パターンシーマ／Nawonカーブプレス／シーム機", "No.4・5／No.15（12～14）", "p.6"),
+    ("26AW", "NP62525", "Sheer Ice Jacket", "ジャケット（指摘品）", None, "ポケットファスナー圧着浮き",
+     "生地の熱収縮（縦-0.7～-1.0%、横-1.6～-1.0%）と複数回の熱工程が要因。パーツの事前熱処理＋見返し縫い代カットで接着面積を増やし解消",
+     "プレス（熱条件の管理：参考）", "No.9・10（参考）", "p.7"),
+    ("26AW", "NY82520", "Ascent Peak HYB VENTRIX Jacket", "中綿ジャケット（指摘品）", None, "フロントファスナー波打ち／全体的なパッカリング・ツレ",
+     "要因③：治具＋本縫いミシンでは作業者ごとに送り込み量・テンションがばらつく。ファスナー付けを『治具＋パターンシーマ』へ変更し縫製ばらつきを抑制",
+     "パターンシーマ", "No.4・5", "p.8"),
+]
+E0 = 9
+for i, row in enumerate(ev):
+    r = E0 + i
+    put(EV, f"A{r}", i + 1, align="center")
+    for j, v in enumerate(row):
+        col = "BCDEFGHIJK"[j]
+        if j == 4: put(EV, f"{col}{r}", v, fmt="#,##0")
+        else: put(EV, f"{col}{r}", v)
+    EV.row_dimensions[r].height = 60
+E1 = E0 + len(ev) - 1
+r = E1 + 1
+put(EV, f"A{r}", len(ev) + 1, align="center"); put(EV, f"B{r}", "27SS"); put(EV, f"C{r}", "NY82571／NB72573／NP12720")
+put(EV, f"D{r}", "VENTRIX TRAIL JK／Enduris Trail Very Short／RAULI DRY JACKET（新規）"); put(EV, f"E{r}", "今後生産")
+put(EV, f"F{r}", "=450+771+355", fmt="#,##0"); put(EV, f"G{r}", "生産前（12月～1月）"); put(EV, f"H{r}", "今後の生産分も随時報告予定")
+for col in "IJK": put(EV, f"{col}{r}", "―")
+EV.row_dimensions[r].height = 36
+E1 = r
+put(EV, f"A{E1+2}", "集計", bold=True, border=False)
+put(EV, f"A{E1+3}", "27SS SUMMIT 対象着数（合計）"); put(EV, f"F{E1+3}", f'=SUMIF(B{E0}:B{E1},"27SS",F{E0}:F{E1})', fmt="#,##0", bold=True)
+put(EV, f"A{E1+4}", "うちファスナー付けにパターンシーマを使用"); put(EV, f"F{E1+4}", f'=SUMIFS(F{E0}:F{E1},B{E0}:B{E1},"27SS",I{E0}:I{E1},"*パターンシーマ*")', fmt="#,##0", bold=True)
+put(EV, f"A{E1+5}", "比率"); put(EV, f"F{E1+5}", f'=IF(F{E1+3}=0,"",F{E1+4}/F{E1+3})', fmt=PCT, bold=True)
+for k in (3, 4, 5):
+    EV.merge_cells(f"A{E1+k}:E{E1+k}")
+put(EV, f"A{E1+7}", "注：本資料は品位改善の取組み報告であり、パターンシーマの工程秒数データは含まない。定量効果は『PS_工程ファミリー集計』で別途算出する。", size=9, border=False, wrap=False)
+widths(EV, {"A": 5, "B": 8, "C": 16, "D": 24, "E": 14, "F": 9, "G": 30, "H": 60, "I": 22, "J": 18, "K": 7})
+EV.freeze_panes = "C9"
 
 # ---------------------------------------------------------------- P/L影響
 PL = wb.create_sheet("PL影響")
@@ -921,7 +988,7 @@ for ws in wb.worksheets:
     ws.sheet_properties.pageSetUpPr.fitToPage = True
 # シート順：PS関連3シートを『比較_パターンシーマ』の直後へ
 order = [ws.title for ws in wb.worksheets]
-for nm in ["PS_定性評価", "PS_習熟カーブ", "PS_工程ファミリー集計"]:
+for nm in ["根拠_TNF_SUMMIT", "PS_定性評価", "PS_習熟カーブ", "PS_工程ファミリー集計"]:
     ws_ = wb[nm]; wb._sheets.remove(ws_)
     wb._sheets.insert(wb.sheetnames.index("比較_パターンシーマ") + 1, ws_)
 wb.save(OUT)
